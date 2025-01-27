@@ -3,7 +3,8 @@ import User from "../models/userModel.js";
 import Product from "../models/productmodel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
-
+import dotenv from "dotenv" 
+dotenv.config();
 
 const addshop = async (req, res) => {
     try {
@@ -36,12 +37,6 @@ const addshop = async (req, res) => {
         const entity="shop"
         const entityid = newshop.id;
             if (images && images.length > 0) {
-                const uniqueImages = images.reduce((unique, file) => {
-                    if (!unique.some(img => img.filename === file.filename)) {
-                        unique.push(file);
-                    }
-                    return unique;
-                })
                 const imageRecords = images.map(file => ({
                     imagetype:"shop",
                     entityId:entityid,
@@ -70,7 +65,6 @@ const getusershop=async(req,res)=>{
             where:{userId},
             include:[{
                 model:image,
-                as:"image",
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
             },{
@@ -93,7 +87,6 @@ const getallshops=async(req,res)=>{
         const shops=await shop.findAll({
             include:{
                 model:image,
-                as:"image",
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
             },
@@ -130,6 +123,7 @@ const updateshop=async(req,res)=>{
             });
             const entity = "shop";
             const entityid = id;
+         //   const host = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://192.168.216.179:5000';
             if (images) {
                 // Remove existing shop images
                 await image.destroy({
@@ -143,7 +137,7 @@ const updateshop=async(req,res)=>{
                 const imageRecords = images.map(file => ({
                     imagetype: entity,
                     entityId: entityid,
-                    imageUrl: `uploads/${entity}/${entityid}/${file.filename}`
+                    imageUrl: `${host}/uploads/${entity}/${entityid}/${file.filename}`
                 }));
                 
                 await image.bulkCreate(imageRecords);
@@ -165,7 +159,6 @@ const getshopName=async(req,res)=>{
         const {shopname}=req.params;
         const shops=await shop.findOne({where:{shopname},include:{
             model:image,
-            as:"image",
             where: { imagetype: 'shop' },
             required:false //all shops may not have image
         },});
@@ -188,7 +181,6 @@ const getshopcategory=async(req,res)=>{
         }
         const shops=await shop.findAll({where:{categoryId:category.id},include:{
             model:image,
-            as:"image",
             where: { imagetype: 'shop' },
             required:false //all shops may not have image
         },});

@@ -8,25 +8,21 @@ import subcategories from "../models/subCategoryModel.js";
 
 const addproduct = async (req, res) => {
      const {id}=req.params;
-    const { name, price, description, imageUrl, stock,productcategory,productsubcategory} = req.body;
+    const { name, price, description, stock,productcategory,productsubcategory} = req.body;
     const images=req.files
     try {
         const usershop = await Shop.findByPk(id);
         if (!usershop) {
             return res.status(400).json(" Shop not Found");
         }
-        const [findcategory]=await category.findOrCreate({where:{name:productcategory}});//electronics
+        const [findcategory]=await category.findOrCreate({where:{name:productcategory}});
+        console.log(findcategory)//electronics
         const [findsubcategory]=await subcategories.findOrCreate({where:{name:productsubcategory,categoryId:findcategory.id}})
-        const product = await Product.create({name, price, description, imageUrl, stock,seller:usershop.userId,shopid:usershop.id,categoryId:findcategory.id,subcategoryId:findsubcategory.id});
+        console.log(findsubcategory)
+        const product = await Product.create({name, price, description, stock,seller:usershop.userId,shopid:usershop.id,categoryId:findcategory.id,subcategoryId:findsubcategory.id});
         const entity="product"
         const entityid = product.id;
             if (images && images.length > 0) {
-                const uniqueImages = images.reduce((unique, file) => {
-                    if (!unique.some(img => img.filename === file.filename)) {
-                        unique.push(file);
-                    }
-                    return unique;
-                })
                 const imageRecords = images.map(file => ({
                     imagetype:"product",
                     entityId:entityid,
@@ -38,6 +34,7 @@ const addproduct = async (req, res) => {
         res.status(201).json(product);
     } catch (err) {
         res.status(500).json(err);
+        console.log(err);
     }
 };
 
