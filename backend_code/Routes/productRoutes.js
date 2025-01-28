@@ -8,7 +8,7 @@ productRouter.post("/addproduct/:id",upload.array('image',8),addproduct);
 productRouter.get("/getallproducts",getallproducts);
 productRouter.get("/getuserproducts/:id",getuserproducts);
 productRouter.get("/getshopproducts/:id",getshopproducts);
-productRouter.put("/updateproduct/:id",updateproduct);
+productRouter.put("/updateproduct/:id",upload.array('image',8),updateproduct);
 productRouter.delete("/deleteproduct/:id",deleteproduct);
 
 export default productRouter;
