@@ -9,14 +9,19 @@ import userRouter from "./backend_code/Routes/userRoutes.js";
 import productRouter from "./backend_code/Routes/productRoutes.js";
 import shopRouter from "./backend_code/Routes/shopRoutes.js";
 import addressRouter from "./backend_code/Routes/addressRoutes.js";
+import categoryRouter from "./backend_code/Routes/categoryRoutes.js"
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app=express();
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended:true}))
 app.use(cors());
-
+app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_code/uploads")));
 
 modelsSyncs.modelsSync()
 .then(()=>{
@@ -43,6 +48,7 @@ app.use("/api",userRouter);
 app.use("/api",productRouter);
 app.use("/api",shopRouter);
 app.use("/api",addressRouter);
+app.use("/api",categoryRouter);
 
 
 app.get("/",(req,res)=>{

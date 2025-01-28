@@ -20,13 +20,12 @@ const addproduct = async (req, res) => {
         const [findsubcategory]=await subcategories.findOrCreate({where:{name:productsubcategory,categoryId:findcategory.id}})
         console.log(findsubcategory)
         const product = await Product.create({name, price, description, stock,seller:usershop.userId,shopid:usershop.id,categoryId:findcategory.id,subcategoryId:findsubcategory.id});
-        const entity="product"
         const entityid = product.id;
             if (images && images.length > 0) {
                 const imageRecords = images.map(file => ({
                     imagetype:"product",
                     entityId:entityid,
-                    imageUrl: `uploads/${entity}/${entityid}/${file.filename}`
+                    imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
                 }));
     
                 await image.bulkCreate(imageRecords);
@@ -131,11 +130,12 @@ const updateproduct = async (req, res) => {
     try {
         const {  id } = req.params;
         const { name, price, description, stock,categories,subcategory } = req.body;
+        const images=req.files
         
         const product = await Product.findByPk(id,{
             include:[{
             model:image,
-            where:{imagetype:"product",entityId,id},
+            where:{imagetype:"product"},
             required:false //all products may not have image
         },
         {
@@ -158,6 +158,26 @@ const updateproduct = async (req, res) => {
             stock: stock || product.stock,
             categoryId:  findcategory.id,
             subcategoryId: findsubcategory.id
+        }
+        const entity = "product";
+        const entityid = id;
+         if (images) {
+            // Remove existing product images
+            await image.destroy({
+                where: { 
+                    imagetype: 'product', 
+                    entityId: id 
+                }
+            });
+            
+            // Create new image records
+            const imageRecords = images.map(file => ({
+                imagetype: entity,
+                entityId: entityid,
+                imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
+            }));
+            
+            await image.bulkCreate(imageRecords);
         }
         await product.update(updatedproduct);
         res.json({

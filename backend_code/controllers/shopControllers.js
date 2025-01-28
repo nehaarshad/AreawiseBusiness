@@ -40,7 +40,7 @@ const addshop = async (req, res) => {
                 const imageRecords = images.map(file => ({
                     imagetype:"shop",
                     entityId:entityid,
-                    imageUrl: `uploads/${entity}/${entityid}/${file.filename}`
+                    imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
                 }));
     
                 await image.bulkCreate(imageRecords);
@@ -85,11 +85,15 @@ const getusershop=async(req,res)=>{
 const getallshops=async(req,res)=>{
     try {
         const shops=await shop.findAll({
-            include:{
+            include:[{
                 model:image,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
+            },{
+                model:category,
+                required:true //all shops may  have category
             },
+        ]
         });
         res.json(shops);
     } catch (error) {
@@ -108,12 +112,11 @@ const updateshop=async(req,res)=>{
                 return res.status(404).json({ error: 'Shop not found!' });
             }
             const findCategory = await category.findOne({ where: { name } });
-            let categoryid = findCategory ? findCategory.id : null;
+            let categoryid;
             if (!findCategory) {
                 const newCategory = await category.create({ name });
                 categoryid = newCategory.id;
-            }
-
+            }else{categoryid =findCategory.id;}
             const updatedshop = await usershop.update({
                 shopname: shopname || usershop.shopname,
                 shopaddress: shopaddress || usershop.shopaddress,
@@ -137,7 +140,7 @@ const updateshop=async(req,res)=>{
                 const imageRecords = images.map(file => ({
                     imagetype: entity,
                     entityId: entityid,
-                    imageUrl: `${host}/uploads/${entity}/${entityid}/${file.filename}`
+                    imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
                 }));
                 
                 await image.bulkCreate(imageRecords);
@@ -157,11 +160,16 @@ const updateshop=async(req,res)=>{
 const getshopName=async(req,res)=>{
     try {
         const {shopname}=req.params;
-        const shops=await shop.findOne({where:{shopname},include:{
-            model:image,
-            where: { imagetype: 'shop' },
-            required:false //all shops may not have image
-        },});
+        const shops=await shop.findOne({where:{shopname},
+            include:[{
+                model:image,
+                where: { imagetype: 'shop' },
+                required:false //all shops may not have image
+            },{
+                model:category,
+                required:true //all shops may  have category
+            },
+        ]});
         if(!shops){
             return res.json({error:"shop not Found"})
         }
@@ -175,15 +183,20 @@ const getshopName=async(req,res)=>{
 const getshopcategory=async(req,res)=>{
     try {
         const {name}=req.params;
-        const category=await category.findOne({where:name});
-        if(!category){
+        const findcategory=await category.findOne({where:name});
+        if(!findcategory){
             return res.json({error:"category not Found"})
         }
-        const shops=await shop.findAll({where:{categoryId:category.id},include:{
-            model:image,
-            where: { imagetype: 'shop' },
-            required:false //all shops may not have image
-        },});
+        const shops=await shop.findAll({where:{categoryId:category.id},
+            include:[{
+                model:image,
+                where: { imagetype: 'shop' },
+                required:false //all shops may not have image
+            },{
+                model:category,
+                required:true //all shops may  have category
+            },
+        ]});
         if(!shops){
             return res.json({error:"shop not Found"})
         }
@@ -194,7 +207,6 @@ const getshopcategory=async(req,res)=>{
         res.json({error:"shop  FAILED TO FIND!"})
     }
 }
-
 
 const deleteshopbyid=async(req,res)=>{
     try {
