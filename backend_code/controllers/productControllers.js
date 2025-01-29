@@ -25,7 +25,7 @@ const addproduct = async (req, res) => {
                 const imageRecords = images.map(file => ({
                     imagetype:"product",
                     entityId:entityid,
-                    imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
+                    imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
                 }));
     
                 await image.bulkCreate(imageRecords);
@@ -162,7 +162,7 @@ const updateproduct = async (req, res) => {
         const entity = "product";
         const entityid = id;
          if (images) {
-            // Remove existing product images
+            // Remove prvious list of product images
             await image.destroy({
                 where: { 
                     imagetype: 'product', 
@@ -170,11 +170,11 @@ const updateproduct = async (req, res) => {
                 }
             });
             
-            // Create new image records
+            // Re-Create or add new images 
             const imageRecords = images.map(file => ({
                 imagetype: entity,
                 entityId: entityid,
-                imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
+                imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
             }));
             
             await image.bulkCreate(imageRecords);

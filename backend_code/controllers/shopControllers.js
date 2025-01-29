@@ -40,7 +40,7 @@ const addshop = async (req, res) => {
                 const imageRecords = images.map(file => ({
                     imagetype:"shop",
                     entityId:entityid,
-                    imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
+                    imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
                 }));
     
                 await image.bulkCreate(imageRecords);
@@ -140,7 +140,7 @@ const updateshop=async(req,res)=>{
                 const imageRecords = images.map(file => ({
                     imagetype: entity,
                     entityId: entityid,
-                    imageUrl: `http://localhost:5000/backend_code/uploads/${file.filename}`
+                    imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
                 }));
                 
                 await image.bulkCreate(imageRecords);
