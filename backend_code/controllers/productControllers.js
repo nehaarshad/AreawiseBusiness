@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import subcategories from "../models/subCategoryModel.js";
+import { where } from "sequelize";
 
 
 const addproduct = async (req, res) => {
@@ -34,6 +35,29 @@ const addproduct = async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
         console.log(err);
+    }
+};
+
+const findproductbyid = async (req, res) => {
+    try {
+        const {id}=req.params;
+        const products = await Product.findByPk(id,{
+            include:[{
+                model:image,
+                where:{imagetype:"product"},
+                required:false //all products may not have image
+            },
+            {
+                model:category,
+            },
+            {
+                model:subcategories,
+            },]
+        });
+        res.json(products);
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to find products" });
     }
 };
 
@@ -212,4 +236,4 @@ const deleteproduct = async (req, res) => {
     }
 }
 
-export default { addproduct, getallproducts,getuserproducts,getshopproducts,updateproduct, deleteproduct };
+export default { addproduct, findproductbyid,getallproducts,getuserproducts,getshopproducts,updateproduct, deleteproduct };
