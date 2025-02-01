@@ -157,10 +157,10 @@ const updateshop=async(req,res)=>{
     }
 }
 
-const getshopName=async(req,res)=>{
+const getshopId=async(req,res)=>{
     try {
-        const {shopname}=req.params;
-        const shops=await shop.findOne({where:{shopname},
+        const {id}=req.params;
+        const shops=await shop.findByPk(id,{
             include:[{
                 model:image,
                 where: { imagetype: 'shop' },
@@ -241,4 +241,4 @@ const deleteshopbyid=async(req,res)=>{
     }
 }
 
-export default {addshop,getallshops,getusershop,updateshop,getshopName,getshopcategory,deleteshopbyid};
+export default {addshop,getallshops,getusershop,updateshop,getshopId,getshopcategory,deleteshopbyid};
