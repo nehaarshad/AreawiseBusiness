@@ -14,8 +14,8 @@ const relation = () => {
     User.hasMany(shop, { foreignKey: {name: 'userId', allowNull: false } });
     shop.belongsTo(User, { foreignKey: 'userId' });
 
-    User.hasOne(image,{foreignKey:{name:"entityId",scope: {imagetype: 'user'}, allowNull:false}});
-    image.belongsTo(User,{foreignKey:{name:"entityId"}});
+    User.hasOne(image,{foreignKey:{name:'UserId',allowNull:false},constraints: false,scope: {imagetype: 'user'},});
+    image.belongsTo(User,{foreignKey:{name:"UserId"},constraints: false,scope: {imagetype: 'user'}});
 
     User.hasMany(Product, { foreignKey: {name: 'seller', allowNull: false } });
     Product.belongsTo(User, { foreignKey: 'seller' });
@@ -24,15 +24,15 @@ const relation = () => {
     shop.hasMany(Product, { foreignKey: {name: 'shopid', allowNull: false } });
     Product.belongsTo(shop, { foreignKey: 'shopid' });
 
-    shop.hasMany(image,{foreignKey:{name:'entityId',scope: {imagetype: 'shop'},allowNull:false}});
-    image.belongsTo(shop,{foreignKey:{name:'entityId'}});
+    shop.hasMany(image,{foreignKey:{name:'ShopId',allowNull:false},constraints: false,scope: {imagetype: 'shop'},});
+    image.belongsTo(shop,{foreignKey:{name:'ShopId'},constraints: false,scope: {imagetype: 'shop'}});
 
     category.hasMany(shop,{foreignKey:{name:'categoryId',allowNull:false}});
     shop.belongsTo(category,{foreignKey:{name:'categoryId'}});
 
     //product relations.....
-    Product.hasMany(image,{foreignKey:{name:'entityId',scope: {imagetype: 'product'},allowNull:false}});
-    image.belongsTo(Product,{foreignKey:{name:'entityId'}});
+    Product.hasMany(image,{foreignKey:{name:'ProductId',allowNull:false},constraints: false,scope: {imagetype: 'product'},});
+    image.belongsTo(Product,{foreignKey:{name:'ProductId'},constraints: false,scope: {imagetype: 'product'}});
 
     
     category.hasMany(subcategory, { foreignKey:{name: 'categoryId'} ,allowNull:false });

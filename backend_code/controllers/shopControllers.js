@@ -34,19 +34,20 @@ const addshop = async (req, res) => {
             categoryId:categoryid,
             userId: user.id
         });
-        const entity="shop"
-        const entityid = newshop.id;
             if (images && images.length > 0) {
                 const imageRecords = images.map(file => ({
-                    imagetype:"shop",
-                    entityId:entityid,
+                    imagetype:'shop',
+                    ShopId:newshop.id,
                     imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
                 }));
     
                 await image.bulkCreate(imageRecords);
             }
            
-        res.status(201).json(newshop);
+        res.status(201).json({
+            success:true,
+            message:"Shop Added Successfullt!"
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -124,7 +125,7 @@ const updateshop=async(req,res)=>{
                 city: city || usershop.city,
                 categoryId:categoryid
             });
-            const entity = "shop";
+            const entity = 'shop';
             const entityid = id;
          //   const host = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://192.168.216.179:5000';
             if (images) {
@@ -132,14 +133,14 @@ const updateshop=async(req,res)=>{
                 await image.destroy({
                     where: { 
                         imagetype: 'shop', 
-                        entityId: id 
+                        ShopId: id 
                     }
                 });
                 
                 // Create new image records
                 const imageRecords = images.map(file => ({
                     imagetype: entity,
-                    entityId: entityid,
+                    ShopId: entityid,
                     imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
                 }));
                 
@@ -228,7 +229,7 @@ const deleteshopbyid=async(req,res)=>{
             // else{
             //     console.log("No products of this shop")
             // }
-           const images=await image.destroy({imagetype: 'shop',entityId:id}) ;
+           const images=await image.destroy({where:{imagetype: 'shop',ShopId:id}}) ;
            if(images>0){
             console.log(`${images} Images of this shop deleted`)
         }

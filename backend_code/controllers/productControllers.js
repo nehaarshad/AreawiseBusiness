@@ -24,8 +24,8 @@ const addproduct = async (req, res) => {
         const entityid = product.id;
             if (images && images.length > 0) {
                 const imageRecords = images.map(file => ({
-                    imagetype:"product",
-                    entityId:entityid,
+                    imagetype:'product',
+                    ProductId:entityid,
                     imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
                 }));
     
@@ -190,14 +190,14 @@ const updateproduct = async (req, res) => {
             await image.destroy({
                 where: { 
                     imagetype: 'product', 
-                    entityId: id 
+                    ProductId: id 
                 }
             });
             
             // Re-Create or add new images 
             const imageRecords = images.map(file => ({
                 imagetype: entity,
-                entityId: entityid,
+                ProductId: entityid,
                 imageUrl: `http://192.168.216.179:5000/backend_code/uploads/${file.filename}`
             }));
             
@@ -222,7 +222,7 @@ const deleteproduct = async (req, res) => {
         if (!product) {
             return res.json({ error: "Product not Exit" });
         }
-        const productimage=await image.destroy({where:{imagetype:"product",entityId:id}})
+        const productimage=await image.destroy({where:{imagetype:"product",ProductId:id}})
         if(productimage>0){
             console.log(`${productimage} Images of this product deleted`)
         }

@@ -25,7 +25,7 @@ const models={
 const modelsSync=async()=>{
     try{
 
-        await sequelize.sync({ alter: true}).then(() => {   
+        await sequelize.sync({ force: false}).then(() => {   
             console.log("All models are synchronized successfully");
         }).catch((err) => {
             console.log("all models are not synchronized successfully",err)
