@@ -108,23 +108,27 @@ const updateshop=async(req,res)=>{
         const {id}=req.params;
         const {shopname, shopaddress, sector, city, name}=req.body;
         const images=req.files;
-        const usershop = await shop.findByPk(id);
+        const usershop = await shop.findByPk(id,{
+            include:[{
+            model:image,
+            where:{imagetype:"shop"},
+            required:false 
+        },
+        {
+            model:category,
+        },]});
             if (!usershop) {
                 return res.status(404).json({ error: 'Shop not found!' });
             }
-            const findCategory = await category.findOne({ where: { name } });
-            let categoryid;
-            if (!findCategory) {
-                const newCategory = await category.create({ name });
-                categoryid = newCategory.id;
-            }else{categoryid =findCategory.id;}
-            const updatedshop = await usershop.update({
+            const [findcategory]=await category.findOrCreate({where:{name}});//electronics
+    
+            const updatedshop = {
                 shopname: shopname || usershop.shopname,
                 shopaddress: shopaddress || usershop.shopaddress,
                 sector: sector || usershop.sector,
                 city: city || usershop.city,
-                categoryId:categoryid
-            });
+                categoryId:findcategory.id
+            };
             const entity = 'shop';
             const entityid = id;
          //   const host = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://192.168.216.179:5000';
@@ -146,8 +150,10 @@ const updateshop=async(req,res)=>{
                 
                 await image.bulkCreate(imageRecords);
             }
-        await usershop.update(updatedshop);
+
+          await usershop.update(updatedshop);
         res.json({
+            success:true,
             message:" shop updated Successfully",
             shop: updatedshop
         })

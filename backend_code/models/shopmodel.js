@@ -11,7 +11,6 @@ const shop = sequelize.define('shops', {
     },
     shopname: { 
         type: DataTypes.STRING, 
-        primaryKey: true 
     },
     shopaddress: { 
         type: DataTypes.STRING, 
