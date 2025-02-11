@@ -23,7 +23,7 @@ const addToCart=async(req,res)=>{
 
     const quantity=1;  //initial quantity of product is 1, 
     // quatity will modified when user click on + or - button only on view but send to checkout to calculate total amount
-    const price=product.price*quantity;
+    const price=product.price*quantity;  //initialy the price the item is the price of product thar is added to cart
     const cartItem = await items.create({
               CartId: cart.id,
               productId,
@@ -83,7 +83,7 @@ const removeCartItem = async(req, res) => {
     }
   }
 
-    // Update cart item
+    // controller for + and - button on cart view,   update only quantity instead of price
 const updateCartItem = async(req, res) => {
     try {
       const { id } = req.params;
@@ -95,12 +95,14 @@ const updateCartItem = async(req, res) => {
       }
 
       cartItem.quantity = quantity;
-      cartItem.price = cartItem.product.price * quantity;
+      // cartItem.price = cartItem.product.price * quantity;
       await cartItem.save();
       res.json(cartItem);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
+
+export default { addToCart, getCart, removeCartItem, updateCartItem };
 
   
