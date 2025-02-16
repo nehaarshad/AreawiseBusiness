@@ -6,69 +6,70 @@ import Address from '../models/addressmodel.js'
 
 
 //onCheckoutButtonClick
-const ViewCheckout=async(req,res)=>{
+  const ViewCheckout = async (req, res) => {
     try {
-      const { id } = req.params;  //id of cart to be checked out
-
-      //once user click on checkout button order created to view total price, 
-        // if user click on order button PlaceOrder controlller called ,
-        // if click on cancel button to modify the cart and again click on checkout button then previously created order of similar cart is deleted
-         
-        const existingCart = await order.findOne({   //
-          where: {
-            cartId: id,
-            status: 'Pending'
-          } });
-          if(existingCart){
-            await userCart.update({ status: 'Active' });
-             await existingCart.destroy();
-          }
-
+      const { id } = req.params;  // id of cart to be checked out
+  
       const userCart = await cart.findOne({
         where: {
           id,
-     //     UserId: userId,
           status: 'Active'
         },
         include: [
           {
-          model: items
-          }, // Include cart items
-          {
-            model:Product
-          } // Include product details
+            model: items,
+            include: [
+              {
+                model: Product
+              }
+            ]
+          }
         ]
       });
   
       if (!userCart) {
         return res.json({ message: 'No active cart found' });
       }
+  
+      // Check for existing pending order
+      const existingCart = await order.findOne({
+        where: {
+          cartId: id,
+          status: 'Pending'
+        }
+      });
+  
+      if (existingCart) {
+        await userCart.update({ status: 'Active' });
+        await existingCart.destroy();
+      }
+  
       let total = 0;
       userCart.items.forEach(item => {
-          total += item.price * item.quantity;  //quantity of each item in cart multiplied by price of each item, quantity is initilly 1 , but can be modified by user
+       // total += item.price * item.quantity; // when quantity update price will update automatically in update item controller
+       total += item.price ;
       });
-
-             // Create the order
-        const newOrder = await order.create({
-          cartId: userCart.id,
-          addressId: 1,  //by default address id is 1 randomly but can be set when user place order a
-          total: total,
-          status: 'Pending' // Initial status of the order
+  
+      // Create the order
+      const newOrder = await order.create({
+        cartId: userCart.id,
+        addressId: 1,  // by default address id is 1 randomly but can be set when user place order
+        total: total,
+        status: 'Pending' // Initial status of the order
       });
-
+  
       // Update the cart status to 'Ordered'
       await userCart.update({ status: 'Ordered' });
-
+  
       // Return the order details to the client
       res.status(201).json({
-          message: 'Order placed successfully',
-          order: newOrder
+        message: 'Order placed successfully',
+        order: newOrder
       });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
-
+  };
   //checkout to create order->next passed cartid... to address view where order button have this controller
 
 
@@ -112,4 +113,5 @@ const PlaceOrder=async(req,res)=>{
     }
   }
 
-export default {ViewCheckout,PlaceOrder}
+
+  export default {ViewCheckout,PlaceOrder}

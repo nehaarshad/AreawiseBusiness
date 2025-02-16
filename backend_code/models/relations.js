@@ -5,6 +5,8 @@ import Product from "./productmodel.js";
 import category from "./categoryModel.js";
 import subcategory from "./subCategoryModel.js";
 import image from "./imagesModel.js";
+import cart from "./CartModel.js";
+import items from "./cartItemModel.js";
 
 const relation = () => {
     //user relation.......
@@ -43,6 +45,15 @@ const relation = () => {
 
     category.hasMany(Product, { foreignKey:{name: 'categoryId'} ,allowNull:false});
     Product.belongsTo(category, { foreignKey:{name: 'categoryId'} });
+
+    User.hasMany(cart, { foreignKey: {name: 'UserId', allowNull: false } });
+    cart.belongsTo(User, { foreignKey: 'UserId' });
+
+    cart.hasMany(items, { foreignKey: {name: 'cartId', allowNull: false } });
+    items.belongsTo(cart, { foreignKey: 'cartId' });
+
+    Product.hasMany(items, { foreignKey: {name: 'productId', allowNull: false } });
+    items.belongsTo(Product, { foreignKey: 'productId' });
 
 };
 

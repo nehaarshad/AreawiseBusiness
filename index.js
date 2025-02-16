@@ -9,6 +9,8 @@ import userRouter from "./backend_code/Routes/userRoutes.js";
 import productRouter from "./backend_code/Routes/productRoutes.js";
 import shopRouter from "./backend_code/Routes/shopRoutes.js";
 import addressRouter from "./backend_code/Routes/addressRoutes.js";
+import cartRouter from "./backend_code/Routes/cartRoutes.js";
+import orderRouter from "./backend_code/Routes/orderRoutes.js";
 import categoryRouter from "./backend_code/Routes/categoryRoutes.js"
 import path from "path";
 import { fileURLToPath } from "url";
@@ -49,6 +51,8 @@ app.use("/api",productRouter);
 app.use("/api",shopRouter);
 app.use("/api",addressRouter);
 app.use("/api",categoryRouter);
+app.use("/api",cartRouter);
+app.use("/api",orderRouter);
 
 
 app.get("/",(req,res)=>{
