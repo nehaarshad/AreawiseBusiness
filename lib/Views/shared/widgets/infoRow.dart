@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class infoWidget extends StatelessWidget {
-
   final String heading;
   final String value;
 
@@ -14,9 +13,12 @@ class infoWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text( '$heading: ', style: const TextStyle(fontWeight: FontWeight.w500), ),
+          Text(
+            '$heading: ',
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
           Expanded(
-            child: Text(value, style: TextStyle(color: Colors.grey.shade700),),
+            child: Text(value, style: TextStyle(color: Colors.grey.shade700)),
           ),
         ],
       ),

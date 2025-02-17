@@ -22,89 +22,120 @@ import '../../../models/UserDetailModel.dart';
 import '../../../models/auth_users.dart';
 import '../../../models/shopModel.dart';
 
-class Routes{
-
-  static Route<dynamic> createroutes(RouteSettings setting){
+class Routes {
+  static Route<dynamic> createroutes(RouteSettings setting) {
     var arg;
     if (setting.arguments is Map<String, dynamic>) {
-       arg = setting.arguments as Map<String, dynamic>;
+      arg = setting.arguments as Map<String, dynamic>;
     }
-       arg=setting.arguments;
+    arg = setting.arguments;
 
-    switch (setting.name){
-
+    switch (setting.name) {
       case (routesName.splash):
-        return MaterialPageRoute(builder: (BuildContext context)=> splashView());
+        return MaterialPageRoute(
+          builder: (BuildContext context) => splashView(),
+        );
 
       case (routesName.login):
-        return MaterialPageRoute(builder: (BuildContext context)=> login_view());
+        return MaterialPageRoute(
+          builder: (BuildContext context) => login_view(),
+        );
 
       case (routesName.signUp):
-        return MaterialPageRoute(builder: (BuildContext context)=> const signUp_View());
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const signUp_View(),
+        );
 
       case (routesName.aHome):
-        final user=arg as UserModel;
-        return MaterialPageRoute(builder: (BuildContext context)=>  adminhomeview(user: user,));
+        final user = arg as UserModel;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => adminhomeview(user: user),
+        );
 
       case (routesName.dashboard):
-        final id=arg as int;
-        return MaterialPageRoute(builder: (BuildContext context)=>  DashboardView(id: id,));
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => DashboardView(id: id),
+        );
 
       case (routesName.auser):
-        return MaterialPageRoute(builder: (BuildContext context)=> const UserView());
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const UserView(),
+        );
 
       case (routesName.ashop):
-        return MaterialPageRoute(builder: (BuildContext context)=> const ShopsView());
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ShopsView(),
+        );
 
       case (routesName.aproduct):
-        return MaterialPageRoute(builder: (BuildContext context)=> const ProductsView());
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ProductsView(),
+        );
 
       case (routesName.sEditShop):
-        int id=arg as int;
-        return MaterialPageRoute(builder: (BuildContext context)=> updateShopView(id: id));
+        int id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => updateShopView(id: id),
+        );
 
       case (routesName.sShop):
-        final user=arg as int;
-        return MaterialPageRoute(builder: (BuildContext context)=> SellerShopsView(id: user,));
+        final user = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => SellerShopsView(id: user),
+        );
 
       case (routesName.sAddShop):
-        final user=arg as int;
-        return MaterialPageRoute(builder: (BuildContext context)=> addShopView(id: user,));
+        final user = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addShopView(id: user),
+        );
 
       case (routesName.sAddProduct):
-        final shop=arg as ShopModel;
-        return MaterialPageRoute(builder: (BuildContext context)=> addProductView(shop:shop));
+        final shop = arg as ShopModel;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addProductView(shop: shop),
+        );
 
       case (routesName.sEditProduct):
-        final id=arg as ProductModel;
-        return MaterialPageRoute(builder: (BuildContext context)=> updateProductView(product: id,));
+        final id = arg as ProductModel;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => updateProductView(product: id),
+        );
 
       case (routesName.productdetail):
-          final id=arg['id'] as int;
+        final id = arg['id'] as int;
         final product = arg['product'] as ProductModel;
-        return MaterialPageRoute(builder: (BuildContext context) => productDetailView(userid:id,product: product) );
+        return MaterialPageRoute(
+          builder:
+              (BuildContext context) =>
+                  productDetailView(userid: id, product: product),
+        );
 
-        case (routesName.shopdetail):
+      case (routesName.shopdetail):
         final shop = arg as ShopModel;
-        return MaterialPageRoute(builder: (BuildContext context) => ShopDetailView(shop: shop,) );
+        return MaterialPageRoute(
+          builder: (BuildContext context) => ShopDetailView(shop: shop),
+        );
 
       case (routesName.profile):
         final id = arg as int;
-        return MaterialPageRoute(builder: (BuildContext context) => profileDetailView(id:id) );
+        return MaterialPageRoute(
+          builder: (BuildContext context) => profileDetailView(id: id),
+        );
 
       case (routesName.editprofile):
         final id = arg as int;
-        return MaterialPageRoute(builder: (BuildContext context) => editProfile(id:id) );
+        return MaterialPageRoute(
+          builder: (BuildContext context) => editProfile(id: id),
+        );
 
       default:
-        return MaterialPageRoute(builder: (_) {
-          return Scaffold(
-            body: Center(
-              child: Text("No Page Found!"),
-            ),
-          );
-        });
-
+        return MaterialPageRoute(
+          builder: (_) {
+            return Scaffold(body: Center(child: Text("No Page Found!")));
+          },
+        );
     }
   }
 }

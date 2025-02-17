@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'categoryModel.dart';
@@ -17,18 +15,19 @@ class ShopModel {
   List<ShopImages>? images;
   Category? category;
 
-  ShopModel(
-      {this.id,
-        this.shopname,
-        this.shopaddress,
-        this.sector,
-        this.city,
-        this.categoryId,
-        this.userId,
-        this.createdAt,
-        this.updatedAt,
-        this.images,
-        this.category});
+  ShopModel({
+    this.id,
+    this.shopname,
+    this.shopaddress,
+    this.sector,
+    this.city,
+    this.categoryId,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.images,
+    this.category,
+  });
 
   ShopModel copyWith({
     int? id,
@@ -58,7 +57,6 @@ class ShopModel {
     );
   }
 
-
   ShopModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     shopname = json['shopname'];
@@ -75,9 +73,10 @@ class ShopModel {
         images!.add(new ShopImages.fromJson(v));
       });
     }
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
+    category =
+        json['category'] != null
+            ? new Category.fromJson(json['category'])
+            : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -111,15 +110,16 @@ class ShopImages {
   String? updatedAt;
   File? file;
 
-  ShopImages(
-      {this.id,
-        this.imagetype,
-        this.entityId,
-        this.imageData,
-        this.imageUrl,
-        this.file,
-        this.createdAt,
-        this.updatedAt});
+  ShopImages({
+    this.id,
+    this.imagetype,
+    this.entityId,
+    this.imageData,
+    this.imageUrl,
+    this.file,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   ShopImages.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -143,4 +143,3 @@ class ShopImages {
     return data;
   }
 }
-

@@ -13,8 +13,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'ProductStates.dart';
 
-
-final updateProductProvider = StateNotifierProvider.family<UpdateProductViewModel, AsyncValue<ProductModel?>, String>( (ref, id) {
+final updateProductProvider = StateNotifierProvider.family<
+  UpdateProductViewModel,
+  AsyncValue<ProductModel?>,
+  String
+>((ref, id) {
   return UpdateProductViewModel(ref, id);
 });
 
@@ -34,7 +37,8 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
   bool isCustomSubCategory = false;
   String? customSubCategoryName;
 
-  UpdateProductViewModel(this.ref, this.id) : super(const AsyncValue.loading()) {
+  UpdateProductViewModel(this.ref, this.id)
+    : super(const AsyncValue.loading()) {
     initValues(id);
     getCategories();
   }
@@ -45,11 +49,14 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       final tempDir = await getTemporaryDirectory();
       images = await Future.wait(
         product.images?.map((img) async {
-          final response = await http.get(Uri.parse(img.imageUrl!));
-          final file = File('${tempDir.path}/${img.imageUrl!.split('/').last}');
-          await file.writeAsBytes(response.bodyBytes);
-          return ProductImages(imageUrl: img.imageUrl, file: file);
-        }).toList() ?? [],
+              final response = await http.get(Uri.parse(img.imageUrl!));
+              final file = File(
+                '${tempDir.path}/${img.imageUrl!.split('/').last}',
+              );
+              await file.writeAsBytes(response.bodyBytes);
+              return ProductImages(imageUrl: img.imageUrl, file: file);
+            }).toList() ??
+            [],
       );
 
       selectedCategory = product.category;
@@ -73,8 +80,9 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     try {
       state = AsyncValue.loading();
       // Fetch subcategories for selected category
-      Subcategories = await ref.read(categoryProvider).FindSubCategories(category);
-
+      Subcategories = await ref
+          .read(categoryProvider)
+          .FindSubCategories(category);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
       print('Error loading subcategories: $e');
@@ -91,14 +99,15 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
 
       if (pickedFiles.isNotEmpty) {
         // Wrap new images in ShopImages with file property
-        final newImages = pickedFiles.map((x) {
-          final file = File(x.path);
-          return ProductImages(imageUrl: null, file: file);
-        }).toList();
+        final newImages =
+            pickedFiles.map((x) {
+              final file = File(x.path);
+              return ProductImages(imageUrl: null, file: file);
+            }).toList();
 
         images.addAll(newImages);
 
-        print('Images count after adding: ${images.length}');  // Debugging line
+        print('Images count after adding: ${images.length}'); // Debugging line
         if (images.length > 7) {
           Utils.flushBarErrorMessage("Select only 7 Images", context);
           return;
@@ -135,7 +144,6 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
   }
 
   void setSubcategory(Subcategory? subcategory) {
-
     selectedSubCategory = subcategory;
     state.whenData((product) {
       if (product != null) {
@@ -173,9 +181,8 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     required int price,
     required String description,
     required int stock,
-    required BuildContext context
-  }) async
-  {
+    required BuildContext context,
+  }) async {
     try {
       print('Images count before update: ${images.length}');
       if (images.isEmpty || images.length > 7) {
@@ -194,23 +201,33 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
         'price': price,
         'description': description,
         'stock': stock,
-        'categories':  selectedCategory?.name ?? customCategoryName,
-        'subcategory':  selectedSubCategory?.name ?? customSubCategoryName,
+        'categories': selectedCategory?.name ?? customCategoryName,
+        'subcategory': selectedSubCategory?.name ?? customSubCategoryName,
       };
 
-      print("Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}");
-      print("Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}");
-      print("Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}");
-      print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}");
+      print(
+        "Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}",
+      );
+      print(
+        "Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}",
+      );
+      print(
+        "Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}",
+      );
+      print(
+        "Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}",
+      );
 
       final imageFiles = images.map((img) => img.file!).toList();
-      final response = await ref.read(productProvider).updateProduct(data, id,imageFiles);
+      final response = await ref
+          .read(productProvider)
+          .updateProduct(data, id, imageFiles);
       final updateProduct = ProductModel.fromJson(response);
       state = AsyncValue.data(updateProduct);
       Navigator.pop(context);
-    }
-    catch(e){
+    } catch (e) {
       print(e);
-      state = AsyncValue.error(e, StackTrace.current); }
+      state = AsyncValue.error(e, StackTrace.current);
+    }
   }
 }

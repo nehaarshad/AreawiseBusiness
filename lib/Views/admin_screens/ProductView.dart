@@ -17,14 +17,10 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
   Widget build(BuildContext context) {
     final productState = ref.watch(getAllProductProvider);
     return productState.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
       data: (products) {
         if (products.isEmpty) {
-          return const Center(
-            child: Text("No Products available."),
-          );
+          return const Center(child: Text("No Products available."));
         }
         return GridView.builder(
           padding: const EdgeInsets.all(8.0),
@@ -39,7 +35,11 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
             final product = products[index];
             return GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, 'product_detail', arguments: product);
+                Navigator.pushNamed(
+                  context,
+                  'product_detail',
+                  arguments: product,
+                );
               },
               child: Card(
                 elevation: 4,
@@ -50,11 +50,15 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: product?.images != null && product!.images!.isNotEmpty ? Image.network(
-                        product.images!.first.imageUrl!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ) : const Icon(Icons.image_not_supported),),
+                      child:
+                          product?.images != null && product!.images!.isNotEmpty
+                              ? Image.network(
+                                product.images!.first.imageUrl!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              )
+                              : const Icon(Icons.image_not_supported),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -76,9 +80,7 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
           },
         );
       },
-      error: (err, stack) => Center(
-        child: Text('Error: $err'),
-      ),
+      error: (err, stack) => Center(child: Text('Error: $err')),
     );
   }
 }

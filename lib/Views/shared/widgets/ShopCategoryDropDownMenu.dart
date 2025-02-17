@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/SellerViewModels/UpdateShopViewModel.dart';
 import '../../../models/categoryModel.dart';
 
-
 class ShopcategoryDropdown extends ConsumerStatefulWidget {
   final String userid;
 
@@ -21,12 +20,12 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
   bool addnewCategory = false;
   bool showDropdown = false;
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -55,18 +54,25 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
     }
 
     setState(() {
-      SelectCategories = categories
-          .where((category) => category.name!.toLowerCase().contains(input))
-          .toList();
+      SelectCategories =
+          categories
+              .where((category) => category.name!.toLowerCase().contains(input))
+              .toList();
       addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
 
     if (addnewCategory) {
-      ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(true);
-      ref.read(addShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text);
+      ref
+          .read(addShopProvider(widget.userid).notifier)
+          .toggleCustomCategory(true);
+      ref
+          .read(addShopProvider(widget.userid).notifier)
+          .setCustomCategoryName(shopcategory.text);
     } else {
-      ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+      ref
+          .read(addShopProvider(widget.userid).notifier)
+          .toggleCustomCategory(false);
     }
   }
 
@@ -75,9 +81,11 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
       shopcategory.text = category.name!;
       showDropdown = false;
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
+      SelectCategories = []; // Clear the suggestions
     });
-    ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+    ref
+        .read(addShopProvider(widget.userid).notifier)
+        .toggleCustomCategory(false);
     ref.read(addShopProvider(widget.userid).notifier).setCategory(category);
     focus.unfocus();
   }
@@ -93,21 +101,27 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
           decoration: InputDecoration(
             labelText: 'Category',
             hintText: 'Search Category',
-            suffixIcon: shopcategory.text.isNotEmpty
-                ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  shopcategory.clear();
-                  showDropdown = false;
-                  SelectCategories = [];
-                });
-                ref.read(addShopProvider(widget.userid).notifier).setCategory(null);
-              },
-            ): null,
+            suffixIcon:
+                shopcategory.text.isNotEmpty
+                    ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          shopcategory.clear();
+                          showDropdown = false;
+                          SelectCategories = [];
+                        });
+                        ref
+                            .read(addShopProvider(widget.userid).notifier)
+                            .setCategory(null);
+                      },
+                    )
+                    : null,
           ),
           onChanged: (value) {
-            ref.read(addShopProvider(widget.userid).notifier).setCategory(null); // Reset category while typing
+            ref
+                .read(addShopProvider(widget.userid).notifier)
+                .setCategory(null); // Reset category while typing
             RecommendedCategories();
           },
           onTap: () {
@@ -157,18 +171,19 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
   }
 }
 
-
-
 class UpdateShopcategoryDropdown extends ConsumerStatefulWidget {
   final String userid;
 
-  UpdateShopcategoryDropdown({required this.userid, Key? key}) : super(key: key);
+  UpdateShopcategoryDropdown({required this.userid, Key? key})
+    : super(key: key);
 
   @override
-  ConsumerState<UpdateShopcategoryDropdown> createState() => _UpdateCategorySelectorState();
+  ConsumerState<UpdateShopcategoryDropdown> createState() =>
+      _UpdateCategorySelectorState();
 }
 
-class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropdown> {
+class _UpdateCategorySelectorState
+    extends ConsumerState<UpdateShopcategoryDropdown> {
   final TextEditingController shopcategory = TextEditingController();
   final FocusNode focus = FocusNode();
   List<Category> SelectCategories = [];
@@ -200,7 +215,6 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
   }
 
   void RecommendedCategories() {
-
     final input = shopcategory.text.trim().toLowerCase();
     final viewModel = ref.read(updateShopProvider(widget.userid).notifier);
     final categories = viewModel.categories;
@@ -214,19 +228,29 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
     }
 
     setState(() {
-      SelectCategories = categories.where((category) => category.name != null && category.name!.toLowerCase().contains(input))
-          .toList() ;
+      SelectCategories =
+          categories
+              .where(
+                (category) =>
+                    category.name != null &&
+                    category.name!.toLowerCase().contains(input),
+              )
+              .toList();
       addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
 
-
     if (addnewCategory) {
-      ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(true);
-      ref.read(updateShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text);
-    }
-    else {
-      ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+      ref
+          .read(updateShopProvider(widget.userid).notifier)
+          .toggleCustomCategory(true);
+      ref
+          .read(updateShopProvider(widget.userid).notifier)
+          .setCustomCategoryName(shopcategory.text);
+    } else {
+      ref
+          .read(updateShopProvider(widget.userid).notifier)
+          .toggleCustomCategory(false);
     }
   }
 
@@ -235,9 +259,11 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
       shopcategory.text = category.name!;
       showDropdown = false;
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
+      SelectCategories = []; // Clear the suggestions
     });
-    ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+    ref
+        .read(updateShopProvider(widget.userid).notifier)
+        .toggleCustomCategory(false);
     ref.read(updateShopProvider(widget.userid).notifier).setCategory(category);
     focus.unfocus();
   }
@@ -253,21 +279,27 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
           decoration: InputDecoration(
             labelText: 'Category',
             hintText: 'Search Category',
-            suffixIcon: shopcategory.text.isNotEmpty
-                ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  shopcategory.clear();
-                  showDropdown = false;
-                  SelectCategories = [];
-                });
-                ref.read(updateShopProvider(widget.userid).notifier).setCategory(null);
-              },
-            ): null,
+            suffixIcon:
+                shopcategory.text.isNotEmpty
+                    ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          shopcategory.clear();
+                          showDropdown = false;
+                          SelectCategories = [];
+                        });
+                        ref
+                            .read(updateShopProvider(widget.userid).notifier)
+                            .setCategory(null);
+                      },
+                    )
+                    : null,
           ),
           onChanged: (value) {
-            ref.read(updateShopProvider(widget.userid).notifier).setCategory(null); // Reset category while typing
+            ref
+                .read(updateShopProvider(widget.userid).notifier)
+                .setCategory(null); // Reset category while typing
             RecommendedCategories();
           },
           onTap: () {

@@ -4,22 +4,26 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:ecommercefrontend/core/resources/app_APIs.dart';
 
-final authprovider=Provider<AuthRepositories>((ref){
+final authprovider = Provider<AuthRepositories>((ref) {
   return AuthRepositories();
 });
 
-class AuthRepositories{
+class AuthRepositories {
   AuthRepositories();
-  baseapiservice apiservice=networkapiservice();
+  baseapiservice apiservice = networkapiservice();
 
-  Future<dynamic> loginapi(dynamic data) async{
-    try{
-       dynamic response=await apiservice.PostApiWithJson(AppApis.loginEndPoints, data, {});
-       if (kDebugMode) {
-         print("Login Response: $response");
-       }
-       return response;
-    }catch(e){
+  Future<dynamic> loginapi(dynamic data) async {
+    try {
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.loginEndPoints,
+        data,
+        {},
+      );
+      if (kDebugMode) {
+        print("Login Response: $response");
+      }
+      return response;
+    } catch (e) {
       if (kDebugMode) {
         print("Login Response: $e");
       }
@@ -27,11 +31,15 @@ class AuthRepositories{
     }
   }
 
-  Future<dynamic> sinupapi(dynamic data) async{
-    try{
-      dynamic response=await apiservice.PostApiWithJson(AppApis.signUpEndPoints, data, {});
+  Future<dynamic> sinupapi(dynamic data) async {
+    try {
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.signUpEndPoints,
+        data,
+        {},
+      );
       return response;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -39,14 +47,18 @@ class AuthRepositories{
   Future<dynamic> logoutApi(String token) async {
     try {
       Map<String, String> headers = {
-        'Authorization': 'Bearer $token', // Include the token in the Authorization header
+        'Authorization':
+            'Bearer $token', // Include the token in the Authorization header
       };
 
-      dynamic response = await apiservice.PostApiWithJson(AppApis.logoutEndPoints, null, headers);
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.logoutEndPoints,
+        null,
+        headers,
+      );
       return response;
     } catch (e) {
       throw e;
     }
   }
-
 }

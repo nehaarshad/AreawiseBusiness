@@ -5,8 +5,13 @@ class Subcategory {
   String? createdAt;
   String? updatedAt;
 
-  Subcategory(
-      {this.id, this.name, this.categoryId, this.createdAt, this.updatedAt});
+  Subcategory({
+    this.id,
+    this.name,
+    this.categoryId,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   Subcategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];

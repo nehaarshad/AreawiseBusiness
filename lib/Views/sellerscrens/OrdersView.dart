@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class OrdersView extends StatefulWidget {
   int id;
-   OrdersView({required this.id});
+  OrdersView({required this.id});
 
   @override
   State<OrdersView> createState() => _OrdersViewState();

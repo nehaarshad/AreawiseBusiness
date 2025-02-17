@@ -7,14 +7,15 @@ class Address {
   String? createdAt;
   String? updatedAt;
 
-  Address(
-      {this.id,
-        this.sector,
-        this.city,
-        this.address,
-        this.userId,
-        this.createdAt,
-        this.updatedAt});
+  Address({
+    this.id,
+    this.sector,
+    this.city,
+    this.address,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   Address.fromJson(Map<String, dynamic> json) {
     id = json['id'];

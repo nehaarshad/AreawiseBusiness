@@ -14,15 +14,16 @@ class signUp_View extends ConsumerStatefulWidget {
 }
 
 class _signUp_ViewState extends ConsumerState<signUp_View> {
-
-  ValueNotifier<bool> pswrd=ValueNotifier<bool>(true);
-  ValueNotifier<bool> cpswrd=ValueNotifier<bool>(true);
+  ValueNotifier<bool> pswrd = ValueNotifier<bool>(true);
+  ValueNotifier<bool> cpswrd = ValueNotifier<bool>(true);
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _contactNumberController = TextEditingController();
+  final TextEditingController _contactNumberController =
+      TextEditingController();
   final TextEditingController _shopAddressController = TextEditingController();
   final TextEditingController _shopCategoryController = TextEditingController();
 
@@ -64,8 +65,8 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
 
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Center(child: Text('Sign Up'))
+        automaticallyImplyLeading: false,
+        title: Center(child: Text('Sign Up')),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -87,7 +88,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                     Utils.focusarea(context, username, email);
                   },
                 ),
-          
+
                 // Email field
                 TextFormField(
                   controller: _emailController,
@@ -100,7 +101,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                     Utils.focusarea(context, email, contactNumber);
                   },
                 ),
-          
+
                 // Contact Number field
                 TextFormField(
                   controller: _contactNumberController,
@@ -113,13 +114,12 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                     Utils.focusarea(context, contactNumber, password);
                   },
                 ),
-          
+
                 // Password field
                 ValueListenableBuilder(
                   valueListenable: pswrd,
                   builder: (context, value, child) {
                     return TextFormField(
-
                       controller: _passwordController,
                       obscureText: pswrd.value,
                       obscuringCharacter: "*",
@@ -148,7 +148,6 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                   valueListenable: cpswrd,
                   builder: (context, value, child) {
                     return TextFormField(
-
                       controller: _confirmPasswordController,
                       obscureText: cpswrd.value,
                       obscuringCharacter: "*",
@@ -167,7 +166,6 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                           ),
                         ),
                       ),
-
                     );
                   },
                 ),
@@ -182,60 +180,89 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                   },
                   items: [
                     DropdownMenuItem(value: "buyer", child: Text("Buyer")),
-                  //  DropdownMenuItem(value: "seller", child: Text("Seller")),
+                    //  DropdownMenuItem(value: "seller", child: Text("Seller")),
                     DropdownMenuItem(value: "admin", child: Text("Admin")),
                   ],
                 ),
                 SizedBox(height: height * .1),
                 // SignUp button
-                Consumer(builder: (context,ref,child){
-                  final loading =ref.watch(signupProvider);
-                 return CustomButton(
-                    text: "Sign Up",
-                    onPressed: () {
-                      if (_usernameController.text.isEmpty) {
-                        Utils.flushBarErrorMessage("Please Enter Username", context);
-                      } else if (_emailController.text.isEmpty) {
-                        Utils.flushBarErrorMessage("Please Enter Email", context);
-                      } else if (_contactNumberController.text.isEmpty) {
-                        Utils.flushBarErrorMessage("Please Enter Contact Number", context);
-                      } else if (_passwordController.text.isEmpty) {
-                        Utils.flushBarErrorMessage("Please Enter Password", context);
-                      } else if (_passwordController.text.length < 8) {
-                        Utils.flushBarErrorMessage("Please Enter 8 digit Password", context);
-                      } else if (_passwordController.text != _confirmPasswordController.text) {
-                        Utils.flushBarErrorMessage("Passwords do not match", context);
-                      } else {
-                        Map data = {
-                          'username': _usernameController.text.toString(),
-                          'email': _emailController.text.toString(),
-                          'contactnumber': _contactNumberController.text.toString(),
-                          'password': _passwordController.text.toString(),
-                          'role': _isBuyer ? 'buyer' : 'admin',
-                        };
-                        signUpviewmodel.SignUpApi(data, context);
-                      }
-                    },
-                    isLoading: loading,
-                  );
-                }
+                Consumer(
+                  builder: (context, ref, child) {
+                    final loading = ref.watch(signupProvider);
+                    return CustomButton(
+                      text: "Sign Up",
+                      onPressed: () {
+                        if (_usernameController.text.isEmpty) {
+                          Utils.flushBarErrorMessage(
+                            "Please Enter Username",
+                            context,
+                          );
+                        } else if (_emailController.text.isEmpty) {
+                          Utils.flushBarErrorMessage(
+                            "Please Enter Email",
+                            context,
+                          );
+                        } else if (_contactNumberController.text.isEmpty) {
+                          Utils.flushBarErrorMessage(
+                            "Please Enter Contact Number",
+                            context,
+                          );
+                        } else if (_passwordController.text.isEmpty) {
+                          Utils.flushBarErrorMessage(
+                            "Please Enter Password",
+                            context,
+                          );
+                        } else if (_passwordController.text.length < 8) {
+                          Utils.flushBarErrorMessage(
+                            "Please Enter 8 digit Password",
+                            context,
+                          );
+                        } else if (_passwordController.text !=
+                            _confirmPasswordController.text) {
+                          Utils.flushBarErrorMessage(
+                            "Passwords do not match",
+                            context,
+                          );
+                        } else {
+                          Map data = {
+                            'username': _usernameController.text.toString(),
+                            'email': _emailController.text.toString(),
+                            'contactnumber':
+                                _contactNumberController.text.toString(),
+                            'password': _passwordController.text.toString(),
+                            'role': _isBuyer ? 'buyer' : 'admin',
+                          };
+                          signUpviewmodel.SignUpApi(data, context);
+                        }
+                      },
+                      isLoading: loading,
+                    );
+                  },
                 ),
-                SizedBox(height: height*.02,),
+                SizedBox(height: height * .02),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 15),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 2,
+                    horizontal: 15,
+                  ),
                   child: Row(
-
                     children: [
                       Text("Already have an Account?"),
                       InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, routesName.login);
-                          },
-                          child: Text("Login",style: TextStyle(color: Appcolors.blueColor,fontWeight: FontWeight.bold),)
+                        onTap: () {
+                          Navigator.pushNamed(context, routesName.login);
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Appcolors.blueColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

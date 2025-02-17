@@ -6,7 +6,7 @@ class ImageSlider extends StatefulWidget {
   final List<dynamic> images;
   final double height;
 
-  const ImageSlider({ required this.images,this.height = 350}) ;
+  const ImageSlider({required this.images, this.height = 350});
 
   @override
   State<ImageSlider> createState() => _ImageSliderState();
@@ -47,11 +47,12 @@ class _ImageSliderState extends State<ImageSlider> {
                   widget.images[index].imageUrl ??
                       "https://th.bing.com/th/id/OIP.GnqZiwU7k5f_kRYkw8FNNwHaF3?rs=1&pid=ImgDetMain",
                   fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.image_not_supported_outlined,
-                      size: 50,
-                      color: Colors.grey
-                  ),
+                  errorBuilder:
+                      (context, error, stackTrace) => const Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
                 ),
               );
             },
@@ -65,15 +66,16 @@ class _ImageSliderState extends State<ImageSlider> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               widget.images.length,
-                  (index) => Container(
+              (index) => Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: _currentIndex == index
-                      ? Colors.blue
-                      : Colors.grey.withOpacity(0.5),
+                  color:
+                      _currentIndex == index
+                          ? Colors.blue
+                          : Colors.grey.withOpacity(0.5),
                 ),
               ),
             ),

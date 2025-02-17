@@ -19,21 +19,22 @@ class ProductModel {
   Category? category;
   Subcategory? subcategory;
 
-  ProductModel(
-      {this.id,
-        this.name,
-        this.price,
-        this.description,
-        this.stock,
-        this.seller,
-        this.shopid,
-        this.categoryId,
-        this.subcategoryId,
-        this.createdAt,
-        this.updatedAt,
-        this.images,
-        this.category,
-        this.subcategory});
+  ProductModel({
+    this.id,
+    this.name,
+    this.price,
+    this.description,
+    this.stock,
+    this.seller,
+    this.shopid,
+    this.categoryId,
+    this.subcategoryId,
+    this.createdAt,
+    this.updatedAt,
+    this.images,
+    this.category,
+    this.subcategory,
+  });
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,12 +54,14 @@ class ProductModel {
         images!.add(new ProductImages.fromJson(v));
       });
     }
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
-    subcategory = json['subcategory'] != null
-        ? new Subcategory.fromJson(json['subcategory'])
-        : null;
+    category =
+        json['category'] != null
+            ? new Category.fromJson(json['category'])
+            : null;
+    subcategory =
+        json['subcategory'] != null
+            ? new Subcategory.fromJson(json['subcategory'])
+            : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -131,15 +134,16 @@ class ProductImages {
   String? createdAt;
   String? updatedAt;
 
-  ProductImages(
-      {this.id,
-        this.imagetype,
-        this.entityId,
-        this.imageData,
-        this.imageUrl,
-        this.file,
-        this.createdAt,
-        this.updatedAt});
+  ProductImages({
+    this.id,
+    this.imagetype,
+    this.entityId,
+    this.imageData,
+    this.imageUrl,
+    this.file,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   ProductImages.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -166,5 +170,4 @@ class ProductImages {
   String toString() {
     return 'Images(id: $id, imagetype: $imagetype, imageUrl: $imageUrl)';
   }
-
 }

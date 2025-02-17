@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/SubCategoryModel.dart';
 import '../../../models/categoryModel.dart';
+
 //for category Selection
 class ProductCategoryDropdown extends ConsumerStatefulWidget {
   final String shopid;
@@ -11,7 +12,8 @@ class ProductCategoryDropdown extends ConsumerStatefulWidget {
   ProductCategoryDropdown({required this.shopid, Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ProductCategoryDropdown> createState() => _CategorySelectorState();
+  ConsumerState<ProductCategoryDropdown> createState() =>
+      _CategorySelectorState();
 }
 
 class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
@@ -54,33 +56,43 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
     }
 
     setState(() {
-      SelectCategories = categories.where((category) => category.name!.toLowerCase().contains(input)).toList();
+      SelectCategories =
+          categories
+              .where((category) => category.name!.toLowerCase().contains(input))
+              .toList();
       addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
     if (addnewCategory) {
-      ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(true);
-      ref.read(addProductProvider(widget.shopid).notifier).setCustomCategoryName(ProductCategory.text);
+      ref
+          .read(addProductProvider(widget.shopid).notifier)
+          .toggleCustomCategory(true);
+      ref
+          .read(addProductProvider(widget.shopid).notifier)
+          .setCustomCategoryName(ProductCategory.text);
     } else {
-      ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
+      ref
+          .read(addProductProvider(widget.shopid).notifier)
+          .toggleCustomCategory(false);
     }
   }
 
   void _onCategorySelected(Category category) {
     setState(() {
       ProductCategory.text = category.name!;
-      showDropdown = false;  // Hide dropdown after selection
+      showDropdown = false; // Hide dropdown after selection
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
+      SelectCategories = []; // Clear the suggestions
     });
-    ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
+    ref
+        .read(addProductProvider(widget.shopid).notifier)
+        .toggleCustomCategory(false);
     ref.read(addProductProvider(widget.shopid).notifier).setCategory(category);
     focus.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -89,20 +101,27 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           focusNode: focus,
           decoration: InputDecoration(
             labelText: 'Category',
-            suffixIcon: ProductCategory.text.isNotEmpty ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  ProductCategory.clear();
-                  showDropdown = false;
-                  SelectCategories = [];
-                });
-                ref.read(addProductProvider(widget.shopid).notifier).setCategory(null);
-              },
-            ) : null,
+            suffixIcon:
+                ProductCategory.text.isNotEmpty
+                    ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          ProductCategory.clear();
+                          showDropdown = false;
+                          SelectCategories = [];
+                        });
+                        ref
+                            .read(addProductProvider(widget.shopid).notifier)
+                            .setCategory(null);
+                      },
+                    )
+                    : null,
           ),
           onChanged: (value) {
-            ref.read(addProductProvider(widget.shopid).notifier).setCategory(null);
+            ref
+                .read(addProductProvider(widget.shopid).notifier)
+                .setCategory(null);
             RecommendedCategories();
           },
           onTap: () {
@@ -154,13 +173,16 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
 //for subcategory selection
 class ProductSubcategoryDropdown extends ConsumerStatefulWidget {
   final String shopId;
-  const ProductSubcategoryDropdown({required this.shopId, Key? key}) : super(key: key);
+  const ProductSubcategoryDropdown({required this.shopId, Key? key})
+    : super(key: key);
 
   @override
-  ConsumerState<ProductSubcategoryDropdown> createState() => _SubcategoryDropdownState();
+  ConsumerState<ProductSubcategoryDropdown> createState() =>
+      _SubcategoryDropdownState();
 }
 
-class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown> {
+class _SubcategoryDropdownState
+    extends ConsumerState<ProductSubcategoryDropdown> {
   final TextEditingController subcategoryController = TextEditingController();
   final FocusNode subcategoryFocus = FocusNode();
   List<Subcategory> recommendedSubcategories = [];
@@ -188,28 +210,40 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
 
   void findSubcategories() {
     final input = subcategoryController.text.trim().toLowerCase();
-    final subcategories = ref.read(addProductProvider(widget.shopId)).subcategories;
+    final subcategories =
+        ref.read(addProductProvider(widget.shopId)).subcategories;
 
     if (input.isEmpty) {
       setState(() {
         recommendedSubcategories = [];
         showSubcategoryDropdown = false;
-        addnewSubCategory=false;
+        addnewSubCategory = false;
       });
       return;
     }
 
     setState(() {
-      recommendedSubcategories = subcategories.where((subcategory) => subcategory.name!.toLowerCase().contains(input))
-          .toList();
+      recommendedSubcategories =
+          subcategories
+              .where(
+                (subcategory) =>
+                    subcategory.name!.toLowerCase().contains(input),
+              )
+              .toList();
       showSubcategoryDropdown = true;
-      addnewSubCategory=recommendedSubcategories.isEmpty;
+      addnewSubCategory = recommendedSubcategories.isEmpty;
     });
     if (addnewSubCategory) {
-      ref.read(addProductProvider(widget.shopId).notifier).toggleCustomSubcategory(true);
-      ref.read(addProductProvider(widget.shopId).notifier).setCustomSubcategoryName(subcategoryController.text);
+      ref
+          .read(addProductProvider(widget.shopId).notifier)
+          .toggleCustomSubcategory(true);
+      ref
+          .read(addProductProvider(widget.shopId).notifier)
+          .setCustomSubcategoryName(subcategoryController.text);
     } else {
-      ref.read(addProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
+      ref
+          .read(addProductProvider(widget.shopId).notifier)
+          .toggleCustomSubcategory(false);
     }
   }
 
@@ -217,11 +251,15 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
     setState(() {
       subcategoryController.text = subcategory.name!;
       showSubcategoryDropdown = false;
-      addnewSubCategory=false;
+      addnewSubCategory = false;
       recommendedSubcategories = [];
     });
-    ref.read(addProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
-    ref.read(addProductProvider(widget.shopId).notifier).setSubcategory(subcategory);
+    ref
+        .read(addProductProvider(widget.shopId).notifier)
+        .toggleCustomSubcategory(false);
+    ref
+        .read(addProductProvider(widget.shopId).notifier)
+        .setSubcategory(subcategory);
     subcategoryFocus.unfocus();
   }
 
@@ -249,21 +287,27 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
           decoration: InputDecoration(
             labelText: 'Subcategory',
             hintText: 'Search Subcategory',
-            suffixIcon: subcategoryController.text.isNotEmpty ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  subcategoryController.clear();
-                  showSubcategoryDropdown = false;
-                  recommendedSubcategories = [];
-                });
-                ref.read(addProductProvider(widget.shopId).notifier).setSubcategory(null);
-              },
-            )
-                : null,
+            suffixIcon:
+                subcategoryController.text.isNotEmpty
+                    ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          subcategoryController.clear();
+                          showSubcategoryDropdown = false;
+                          recommendedSubcategories = [];
+                        });
+                        ref
+                            .read(addProductProvider(widget.shopId).notifier)
+                            .setSubcategory(null);
+                      },
+                    )
+                    : null,
           ),
           onChanged: (value) {
-            ref.read(addProductProvider(widget.shopId).notifier).setSubcategory(null);
+            ref
+                .read(addProductProvider(widget.shopId).notifier)
+                .setSubcategory(null);
             findSubcategories();
           },
           onTap: () {
@@ -317,13 +361,16 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
 class updateProductCategoryDropdown extends ConsumerStatefulWidget {
   final String shopid;
 
-  updateProductCategoryDropdown({required this.shopid, Key? key}) : super(key: key);
+  updateProductCategoryDropdown({required this.shopid, Key? key})
+    : super(key: key);
 
   @override
-  ConsumerState<updateProductCategoryDropdown> createState() => _updateCategorySelectorState();
+  ConsumerState<updateProductCategoryDropdown> createState() =>
+      _updateCategorySelectorState();
 }
 
-class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDropdown> {
+class _updateCategorySelectorState
+    extends ConsumerState<updateProductCategoryDropdown> {
   final TextEditingController ProductCategory = TextEditingController();
   final FocusNode focus = FocusNode();
   List<Category> SelectCategories = [];
@@ -345,6 +392,7 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
       ProductCategory.addListener(RecommendedCategories);
     }
   }
+
   @override
   void dispose() {
     ProductCategory.dispose();
@@ -354,7 +402,9 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
 
   void RecommendedCategories() {
     final input = ProductCategory.text.trim().toLowerCase();
-    final productvalue = ref.read(updateProductProvider(widget.shopid).notifier);
+    final productvalue = ref.read(
+      updateProductProvider(widget.shopid).notifier,
+    );
     final categories = productvalue.categories;
     if (input.isEmpty) {
       setState(() {
@@ -366,34 +416,49 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
     }
 
     setState(() {
-      SelectCategories = categories.where((category) => category.name != null && category.name!.toLowerCase().contains(input)).toList();
+      SelectCategories =
+          categories
+              .where(
+                (category) =>
+                    category.name != null &&
+                    category.name!.toLowerCase().contains(input),
+              )
+              .toList();
       addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
     if (addnewCategory) {
-      ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(true);
-      ref.read(updateProductProvider(widget.shopid).notifier).setCustomCategoryName(ProductCategory.text);
-    }
-    else {
-      ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
+      ref
+          .read(updateProductProvider(widget.shopid).notifier)
+          .toggleCustomCategory(true);
+      ref
+          .read(updateProductProvider(widget.shopid).notifier)
+          .setCustomCategoryName(ProductCategory.text);
+    } else {
+      ref
+          .read(updateProductProvider(widget.shopid).notifier)
+          .toggleCustomCategory(false);
     }
   }
 
   void _onCategorySelected(Category category) {
     setState(() {
       ProductCategory.text = category.name!;
-      showDropdown = false;  // Hide dropdown after selection
+      showDropdown = false; // Hide dropdown after selection
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
+      SelectCategories = []; // Clear the suggestions
     });
-    ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
-    ref.read(updateProductProvider(widget.shopid).notifier).setCategory(category);
+    ref
+        .read(updateProductProvider(widget.shopid).notifier)
+        .toggleCustomCategory(false);
+    ref
+        .read(updateProductProvider(widget.shopid).notifier)
+        .setCategory(category);
     focus.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -402,20 +467,27 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
           focusNode: focus,
           decoration: InputDecoration(
             labelText: 'Category',
-            suffixIcon: ProductCategory.text.isNotEmpty ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  ProductCategory.clear();
-                  showDropdown = false;
-                  SelectCategories = [];
-                });
-                ref.read(updateProductProvider(widget.shopid).notifier).setCategory(null);
-              },
-            ) : null,
+            suffixIcon:
+                ProductCategory.text.isNotEmpty
+                    ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          ProductCategory.clear();
+                          showDropdown = false;
+                          SelectCategories = [];
+                        });
+                        ref
+                            .read(updateProductProvider(widget.shopid).notifier)
+                            .setCategory(null);
+                      },
+                    )
+                    : null,
           ),
           onChanged: (value) {
-            ref.read(updateProductProvider(widget.shopid).notifier).setCategory(null);
+            ref
+                .read(updateProductProvider(widget.shopid).notifier)
+                .setCategory(null);
             RecommendedCategories();
           },
           onTap: () {
@@ -466,13 +538,16 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
 
 class updateProductSubcategoryDropdown extends ConsumerStatefulWidget {
   final String shopId;
-  const updateProductSubcategoryDropdown({required this.shopId, Key? key}) : super(key: key);
+  const updateProductSubcategoryDropdown({required this.shopId, Key? key})
+    : super(key: key);
 
   @override
-  ConsumerState<updateProductSubcategoryDropdown> createState() => _updateSubcategoryDropdownState();
+  ConsumerState<updateProductSubcategoryDropdown> createState() =>
+      _updateSubcategoryDropdownState();
 }
 
-class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcategoryDropdown> {
+class _updateSubcategoryDropdownState
+    extends ConsumerState<updateProductSubcategoryDropdown> {
   final TextEditingController subcategoryController = TextEditingController();
   final FocusNode subcategoryFocus = FocusNode();
   List<Subcategory> recommendedSubcategories = [];
@@ -504,29 +579,43 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
 
   void findSubcategories() {
     final input = subcategoryController.text.trim().toLowerCase();
-    final productsubcategories = ref.read(updateProductProvider(widget.shopId).notifier);
+    final productsubcategories = ref.read(
+      updateProductProvider(widget.shopId).notifier,
+    );
     final subcategories = productsubcategories.Subcategories;
 
     if (input.isEmpty) {
       setState(() {
         recommendedSubcategories = [];
         showSubcategoryDropdown = false;
-        addnewSubCategory=false;
+        addnewSubCategory = false;
       });
       return;
     }
 
     setState(() {
-      recommendedSubcategories = subcategories.where((subcategory) =>  subcategory.name != null && subcategory.name!.toLowerCase().contains(input))
-          .toList();
+      recommendedSubcategories =
+          subcategories
+              .where(
+                (subcategory) =>
+                    subcategory.name != null &&
+                    subcategory.name!.toLowerCase().contains(input),
+              )
+              .toList();
       showSubcategoryDropdown = true;
-      addnewSubCategory=recommendedSubcategories.isEmpty;
+      addnewSubCategory = recommendedSubcategories.isEmpty;
     });
     if (addnewSubCategory) {
-      ref.read(updateProductProvider(widget.shopId).notifier).toggleCustomSubcategory(true);
-      ref.read(updateProductProvider(widget.shopId).notifier).setCustomSubcategoryName(subcategoryController.text);
+      ref
+          .read(updateProductProvider(widget.shopId).notifier)
+          .toggleCustomSubcategory(true);
+      ref
+          .read(updateProductProvider(widget.shopId).notifier)
+          .setCustomSubcategoryName(subcategoryController.text);
     } else {
-      ref.read(updateProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
+      ref
+          .read(updateProductProvider(widget.shopId).notifier)
+          .toggleCustomSubcategory(false);
     }
   }
 
@@ -534,11 +623,15 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
     setState(() {
       subcategoryController.text = subcategory.name!;
       showSubcategoryDropdown = false;
-      addnewSubCategory=false;
+      addnewSubCategory = false;
       recommendedSubcategories = [];
     });
-    ref.read(updateProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
-    ref.read(updateProductProvider(widget.shopId).notifier).setSubcategory(subcategory);
+    ref
+        .read(updateProductProvider(widget.shopId).notifier)
+        .toggleCustomSubcategory(false);
+    ref
+        .read(updateProductProvider(widget.shopId).notifier)
+        .setSubcategory(subcategory);
     subcategoryFocus.unfocus();
   }
 
@@ -553,21 +646,27 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
           decoration: InputDecoration(
             labelText: 'Subcategory',
             hintText: 'Search Subcategory',
-            suffixIcon: subcategoryController.text.isNotEmpty ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  subcategoryController.clear();
-                  showSubcategoryDropdown = false;
-                  recommendedSubcategories = [];
-                });
-                ref.read(updateProductProvider(widget.shopId).notifier).setSubcategory(null);
-              },
-            )
-                : null,
+            suffixIcon:
+                subcategoryController.text.isNotEmpty
+                    ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          subcategoryController.clear();
+                          showSubcategoryDropdown = false;
+                          recommendedSubcategories = [];
+                        });
+                        ref
+                            .read(updateProductProvider(widget.shopId).notifier)
+                            .setSubcategory(null);
+                      },
+                    )
+                    : null,
           ),
           onChanged: (value) {
-            ref.read(updateProductProvider(widget.shopId).notifier).setSubcategory(null);
+            ref
+                .read(updateProductProvider(widget.shopId).notifier)
+                .setSubcategory(null);
             findSubcategories();
           },
           onTap: () {

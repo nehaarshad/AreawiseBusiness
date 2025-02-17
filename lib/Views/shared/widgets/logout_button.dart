@@ -10,20 +10,19 @@ class logoutbutton extends ConsumerWidget {
   const logoutbutton({super.key});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    final userpreferences=ref.read(sessionProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userpreferences = ref.read(sessionProvider.notifier);
 
     return InkWell(
       onTap: () async {
-        final success=await userpreferences.logout();
-        if(success) {
+        final success = await userpreferences.logout();
+        if (success) {
           Navigator.pushNamed(context, routesName.login);
-        }else{
+        } else {
           Utils.flushBarErrorMessage("LogOut Not Completed!", context);
         }
       },
-      child: Icon(Icons.logout_sharp,color: Appcolors.blueColor,),
+      child: Icon(Icons.logout_sharp, color: Appcolors.blueColor),
     );
-
   }
 }

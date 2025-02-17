@@ -23,20 +23,19 @@ class DashboardView extends ConsumerStatefulWidget {
 }
 
 class _DashboardViewState extends ConsumerState<DashboardView> {
+  int index = 2;
+  bool isSeller = false;
 
-  int index=2;
-  bool isSeller=false;
-
-  void toggglebutton(bool value){
+  void toggglebutton(bool value) {
     setState(() {
-      isSeller=value;
-       index=2;
+      isSeller = value;
+      index = 2;
     });
   }
 
-  void onTap(int selectedIndex){
+  void onTap(int selectedIndex) {
     setState(() {
-      index=selectedIndex;
+      index = selectedIndex;
     });
   }
 
@@ -52,14 +51,14 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
       Wishlistview(id: widget.id),
       buyerhomeview(id: widget.id),
       Cartview(id: widget.id),
-      profileDetailView(id: widget.id)
+      profileDetailView(id: widget.id),
     ];
     SellerViews = [
       SellerShopsView(id: widget.id),
       Sellerproductsview(id: widget.id),
-      sellerhomeview(id: widget.id,),
+      sellerhomeview(id: widget.id),
       OrdersView(id: widget.id),
-      profileDetailView(id: widget.id)
+      profileDetailView(id: widget.id),
     ];
   }
 
@@ -97,23 +96,29 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
             child: Row(
               children: [
-               // Text("E-Commerce ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-              //  SizedBox(width: 20,),
-                Text("SellerMode",style: TextStyle(fontSize: 12),),
+                // Text("E-Commerce ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+                //  SizedBox(width: 20,),
+                Text("SellerMode", style: TextStyle(fontSize: 12)),
                 Switch(value: isSeller, onChanged: toggglebutton),
-
               ],
             ),
-          )
+          ),
         ],
       ),
-      body:  isSeller ? SellerViews[index] : BuyerViews[index],
-      bottomNavigationBar: isSeller  ? SellerBottomNavigation( selectedIndex: index, onItemTapped: onTap)
-          : BuyerBottomNavigationBar(selectedIndex: index,onItemTapped: onTap),
+      body: isSeller ? SellerViews[index] : BuyerViews[index],
+      bottomNavigationBar:
+          isSeller
+              ? SellerBottomNavigation(
+                selectedIndex: index,
+                onItemTapped: onTap,
+              )
+              : BuyerBottomNavigationBar(
+                selectedIndex: index,
+                onItemTapped: onTap,
+              ),
     );
   }
 }
-

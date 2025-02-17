@@ -12,17 +12,18 @@ class UserDetailModel {
   Address? address;
   ProfileImage? image;
 
-  UserDetailModel(
-      {this.id,
-        this.username,
-        this.email,
-        this.contactnumber,
-        this.password,
-        this.role,
-        this.createdAt,
-        this.updatedAt,
-        this.address,
-        this.image});
+  UserDetailModel({
+    this.id,
+    this.username,
+    this.email,
+    this.contactnumber,
+    this.password,
+    this.role,
+    this.createdAt,
+    this.updatedAt,
+    this.address,
+    this.image,
+  });
 
   UserDetailModel copyWith({
     int? id,
@@ -35,7 +36,8 @@ class UserDetailModel {
     String? updatedAt,
     Address? address,
     ProfileImage? image,
-  }) {return UserDetailModel(
+  }) {
+    return UserDetailModel(
       id: id ?? this.id,
       username: username ?? this.username,
       email: email ?? this.email,
@@ -46,7 +48,8 @@ class UserDetailModel {
       updatedAt: updatedAt ?? this.updatedAt,
       address: address ?? this.address,
       image: image ?? this.image,
-    ); }
+    );
+  }
 
   UserDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -58,8 +61,9 @@ class UserDetailModel {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     address =
-    json['address'] != null ? new Address.fromJson(json['address']) : null;
-    image = json['Image'] != null ? new ProfileImage.fromJson(json['Image']) : null;
+        json['address'] != null ? new Address.fromJson(json['address']) : null;
+    image =
+        json['Image'] != null ? new ProfileImage.fromJson(json['Image']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -91,14 +95,15 @@ class ProfileImage {
   String? createdAt;
   String? updatedAt;
 
-  ProfileImage(
-      {this.id,
-        this.imagetype,
-        this.entityId,
-        this.imageData,
-        this.imageUrl,
-        this.createdAt,
-        this.updatedAt});
+  ProfileImage({
+    this.id,
+    this.imagetype,
+    this.entityId,
+    this.imageData,
+    this.imageUrl,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   ProfileImage copyWith({
     int? id,
@@ -108,7 +113,8 @@ class ProfileImage {
     String? imageUrl,
     String? createdAt,
     String? updatedAt,
-  }) { return ProfileImage(
+  }) {
+    return ProfileImage(
       id: id ?? this.id,
       imagetype: imagetype ?? this.imagetype,
       entityId: entityId ?? this.entityId,
@@ -116,7 +122,8 @@ class ProfileImage {
       imageUrl: imageUrl ?? this.imageUrl,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-    ); }
+    );
+  }
 
   ProfileImage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -140,4 +147,3 @@ class ProfileImage {
     return data;
   }
 }
-

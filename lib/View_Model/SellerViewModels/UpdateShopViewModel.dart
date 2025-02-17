@@ -11,7 +11,11 @@ import 'package:path_provider/path_provider.dart';
 import '../../models/categoryModel.dart';
 import '../../repositories/categoriesRepository.dart';
 
-final updateShopProvider = StateNotifierProvider.family<UpdateShopViewModel, AsyncValue<ShopModel?>, String>((ref, id) {
+final updateShopProvider = StateNotifierProvider.family<
+  UpdateShopViewModel,
+  AsyncValue<ShopModel?>,
+  String
+>((ref, id) {
   return UpdateShopViewModel(ref, id);
 });
 
@@ -40,11 +44,14 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       final tempDir = await getTemporaryDirectory();
       images = await Future.wait(
         shop.images?.map((img) async {
-          final response = await http.get(Uri.parse(img.imageUrl!));
-          final file = File('${tempDir.path}/${img.imageUrl!.split('/').last}');
-          await file.writeAsBytes(response.bodyBytes);
-          return ShopImages(imageUrl: img.imageUrl, file: file);
-        }).toList() ?? [],
+              final response = await http.get(Uri.parse(img.imageUrl!));
+              final file = File(
+                '${tempDir.path}/${img.imageUrl!.split('/').last}',
+              );
+              await file.writeAsBytes(response.bodyBytes);
+              return ShopImages(imageUrl: img.imageUrl, file: file);
+            }).toList() ??
+            [],
       );
 
       selectedCategory = shop.category;
@@ -73,10 +80,11 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
 
       if (pickedFiles.isNotEmpty) {
         // Wrap new images in ShopImages with file property
-        final newImages = pickedFiles.map((x) {
-          final file = File(x.path);
-          return ShopImages(imageUrl: null, file: file);
-        }).toList();
+        final newImages =
+            pickedFiles.map((x) {
+              final file = File(x.path);
+              return ShopImages(imageUrl: null, file: file);
+            }).toList();
 
         images.addAll(newImages);
         print('Images count after adding: ${images.length}');
@@ -132,10 +140,10 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     required String shopaddress,
     required String sector,
     required String city,
-    required BuildContext context
-  }) async
-  {
-    try {if (images.isEmpty || images.length > 4) {
+    required BuildContext context,
+  }) async {
+    try {
+      if (images.isEmpty || images.length > 4) {
         throw Exception('Please select 1 to 4 images');
       }
 
@@ -152,7 +160,9 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       print('Data send: ${data}');
       final imageFiles = images.map((img) => img.file!).toList();
 
-      final response = await ref.read(shopProvider).updateShop(data, id, imageFiles);
+      final response = await ref
+          .read(shopProvider)
+          .updateShop(data, id, imageFiles);
 
       final updatedShop = ShopModel.fromJson(response);
       state = AsyncValue.data(updatedShop);

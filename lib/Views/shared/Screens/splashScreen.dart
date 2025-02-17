@@ -10,19 +10,14 @@ class splashView extends ConsumerStatefulWidget {
 }
 
 class _splashViewState extends ConsumerState<splashView> {
-
   @override
   void initState() {
     super.initState();
-    ref.read(splashserviceProvider).checkAuth(context,ref);
+    ref.read(splashserviceProvider).checkAuth(context, ref);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("SPLASH SCREEN"),
-      ),
-    );
+    return Scaffold(body: Center(child: Text("SPLASH SCREEN")));
   }
 }

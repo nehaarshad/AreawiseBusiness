@@ -6,73 +6,77 @@ import '../core/network/networkapiservice.dart';
 import '../core/resources/app_APIs.dart';
 import '../models/cartModel.dart';
 
-final cartProvider=Provider<CartRepositories>((ref){
+final cartProvider = Provider<CartRepositories>((ref) {
   return CartRepositories();
 });
 
-class CartRepositories{
-
+class CartRepositories {
   CartRepositories();
-  baseapiservice apiservice=networkapiservice();
+  baseapiservice apiservice = networkapiservice();
 
-  Future<cartModel> addToCart(String id,int productId) async{
-    try{
-      final data = jsonEncode({
-        'productId': productId,
-      });
-      final headers = {
-        'Content-Type': 'application/json',
-      };
-      dynamic response=await apiservice.PostApiWithJson(AppApis.addToCartEndPoints.replaceFirst(':id', id), data,headers);
+  Future<cartModel> addToCart(String id, int productId) async {
+    try {
+      final data = jsonEncode({'productId': productId});
+      final headers = {'Content-Type': 'application/json'};
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.addToCartEndPoints.replaceFirst(':id', id),
+        data,
+        headers,
+      );
       if (response is Map<String, dynamic>) {
         return cartModel.fromJson(response);
       }
       throw Exception("invalid Response");
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  Future<cartModel> getUserCart(String id) async{
-    try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getUserCartEndPoints.replaceFirst(':id', id));
+  Future<cartModel> getUserCart(String id) async {
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+        AppApis.getUserCartEndPoints.replaceFirst(':id', id),
+      );
       return cartModel.fromJson(response);
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  Future<cartModel> updateCartItem(String id,int quantity) async{
-    try{
-      final data = jsonEncode({
-        'quantity': quantity,
-      });
-      final headers = {
-        'Content-Type': 'application/json',
-      };
-      dynamic response=await apiservice.UpdateApiWithJson(AppApis.getUserCartEndPoints.replaceFirst(':id', id),data,headers);
+  Future<cartModel> updateCartItem(String id, int quantity) async {
+    try {
+      final data = jsonEncode({'quantity': quantity});
+      final headers = {'Content-Type': 'application/json'};
+      dynamic response = await apiservice.UpdateApiWithJson(
+        AppApis.updateCartItemEndPoints.replaceFirst(':id', id),
+        data,
+        headers,
+      );
       return cartModel.fromJson(response);
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  Future<dynamic> deleteCartItem(String id) async{
-    try{
-      dynamic response=await apiservice.DeleteApiResponce(AppApis.deleteCartItemEndPoints.replaceFirst(':id', id));
+  Future<dynamic> deleteCartItem(String id) async {
+    try {
+      dynamic response = await apiservice.DeleteApiResponce(
+        AppApis.deleteCartItemEndPoints.replaceFirst(':id', id),
+      );
       return response;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  Future<dynamic> deleteUserCart(String id) async{
-    try{
-      dynamic response=await apiservice.DeleteApiResponce(AppApis.deleteCartofUserEndPoints.replaceFirst(':id', id));
+  Future<dynamic> deleteUserCart(String id) async {
+    try {
+      dynamic response = await apiservice.DeleteApiResponce(
+        AppApis.deleteCartofUserEndPoints.replaceFirst(':id', id),
+      );
       return response;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
-
 }

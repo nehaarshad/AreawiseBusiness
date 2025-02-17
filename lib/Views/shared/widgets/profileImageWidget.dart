@@ -5,17 +5,22 @@ import '../../../View_Model/UserProfile/UserProfileViewModel.dart';
 import '../../../models/UserDetailModel.dart';
 
 class ProfileImageWidget extends ConsumerWidget {
-
   final UserDetailModel user;
   final double height;
   final double weidth;
 
-  const ProfileImageWidget({required this.user,required this.height,required this.weidth});
+  const ProfileImageWidget({
+    required this.user,
+    required this.height,
+    required this.weidth,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final modelobject = ref.watch(UserProfileViewModelProvider(user.id.toString()).notifier);
-    final imageUrl = modelobject.getProfileImage(user);//retrive image
+    final modelobject = ref.watch(
+      UserProfileViewModelProvider(user.id.toString()).notifier,
+    );
+    final imageUrl = modelobject.getProfileImage(user); //retrive image
 
     return Container(
       width: weidth,
@@ -26,7 +31,12 @@ class ProfileImageWidget extends ConsumerWidget {
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
-          onError: (e, stackTrace) => Icon(Icons.image_not_supported_outlined, size: 50, color: Colors.grey),
+          onError:
+              (e, stackTrace) => Icon(
+                Icons.image_not_supported_outlined,
+                size: 50,
+                color: Colors.grey,
+              ),
         ),
       ),
     );

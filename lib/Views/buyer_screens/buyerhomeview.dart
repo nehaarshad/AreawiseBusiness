@@ -16,17 +16,15 @@ class buyerhomeview extends ConsumerStatefulWidget {
 }
 
 class _buyerhomeviewState extends ConsumerState<buyerhomeview> {
-
-
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(UserProfileViewModelProvider(widget.id.toString()));
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 10,),
+          SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20),
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Search",
@@ -37,25 +35,26 @@ class _buyerhomeviewState extends ConsumerState<buyerhomeview> {
               ),
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8,horizontal: 15),
-                child: Text( "New Arrival",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold) ),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                child: Text(
+                  "New Arrival",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
               Row(
                 children: [
-                  Text("See All",style: TextStyle(color: Colors.grey),),
-                  Icon(Icons.arrow_forward_ios_sharp,size: 10,),
+                  Text("See All", style: TextStyle(color: Colors.grey)),
+                  Icon(Icons.arrow_forward_ios_sharp, size: 10),
                 ],
               ),
-
-
             ],
           ),
-          Products(userid: widget.id,),
+          Products(userid: widget.id),
         ],
       ),
     );

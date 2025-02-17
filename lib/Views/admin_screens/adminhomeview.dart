@@ -15,43 +15,57 @@ class adminhomeview extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title:  Padding(
-            padding: const EdgeInsets.only(left: 68.0,),
+          title: Padding(
+            padding: const EdgeInsets.only(left: 68.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text("Admin Screen",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
-                logoutbutton()
+                Text(
+                  "Admin Screen",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                ),
+                logoutbutton(),
               ],
             ),
           ),
         ),
-        body:  Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 120),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 120),
 
           child: Column(
             children: [
               NavigationButton(context, "Shops", routesName.ashop),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               NavigationButton(context, "Products", routesName.aproduct),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               NavigationButton(context, "Users", routesName.auser),
-              SizedBox(height: 10,),
-          InkWell(
-            onTap: (){
-              Navigator.pushNamed(context, routesName.profile,arguments: user.id);
-            },
-            child: Container(
-              height: 35,
-              width: 120,
-              decoration: BoxDecoration(
-                  color: Appcolors.blueColor,
-                  borderRadius: BorderRadius.circular(10)
+              SizedBox(height: 10),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    routesName.profile,
+                    arguments: user.id,
+                  );
+                },
+                child: Container(
+                  height: 35,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: Appcolors.blueColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "my profile",
+                      style: TextStyle(
+                        color: Appcolors.whiteColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              child: Center(child: Text("my profile",style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold),)),
-
-            ),
-          ),
             ],
           ),
         ),
@@ -60,22 +74,27 @@ class adminhomeview extends StatelessWidget {
   }
 }
 
-Widget NavigationButton(BuildContext context,String title,String routesName ){
-  return  InkWell(
-    onTap: (){
+Widget NavigationButton(BuildContext context, String title, String routesName) {
+  return InkWell(
+    onTap: () {
       Navigator.pushNamed(context, routesName);
     },
     child: Container(
       height: 35,
       width: 120,
       decoration: BoxDecoration(
-          color: Appcolors.blueColor,
-          borderRadius: BorderRadius.circular(10)
+        color: Appcolors.blueColor,
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: Center(child: Text(title,style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold),)),
-
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Appcolors.whiteColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     ),
   );
 }
-
-

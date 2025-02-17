@@ -6,7 +6,14 @@ class UserModel {
   String? role;
   String? token;
 
-  UserModel( {this.id,this.username,this.email,this.contactnumber, this.role, this.token});
+  UserModel({
+    this.id,
+    this.username,
+    this.email,
+    this.contactnumber,
+    this.role,
+    this.token,
+  });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

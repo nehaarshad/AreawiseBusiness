@@ -55,7 +55,8 @@ class ProductState {
       isCustomCategory: isCustomCategory ?? this.isCustomCategory,
       isCustomSubcategory: isCustomSubcategory ?? this.isCustomSubcategory,
       customCategoryName: customCategoryName ?? this.customCategoryName,
-      customSubcategoryName: customSubcategoryName ?? this.customSubcategoryName,
+      customSubcategoryName:
+          customSubcategoryName ?? this.customSubcategoryName,
       isLoading: isLoading ?? this.isLoading,
     );
   }

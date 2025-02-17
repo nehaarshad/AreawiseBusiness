@@ -15,7 +15,6 @@ class editProfile extends ConsumerStatefulWidget {
 }
 
 class _EditProfileScreenState extends ConsumerState<editProfile> {
-
   @override
   void dispose() {
     super.dispose();
@@ -27,19 +26,23 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
         GestureDetector(
           onTap: model.pickImages,
           child: Stack(
-            children:[
+            children: [
               CircleAvatar(
-              radius: 50,
-              backgroundImage: model.uploadimage != null ? FileImage(model.uploadimage!)
-                  : user.image?.imageUrl != null && user.image!.imageUrl!.isNotEmpty
-                  ? NetworkImage(user.image!.imageUrl!) : NetworkImage("https://th.bing.com/th/id/OIP.GnqZiwU7k5f_kRYkw8FNNwHaF3?rs=1&pid=ImgDetMain"),
-
-            ),
+                radius: 50,
+                backgroundImage:
+                    model.uploadimage != null
+                        ? FileImage(model.uploadimage!)
+                        : user.image?.imageUrl != null &&
+                            user.image!.imageUrl!.isNotEmpty
+                        ? NetworkImage(user.image!.imageUrl!)
+                        : NetworkImage(
+                          "https://th.bing.com/th/id/OIP.GnqZiwU7k5f_kRYkw8FNNwHaF3?rs=1&pid=ImgDetMain",
+                        ),
+              ),
               Positioned(
                 bottom: 5, // Adjust position of the camera icon
                 right: 3,
                 child: Container(
-
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -51,7 +54,8 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
                   ),
                 ),
               ),
-        ]  ),
+            ],
+          ),
         ),
       ],
     );
@@ -99,14 +103,21 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
     );
   }
 
-  Widget UpdateButton(AsyncValue<UserDetailModel?> state, EditProfileViewModel viewModel,BuildContext context) {
+  Widget UpdateButton(
+    AsyncValue<UserDetailModel?> state,
+    EditProfileViewModel viewModel,
+    BuildContext context,
+  ) {
     return ElevatedButton(
-      onPressed: state.isLoading ? null : () => updateData(viewModel,context),
-      child: state.isLoading ? const CircularProgressIndicator() : const Text("Update"),
+      onPressed: state.isLoading ? null : () => updateData(viewModel, context),
+      child:
+          state.isLoading
+              ? const CircularProgressIndicator()
+              : const Text("Update"),
     );
   }
 
-  void updateData(EditProfileViewModel viewModel,BuildContext  context) {
+  void updateData(EditProfileViewModel viewModel, BuildContext context) {
     if (viewModel.key.currentState!.validate()) {
       final data = {
         'username': viewModel.username.text,
@@ -117,22 +128,27 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
         'city': viewModel.city.text,
         'address': viewModel.address.text,
       };
-      viewModel.updateUser(data, viewModel.uploadimage,context);
+      viewModel.updateUser(data, viewModel.uploadimage, context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final userState = ref.watch(editProfileViewModelProvider(widget.id.toString()));
-    final editProfile = ref.read(editProfileViewModelProvider(widget.id.toString()).notifier);
+    final userState = ref.watch(
+      editProfileViewModelProvider(widget.id.toString()),
+    );
+    final editProfile = ref.read(
+      editProfileViewModelProvider(widget.id.toString()).notifier,
+    );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-      ),
+      appBar: AppBar(title: Text('Edit Profile')),
       body: userState.when(
-        loading:()=>Center(child: CircularProgressIndicator(color: Appcolors.blackColor)) ,
-        error:(err, stack) => Center(child: Text('Error: $err')),
+        loading:
+            () => Center(
+              child: CircularProgressIndicator(color: Appcolors.blackColor),
+            ),
+        error: (err, stack) => Center(child: Text('Error: $err')),
         data: (user) {
           if (user != null) {
             return SingleChildScrollView(
@@ -145,7 +161,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
                     const SizedBox(height: 20),
                     formFields(editProfile),
                     const SizedBox(height: 20),
-                    UpdateButton(userState, editProfile,context),
+                    UpdateButton(userState, editProfile, context),
                   ],
                 ),
               ),

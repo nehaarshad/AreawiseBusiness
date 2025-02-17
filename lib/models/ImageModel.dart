@@ -7,14 +7,15 @@ class Image {
   String? createdAt;
   String? updatedAt;
 
-  Image(
-      {this.id,
-        this.imagetype,
-        this.entityId,
-        this.imageData,
-        this.imageUrl,
-        this.createdAt,
-        this.updatedAt});
+  Image({
+    this.id,
+    this.imagetype,
+    this.entityId,
+    this.imageData,
+    this.imageUrl,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   Image.fromJson(Map<String, dynamic> json) {
     id = json['id'];

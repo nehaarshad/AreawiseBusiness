@@ -1,4 +1,3 @@
-
 import 'ProductModel.dart';
 
 class cartModel {
@@ -9,13 +8,14 @@ class cartModel {
   String? updatedAt;
   List<CartItems>? cartItems;
 
-  cartModel(
-      {this.id,
-        this.userId,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.cartItems});
+  cartModel({
+    this.id,
+    this.userId,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.cartItems,
+  });
 
   cartModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -55,15 +55,16 @@ class CartItems {
   String? updatedAt;
   ProductModel? product;
 
-  CartItems(
-      {this.id,
-        this.cartId,
-        this.productId,
-        this.quantity,
-        this.price,
-        this.createdAt,
-        this.updatedAt,
-        this.product});
+  CartItems({
+    this.id,
+    this.cartId,
+    this.productId,
+    this.quantity,
+    this.price,
+    this.createdAt,
+    this.updatedAt,
+    this.product,
+  });
 
   CartItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -74,7 +75,9 @@ class CartItems {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     product =
-    json['product'] != null ? new ProductModel.fromJson(json['product']) : null;
+        json['product'] != null
+            ? new ProductModel.fromJson(json['product'])
+            : null;
   }
 
   Map<String, dynamic> toJson() {

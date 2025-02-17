@@ -8,29 +8,35 @@ import 'package:riverpod/riverpod.dart';
 import '../core/resources/app_APIs.dart';
 import '../models/UserAddressModel.dart';
 
-final addressProvider=Provider<AddressRepositories>((ref){
+final addressProvider = Provider<AddressRepositories>((ref) {
   return AddressRepositories();
 });
 
-class AddressRepositories{
+class AddressRepositories {
   AddressRepositories();
 
-  baseapiservice apiservice=networkapiservice();
+  baseapiservice apiservice = networkapiservice();
 
-  Future<Address> addAddress(dynamic data,String id) async{
-    try{
-      dynamic response=await apiservice.PostApiWithJson(AppApis.AddUserAddressEndPoints.replaceFirst(':id', id), data,{});
+  Future<Address> addAddress(dynamic data, String id) async {
+    try {
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.AddUserAddressEndPoints.replaceFirst(':id', id),
+        data,
+        {},
+      );
       return response;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  Future<Address> getAddress(String id) async{
-    try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.GetUserAddressEndPoints.replaceFirst(':id', id));
+  Future<Address> getAddress(String id) async {
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+        AppApis.GetUserAddressEndPoints.replaceFirst(':id', id),
+      );
       return response;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -47,13 +53,14 @@ class AddressRepositories{
   //   }
   // }
 
-  Future<dynamic> deleteAddress(dynamic data,String id) async{
-    try{
-      dynamic response=await apiservice.DeleteApiResponce(AppApis.DeleteUserAddressEndPoints.replaceFirst(':id', id));
+  Future<dynamic> deleteAddress(dynamic data, String id) async {
+    try {
+      dynamic response = await apiservice.DeleteApiResponce(
+        AppApis.DeleteUserAddressEndPoints.replaceFirst(':id', id),
+      );
       return response;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
-
 }
