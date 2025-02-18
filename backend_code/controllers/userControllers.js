@@ -145,7 +145,7 @@ const updateuser = async (req, res) => {
             const userImage = await image.findOne({
                 where: {  UserId: id }
             });
-            const imageUrl = `http://192.168.216.179:5000/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
+            const imageUrl = `http://192.168.188.179:5000/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
             
             if (userImage) {
                 await userImage.update({ imageUrl });

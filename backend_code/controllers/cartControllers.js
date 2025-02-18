@@ -1,6 +1,7 @@
 import cart from '../models/CartModel.js'
 import items from '../models/cartItemModel.js'
 import Product from '../models/productmodel.js'
+import image from "../models/imagesModel.js";
 
    //on click of add to cart button
 const addToCart=async(req,res)=>{
@@ -8,7 +9,14 @@ const addToCart=async(req,res)=>{
     const { id } = req.params;
     const { productId} = req.body;
     console.log('Received productId:', productId);
-    const product=await Product.findByPk(productId);
+    const product=await Product.findByPk(productId,
+      {
+        include:{
+            model:image,
+            where:{imagetype:"product"},
+            required:false //all products may not have image
+        },
+    });
     //to find product
     if(!product){
       return res.status(404).json({ message: 'Product not found' });
@@ -52,10 +60,15 @@ const getCart =async (req, res) => {
           model: items,
           include: [
             {
-              model: Product
-          }, // Include product details
-        ]
-      }]})
+              model: Product,
+                include:{
+                    model:image,
+                    where:{imagetype:"product"},
+                    required:false //all products may not have image
+                },
+          }], // Include product details
+          },]
+      })
 
       if (!userCart) {
         return res.json({ message: 'No active cart found' });
@@ -88,7 +101,16 @@ const updateCartItem = async(req, res) => {
       const { id } = req.params;
       const { quantity } = req.body;
       
-      const cartItem = await items.findByPk(id);
+      const cartItem = await items.findByPk(id,{
+        include: [
+          { model: Product, 
+            include:{
+              model:image,
+              where:{imagetype:"product"},
+              required:false //all products may not have image
+          },
+          }]
+      });
       if (!cartItem) {
         return res.status(404).json({ message: 'Cart item not found' });
       }
@@ -102,8 +124,41 @@ const updateCartItem = async(req, res) => {
     }
 }
 
+const updateCart = async(req, res) => {
+  try {
+    const { id } = req.params;  //id of cart item to be updated
+    
+    const userCart = await cart.findByPk(id,{
+      include: [
+        {
+        model: items,
+        include: [
+          {
+            model: Product,
+              include:{
+                  model:image,
+                  where:{
+                    imagetype:"product"
+                  },
+                  required:false //all products may not have image
+              },
+        }], // Include product details
+        },]
+    });
+    if (!userCart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+    await userCart.update({ status: 'Active' });
+    await userCart.save();
+    res.json(userCart);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 const deleteUserCart = async(req, res) => {
   try {
+    //provide id of cart to be deleted
     const { id } = req.params;
     
     const userCart = await cart.findByPk(id);
@@ -118,6 +173,6 @@ const deleteUserCart = async(req, res) => {
   }
 }
 
-export default { addToCart, getCart, removeCartItem, updateCartItem ,deleteUserCart};
+export default { addToCart, getCart, removeCartItem, updateCartItem ,updateCart,deleteUserCart};
 
   

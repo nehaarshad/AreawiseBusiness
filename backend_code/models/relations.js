@@ -7,6 +7,7 @@ import subcategory from "./subCategoryModel.js";
 import image from "./imagesModel.js";
 import cart from "./CartModel.js";
 import items from "./cartItemModel.js";
+import order from "./orderModel.js";
 
 const relation = () => {
     //user relation.......
@@ -54,6 +55,9 @@ const relation = () => {
 
     Product.hasMany(items, { foreignKey: {name: 'productId', allowNull: false } });
     items.belongsTo(Product, { foreignKey: 'productId' });
+
+    cart.hasOne(order, { foreignKey: {name: 'cartId', allowNull: false } });
+    order.belongsTo(cart, { foreignKey: 'cartId' });
 
 };
 
