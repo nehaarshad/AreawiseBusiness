@@ -3,14 +3,13 @@ import 'package:ecommercefrontend/repositories/cartRepositories.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
 
-final cartViewModelProvider =
-    StateNotifierProvider.family<cartViewModel, AsyncValue<cartModel?>, String>(
+final cartViewModelProvider =StateNotifierProvider.family<cartViewModel, AsyncValue<Cart?>, String>(
       (ref, id) {
         return cartViewModel(ref, id);
       },
     );
 
-class cartViewModel extends StateNotifier<AsyncValue<cartModel?>> {
+class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   final Ref ref;
   String id;
   cartViewModel(this.ref, this.id) : super(AsyncValue.loading()) {
@@ -19,7 +18,7 @@ class cartViewModel extends StateNotifier<AsyncValue<cartModel?>> {
 
   Future<void> getUserCart(String id) async {
     try {
-      cartModel items = await ref.read(cartProvider).getUserCart(id);
+      Cart items = await ref.read(cartProvider).getUserCart(id);
       state = AsyncValue.data(items);
     } catch (e) {
       print(e);
@@ -55,7 +54,7 @@ class cartViewModel extends StateNotifier<AsyncValue<cartModel?>> {
   //send userId as params, and product id as req.body  //accesssd  on productdetailview
   Future<void> addToCart(String id, int data) async {
     try {
-      cartModel items = await ref.read(cartProvider).addToCart(id, data);
+      Cart items = await ref.read(cartProvider).addToCart(id, data);
       state = AsyncValue.data(items);
     } catch (e) {
       print(e);
@@ -66,7 +65,7 @@ class cartViewModel extends StateNotifier<AsyncValue<cartModel?>> {
   //send itemId as params, and product quantity as req.body
   Future<void> updateCartItem(String userId, String id, int data) async {
     try {
-      cartModel items = await ref.read(cartProvider).updateCartItem(id, data);
+      Cart items = await ref.read(cartProvider).updateCartItem(id, data);
       getUserCart(userId);
     } catch (e) {
       print(e);

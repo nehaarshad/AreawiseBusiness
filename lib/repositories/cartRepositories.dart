@@ -14,7 +14,7 @@ class CartRepositories {
   CartRepositories();
   baseapiservice apiservice = networkapiservice();
 
-  Future<cartModel> addToCart(String id, int productId) async {
+  Future<Cart> addToCart(String id, int productId) async {
     try {
       final data = jsonEncode({'productId': productId});
       final headers = {'Content-Type': 'application/json'};
@@ -24,7 +24,7 @@ class CartRepositories {
         headers,
       );
       if (response is Map<String, dynamic>) {
-        return cartModel.fromJson(response);
+        return Cart.fromJson(response);
       }
       throw Exception("invalid Response");
     } catch (e) {
@@ -32,18 +32,18 @@ class CartRepositories {
     }
   }
 
-  Future<cartModel> getUserCart(String id) async {
+  Future<Cart> getUserCart(String id) async {
     try {
       dynamic response = await apiservice.GetApiResponce(
         AppApis.getUserCartEndPoints.replaceFirst(':id', id),
       );
-      return cartModel.fromJson(response);
+      return Cart.fromJson(response);
     } catch (e) {
       throw e;
     }
   }
 
-  Future<cartModel> updateCartItem(String id, int quantity) async {
+  Future<Cart> updateCartItem(String id, int quantity) async {
     try {
       final data = jsonEncode({'quantity': quantity});
       final headers = {'Content-Type': 'application/json'};
@@ -52,7 +52,7 @@ class CartRepositories {
         data,
         headers,
       );
-      return cartModel.fromJson(response);
+      return Cart.fromJson(response);
     } catch (e) {
       throw e;
     }

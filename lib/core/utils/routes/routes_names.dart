@@ -13,6 +13,8 @@ class routesName {
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";
   static const String favorite = "FavoriteView";
+  static const String deliveryAddress = "deliveryAddress";
+
 
   //Seller Screens Routes Names
   static const String sHome = "sellerhomeview";

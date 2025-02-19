@@ -48,13 +48,19 @@ class AppApis {
   static var getUserCartEndPoints = "$baseurl/getCart/:id";
   static var addToCartEndPoints = "$baseurl/addToCart/:id";
   static var updateCartItemEndPoints = "$baseurl/updateCartItem/:id";
+  static var updateCartEndPoints = "$baseurl/updateCart/:id";
   static var deleteCartItemEndPoints = "$baseurl/removeCartItem/:id";
   static var viewCheckOutEndPoints = "$baseurl/ViewCheckout/:id";
   static var placeOrderEndPoints = "$baseurl/PlaceOrder";
   static var deleteCartofUserEndPoints = "$baseurl/deleteCart/:id";
 
+
+  //WishList APIS
+  static var GetWishListofUserEndPoints = "$baseurl/GetWishList/:id";
+  static var AddToWishListEndPoints = "$baseurl/AddToWishList/:id";
+  static var RemoveFromWishListEndPoints = "$baseurl/RemoveFromWishList/:id";
+
   //Filter Operations (shop -> {name,category}  , products ->{category,name,subcategory,price)
   static var SearchShopByNameEndPoints = "$baseurl/getshopByName/:shopname";
-  static var SearchShopByCategoryEndPoints =
-      "$baseurl/getshopByCategory/:category";
+  static var SearchShopByCategoryEndPoints = "$baseurl/getshopByCategory/:category";
 }

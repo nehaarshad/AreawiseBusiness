@@ -4,6 +4,7 @@ import '../../../Views/admin_screens/ProductView.dart';
 import '../../../Views/admin_screens/adminhomeview.dart';
 import '../../../Views/auth/screens/login_View.dart';
 import '../../../Views/auth/screens/signUp_View.dart';
+import '../../../Views/buyer_screens/deliveryAddress.dart';
 import '../../../Views/sellerscrens/UpdateShopView.dart';
 import '../../../Views/shared/Screens/DashBoardView.dart';
 import '../../../Views/shared/Screens/ShopView.dart';
@@ -101,6 +102,13 @@ class Routes {
         final id = arg as ProductModel;
         return MaterialPageRoute(
           builder: (BuildContext context) => updateProductView(product: id),
+        );
+
+      case (routesName.deliveryAddress):
+        int CartId = arg['CartId'] as int;
+        String userid = arg['userid'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => deliveryAddress(userid: userid,cartId: CartId),
         );
 
       case (routesName.productdetail):

@@ -7,11 +7,7 @@ import '../../core/utils/utils.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 
-final editProfileViewModelProvider = StateNotifierProvider.family<
-  EditProfileViewModel,
-  AsyncValue<UserDetailModel?>,
-  String
->((ref, id) {
+final editProfileViewModelProvider = StateNotifierProvider.family<EditProfileViewModel, AsyncValue<UserDetailModel?>, String>((ref, id) {
   return EditProfileViewModel(ref, id);
 });
 
@@ -40,13 +36,11 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       UserDetailModel userdata = await ref.read(userProvider).getuserbyid(id);
       username = TextEditingController(text: userdata.username);
       email = TextEditingController(text: userdata.email);
-      contactnumber = TextEditingController(
-        text: userdata.contactnumber.toString(),
-      );
+      contactnumber = TextEditingController(text: userdata.contactnumber.toString());
       role = TextEditingController(text: userdata.role);
-      sector = TextEditingController(text: userdata.address?.sector ?? "N/A");
-      city = TextEditingController(text: userdata.address?.city ?? "N/A");
-      address = TextEditingController(text: userdata.address?.address ?? "N/A");
+      sector = TextEditingController(text: userdata.address?.sector ?? "");
+      city = TextEditingController(text: userdata.address?.city ?? "");
+      address = TextEditingController(text: userdata.address?.address ?? "");
       state = AsyncValue.data(userdata);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

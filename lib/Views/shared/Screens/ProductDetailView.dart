@@ -1,5 +1,6 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -81,16 +82,9 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                             ),
                             InkWell(
                               onTap: () async {
-                                await ref
-                                    .read(
-                                      cartViewModelProvider(
-                                        widget.userid.toString(),
-                                      ).notifier,
-                                    )
-                                    .addToCart(
-                                      widget.userid.toString(),
-                                      widget.product.id!,
-                                    );
+                                await ref.read(cartViewModelProvider(widget.userid.toString(),).notifier,)
+                                    .addToCart(widget.userid.toString(), widget.product.id!,);
+                                Utils.toastMessage("Added Successfully!");
                               },
                               child: Container(
                                 width: 70,

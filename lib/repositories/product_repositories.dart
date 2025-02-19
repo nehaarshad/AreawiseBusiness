@@ -116,7 +116,8 @@ class ProductRepositories {
     Map<String, dynamic> data,
     String id,
     List<File>? images,
-  ) async {
+  ) async
+  {
     try {
       dynamic response = await apiservice.UpdateApiWithMultiport(
         AppApis.UpdateProductEndPoints.replaceFirst(':id', id),
