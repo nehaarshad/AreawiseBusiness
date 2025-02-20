@@ -8,6 +8,8 @@ import image from "./imagesModel.js";
 import cart from "./CartModel.js";
 import items from "./cartItemModel.js";
 import order from "./orderModel.js";
+import wishList from "./wishListModel.js";
+import SellerOrder from "./sellerOrderModel.js";
 
 const relation = () => {
     //user relation.......
@@ -47,6 +49,7 @@ const relation = () => {
     category.hasMany(Product, { foreignKey:{name: 'categoryId'} ,allowNull:false});
     Product.belongsTo(category, { foreignKey:{name: 'categoryId'} });
 
+    //cart management relations
     User.hasMany(cart, { foreignKey: {name: 'UserId', allowNull: false } });
     cart.belongsTo(User, { foreignKey: 'UserId' });
 
@@ -56,8 +59,30 @@ const relation = () => {
     Product.hasMany(items, { foreignKey: {name: 'productId', allowNull: false } });
     items.belongsTo(Product, { foreignKey: 'productId' });
 
+
+    //order relations
+    // A user (customer) can place multiple seller orders
+    User.hasMany(SellerOrder, { foreignKey: {name: 'customerId', allowNull: false }});
+    SellerOrder.belongsTo(User, { foreignKey: 'customerId' });
+
+    // A user (seller) can receive multiple seller orders
+    User.hasMany(SellerOrder, { foreignKey:  {name:'sellerId',allowNull: false }});
+    SellerOrder.belongsTo(User, { foreignKey: 'sellerId' });
+
+    // A product can be associated with multiple seller orders
+    Product.hasMany(SellerOrder, { foreignKey: {name: 'orderProductId', allowNull: false } });
+    SellerOrder.belongsTo(Product, { foreignKey: 'orderProductId' });
+
+
     cart.hasOne(order, { foreignKey: {name: 'cartId', allowNull: false } });
     order.belongsTo(cart, { foreignKey: 'cartId' });
+
+    //wishlist relations
+    User.hasMany(wishList, { foreignKey: { name: 'userId', allowNull: false } }); //one user have multiple entries based on product IDs
+    wishList.belongsTo(User, { foreignKey: 'userId' });
+    
+    Product.hasMany(wishList, { foreignKey: { name: 'productId', allowNull: false } });//one product added by many users so have many entries
+    wishList.belongsTo(Product, { foreignKey: 'productId' });    
 
 };
 
