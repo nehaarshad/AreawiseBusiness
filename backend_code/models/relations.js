@@ -69,6 +69,9 @@ const relation = () => {
     User.hasMany(SellerOrder, { foreignKey:  {name:'sellerId',allowNull: false }});
     SellerOrder.belongsTo(User, { foreignKey: 'sellerId' });
 
+    order.hasMany(SellerOrder, { foreignKey:  {name:'orderId',allowNull: false }});
+    SellerOrder.belongsTo(order, { foreignKey: 'orderId' });
+
     // A product can be associated with multiple seller orders
     Product.hasMany(SellerOrder, { foreignKey: {name: 'orderProductId', allowNull: false } });
     SellerOrder.belongsTo(Product, { foreignKey: 'orderProductId' });

@@ -15,10 +15,10 @@ const SellerOrder = sequelize.define("SellerOrder", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    // orderId: {  //which order to be delivered to get address...info on detailed screen
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    // },
+    orderId: { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     orderProductId: {  //which product to be ordered
         type: DataTypes.INTEGER,
         allowNull: false,

@@ -5,6 +5,7 @@ import Product from "../models/productmodel.js";
 import image from "../models/imagesModel.js";
 import Address from "../models/addressmodel.js";
 import User from "../models/userModel.js";
+import order from "../models/orderModel.js";
 
 const getSellerOrders = async (req, res) => { 
     try {
@@ -14,20 +15,52 @@ const getSellerOrders = async (req, res) => {
                 sellerId: id,
             },
             include: [{
-                model: User,
-                include:{
-                        model:Address
-                       },
-                    },
+                model:order,
+                include:[
                     {
-                        model: Product,
-                        include: {
+                    model: cart,
+                    include: [
+                        {
+                            model:User,
+                            include:{
+                                model:Address,
+                            }
+                        },
+                        {
+                        model: items,
+                        include: [{
+                            model: Product,
+                            include: {
                                 model: image,
-                            },
-                    },
-        ],
+                                where: { imagetype: "product" },
+                                required: false
+                            }
+                        }]
+                    }
+                ]
+            }
+        ]
+            }
+        ]
         });
-        res.json(orders);
+        //include only those items where the productId matches the orderProductId from the SellerOrderTable
+        const filteredOrders = orders.map(order => {
+            const filteredCartItems = order.Order.Cart.CartItems.filter(item => 
+                item.productId === order.orderProductId);
+
+            return {//returning the filtered orders  //spreading the original order details and replacing the CartItems with the filtered list.
+                ...order.toJSON(),
+                Order: {
+                    ...order.Order.toJSON(),
+                    Cart: {
+                        ...order.Order.Cart.toJSON(),
+                        CartItems: filteredCartItems
+                    }
+                }
+            };
+        });
+
+        res.json(filteredOrders);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server Error" });
@@ -42,21 +75,51 @@ const getCustomerOrders = async (req, res) => {
                 customerId: id,
             },
             include: [{
-                model: cart,
-                include: [{
-                    model: items,
-                    include: [{
-                        model: Product,
-                        include: {
-                            model: image,
-                            where: { imagetype: "product" },
-                            required: false
-                        }
-                    }]
-                }]
-            }]
+                model:order,
+                include:[
+                    {
+                    model: cart,
+                    include: [
+                        {
+                            model:User,
+                            include:{
+                                model:Address,
+                            }
+                        },
+                        {
+                        model: items,
+                        include: [{
+                            model: Product,
+                            include: {
+                                model: image,
+                                where: { imagetype: "product" },
+                                required: false
+                            }
+                        }]
+                    }
+                ]
+            }
+        ]
+            }
+        ]
         });
-        res.json(orders);
+        const filteredOrders = orders.map(order => {
+            const filteredCartItems = order.Order.Cart.CartItems.filter(item => 
+                item.productId === order.orderProductId);
+                
+            return {//returning the filtered orders  //spreading the original order details and replacing the CartItems with the filtered list.
+                ...order.toJSON(),
+                Order: {
+                    ...order.Order.toJSON(),
+                    Cart: {
+                        ...order.Order.Cart.toJSON(),
+                        CartItems: filteredCartItems
+                    }
+                }
+            };
+        });
+
+        res.json(filteredOrders);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server Error" });
@@ -65,11 +128,12 @@ const getCustomerOrders = async (req, res) => {
 
 const updateOrderStatus = async (req, res) => {
     try {
-        const { id } = req.params;  //id of product on requested
-        const {status } = req.body;
+        const { id } = req.params;  //order
+        const {productId,status } = req.body;
         const order = await SellerOrder.findOne({
             where:{
-                orderProductId:id,
+                orderId:id,
+                orderProductId:productId,
             }
         });
         if (!order) {

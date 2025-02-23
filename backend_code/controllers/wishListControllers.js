@@ -47,20 +47,20 @@ const GetWishList = async (req, res) => {
 
         const wishListItems = await wishList.findAll({
             where: { userId: id }, 
-            include: {
-                model: Product,
-                include: {
-                    model: image,
-                    where: { imagetype: 'product' },
-                    required: false
-                },
-                include: {
-                    model: category
-                },
-                include: {
-                    model: subcategories
-            }
-        }});
+            include: [
+                {
+                    model: Product,
+                    include: [
+                        {
+                            model: image,
+                            where: { imagetype: 'product' },
+                            required: false // Ensures it still returns results even if no images exist
+                        },
+                        { model: category },
+                        { model: subcategories }
+                    ]
+                }
+            ]});
 
         return res.json(wishListItems);
     } catch (error) {

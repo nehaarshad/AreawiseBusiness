@@ -271,6 +271,7 @@ const PlaceOrder = async (req, res) => {
             await SellerOrder.create({
                 sellerId, //2
                 customerId: userId,//1 
+                orderId: updatedOrder.id,//1
                 orderProductId: product.id,//1 or 2 or 4
                 status: 'Requested'
             });//seller and order id are same but product id is different
