@@ -9,27 +9,19 @@ const createNewUser = async (req, res) => {
         const { username, email,contactnumber, password, role } = req.body;
 
         if(!username||!email||!password  ){
-            return res.json({
-                status:400,
-                message:"All fields are required to filled!"
-            })
+            return res.json({message:"All fields are required to filled!"})
         }
        else{
         const existingUser = await User.findOne({ where: { username } });
         if (existingUser) {
-            return res.json({ 
-                status:400,
-                message: "User Already Exist" });
+            return res.json({message: "User Already Exist" });
         }
         else{
         const hashedPassword = await bcrypt.hash(password, 10);
     
         const newuser = await User.create({ username, email,contactnumber, password: hashedPassword, role });
     
-        res.json({ 
-             status:201,   
-            data:newuser
-        });
+        res.json(newuser);
         }
        }
 

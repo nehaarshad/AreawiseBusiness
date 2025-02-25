@@ -16,7 +16,7 @@ const Product = sequelize.define('products', {
         allowNull: false 
     },
     price: { 
-        type: DataTypes.DOUBLE, 
+        type: DataTypes.INTEGER, 
         allowNull: false 
     },
     description: { 
@@ -24,7 +24,7 @@ const Product = sequelize.define('products', {
         allowNull: false 
     },
     stock: { 
-        type: DataTypes.DOUBLE, 
+        type: DataTypes.INTEGER, 
         allowNull: false 
     },
     seller: {

@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db_config.js";
-import image from "./imagesModel.js";
 
 const User = sequelize.define('users', {
     id: { 
@@ -18,7 +17,7 @@ const User = sequelize.define('users', {
         unique: true 
     },
     contactnumber: { 
-        type: DataTypes.INTEGER, 
+        type: DataTypes.BIGINT, 
         allowNull: false 
     },
     password: { 
@@ -26,9 +25,9 @@ const User = sequelize.define('users', {
         allowNull: false 
     },
     role: { 
-        type: DataTypes.ENUM('admin', 'seller', 'buyer'), 
+        type: DataTypes.STRING, 
         allowNull: false, 
-        defaultValue: 'buyer' 
+        defaultValue: 'Buyer' 
     }
 },
 {

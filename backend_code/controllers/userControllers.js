@@ -145,7 +145,7 @@ const updateuser = async (req, res) => {
             const userImage = await image.findOne({
                 where: {  UserId: id }
             });
-            const imageUrl = `http://192.168.188.179:5000/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
+            const imageUrl = `http://192.168.169.179:5000/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
             
             if (userImage) {
                 await userImage.update({ imageUrl });
@@ -173,7 +173,7 @@ const deleteuser=async(req,res)=>{
             return res.json({error:"User not Exit"});
           } 
           const userId=user.id;
-          const userimage=await image.destroy({where:{imagetype:'user',entityId:user.id}});
+          const userimage=await image.destroy({where:{imagetype:'user',UserId:user.id}});
             if(userimage>0){
                 console.log(`${userimage} images of this user is deleted`)
             }
