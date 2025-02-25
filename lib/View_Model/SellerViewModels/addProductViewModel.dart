@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
@@ -9,41 +10,6 @@ import '../../repositories/product_repositories.dart';
 import '../SharedViewModels/productViewModels.dart';
 import 'ProductStates.dart';
 import 'package:flutter/material.dart';
-
-// final AddProductViewModelProvider=StateNotifierProvider.family<AddProductViewModel,AsyncValue<ProductModel?>,String>((ref,id){
-//   return AddProductViewModel(ref,id);
-// });
-//
-// class AddProductViewModel extends StateNotifier<AsyncValue<ProductModel?>>{
-//   final Ref ref;
-//   String id;
-//   AddProductViewModel(this.ref,this.id):super(AsyncValue.loading()){
-//
-//   }
-//
-//   Future<void> Categories()async{
-//     try {
-//       List<Category?> category = await ref.read(categoryProvider).getCategories();
-//       state = AsyncValue.data(category.isEmpty ? [] : category);
-//     }catch(e){
-//       state=AsyncValue.error(e, StackTrace.current);
-//     }
-//   }
-//
-//
-//   Future<void> SubCategories(String Category)async{
-//     try {
-//       List<Subcategory?> subcategory = await ref.read(categoryProvider).FindSubCategories(Category);
-//       state = AsyncValue.data(subcategory.isEmpty ? [] : subcategory);
-//     }catch(e){
-//       state=AsyncValue.error(e, StackTrace.current);
-//     }
-//   }
-//
-//
-// }
-
-// StateNotifierProvider for AddProductViewModel
 
 final addProductProvider = StateNotifierProvider.family<AddProductViewModel, ProductState, String>((ref, id,) {
       return AddProductViewModel(ref, id);
@@ -86,14 +52,12 @@ class AddProductViewModel extends StateNotifier<ProductState> {
   Future<void> pickImages(BuildContext context) async {
     try {
       final List<XFile> pickedFiles = await pickImage.pickMultiImage();
-      if (pickedFiles.isNotEmpty &&
-          state.images.length + pickedFiles.length > 7) {
-        Utils.flushBarErrorMessage("Select only 4 Images", context);
+      if (pickedFiles.isNotEmpty && state.images.length + pickedFiles.length > 7) {
+        Utils.flushBarErrorMessage("Select only 7 Images", context);
         state = state.copyWith(images: state.images);
       }
       //atleast one image is selected & Previously and Newly Selected images are no more than 7
-      if (pickedFiles.isNotEmpty &&
-          state.images.length + pickedFiles.length <= 7) {
+      if (pickedFiles.isNotEmpty && state.images.length + pickedFiles.length <= 7) {
         // [...] "Spread Operator" used to combine 2 lists (Previously and Newly Selected images lists)
         final newImages = [
           ...state.images,
@@ -160,6 +124,8 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     required BuildContext context,
   }) async {
     try {
+      state = state.copyWith(isLoading: true);
+      print("Shop ID: $shopId");
       // Validate images
       if (state.images.isEmpty || state.images.length > 7) {
         throw Exception('Please select 1 to 7 images');
@@ -187,8 +153,8 @@ class AddProductViewModel extends StateNotifier<ProductState> {
         'price': parsedPrice, // Use parsed integer value
         'description': description,
         'stock': parsedStock, // Use parsed integer value
-        'productcategory': categoryName,
-        'productsubcategory': subcategoryName,
+        'productcategory': categoryName.trim(),
+        'productsubcategory': subcategoryName.trim(),
       };
 
 
@@ -197,31 +163,34 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       print("Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}");
       print("Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}");
       print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}");
-
+      print("Request Body (productcategory): ${data['productcategory']} with type: ${data['productcategory'].runtimeType}");
+      print("Request Body (productsubcategory): ${data['productsubcategory']} with type: ${data['productsubcategory'].runtimeType}");
+      print("shopID: ${shopId} with type: ${shopId.runtimeType}");
       // Add product to the backend
-      await ref.read(productProvider).addProduct(data, this.shopId, state.images.whereType<File>().toList());
-
+      ProductModel product=await ref.read(productProvider).addProduct(data, shopId, state.images.whereType<File>().toList());
+      print("Api Response ${product}");
+      try {
+        // Invalidate the provider to refresh the product list
+        ref.invalidate(sharedProductViewModelProvider);
+        await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
+        await ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+        await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
+      } catch (innerError) {
+        print("Error refreshing product lists: $innerError");
+        // Continue with success flow despite refresh errors
+      }
       // Update state and show success message
       state = state.copyWith(isLoading: false);
-
-      // Invalidate the provider to refresh the product list
-      ref.invalidate(sharedProductViewModelProvider);
-      await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(this.shopId);
-      await ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
-      await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
-      // Pop the screen after a short delay
-      await Future.delayed(Duration(milliseconds: 500));
+      Utils.toastMessage("Added Successfully!");
       Navigator.pop(context);
     } catch (e) {
+      print(e);
       // Handle errors and show error message
       Utils.flushBarErrorMessage('${e}', context);
       state = state.copyWith(
         product: AsyncValue.error(e, StackTrace.current),
         isLoading: false,
       );
-
-      // Ensure the screen pops even if an error occurs
-      Navigator.pop(context);
     }
   }
 }

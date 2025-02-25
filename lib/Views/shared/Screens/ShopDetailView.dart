@@ -19,17 +19,8 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: Colors.white,
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, routesName.sAddProduct, arguments: widget.shop,);
-        },
-        child: Text("Add Product"),
-        backgroundColor: Appcolors.blueColor,
-        foregroundColor: Appcolors.whiteColor,
-        shape: RoundedRectangleBorder(),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -90,6 +81,31 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
               shopProducts(shopId:  widget.shop.id.toString()),
               SizedBox(height: 30),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(100, 0, 100, 100),
+        child: SizedBox(
+          height: 50.0,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, routesName.sAddProduct, arguments: widget.shop,);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Appcolors.blueColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40.0),
+              ),
+            ),
+            child: const Text(
+              "Add New Product",
+              style: TextStyle(
+                color: Appcolors.whiteColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
           ),
         ),
       ),

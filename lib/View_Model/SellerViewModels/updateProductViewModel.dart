@@ -12,6 +12,8 @@ import '../../repositories/product_repositories.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../SharedViewModels/productViewModels.dart';
+
 final updateProductProvider = StateNotifierProvider.family<UpdateProductViewModel, AsyncValue<ProductModel?>, String>((ref, id) {
   return UpdateProductViewModel(ref, id);
 });
@@ -176,6 +178,8 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     required int price,
     required String description,
     required int stock,
+    required String shopId,
+    required String user,
     required BuildContext context,
   }) async {
     try {
@@ -201,8 +205,21 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
 
       final imageFiles = images.map((img) => img.file!).toList();
       final response = await ref.read(productProvider).updateProduct(data, id.toString(), imageFiles);
-      final updateProduct = ProductModel.fromJson(response);
+      final updatedProduct = ProductModel.fromJson(response);
+      print("Api Response ${updatedProduct}");
+      try {
+        // Invalidate the provider to refresh the product list
+        ref.invalidate(sharedProductViewModelProvider);
+        await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
+        await ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+        await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
+      } catch (innerError) {
+        print("Error refreshing product lists: $innerError");
+        // Continue with success flow despite refresh errors
+      }
+      state = AsyncValue.data(updatedProduct);
      print("update product responce: ${updateProduct}");
+      Utils.toastMessage("Updated Successfully!");
       Navigator.pop(context);
     } catch (e) {
       print(e);

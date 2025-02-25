@@ -208,6 +208,8 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                                         price: int.parse(price.text),
                                         description: description.text,
                                         stock: int.parse(stock.text),
+                                        shopId: widget.product.shopid.toString(),
+                                        user: widget.product.seller.toString(),
                                         context: context,
                                       );
                                 }

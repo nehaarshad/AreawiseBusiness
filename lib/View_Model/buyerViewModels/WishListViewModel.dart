@@ -16,7 +16,8 @@ class wishListViewModel extends StateNotifier<AsyncValue<List<wishListModel?>>>{
   Future<void> addToWishList(String id,int ProductId) async {
     try {
       await ref.read(wishListProvider).addToWishList(id,ProductId);
-      await getUserWishList(id);
+      ref.invalidate(wishListViewModelProvider(id));
+      await ref.read(wishListViewModelProvider(id).notifier).getUserWishList(id);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);

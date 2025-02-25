@@ -23,14 +23,6 @@ class _addShopViewState extends ConsumerState<addShopView> {
   final TextEditingController sector = TextEditingController();
   final TextEditingController city = TextEditingController();
 
-  // Future getImage()async{
-  //   final XFile? pickedImage=await pickimage.pickImage(source: ImageSource.gallery);
-  //   if(pickedImage!=null){
-  //     setState(() {
-  //       uploadimage=File(pickedImage.path);
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

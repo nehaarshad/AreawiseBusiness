@@ -6,9 +6,9 @@ import 'categoryModel.dart';
 class ProductModel {
   int? id;
   String? name;
-  int? price;
+  dynamic price;
   String? description;
-  int? stock;
+  dynamic stock;
   int? seller;
   int? shopid;
   int? categoryId;
@@ -39,9 +39,17 @@ class ProductModel {
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    price = json['price'];
+    if (json['price'] is String) {
+      price = int.tryParse(json['price']) ?? 0;
+    } else {
+      price = json['price'];
+    }
     description = json['description'];
-    stock = json['stock'];
+    if (json['stock'] is String) {
+      stock = int.tryParse(json['stock']) ?? 0;
+    } else {
+      stock = json['stock'];
+    }
     seller = json['seller'];
     shopid = json['shopid'];
     categoryId = json['categoryId'];
@@ -92,9 +100,9 @@ class ProductModel {
   ProductModel copyWith({
     int? id,
     String? name,
-    int? price,
+   dynamic price,
     String? description,
-    int? stock,
+    dynamic stock,
     int? seller,
     int? shopid,
     int? categoryId,

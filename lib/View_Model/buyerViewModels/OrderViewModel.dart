@@ -130,7 +130,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
       print('Sending data to API: $data');
 
       orderModel order = await ref.read(orderProvider).placeUserOrder(data);
-      state = AsyncValue.data(order);
+      print(order);
       Utils.flushBarErrorMessage("Order Sent Successfully", context);
       Navigator.pushNamed(context, routesName.dashboard,arguments: userId);
     } catch (e) {

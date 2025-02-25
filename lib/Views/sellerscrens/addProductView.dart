@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import '../../View_Model/SellerViewModels/ProductStates.dart';
 import '../shared/widgets/ProductCateASubCategoryDropdownMenu.dart';
 import '../shared/widgets/ShopCategoryDropDownMenu.dart';
 
@@ -24,16 +25,11 @@ class _addProductViewState extends ConsumerState<addProductView> {
   final TextEditingController price = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController stock = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    ref.read(addProductProvider(widget.shop.toString()).notifier).getCategories();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(addProductProvider(widget.shop.toString()));
+    String shopId=widget.shop.id.toString();
+    print(shopId);
+    final state = ref.watch(addProductProvider(shopId));
     return Scaffold(
       appBar: AppBar(title: Text("Add Product")),
       body: SingleChildScrollView(
@@ -46,7 +42,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 SizedBox(height: 20),
                 if (state.images.isNotEmpty)
                   SizedBox(
-                    height: 100,
+                    height: 120,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: state.images.length,
@@ -55,7 +51,21 @@ class _addProductViewState extends ConsumerState<addProductView> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Image.file(state.images[index]),
+                              child: Container(
+                                width: 100, // Define explicit width
+                                height: 100, // Define explicit height
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    state.images[index],
+                                    fit: BoxFit.cover, // Important for proper display
+                                  ),
+                                ),
+                              ),
                             ),
                             Positioned(
                               right: 0,
@@ -66,7 +76,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                                   color: Colors.red,
                                 ),
                                 onPressed: () {
-                                  ref.read(addProductProvider(widget.shop.toString()).notifier).removeImage(index);
+                                  ref.read(addProductProvider(shopId).notifier).removeImage(index);
                                 },
                               ),
                             ),
@@ -77,7 +87,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                   ),
                 ElevatedButton(
                   onPressed: () {
-                    ref.read(addProductProvider(widget.shop.toString()).notifier).pickImages(context);
+                    ref.read(addProductProvider(shopId).notifier).pickImages(context);
                   },
                   child: Text("Upload Images"),
                 ),
@@ -126,13 +136,13 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     return null;
                   },
                 ),
-                ProductCategoryDropdown(shopid: widget.shop.toString()),
-                ProductSubcategoryDropdown(shopId: widget.shop.toString()),
+                ProductCategoryDropdown(shopid: shopId),
+                ProductSubcategoryDropdown(shopId:shopId),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: state.isLoading ? null : () async {
                             if (formkey.currentState!.validate()) {
-                              await ref.read(addProductProvider(widget.shop.toString(),).notifier,)
+                              await ref.read(addProductProvider(shopId).notifier,)
                                   .addProduct(
                                     name: name.text.toString(),
                                     price: price.text,
@@ -143,14 +153,11 @@ class _addProductViewState extends ConsumerState<addProductView> {
                                   );
                             }
                           },
-                  child:
-                      state.isLoading
-                          ? Center(
+                  child: state.isLoading ? Center(
                             child: CircularProgressIndicator(
                               color: Appcolors.blueColor,
                             ),
-                          )
-                          : const Text('Add Product'),
+                          ) : const Text('Add Product'),
                 ),
               ],
             ),
