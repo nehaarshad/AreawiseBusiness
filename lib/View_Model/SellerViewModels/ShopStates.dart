@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../models/ProductModel.dart';
-import '../../models/SubCategoryModel.dart';
 import '../../models/categoryModel.dart';
 
 //Multiple state management at a time in riverpod done by using CopyWith Method

@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/logout_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,13 +38,13 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
               child: Column(
                 children: [
                   ProfileImageWidget(user: user, height: 150, weidth: 150),
-                  SizedBox(height: 36),
+                  SizedBox(height: 20),
                   userInfo(user: user),
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
-                  addressInfo(address: user.address),
-                  SizedBox(height: 30),
+                  Expanded(child: addressInfo(address: user.address)),
+                  SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: ElevatedButton(

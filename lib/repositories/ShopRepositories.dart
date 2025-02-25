@@ -24,7 +24,8 @@ class ShopRepositories {
     Map<String, dynamic> data,
     String id,
     List<File>? images,
-  ) async {
+  ) async
+  {
     try {
       dynamic response = await apiservice.PostApiWithMultiport(
         AppApis.AddUserShopEndPoints.replaceFirst(':id', id),

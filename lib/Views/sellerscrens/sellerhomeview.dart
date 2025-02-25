@@ -51,7 +51,7 @@ class _sellerhomeviewState extends ConsumerState<sellerhomeview> {
               ),
             ],
           ),
-          Products(userid: widget.id),
+          AllProducts(userid: widget.id),
         ],
       ),
     );

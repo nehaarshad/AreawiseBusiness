@@ -1,9 +1,6 @@
-import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../FutureProviders/ProductsViewModel.dart';
-import '../shared/widgets/colors.dart';
+import '../../View_Model/SharedViewModels/productViewModels.dart';
 
 class ProductsView extends ConsumerStatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
@@ -13,9 +10,17 @@ class ProductsView extends ConsumerStatefulWidget {
 }
 
 class _ProductsViewState extends ConsumerState<ProductsView> {
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch all products when the widget is first created
+    ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final productState = ref.watch(getAllProductProvider);
+    final productState = ref.watch(sharedProductViewModelProvider);
     return productState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (products) {

@@ -28,14 +28,12 @@ class _addProductViewState extends ConsumerState<addProductView> {
   @override
   void initState() {
     super.initState();
-    ref
-        .read(addProductProvider(widget.shop.id.toString()).notifier)
-        .getCategories();
+    ref.read(addProductProvider(widget.shop.toString()).notifier).getCategories();
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(addProductProvider(widget.shop.id.toString()));
+    final state = ref.watch(addProductProvider(widget.shop.toString()));
     return Scaffold(
       appBar: AppBar(title: Text("Add Product")),
       body: SingleChildScrollView(
@@ -68,13 +66,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                                   color: Colors.red,
                                 ),
                                 onPressed: () {
-                                  ref
-                                      .read(
-                                        addProductProvider(
-                                          widget.shop.id.toString(),
-                                        ).notifier,
-                                      )
-                                      .removeImage(index);
+                                  ref.read(addProductProvider(widget.shop.toString()).notifier).removeImage(index);
                                 },
                               ),
                             ),
@@ -85,13 +77,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                   ),
                 ElevatedButton(
                   onPressed: () {
-                    ref
-                        .read(
-                          addProductProvider(
-                            widget.shop.id.toString(),
-                          ).notifier,
-                        )
-                        .pickImages(context);
+                    ref.read(addProductProvider(widget.shop.toString()).notifier).pickImages(context);
                   },
                   child: Text("Upload Images"),
                 ),
@@ -140,26 +126,19 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     return null;
                   },
                 ),
-                ProductCategoryDropdown(shopid: widget.shop.id.toString()),
-                ProductSubcategoryDropdown(shopId: widget.shop.id.toString()),
+                ProductCategoryDropdown(shopid: widget.shop.toString()),
+                ProductSubcategoryDropdown(shopId: widget.shop.toString()),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed:
-                      state.isLoading
-                          ? null
-                          : () async {
+                  onPressed: state.isLoading ? null : () async {
                             if (formkey.currentState!.validate()) {
-                              await ref
-                                  .read(
-                                    addProductProvider(
-                                      widget.shop.id.toString(),
-                                    ).notifier,
-                                  )
+                              await ref.read(addProductProvider(widget.shop.toString(),).notifier,)
                                   .addProduct(
                                     name: name.text.toString(),
                                     price: price.text,
                                     description: description.text.toString(),
                                     stock: stock.text,
+                                    user:widget.shop.userId.toString(),
                                     context: context,
                                   );
                             }

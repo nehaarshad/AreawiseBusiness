@@ -10,7 +10,8 @@ import '../shared/widgets/colors.dart';
 
 class updateShopView extends ConsumerStatefulWidget {
   int id;
-  updateShopView({required this.id});
+  String userid;
+  updateShopView({required this.id,required this.userid});
 
   @override
   ConsumerState<updateShopView> createState() => _updateShopViewState();
@@ -27,12 +28,9 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(updateShopProvider(widget.id.toString()).notifier)
-          .initValues(widget.id.toString())
+      ref.read(updateShopProvider(widget.id.toString()).notifier).initValues(widget.id.toString())
           .then((_) {
-            final shop =
-                ref.read(updateShopProvider(widget.id.toString())).value;
+            final shop = ref.read(updateShopProvider(widget.id.toString())).value;
             print('Loaded shop: ${shop}');
             if (shop != null) {
               shopname.text = shop.shopname ?? '';
@@ -41,9 +39,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
               city.text = shop.city ?? '';
             }
           });
-      ref
-          .read(updateShopProvider(widget.id.toString()).notifier)
-          .getCategories();
+      ref.read(updateShopProvider(widget.id.toString()).notifier).getCategories();
     });
   }
 
@@ -102,18 +98,9 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                                     right: 0,
                                     top: 0,
                                     child: IconButton(
-                                      icon: Icon(
-                                        Icons.remove_circle,
-                                        color: Colors.red,
-                                      ),
+                                      icon: Icon(Icons.remove_circle, color: Colors.red,),
                                       onPressed: () {
-                                        ref
-                                            .read(
-                                              updateShopProvider(
-                                                widget.id.toString(),
-                                              ).notifier,
-                                            )
-                                            .removeImage(index);
+                                        ref.read(updateShopProvider(widget.id.toString(),).notifier,).removeImage(index);
                                       },
                                     ),
                                   ),
@@ -125,12 +112,8 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                       ),
                     ElevatedButton(
                       onPressed: () {
-                        ref
-                            .read(
-                              updateShopProvider(widget.id.toString()).notifier,
-                            )
-                            .pickImages(context);
-                      },
+                        ref.read(updateShopProvider(widget.id.toString()).notifier,).pickImages(context);
+                        },
                       child: Text("Upload Images"),
                     ),
                     TextFormField(
@@ -177,37 +160,15 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     UpdateShopcategoryDropdown(userid: widget.id.toString()),
                     SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed:
-                          state.isLoading
-                              ? null
-                              : () async {
+                      onPressed: state.isLoading ? null : () async {
                                 if (formkey.currentState!.validate()) {
-                                  print(
-                                    "shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",
-                                  ); // Debugging line
+                                  print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",); // Debugging line
 
-                                  await ref
-                                      .read(
-                                        updateShopProvider(
-                                          widget.id.toString(),
-                                        ).notifier,
-                                      )
-                                      .updateShop(
-                                        shopname: shopname.text,
-                                        shopaddress: shopaddress.text,
-                                        sector: sector.text,
-                                        city: city.text,
-                                        context: context,
-                                      );
+                                  await ref.read(updateShopProvider(widget.id.toString(),).notifier,)
+                                      .updateShop(shopname: shopname.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:widget.userid.toString(), context: context,);
                                 }
                               },
-                      child:
-                          state.isLoading
-                              ? Center(
-                                child: CircularProgressIndicator(
-                                  color: Appcolors.blueColor,
-                                ),
-                              )
+                      child: state.isLoading ? Center(child: CircularProgressIndicator(color: Appcolors.blueColor,),)
                               : const Text('Update Shop'),
                     ),
                   ],

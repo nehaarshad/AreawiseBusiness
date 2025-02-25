@@ -1,10 +1,8 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
-
-import '../../core/utils/routes/routes_names.dart';
 import '../shared/widgets/colors.dart';
 
 class Cartview extends ConsumerStatefulWidget {
@@ -58,7 +56,9 @@ class _CartviewState extends ConsumerState<Cartview> {
               child: CircularProgressIndicator(color: Appcolors.blueColor),
             ),
         data: (cart) {
-          print("Cart Data: ${cart?.toJson()}");
+          if (kDebugMode) {
+            print("Cart Data: ${cart?.toJson()}");
+          }
           if (cart == null || cart.cartItems == null || cart.cartItems!.isEmpty) {
             return const SizedBox.shrink(
               child: Center(child: Text("No Active Cart Found!")),
@@ -73,10 +73,14 @@ class _CartviewState extends ConsumerState<Cartview> {
                   itemBuilder: (context, index) {
                     final item = cart.cartItems![index];
                     if (item.product == null) {
-                      print("item have no product");
+                      if (kDebugMode) {
+                        print("item have no product");
+                      }
                       return const SizedBox.shrink();
                     }
-                    print("Image URL: ${item.product?.images?.first.imageUrl}");
+                    if (kDebugMode) {
+                      print("Image URL: ${item.product?.images?.first.imageUrl}");
+                    }
                     return Card(
                       margin: const EdgeInsets.only(bottom: 16),
                       child: Padding(
@@ -150,7 +154,9 @@ class _CartviewState extends ConsumerState<Cartview> {
                                                   int newQuantity =
                                                       item.quantity! -
                                                       1; // Decrease quantity
-                                                  print("Decrement to: $newQuantity");
+                                                  if (kDebugMode) {
+                                                    print("Decrement to: $newQuantity");
+                                                  }
                                                   ref
                                                       .read(
                                                         cartViewModelProvider(
@@ -166,12 +172,7 @@ class _CartviewState extends ConsumerState<Cartview> {
                                                 : null, // Disable button if quantity is 1
                                         icon: const Icon(Icons.remove_circle_outline),
                                       ),
-
-                                      Text(
-                                        '${item.quantity!}',
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-
+                                      Text('${item.quantity!}', style: const TextStyle(fontSize: 16),),
                                       IconButton(
                                         onPressed:
                                             (item.quantity != null &&
@@ -184,14 +185,15 @@ class _CartviewState extends ConsumerState<Cartview> {
                                                   int newQuantity =
                                                       item.quantity! +
                                                       1; // Increase quantity
-                                                  print("Increment to: $newQuantity");
+                                                  if (kDebugMode) {
+                                                    print("Increment to: $newQuantity");
+                                                  }
                                                   ref.read(cartViewModelProvider(widget.id.toString(),).notifier,)
                                                       .updateCartItem(widget.id.toString(), item.id!.toString(), newQuantity,);
                                                 }
                                                 : null, // Disable if max stock is reached
                                         icon: const Icon(Icons.add_circle_outline),
                                       ),
-
                                       const Spacer(),
                                       IconButton(
                                         onPressed: () {

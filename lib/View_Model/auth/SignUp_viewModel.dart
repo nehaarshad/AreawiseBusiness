@@ -1,4 +1,3 @@
-import 'package:ecommercefrontend/View_Model/auth/sessionmanagementViewModel.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,19 +13,23 @@ class signupviewmodel extends StateNotifier<bool> {
   final Ref ref;
   signupviewmodel(this.ref) : super(false);
 
-  Future<void> SignUpApi(dynamic data, BuildContext context) async {
+  Future<void> SignUpApi(Map<String,dynamic> data, BuildContext context) async {
     try {
       state = true;
       dynamic response = await ref.read(authprovider).sinupapi(data);
-      if (response != null && response['status'] == 201) {
+      print("API Response: $response");
+      if (response != null) {
         UserModel user = UserModel.fromJson(response);
-        await ref.read(sessionProvider.notifier).saveuser(user);
+        print(user);
         Utils.flushBarErrorMessage("Signup Successful", context);
+        await Future.delayed(Duration(seconds: 2));
         Navigator.pushNamed(context, routesName.login);
-      } else {
+      }
+      else {
         Utils.flushBarErrorMessage("Signup Failed", context);
       }
     } catch (error) {
+      print("Error: $error");
       Utils.flushBarErrorMessage(error.toString(), context);
     } finally {
       state = false;

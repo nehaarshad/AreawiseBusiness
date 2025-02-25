@@ -1,13 +1,11 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
-import 'package:ecommercefrontend/repositories/OrderRepositories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../Views/shared/widgets/colors.dart';
-import '../../models/UserDetailModel.dart';
 import '../../models/cartModel.dart';
 import '../../models/orderModel.dart';
-import '../../repositories/UserDetailsRepositories.dart';
+import '../../repositories/checkoutRepositories.dart';
 
 final orderViewModelProvider=StateNotifierProvider<OrderViewModelProvider,AsyncValue<orderModel?>>((ref){
   return OrderViewModelProvider(ref:ref);
@@ -45,6 +43,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
   Future<void> cancelOrder(String id) async {
     try {
       Cart order = await ref.read(orderProvider).cancelOrder(id);
+      print(order);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);

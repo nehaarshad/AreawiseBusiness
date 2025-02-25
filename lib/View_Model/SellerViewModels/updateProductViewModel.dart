@@ -11,13 +11,8 @@ import '../../repositories/categoriesRepository.dart';
 import '../../repositories/product_repositories.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'ProductStates.dart';
 
-final updateProductProvider = StateNotifierProvider.family<
-  UpdateProductViewModel,
-  AsyncValue<ProductModel?>,
-  String
->((ref, id) {
+final updateProductProvider = StateNotifierProvider.family<UpdateProductViewModel, AsyncValue<ProductModel?>, String>((ref, id) {
   return UpdateProductViewModel(ref, id);
 });
 
@@ -189,12 +184,6 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
         throw Exception('Please select 1 to 7 images');
       }
       state = const AsyncValue.loading();
-      // final categoryName = state.isCustomCategory ? state.customCategoryName : state.selectedCategory?.name;
-      // final subcategoryName = state.isCustomSubcategory ? state.customSubcategoryName : state.selectedSubcategory?.name;
-      //
-      // if (categoryName == null || subcategoryName == null) {
-      //   throw Exception('Category or subcategory Field is empty!');
-      // }
 
       final data = {
         'name': name,
@@ -205,25 +194,15 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
         'subcategory': selectedSubCategory?.name ?? customSubCategoryName,
       };
 
-      print(
-        "Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}",
-      );
-      print(
-        "Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}",
-      );
-      print(
-        "Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}",
-      );
-      print(
-        "Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}",
-      );
+      print("Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}",);
+      print("Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}",);
+      print("Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}",);
+      print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}",);
 
       final imageFiles = images.map((img) => img.file!).toList();
-      final response = await ref
-          .read(productProvider)
-          .updateProduct(data, id, imageFiles);
+      final response = await ref.read(productProvider).updateProduct(data, id.toString(), imageFiles);
       final updateProduct = ProductModel.fromJson(response);
-      state = AsyncValue.data(updateProduct);
+     print("update product responce: ${updateProduct}");
       Navigator.pop(context);
     } catch (e) {
       print(e);

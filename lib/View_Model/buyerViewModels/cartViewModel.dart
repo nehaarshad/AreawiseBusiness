@@ -1,5 +1,6 @@
 import 'package:ecommercefrontend/models/cartModel.dart';
 import 'package:ecommercefrontend/repositories/cartRepositories.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   Future<void> deleteCartItem(String id) async {
     try {
       dynamic items = await ref.read(cartProvider).deleteCartItem(id);
-      //state=AsyncValue.data(items);
+      print(items);
       getUserCart(id);
     } catch (e) {
       print(e);
@@ -42,6 +43,7 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   Future<void> deleteUserCart(String id, BuildContext context) async {
     try {
       dynamic items = await ref.read(cartProvider).deleteUserCart(id);
+      print(items);
       // state=AsyncValue.data(items);
       getUserCart(id);
       // Navigator.pop(context);
@@ -55,7 +57,10 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   Future<void> addToCart(String id, int data) async {
     try {
       Cart items = await ref.read(cartProvider).addToCart(id, data);
-      state = AsyncValue.data(items);
+      if (kDebugMode) {
+        print(items);
+      }
+      getUserCart(id);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
@@ -66,6 +71,9 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   Future<void> updateCartItem(String userId, String id, int data) async {
     try {
       Cart items = await ref.read(cartProvider).updateCartItem(id, data);
+      if (kDebugMode) {
+        print(items);
+      }
       getUserCart(userId);
     } catch (e) {
       print(e);

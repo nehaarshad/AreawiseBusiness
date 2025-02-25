@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/Views/buyer_screens/buyerBottomnavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../widgets/logout_button.dart';
 import 'ShopView.dart';
 import '../../buyer_screens/CartView.dart';
 import '../../buyer_screens/WishListView.dart';
@@ -57,7 +58,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
       SellerShopsView(id: widget.id),
       Sellerproductsview(id: widget.id),
       sellerhomeview(id: widget.id),
-      OrdersView(id: widget.id),
+      OrdersView(sellerId: widget.id),
       profileDetailView(id: widget.id),
     ];
   }
@@ -99,10 +100,10 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
             child: Row(
               children: [
-                // Text("E-Commerce ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-                //  SizedBox(width: 20,),
                 Text("SellerMode", style: TextStyle(fontSize: 12)),
                 Switch(value: isSeller, onChanged: toggglebutton),
+                SizedBox(width: 20,),
+                logoutbutton(),
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ecommercefrontend/View_Model/SellerViewModels/sellerShopViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:ecommercefrontend/core/utils/utils.dart';
@@ -11,11 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../models/categoryModel.dart';
 import '../../repositories/categoriesRepository.dart';
 
-final updateShopProvider = StateNotifierProvider.family<
-  UpdateShopViewModel,
-  AsyncValue<ShopModel?>,
-  String
->((ref, id) {
+final updateShopProvider = StateNotifierProvider.family<UpdateShopViewModel, AsyncValue<ShopModel?>, String>((ref, id) {
   return UpdateShopViewModel(ref, id);
 });
 
@@ -140,6 +137,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     required String shopaddress,
     required String sector,
     required String city,
+    required String userid,
     required BuildContext context,
   }) async {
     try {
@@ -160,12 +158,13 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       print('Data send: ${data}');
       final imageFiles = images.map((img) => img.file!).toList();
 
-      final response = await ref
-          .read(shopProvider)
-          .updateShop(data, id, imageFiles);
+      final response = await ref.read(shopProvider).updateShop(data, id, imageFiles);
 
       final updatedShop = ShopModel.fromJson(response);
       state = AsyncValue.data(updatedShop);
+      ref.invalidate(sellerShopViewModelProvider(userid.toString()));
+      await ref.read(sellerShopViewModelProvider(userid.toString()).notifier).getShops(userid.toString());
+      await Future.delayed(Duration(milliseconds: 500));
       Navigator.pop(context);
     } catch (e) {
       print(e);

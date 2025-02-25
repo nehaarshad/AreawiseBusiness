@@ -150,10 +150,12 @@ class _addShopViewState extends ConsumerState<addShopView> {
                                     ).notifier,
                                   )
                                   .addShop(
-                                    shopname: shopname.text,
-                                    shopaddress: shopaddress.text,
-                                    sector: sector.text,
-                                    city: city.text,
+                                    shopname: shopname.text.trim(),
+                                    shopaddress: shopaddress.text.trim(),
+                                    sector: sector.text.trim(),
+                                    city: city.text.trim(),
+                                userId:widget.id,
+                                context: context
                                   );
                             }
                           },

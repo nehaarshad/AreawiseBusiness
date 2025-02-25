@@ -1,3 +1,4 @@
+import 'UserDetailModel.dart';
 import 'cartItemModel.dart';
 
 class Cart {
@@ -6,16 +7,17 @@ class Cart {
   String? status;
   String? createdAt;
   String? updatedAt;
+  UserDetailModel? user;
   List<CartItems>? cartItems;
 
-  Cart({
-    this.id,
-    this.userId,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-    this.cartItems,
-  });
+  Cart(
+      {this.id,
+        this.userId,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+        this.user,
+        this.cartItems});
 
   Cart.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -23,6 +25,7 @@ class Cart {
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    user = json['user'] != null ? new UserDetailModel.fromJson(json['user']) : null;
     if (json['CartItems'] != null) {
       cartItems = <CartItems>[];
       json['CartItems'].forEach((v) {
@@ -38,6 +41,9 @@ class Cart {
     data['status'] = this.status;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
     if (this.cartItems != null) {
       data['CartItems'] = this.cartItems!.map((v) => v.toJson()).toList();
     }

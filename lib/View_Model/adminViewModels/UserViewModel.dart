@@ -1,13 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import '../../models/UserDetailModel.dart';
-import '../../models/auth_users.dart';
 import '../../repositories/UserDetailsRepositories.dart';
 
-final UserViewModelProvider =
-    StateNotifierProvider<UserViewModel, AsyncValue<List<UserDetailModel?>>>((
+final UserViewModelProvider = StateNotifierProvider<UserViewModel, AsyncValue<List<UserDetailModel?>>>((
       ref,
     ) {
       return UserViewModel(ref);

@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/View_Model/buyerViewModels/WishListViewModel.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/imageSlider.dart';
+import '../widgets/wishListButton.dart';
 
 class productDetailView extends ConsumerStatefulWidget {
   int userid;
@@ -22,21 +24,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  routesName.sEditProduct,
-                  arguments: widget.product,
-                );
-              },
-              icon: Icon(Icons.edit, color: Appcolors.blueColor),
-            ),
-          ),
-        ],
+
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -60,13 +48,19 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                     SizedBox(height: 10),
                     Column(
                       children: [
-                        Text(
-                          "${widget.product.name}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            color: Colors.black,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              "${widget.product.name}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                color: Colors.black,
+                              ),
+                            ),
+                            WishlistButton( userId: widget.userid.toString(),product:widget.product),
+
+                          ],
                         ),
                         SizedBox(height: 15),
                         Row(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
@@ -31,12 +33,16 @@ class AuthRepositories {
     }
   }
 
-  Future<dynamic> sinupapi(dynamic data) async {
+  Future<dynamic> sinupapi(Map<String,dynamic> data) async {
     try {
+
+      final request=jsonEncode(data);
+      print("Send Data As: ${request}");
+      final headers = {'Content-Type': 'application/json'};
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.signUpEndPoints,
-        data,
-        {},
+        request,
+        headers,
       );
       return response;
     } catch (e) {

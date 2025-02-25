@@ -1,4 +1,3 @@
-import 'package:ecommercefrontend/Views/shared/Screens/ShopView.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/logout_button.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';

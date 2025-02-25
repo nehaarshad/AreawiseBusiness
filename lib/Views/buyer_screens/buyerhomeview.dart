@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../View_Model/UserProfile/UserProfileViewModel.dart';
 import '../shared/widgets/DashBoardProductsView.dart';
-import '../shared/widgets/logout_button.dart';
-import '../shared/widgets/profileImageWidget.dart';
 
 //get userId
 class buyerhomeview extends ConsumerStatefulWidget {
@@ -18,7 +14,6 @@ class buyerhomeview extends ConsumerStatefulWidget {
 class _buyerhomeviewState extends ConsumerState<buyerhomeview> {
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(UserProfileViewModelProvider(widget.id.toString()));
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -54,7 +49,7 @@ class _buyerhomeviewState extends ConsumerState<buyerhomeview> {
               ),
             ],
           ),
-          Products(userid: widget.id),
+          AllProducts(userid: widget.id),
         ],
       ),
     );

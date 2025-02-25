@@ -1,5 +1,5 @@
 class AppApis {
-  static var baseurl = "http://192.168.188.179:5000/api";
+  static var baseurl = "http://192.168.169.179:5000/api";
 
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
@@ -59,6 +59,11 @@ class AppApis {
   static var GetWishListofUserEndPoints = "$baseurl/GetWishList/:id";
   static var AddToWishListEndPoints = "$baseurl/AddToWishList/:id";
   static var RemoveFromWishListEndPoints = "$baseurl/RemoveFromWishList/:id";
+
+  //ordersAPIS
+  static var getSellerOrderRequestsEndPoints = "$baseurl/seller/:id";
+  static var getCustomersOrdersEndPoints = "$baseurl/customer/:id";
+  static var updateSellerOrderRequestsStatusEndPoints = "$baseurl/:id";
 
   //Filter Operations (shop -> {name,category}  , products ->{category,name,subcategory,price)
   static var SearchShopByNameEndPoints = "$baseurl/getshopByName/:shopname";

@@ -3,7 +3,6 @@ import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import '../../../View_Model/auth/login_viewModel.dart';
 import '../../shared/widgets/buttons.dart';
 
@@ -93,20 +92,20 @@ class _login_viewState extends ConsumerState<login_view> {
                           "Please Enter Username",
                           context,
                         );
-                      } else if (_passwordController.text.isEmpty) {
+                      } else if (_passwordController.text.trim().isEmpty) {
                         Utils.flushBarErrorMessage(
                           "Please Enter Password",
                           context,
                         );
-                      } else if (_passwordController.text.length < 8) {
+                      } else if (_passwordController.text.trim().length < 8) {
                         Utils.flushBarErrorMessage(
                           "Please Enter 8 digit Password",
                           context,
                         );
                       } else {
                         Map data = {
-                          'username': _usernameController.text.toString(),
-                          'password': _passwordController.text.toString(),
+                          'username': _usernameController.text.trim().toString(),
+                          'password': _passwordController.text.trim().toString(),
                         };
                         loginViewModel.loginApi(data, context);
                       }

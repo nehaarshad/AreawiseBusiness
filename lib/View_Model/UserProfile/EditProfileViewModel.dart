@@ -7,6 +7,8 @@ import '../../core/utils/utils.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 
+import 'UserProfileViewModel.dart';
+
 final editProfileViewModelProvider = StateNotifierProvider.family<EditProfileViewModel, AsyncValue<UserDetailModel?>, String>((ref, id) {
   return EditProfileViewModel(ref, id);
 });
@@ -47,6 +49,7 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
     }
   }
 
+  @override
   void dispose() {
     username.dispose();
     email.dispose();
@@ -55,6 +58,7 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
     sector.dispose();
     city.dispose();
     address.dispose();
+    super.dispose();
   }
 
   Future<void> pickImages() async {
@@ -81,6 +85,8 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       final updatedUser = UserDetailModel.fromJson(response);
       state = AsyncValue.data(updatedUser);
       Utils.toastMessage("User Updated Successfully!");
+      await ref.read(UserProfileViewModelProvider(id).notifier).getuserdetail(id);
+      await Future.delayed(Duration(seconds: 1));
       Navigator.pop(context);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

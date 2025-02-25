@@ -3,11 +3,11 @@ import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
-import '../../View_Model/SellerViewModels/ShopViewModel.dart';
+import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 
 class SellerShopsView extends ConsumerStatefulWidget {
-  int id;
+  int id;//userId
   SellerShopsView({required this.id});
 
   @override
@@ -17,17 +17,14 @@ class SellerShopsView extends ConsumerStatefulWidget {
 class _ShopsViewState extends ConsumerState<SellerShopsView> {
   @override
   Widget build(BuildContext context) {
-    final shopState = ref.watch(shopViewModelProvider(widget.id.toString()));
+    final shopState = ref.watch(sellerShopViewModelProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Center(child: Text("My Shops")),
       ),
       body: shopState.when(
-        loading:
-            () => const Center(
-              child: CircularProgressIndicator(color: Appcolors.blueColor),
-            ),
+        loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
         data: (shops) {
           if (shops.isEmpty) {
             return const Center(child: Text("No Shops Available"));
@@ -61,10 +58,14 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                       children: [
                         IconButton(
                           onPressed: () {
+                            final parameters={
+                              'shopid':shop!.id,
+                              'userid':widget.id.toString(),
+                            };
                             Navigator.pushNamed(
                               context,
                               routesName.sEditShop,
-                              arguments: shop!.id,
+                              arguments: parameters,
                             );
                           },
                           icon: Icon(Icons.edit, color: Appcolors.blueColor),
@@ -72,18 +73,8 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () async {
-                            await ref
-                                .read(
-                                  shopViewModelProvider(
-                                    widget.id.toString(),
-                                  ).notifier,
-                                )
+                            await ref.read(sellerShopViewModelProvider(widget.id.toString(),).notifier)
                                 .deleteShop(shop!.id.toString());
-                            await ref.read(
-                              shopViewModelProvider(
-                                widget.id.toString(),
-                              ).notifier,
-                            );
                           },
                         ),
                       ],
@@ -94,10 +85,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
             },
           );
         },
-        error:
-            (error, stackTrace) =>
-                Center(child: Text('Error: ${error.toString()}')),
-      ),
+        error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(100, 0, 100, 100),
         child: SizedBox(
@@ -107,7 +95,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
               Navigator.pushNamed(
                 context,
                 routesName.sAddShop,
-                arguments: widget.id,
+                arguments: widget.id,//send userId
               );
             },
             style: ElevatedButton.styleFrom(

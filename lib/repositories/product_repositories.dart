@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:ecommercefrontend/models/ProductModel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
@@ -18,18 +18,11 @@ class ProductRepositories {
 
   baseapiservice apiservice = networkapiservice();
 
-  Future<Map<String, dynamic>> addProduct(
-    Map<String, dynamic> data,
-    String id,
-    List<File>? images,
-  ) async {
+  Future<ProductModel> addProduct(Map<String, dynamic> data, String id, List<File>? images,) async
+  {
     try {
-      dynamic response = await apiservice.PostApiWithMultiport(
-        AppApis.AddProductEndPoints.replaceFirst(':id', id),
-        data,
-        images,
-      );
-      return response;
+      dynamic response = await apiservice.PostApiWithMultiport(AppApis.AddProductEndPoints.replaceFirst(':id', id), data, images,);
+      return ProductModel.fromJson(response);
     } catch (e) {
       print("Error:${e}");
       throw e;
@@ -39,16 +32,9 @@ class ProductRepositories {
   Future<List<ProductModel>> getProduct() async {
     List<ProductModel> productlist = [];
     try {
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.GetProductsEndPoints,
-      );
+      dynamic response = await apiservice.GetApiResponce(AppApis.GetProductsEndPoints);
       if (response is List) {
-        return response
-            .map(
-              (products) =>
-                  ProductModel.fromJson(products as Map<String, dynamic>),
-            )
-            .toList();
+        return response.map((products) => ProductModel.fromJson(products as Map<String, dynamic>),).toList();
       }
       productlist = [ProductModel.fromJson(response)];
       return productlist;
@@ -66,7 +52,7 @@ class ProductRepositories {
       ProductModel productlist = ProductModel.fromJson(response);
       return productlist;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -87,7 +73,7 @@ class ProductRepositories {
       productlist = [ProductModel.fromJson(response)];
       return productlist;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -108,7 +94,7 @@ class ProductRepositories {
       productlist = [ProductModel.fromJson(response)];
       return productlist;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -124,10 +110,12 @@ class ProductRepositories {
         data,
         images,
       );
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -139,7 +127,7 @@ class ProductRepositories {
       );
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

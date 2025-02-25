@@ -122,12 +122,20 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
       final data = {
         'username': viewModel.username.text,
         'email': viewModel.email.text,
-        'contactnumber': viewModel.contactnumber.text,
+        'contactnumber': int.parse(viewModel.contactnumber.text),
         'role': viewModel.role.text,
         'sector': viewModel.sector.text,
         'city': viewModel.city.text,
         'address': viewModel.address.text,
       };
+      print("useranme:  ${data['username']} with type:  ${data['username'].runtimeType}");
+      print("email:  ${data['email']} with type:  ${data['email'].runtimeType}");
+      print("contactnumber:  ${data['contactnumber']} with type:  ${data['contactnumber'].runtimeType}");
+      print("password:  ${data['password']} with type:  ${data['password'].runtimeType}");
+      print("role:  ${data['role']} with type:  ${data['role'].runtimeType}");
+      print("sector:  ${data['sector']} with type:  ${data['sector'].runtimeType}");
+      print("city:  ${data['city']} with type:  ${data['city'].runtimeType}");
+      print("address:  ${data['address']} with type:  ${data['address'].runtimeType}");
       viewModel.updateUser(data, viewModel.uploadimage, context);
     }
   }

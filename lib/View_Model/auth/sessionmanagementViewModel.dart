@@ -1,6 +1,4 @@
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
-
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/auth_users.dart';

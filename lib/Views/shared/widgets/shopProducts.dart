@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
-class AllProducts extends ConsumerStatefulWidget {
-  int userid;
-  AllProducts({required this.userid});
+class shopProducts extends ConsumerStatefulWidget {
+  String shopId;
+  shopProducts({required this.shopId});
 
   @override
-  ConsumerState<AllProducts> createState() => _ProductsViewState();
+  ConsumerState<shopProducts> createState() => _ProductsViewState();
 }
 
-class _ProductsViewState extends ConsumerState<AllProducts> {
+class _ProductsViewState extends ConsumerState<shopProducts> {
 
   @override
   void initState() {
     super.initState();
     // Fetch all products when the widget is first created
-    ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+    ref.read(sharedProductViewModelProvider.notifier).getShopProduct(widget.shopId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final productState = ref.watch(sharedProductViewModelProvider);;
+    final productState =ref.watch(sharedProductViewModelProvider);
     return productState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (products) {
@@ -41,7 +41,7 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
                   Navigator.pushNamed(
                     context,
                     routesName.productdetail,
-                    arguments: {'id': widget.userid, 'product': product},
+                    arguments: {'id': widget.shopId, 'product': product},
                   );
                 },
                 child: Card(
@@ -57,14 +57,14 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
                       children: [
                         Expanded(
                           child:
-                              product?.images != null &&
-                                      product!.images!.isNotEmpty
-                                  ? Image.network(
-                                    product.images!.first.imageUrl!,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  )
-                                  : const Icon(Icons.image_not_supported),
+                          product?.images != null &&
+                              product!.images!.isNotEmpty
+                              ? Image.network(
+                            product.images!.first.imageUrl!,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          )
+                              : const Icon(Icons.image_not_supported),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

@@ -27,7 +27,8 @@ class networkapiservice extends baseapiservice {
     String url,
     dynamic data,
     Map<String, String> headers,
-  ) async {
+  ) async
+  {
     dynamic responseJson;
     try {
       Response response = await post(
@@ -47,7 +48,8 @@ class networkapiservice extends baseapiservice {
     String url,
     dynamic data,
     Map<String, String> headers,
-  ) async {
+  ) async
+  {
     dynamic responseJson;
     try {
       Response response = await put(
@@ -64,10 +66,9 @@ class networkapiservice extends baseapiservice {
   }
 
   Future PostApiWithMultiport(
-    String url,
-    Map<String, dynamic> data,
-    List<File>? files,
-  ) async {
+      String url, Map<String, dynamic> data, List<File>? files,
+      ) async
+  {
     try {
       final request = new http.MultipartRequest('POST', Uri.parse(url));
 
@@ -107,7 +108,8 @@ class networkapiservice extends baseapiservice {
     String url,
     Map<String, dynamic> data,
     List<File>? files,
-  ) async {
+  ) async
+  {
     try {
       final request = new http.MultipartRequest('PUT', Uri.parse(url));
 
@@ -147,7 +149,8 @@ class networkapiservice extends baseapiservice {
     String url,
     Map<String, dynamic> data,
     File? files,
-  ) async {
+  ) async
+  {
     try {
       final request = new http.MultipartRequest('PUT', Uri.parse(url));
 
@@ -180,12 +183,30 @@ class networkapiservice extends baseapiservice {
     }
   }
 
-  Future DeleteApiResponce(String url) async {
+  Future DeleteApiResponce(String url) async
+  {
     dynamic responseJson;
     try {
       Response response = await delete(
         Uri.parse(url),
       ).timeout(Duration(seconds: 10));
+
+      responseJson = httpResponse(response);
+    } on SocketException {
+      throw fetchdataException("No Internet Connnection");
+    }
+    return responseJson;
+  }
+
+  @override
+  Future DeleteApiWithJson(String url, data, Map<String, String> headers) async{
+    dynamic responseJson;
+    try {
+      Response response = await delete(
+        Uri.parse(url),
+        body: data,
+        headers: headers,
+      ).timeout(Duration(seconds: 30));
 
       responseJson = httpResponse(response);
     } on SocketException {
@@ -214,4 +235,5 @@ class networkapiservice extends baseapiservice {
         );
     }
   }
+
 }

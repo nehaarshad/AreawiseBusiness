@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/utils.dart';
 import '../../repositories/product_repositories.dart';
+import '../SharedViewModels/productViewModels.dart';
 import 'ProductStates.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +45,7 @@ import 'package:flutter/material.dart';
 
 // StateNotifierProvider for AddProductViewModel
 
-final addProductProvider =
-    StateNotifierProvider.family<AddProductViewModel, ProductState, String>((
-      ref,
-      id,
-    ) {
+final addProductProvider = StateNotifierProvider.family<AddProductViewModel, ProductState, String>((ref, id,) {
       return AddProductViewModel(ref, id);
     });
 
@@ -160,69 +156,72 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     required String price,
     required String description,
     required String stock,
+    required String user,
     required BuildContext context,
   }) async {
     try {
+      // Validate images
       if (state.images.isEmpty || state.images.length > 7) {
         throw Exception('Please select 1 to 7 images');
       }
-      state = state.copyWith(isLoading: true);
-      final categoryName =
-          state.isCustomCategory
-              ? state.customCategoryName
-              : state.selectedCategory?.name;
-      final subcategoryName =
-          state.isCustomSubcategory
-              ? state.customSubcategoryName
-              : state.selectedSubcategory?.name;
 
-      if (categoryName == null || subcategoryName == null) {
-        throw Exception('Category or subcategory Field is empty!');
+      // Validate price and stock
+      final parsedPrice = int.tryParse(price);
+      final parsedStock = int.tryParse(stock);
+
+      if (parsedPrice == null || parsedStock == null) {
+        throw Exception('Price and stock must be valid numbers');
       }
 
+      // Validate category and subcategory
+      final categoryName = state.isCustomCategory ? state.customCategoryName : state.selectedCategory?.name;
+      final subcategoryName = state.isCustomSubcategory ? state.customSubcategoryName : state.selectedSubcategory?.name;
+
+      if (categoryName == null || subcategoryName == null) {
+        throw Exception('Category or subcategory field is empty!');
+      }
+
+      // Prepare data for the API request
       final data = {
         'name': name,
-        'price': int.tryParse(price),
+        'price': parsedPrice, // Use parsed integer value
         'description': description,
-        'stock': int.tryParse(stock),
-        'productcategory':
-            state.selectedCategory?.name ?? state.customCategoryName,
-        'productsubcategory':
-            state.selectedSubcategory?.name ?? state.customSubcategoryName,
+        'stock': parsedStock, // Use parsed integer value
+        'productcategory': categoryName,
+        'productsubcategory': subcategoryName,
       };
-      print(
-        "Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}",
-      );
-      print(
-        "Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}",
-      );
-      print(
-        "Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}",
-      );
-      print(
-        "Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}",
-      );
 
-      final response = await ref
-          .read(productProvider)
-          .addProduct(
-            data,
-            shopId.toString(),
-            state.images.whereType<File>().toList(),
-          );
-      final addproduct = ProductModel.fromJson(response);
-      state = state.copyWith(
-        product: AsyncValue.data(addproduct),
-        isLoading: false,
-      );
-      Utils.flushBarErrorMessage("Product Created!", context);
+
+      // Log request body for debugging
+      print("Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}");
+      print("Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}");
+      print("Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}");
+      print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}");
+
+      // Add product to the backend
+      await ref.read(productProvider).addProduct(data, this.shopId, state.images.whereType<File>().toList());
+
+      // Update state and show success message
+      state = state.copyWith(isLoading: false);
+
+      // Invalidate the provider to refresh the product list
+      ref.invalidate(sharedProductViewModelProvider);
+      await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(this.shopId);
+      await ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+      await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
+      // Pop the screen after a short delay
+      await Future.delayed(Duration(milliseconds: 500));
       Navigator.pop(context);
     } catch (e) {
+      // Handle errors and show error message
       Utils.flushBarErrorMessage('${e}', context);
       state = state.copyWith(
         product: AsyncValue.error(e, StackTrace.current),
         isLoading: false,
       );
+
+      // Ensure the screen pops even if an error occurs
+      Navigator.pop(context);
     }
   }
 }

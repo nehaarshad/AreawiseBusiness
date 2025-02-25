@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ecommercefrontend/FutureProviders/userShopViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/ShopStates.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
@@ -8,14 +9,9 @@ import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/utils.dart';
-import '../../repositories/product_repositories.dart';
-import 'ProductStates.dart';
+import 'sellerShopViewModel.dart';
 
-final addShopProvider =
-    StateNotifierProvider.family<AddShopViewModel, ShopState, String>((
-      ref,
-      id,
-    ) {
+final addShopProvider = StateNotifierProvider.family<AddShopViewModel, ShopState, String>((ref, id,) {
       return AddShopViewModel(ref, id);
     });
 
@@ -97,8 +93,12 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     required String shopaddress,
     required String sector,
     required String city,
-  }) async {
+    required int userId,
+    required BuildContext context
+  }) async
+  {
     try {
+
       if (state.images.isEmpty || state.images.length > 4) {
         throw Exception('Please select 1 to 4 images');
       }
@@ -116,15 +116,22 @@ class AddShopViewModel extends StateNotifier<ShopState> {
         'shopaddress': shopaddress,
         'sector': sector,
         'city': city,
-        'name': categoryName,
+        'name': categoryName.trim(),
       };
-
-      final response = await ref
-          .read(shopProvider)
-          .addShop(data, shopId, state.images.whereType<File>().toList());
+        print('data ${data}');
+      final response = await ref.read(shopProvider).addShop(data, shopId, state.images.whereType<File>().toList());
       final addshop = ShopModel.fromJson(response);
+      print(addshop);
+      state = state.copyWith(isLoading: false);
+      // Force reload the shops list - two important steps:
+      // 1. Invalidate the provider
+      ref.invalidate(sellerShopViewModelProvider(userId.toString()));
+      ref.invalidate(getAllShopProvider);
+      // 2. Explicitly call getShops to ensure data refresh
+      await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
 
-      state = state.copyWith(shop: AsyncValue.data(addshop), isLoading: false);
+      await Future.delayed(Duration(milliseconds: 500));
+      Navigator.pop(context);
     } catch (e) {
       state = state.copyWith(
         shop: AsyncValue.error(e, StackTrace.current),
