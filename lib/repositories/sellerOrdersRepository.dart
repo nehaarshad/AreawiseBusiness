@@ -43,8 +43,9 @@ class sellerOrderRepository{
 
   Future<OrdersRequestModel> updateOrderStatus(String id, Map<String,dynamic> data) async {
     try {
+      final responseData=jsonEncode(data);
       final headers = {'Content-Type': 'application/json'};
-      dynamic response = await apiservice.UpdateApiWithJson(AppApis.updateSellerOrderRequestsStatusEndPoints.replaceFirst(':id', id), data, headers,);
+      dynamic response = await apiservice.UpdateApiWithJson(AppApis.updateSellerOrderRequestsStatusEndPoints.replaceFirst(':id', id), responseData, headers,);
       return OrdersRequestModel.fromJson(response);
     } catch (e) {
       rethrow;

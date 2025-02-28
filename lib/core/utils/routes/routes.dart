@@ -17,10 +17,12 @@ import '../../../Views/shared/Screens/EditProfileView.dart';
 import '../../../Views/shared/Screens/ProductDetailView.dart';
 import '../../../Views/shared/Screens/ShopDetailView.dart';
 import '../../../Views/shared/Screens/UserProfileView.dart';
+import '../../../Views/sellerscrens/orderDetailView.dart';
 import '../../../Views/shared/Screens/splashScreen.dart';
 import '../../../models/ProductModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../models/auth_users.dart';
+import '../../../models/ordersRequestModel.dart';
 import '../../../models/shopModel.dart';
 
 class Routes {
@@ -81,6 +83,12 @@ class Routes {
         final id = arg as ProductModel;
         return MaterialPageRoute(
           builder: (BuildContext context) => updateProductView(product: id),
+        );
+
+      case (routesName.orderDetails):
+        final orderRequest = arg as OrdersRequestModel;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => OrderDetailView(orderRequest: orderRequest),
         );
 
       case (routesName.deliveryAddress):

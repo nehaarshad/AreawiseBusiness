@@ -22,6 +22,30 @@ class OrdersRequestModel {
         this.updatedAt,
         this.order});
 
+  OrdersRequestModel copyWith({
+    int? id,
+    int? sellerId,
+    int? customerId,
+    int? orderId,
+    int? orderProductId,
+    String? status,
+    String? createdAt,
+    String? updatedAt,
+    orderModel? order,
+  }) {
+    return OrdersRequestModel(
+      id: id ?? this.id,
+      sellerId: sellerId ?? this.sellerId,
+      customerId: customerId ?? this.customerId,
+      orderId: orderId ?? this.orderId,
+      orderProductId: orderProductId ?? this.orderProductId,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      order: order ?? this.order,
+    );
+  }
+
   OrdersRequestModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     sellerId = json['sellerId'];

@@ -28,11 +28,11 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   }
 
   //send id of item
-  Future<void> deleteCartItem(String id) async {
+  Future<void> deleteCartItem(String id,String userId,) async {
     try {
       dynamic items = await ref.read(cartProvider).deleteCartItem(id);
       print(items);
-      getUserCart(id);
+      await getUserCart(userId);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
@@ -40,12 +40,12 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   }
 
   //send id of cart
-  Future<void> deleteUserCart(String id, BuildContext context) async {
+  Future<void> deleteUserCart(String id,String userId, BuildContext context) async {
     try {
       dynamic items = await ref.read(cartProvider).deleteUserCart(id);
       print(items);
       // state=AsyncValue.data(items);
-      getUserCart(id);
+      await getUserCart(userId);
       // Navigator.pop(context);
     } catch (e) {
       print(e);
@@ -60,7 +60,7 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
       if (kDebugMode) {
         print(items);
       }
-      getUserCart(id);
+      await getUserCart(id);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
@@ -74,7 +74,7 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
       if (kDebugMode) {
         print(items);
       }
-      getUserCart(userId);
+      await getUserCart(userId);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);

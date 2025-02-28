@@ -1,10 +1,11 @@
+import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
-import '../../../models/ordersRequestModel.dart';
-import '../widgets/infoRow.dart';
-import '../widgets/orderStatusColor.dart';
+import '../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
+import '../../models/ordersRequestModel.dart';
+import '../shared/widgets/infoRow.dart';
+import '../shared/widgets/orderStatusColor.dart';
 
 class OrderDetailView extends ConsumerStatefulWidget {
   final OrdersRequestModel orderRequest;
@@ -16,9 +17,19 @@ class OrderDetailView extends ConsumerStatefulWidget {
 }
 
 class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
+
+  late OrdersRequestModel currentOrderRequest;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with the passed orderRequest
+    currentOrderRequest = widget.orderRequest;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final order = widget.orderRequest.order;
+    final order = currentOrderRequest.order;
     final cartItems = order?.cart?.cartItems;
 
     return Scaffold(
@@ -39,51 +50,36 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                     ? product?.images!.first.imageUrl
                     : null;
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Padding(
+                return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: imageUrl != null
-                              ? Image.network(
+                          child: imageUrl != null ? Image.network(
                             imageUrl,
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) => const _ErrorImage(),
-                          )
-                              : const _ErrorImage(),
+                          ) : const _ErrorImage(),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(product?.name ?? 'Unknown Product', style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                              ),
+                              Text(product?.name ?? 'Unknown Product', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                               const SizedBox(height: 4),
-                              Text(
-                                'Quantity: ${item.quantity}',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              Text(
-                                'Price: \$${item.price}',
-                                style: const TextStyle(fontSize: 14),
-                              ),
+                              Text('Quantity: ${item.quantity}', style: const TextStyle(fontSize: 14)),
+                              Text('Price: \$${item.price}', style: const TextStyle(fontSize: 14)),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                );
+                  );
               }).toList(),
             const SizedBox(height: 16),
             Center(child: Text("User Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
@@ -104,9 +100,9 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                     fontSize: 15
                 ),),
                 Text(
-                  " ${widget.orderRequest.status}",
+                  " ${currentOrderRequest.status}",
                   style: TextStyle(
-                    color: StatusColor(widget.orderRequest.status!),
+                    color: StatusColor(currentOrderRequest.status!),
                     fontWeight: FontWeight.bold,
                     fontSize: 15
                   ),
@@ -114,7 +110,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
               ],
             ),
             const SizedBox(height: 16),
-            if (widget.orderRequest.status == "Requested")
+            if (currentOrderRequest.status == "Requested")
               Row(
                 children: [
                   Expanded(
@@ -134,19 +130,19 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                   ),
                 ],
               ),
-            if (widget.orderRequest.status == "Approved")
+            if (currentOrderRequest.status == "Approved")
               ElevatedButton(
                 onPressed: () => updateStatus("Dispatched"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                 child: const Text("Dispatched"),
               ),
-            if (widget.orderRequest.status == "Dispatched")
+            if (currentOrderRequest.status == "Dispatched")
               ElevatedButton(
                 onPressed: () => updateStatus("Delivered"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
                 child: const Text("Delivered"),
               ),
-            if (widget.orderRequest.status == "Delivered")
+            if (currentOrderRequest.status == "Delivered")
               ElevatedButton(
                 onPressed: () => updateStatus("Completed"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -159,13 +155,18 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
   }
 
   void updateStatus(String newStatus) async {
-    await ref.read(sellerOrderViewModelProvider(widget.orderRequest.sellerId.toString()).notifier).
-    updateOrdersStatus(widget.orderRequest.orderId!.toString(), widget.orderRequest.orderProductId!,newStatus,context);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Status updated to $newStatus")));
-    Navigator.pop(context);
+    await ref.read(sellerOrderViewModelProvider(currentOrderRequest.sellerId.toString()).notifier).
+    updateOrdersStatus(
+        currentOrderRequest.orderId!.toString(),
+        currentOrderRequest.customerId.toString(),
+        currentOrderRequest.orderProductId!,newStatus,context);
+    Utils.flushBarErrorMessage("updated to ${newStatus}", context);
+    ref.refresh(sellerOrderViewModelProvider(currentOrderRequest.sellerId.toString()));
+    setState(() {
+      currentOrderRequest = currentOrderRequest.copyWith(status: newStatus);
+    });
   }
 }
-
 
 class _ErrorImage extends StatelessWidget {
   const _ErrorImage();

@@ -16,6 +16,15 @@ class Cartview extends ConsumerStatefulWidget {
 class _CartviewState extends ConsumerState<Cartview> {
   late int? cartId;
   @override
+  void initState() {
+    super.initState();
+
+    // Force refresh the cart data when this view is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(cartViewModelProvider(widget.id.toString()).notifier).getUserCart(widget.id.toString());
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(cartViewModelProvider(widget.id.toString())); //get user cart
     return Scaffold(
@@ -32,16 +41,8 @@ class _CartviewState extends ConsumerState<Cartview> {
                 onPressed:
                     cartId != null
                         ? () async {
-                          await ref
-                              .read(
-                                cartViewModelProvider(
-                                  widget.id.toString(),
-                                ).notifier,
-                              )
-                              .deleteUserCart(
-                                cartId.toString(),
-                                context,
-                              ); //delete cart
+                          await ref.read(cartViewModelProvider(widget.id.toString(),).notifier)
+                              .deleteUserCart(cartId.toString(),widget.id.toString(), context); //delete cart
                         }
                         : null, // Disable button if cart ID is null
                 icon: const Icon(Icons.delete_rounded, color: Colors.red),
@@ -197,7 +198,7 @@ class _CartviewState extends ConsumerState<Cartview> {
                                       const Spacer(),
                                       IconButton(
                                         onPressed: () {
-                                          ref.read(cartViewModelProvider(widget.id.toString(),).notifier,).deleteCartItem(item.id.toString());
+                                          ref.read(cartViewModelProvider(widget.id.toString(),).notifier,).deleteCartItem(item.id.toString(),widget.id.toString());
                                         },
                                         icon: const Icon(
                                           Icons.delete_outline,

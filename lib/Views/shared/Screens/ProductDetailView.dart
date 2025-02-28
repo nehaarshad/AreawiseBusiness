@@ -24,7 +24,9 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+         actions: [
+           WishlistButton( userId: widget.userid.toString(),product:widget.product),
+         ],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -48,20 +50,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                     SizedBox(height: 10),
                     Column(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "${widget.product.name}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                color: Colors.black,
-                              ),
-                            ),
-                            WishlistButton( userId: widget.userid.toString(),product:widget.product),
-
-                          ],
-                        ),
+                        Text("${widget.product.name}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black,),),
                         SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

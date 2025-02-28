@@ -2,8 +2,6 @@ import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart
 import 'package:ecommercefrontend/models/orderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../View_Model/UserProfile/EditProfileViewModel.dart';
 import '../shared/widgets/colors.dart';
 
 class deliveryAddress extends ConsumerStatefulWidget {
@@ -66,7 +64,7 @@ class _deliveryAddressState extends ConsumerState<deliveryAddress> {
   void deliveryAddressData(OrderViewModelProvider viewModel, int cartId,BuildContext context) {
     if (viewModel.key.currentState!.validate()) {
       final data = {
-        'cartId':cartId.toString(),
+        'cartId':cartId,
         'sector': viewModel.sector.text,
         'city': viewModel.city.text,
         'address': viewModel.address.text,

@@ -23,6 +23,7 @@ class routesName {
   static const String sAddShop = "addShopView";
   static const String sEditProduct = "updateProductView";
   static const String sEditShop = "UpdateShopView";
+  static const String orderDetails = "orderDetailView";
 
   //Common\Shared Screens Routes Names
   static const String splash = "splashScreen";

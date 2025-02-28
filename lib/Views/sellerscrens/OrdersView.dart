@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
-import '../shared/Screens/orderDetailView.dart';
+import '../../core/utils/routes/routes_names.dart';
+import 'orderDetailView.dart';
 import '../shared/widgets/orderStatusColor.dart';
 
 
@@ -23,6 +24,15 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
       appBar: AppBar(
         title: const Text("Orders"),
         elevation: 2,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              // Refresh the data by invalidating the provider
+              ref.refresh(sellerOrderViewModelProvider(widget.sellerId.toString()));
+            },
+          ),
+        ],
       ),
       body: orderState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -70,7 +80,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                         ),
                       ),
                       Text(
-                        "Order Date: ${formatDate(order.createdAt)}",
+                        "Order Date: ${orderedDate(order.createdAt)}",
                         style: const TextStyle(fontSize: 12),
                       ),
                     ],
@@ -85,8 +95,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
 
                         return InkWell(
                           onTap: (){
-                                Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailView(orderRequest: orderRequest),
-                                  ));
+                            Navigator.pushNamed(context, routesName.orderDetails,arguments: orderRequest);
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
@@ -113,8 +122,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                                       Text(product?.name ?? 'Unknown Product', style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
-                                        ),
-                                      ),
+                                        )),
                                       const SizedBox(height: 4),
                                       Text(
                                         'Quantity: ${item.quantity}',
@@ -141,7 +149,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
       ),
     );
   }
-  String formatDate(String? dateString) {
+  String orderedDate(String? dateString) {
     if (dateString == null) return '../../..';
     try {
       final date = DateTime.parse(dateString);

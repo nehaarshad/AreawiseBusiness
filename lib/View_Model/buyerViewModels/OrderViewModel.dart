@@ -6,6 +6,8 @@ import '../../Views/shared/widgets/colors.dart';
 import '../../models/cartModel.dart';
 import '../../models/orderModel.dart';
 import '../../repositories/checkoutRepositories.dart';
+import 'cartViewModel.dart';
+import 'ordersHistoryViewModel.dart';
 
 final orderViewModelProvider=StateNotifierProvider<OrderViewModelProvider,AsyncValue<orderModel?>>((ref){
   return OrderViewModelProvider(ref:ref);
@@ -95,7 +97,9 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
               children: [
                 TextButton(
                   onPressed: () async{
+
                     await cancelOrder(order.cart!.id.toString());
+                    ref.refresh(cartViewModelProvider(order.cart!.userId.toString()));
                     Navigator.of(context).pop();
                   },
                   child: const Text('Close'),
@@ -129,10 +133,17 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
     try {
       print('Sending data to API: $data');
 
-      orderModel order = await ref.read(orderProvider).placeUserOrder(data);
-      print(order);
+      await ref.read(orderProvider).placeUserOrder(data);
+      ref.invalidate(cartViewModelProvider(userId));
+      await ref.read(cartViewModelProvider(userId).notifier).getUserCart(userId);
+
+      ref.invalidate(orderHistoryViewModelProvider(userId));
+      await ref.read(orderHistoryViewModelProvider(userId).notifier).getCustomerOrdersHistory(userId);
+
       Utils.flushBarErrorMessage("Order Sent Successfully", context);
-      Navigator.pushNamed(context, routesName.dashboard,arguments: userId);
+        if (mounted) {
+          Navigator.pushNamed(context, routesName.dashboard,arguments: int.parse(userId));
+        } 
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);

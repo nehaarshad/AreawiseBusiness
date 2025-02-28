@@ -23,18 +23,17 @@ class orderModel {
         this.createdAt,
         this.updatedAt,
         this.cart});
-
   orderModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    cartId = json['cartId'];
-    addressId = json['addressId'];
-    total = json['total'];
-    discount = json['discount'];
-    shippingPrice = json['shippingPrice'];
+    id = json['id'] != null ? int.tryParse(json['id'].toString()) : null;
+    cartId = json['cartId'] != null ? int.tryParse(json['cartId'].toString()) : null;
+    addressId = json['addressId'] != null ? int.tryParse(json['addressId'].toString()) : null;
+    total = json['total'] != null ? int.tryParse(json['total'].toString()) : null;
+    discount = json['discount'] != null ? double.tryParse(json['discount'].toString()) : null;
+    shippingPrice = json['shippingPrice'] != null ? int.tryParse(json['shippingPrice'].toString()) : null;
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    cart = json['Cart'] != null ? new Cart.fromJson(json['Cart']) : null;
+    cart = json['Cart'] != null ? Cart.fromJson(json['Cart']) : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -16,6 +16,8 @@ class orderHistoryViewModel extends StateNotifier<AsyncValue<List<OrdersRequestM
   Future<void> getCustomerOrdersHistory(String id) async {
     try {
       List<OrdersRequestModel?> items = await ref.read(sellerOrderProvider).getCustomerOrders(id);
+
+      print("Api Response ${items}");
       state = AsyncValue.data(items);
     } catch (e) {
       print(e);
