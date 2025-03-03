@@ -10,6 +10,7 @@ import items from "./cartItemModel.js";
 import order from "./orderModel.js";
 import wishList from "./wishListModel.js";
 import SellerOrder from "./sellerOrderModel.js";
+import Ads from "./adsModel.js";
 
 const relation = () => {
     //user relation.......
@@ -86,6 +87,12 @@ const relation = () => {
     
     Product.hasMany(wishList, { foreignKey: { name: 'productId', allowNull: false } });//one product added by many users so have many entries
     wishList.belongsTo(Product, { foreignKey: 'productId' });    
+
+    User.hasMany(Ads, { foreignKey: { name: 'sellerId', allowNull: false } });
+    Ads.belongsTo(User, { foreignKey: 'sellerId' });
+
+    Ads.hasOne(image, { foreignKey:  { name: 'AdId', allowNull: false } });
+    image.belongsTo(Ads, { foreignKey: 'AdId' });
 
 };
 

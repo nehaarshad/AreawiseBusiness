@@ -14,6 +14,7 @@ import orderRouter from "./backend_code/Routes/orderRoutes.js";
 import categoryRouter from "./backend_code/Routes/categoryRoutes.js";
 import wishListRoutes from "./backend_code/Routes/wishListRoutes.js";
 import SellerOrderRouter from "./backend_code/Routes/sellerOrderRoutes.js";
+import adsRouter from "./backend_code/Routes/adsRoutes.js"
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -56,6 +57,7 @@ app.use("/api",categoryRouter);
 app.use("/api",cartRouter);
 app.use("/api",orderRouter);
 app.use("/api",wishListRoutes);
+app.use("/api",adsRouter);
 app.use("/api",SellerOrderRouter);
 
 

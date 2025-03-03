@@ -8,10 +8,21 @@ import relation from "./relations.js";
 import category from "./categoryModel.js";
 import subcategory from "./subCategoryModel.js";
 import image from "./imagesModel.js";
+import Ads from "./adsModel.js"
+import cart from "./CartModel.js";
+import order from "./orderModel.js";
+import SellerOrder from "./sellerOrderModel.js";
+import wishList from "./wishListModel.js";
+import items from "./cartItemModel.js";
 
 relation();
 
 const models={
+    items,
+    cart,
+    wishList,
+    order,
+    SellerOrder,
     User,
     category,
     subcategory,
@@ -19,6 +30,7 @@ const models={
     Product,
     Shop,
     Address,
+    Ads,
     TokenBlacklist
 }
 

@@ -22,7 +22,7 @@ const Address = sequelize.define('address', {
     },
     userId: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     }
 },
 {
