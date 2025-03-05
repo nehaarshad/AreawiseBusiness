@@ -11,6 +11,7 @@ import order from "./orderModel.js";
 import wishList from "./wishListModel.js";
 import SellerOrder from "./sellerOrderModel.js";
 import Ads from "./adsModel.js";
+import featured from "./featuredModel.js";
 
 const relation = () => {
     //user relation.......
@@ -93,6 +94,12 @@ const relation = () => {
 
     Ads.hasOne(image, { foreignKey:  { name: 'AdId', allowNull: false } });
     image.belongsTo(Ads, { foreignKey: 'AdId' });
+
+    User.hasMany(featured, { foreignKey: { name: 'userID', allowNull: false } });  //can featured multiple products
+    featured.belongsTo(User, { foreignKey: 'userID' });
+
+    Product.hasMany(featured, { foreignKey: { name: 'productID', allowNull: false } });  // can featured multiple times
+    featured.belongsTo(Product, { foreignKey: 'productID' });
 
 };
 

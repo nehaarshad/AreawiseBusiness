@@ -14,6 +14,7 @@ import order from "./orderModel.js";
 import SellerOrder from "./sellerOrderModel.js";
 import wishList from "./wishListModel.js";
 import items from "./cartItemModel.js";
+import featured from "./featuredModel.js";
 
 relation();
 
@@ -31,6 +32,7 @@ const models={
     Shop,
     Address,
     Ads,
+    featured,
     TokenBlacklist
 }
 

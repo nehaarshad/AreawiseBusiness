@@ -16,6 +16,8 @@ import wishListRoutes from "./backend_code/Routes/wishListRoutes.js";
 import SellerOrderRouter from "./backend_code/Routes/sellerOrderRoutes.js";
 import adsRouter from "./backend_code/Routes/adsRoutes.js"
 import path from "path";
+import scheduler from "./backend_code/services/scheduler.js";
+import featuredRouter from "./backend_code/Routes/featuredRoutes.js"
 import { fileURLToPath } from "url";
 
 dotenv.config();
@@ -59,7 +61,9 @@ app.use("/api",orderRouter);
 app.use("/api",wishListRoutes);
 app.use("/api",adsRouter);
 app.use("/api",SellerOrderRouter);
+app.use("/api",featuredRouter);
 
+scheduler();
 
 app.get("/",(req,res)=>{
     res.send("<h1> E-Commerce F-17 </h1>")

@@ -1,25 +1,6 @@
 import Ads from "../models/adsModel.js";
-import cron from 'node-cron';
 import image from "../models/imagesModel.js";
 
-cron.schedule('0 0 * * *', async () => { // 0 min 0 hour 1-31 dayOfMonth 1-12 Month 1-7DayOfWeek
-    try {
-      const currentDate = new Date();
-      const expiredAds = await Ads.findAll({
-        where: {
-          expire_at: { [Op.lt]: currentDate },
-          is_active: true
-        }
-      });
-      for (const ad of expiredAds) {
-        ad.is_active = false;
-        await ad.save();
-        console.log(`Ad ${ad.id} deactivated due to expiration`);
-      }
-    } catch (error) {
-      console.error('Error in cron job for deactivating expired ads:', error);
-    }
-  });
   
 const createAd=async(req,res)=>{
 try {
@@ -35,8 +16,8 @@ try {
 
     if (req.file) {
         const imageUrl = `http://192.168.169.179:5000/backend_code/uploads/${req.file.filename}`; 
-            await image.create({ imagetype: 'ad', AdId: id, imageUrl });
-            await Ads.create({sellerId:id,expire_at,is_active: true});
+           const ads= await Ads.create({sellerId:id,expire_at,is_active: true});
+            await image.create({ imagetype: 'ad', AdId: ads.id, imageUrl });
             return res.status(201).json({
                 mesaage:"AD Created Successfully"
             })
@@ -59,9 +40,9 @@ const getAllAds=async(req,res)=>{
                 where:{imagetype:"ad"},
                 required:true //all ads have images
             },
-            order: [['createdAt', 'DESC']]
         });
         res.status(200).json(ads)
+        console.log(ads)
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -80,7 +61,6 @@ const getUserAds=async(req,res)=>{
                 where:{imagetype:"ad"},
                 required:true //all ads have images
             },
-            order: [['createdAt', 'DESC']]
         });
         if(!ads){
             res.json({mesaage:"User has no Active ADs"})  
@@ -101,7 +81,7 @@ const deleteAd=async(req,res)=>{
         if (!ads) {
             return res.json({ error: "AD not Exit" });
         }
-        const adimage=await image.destroy({where:{imagetype:"ads",AdsId:id}})
+        const adimage=await image.destroy({where:{imagetype:"ad",AdId:id}})
         if(adimage>0){
             console.log(`${adimage} Images of this AD deleted`)
         }
