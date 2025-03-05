@@ -11,8 +11,6 @@ import '../../sellerscrens/SellerProductsView.dart';
 import '../../sellerscrens/SellerShopView.dart';
 import '../../sellerscrens/sellerBottomNavigationView.dart';
 import '../../sellerscrens/sellerhomeview.dart';
-import '../widgets/DashBoardProductsView.dart';
-import '../widgets/colors.dart';
 import 'UserProfileView.dart';
 
 class DashboardView extends ConsumerStatefulWidget {

@@ -14,7 +14,7 @@ class AppApis {
   static var UpdateUserEndPoints = "$baseurl/updateuser/:id";
   static var DeleteUserEndPoints = "$baseurl/deleteuser/:id";
 
-  //BUYER AN ADMIN Address
+  //Address URLS
   static var AddUserAddressEndPoints = "$baseurl/addAddress/:id";
   static var GetUserAddressEndPoints = "$baseurl/getAddress/:id";
   static var UpdateUserAddressEndPoints = "$baseurl/updateAddress/:id";
@@ -32,8 +32,7 @@ class AppApis {
   //Category URLs
   static var getCategoriesEndPoints = "$baseurl/getCategories";
   static var getAllsubcategoriesEndPoints = "$baseurl/getallsubcategories";
-  static var getSubcategoriesOfCategoryEndPoints =
-      "$baseurl/getsubcategoriesofcategory/:categories";
+  static var getSubcategoriesOfCategoryEndPoints = "$baseurl/getsubcategoriesofcategory/:categories";
 
   //PRODUCTS URLS  (Seller Perform Operation on their Products + All Products Home Page URL)
   static var AddProductEndPoints = "$baseurl/addproduct/:id";
@@ -59,6 +58,19 @@ class AppApis {
   static var GetWishListofUserEndPoints = "$baseurl/GetWishList/:id";
   static var AddToWishListEndPoints = "$baseurl/AddToWishList/:id";
   static var RemoveFromWishListEndPoints = "$baseurl/RemoveFromWishList/:id";
+
+  //ADs APIS
+  static var getAllAdsEndPoints = "$baseurl/getAllAds";
+  static var createAdEndPoints = "$baseurl/createAd/:id";
+  static var getUserAdsEndPoints = "$baseurl/getUserAds/:id";
+  static var deleteAdEndPoints = "$baseurl/deleteAd/:id";
+
+  //FeatureProduct APIS
+  static var getAllFeaturedProductsEndPoints = "$baseurl/getAllFeaturedProducts";
+  static var getAllRequestedFeaturedProductsEndPoints = "$baseurl/getAllRequestedFeaturedProducts";
+  static var createProductFeaturedEndPoints = "$baseurl/createProductFeatured/:id";
+  static var getUserFeaturedProductsEndPoints = "$baseurl/getUserFeaturedProducts/:id";
+  static var updateFeaturedProductsEndPoints = "$baseurl/updateFeaturedProducts/:id";
 
   //ordersAPIS
   static var getSellerOrderRequestsEndPoints = "$baseurl/seller/:id";
