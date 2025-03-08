@@ -52,6 +52,7 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
       final adData = {
         'expire_at': state.expirationDateTime!.toIso8601String(),  ///YYYY-MM-DDTHH:mm:ss.mmm+00:00
       };
+      print(adData);
       final response = await ref.read(adProvider).createAd(adData, sellerId, state.adImage);
       try {
         // Invalidate the provider to refresh the product list

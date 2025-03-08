@@ -1,17 +1,21 @@
+import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../shared/widgets/DashBoardProductsView.dart';
+import '../../../View_Model/UserProfile/UserProfileViewModel.dart';
+import '../widgets/DashBoardProductsView.dart';
+import '../widgets/getAllAds.dart';
+import '../widgets/getAllFeatureProducts.dart';
+import '../widgets/logout_button.dart';
 
-//get userId
-class buyerhomeview extends ConsumerStatefulWidget {
+class appHomeview extends ConsumerStatefulWidget {
   int id;
-  buyerhomeview({required this.id});
+  appHomeview({required this.id});
 
   @override
-  ConsumerState<buyerhomeview> createState() => _buyerhomeviewState();
+  ConsumerState<appHomeview> createState() => _appHomeviewState();
 }
 
-class _buyerhomeviewState extends ConsumerState<buyerhomeview> {
+class _appHomeviewState extends ConsumerState<appHomeview> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -30,7 +34,29 @@ class _buyerhomeviewState extends ConsumerState<buyerhomeview> {
               ),
             ),
           ),
+          SizedBox(height: 10,),
+          getAdsView(),
           SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                child: Text(
+                  "Featured Products",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                children: [
+                  Text("See All", style: TextStyle(color: Colors.grey)),
+                  Icon(Icons.arrow_forward_ios_sharp, size: 10),
+                ],
+              ),
+            ],
+          ),
+          allFeaturedProducts(userid: widget.id,),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

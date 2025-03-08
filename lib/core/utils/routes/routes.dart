@@ -6,6 +6,7 @@ import '../../../Views/auth/screens/login_View.dart';
 import '../../../Views/auth/screens/signUp_View.dart';
 import '../../../Views/buyer_screens/deliveryAddress.dart';
 import '../../../Views/sellerscrens/UpdateShopView.dart';
+import '../../../Views/sellerscrens/createAds.dart';
 import '../../../Views/shared/Screens/DashBoardView.dart';
 import '../../../Views/shared/Screens/ShopView.dart';
 import '../../../Views/admin_screens/UsersView.dart';
@@ -117,6 +118,12 @@ class Routes {
         final id = arg as int;
         return MaterialPageRoute(
           builder: (BuildContext context) => profileDetailView(id: id),
+        );
+
+      case (routesName.createAds):
+        final id = arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => createAds(SellerId: id),
         );
 
       case (routesName.editprofile):

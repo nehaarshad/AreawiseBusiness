@@ -144,6 +144,43 @@ class networkapiservice extends baseapiservice {
     }
   }
 
+  Future<Map<String, dynamic>> SingleFileUploadApiWithMultiport(
+      String url,
+      Map<String, dynamic> data,
+      File? files,
+      ) async
+  {
+    try {
+      final request = new http.MultipartRequest('POST', Uri.parse(url));
+
+      data.forEach((key, value) {
+        //to add data into fields
+        request.fields[key] = value.toString();
+      });
+      //upload files of images
+      if (files != null) {
+        final stream = http.ByteStream(files.openRead());
+        final length = await files.length();
+
+        final multipartFile = new http.MultipartFile(
+          'image', // matched with keys
+          stream,
+          length,
+          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
+          contentType: MediaType('image', 'jpeg'), // Set MIME type
+        );
+        request.files.add(multipartFile);
+      }
+      final streameresponse = await request.send().timeout(
+        Duration(seconds: 10),
+      );
+      final response = await http.Response.fromStream(streameresponse);
+
+      return httpResponse(response);
+    } on SocketException {
+      throw fetchdataException("No Internet Connnection");
+    }
+  }
   //update Using Multiport (Single File Handler)
   Future<Map<String, dynamic>> SingleFileUpdateApiWithMultiport(
     String url,

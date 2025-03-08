@@ -50,7 +50,7 @@ class AdsRepositories {
 
   Future<Map<String, dynamic>> createAd(Map<String, dynamic> data, String id, File? image) async {
     try {
-      dynamic response = await apiservice.SingleFileUpdateApiWithMultiport(AppApis.createAdEndPoints.replaceFirst(':id', id), data, image);
+      dynamic response = await apiservice.SingleFileUploadApiWithMultiport(AppApis.createAdEndPoints.replaceFirst(':id', id), data, image);
       return response;
     } catch (e) {
       throw e;
