@@ -79,9 +79,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         ],
       ),
       body: isSeller ? SellerViews[index] : BuyerViews[index],
-      bottomNavigationBar:
-          isSeller
-              ? SellerBottomNavigation(
+      bottomNavigationBar: isSeller ? SellerBottomNavigation(
                 selectedIndex: index,
                 onItemTapped: onTap,
               )

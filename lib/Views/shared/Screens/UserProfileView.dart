@@ -25,6 +25,9 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
       UserProfileViewModelProvider(widget.id.toString()),
     ); //get user detail from model
     return Scaffold(
+      appBar: AppBar(
+
+      ),
       body: userdetail.when(
         loading:
             () => Center(

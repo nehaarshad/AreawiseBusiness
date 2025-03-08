@@ -16,13 +16,12 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
   @override
   void initState() {
     super.initState();
-    // Fetch all products when the widget is first created
     ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
   }
 
   @override
   Widget build(BuildContext context) {
-    final productState = ref.watch(sharedProductViewModelProvider);;
+    final productState = ref.watch(sharedProductViewModelProvider);
     return productState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (products) {

@@ -29,9 +29,9 @@ class _allFeaturedProductsState extends ConsumerState<allFeaturedProducts> {
           return const Center(child: Text("No Featured Products available."));
         }
         return SizedBox(
-          height: 200, // Fixed height to prevent unbounded height
+          height: 200, //
           child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
             itemBuilder: (context, index) {

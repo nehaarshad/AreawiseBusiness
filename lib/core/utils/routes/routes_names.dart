@@ -6,7 +6,7 @@ class routesName {
   //Admin Screens Routes Names
   static const String aHome = "adminhomeview";
   static const String ashop = "ShopView";
-  static const String afeedback = "FeedBackView";
+  static const String afeature = "Featuredproductrequestview";
   static const String aproduct = "ProductView";
   static const String auser = "UsersView";
 

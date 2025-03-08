@@ -59,7 +59,7 @@ class createfeatureProductViewModel extends StateNotifier<createFeatureProductSt
   }
 
   ///for admin  //fetch seller id from featuredRequestProduct
-  Future<void> updateFeatureProduct(String featureId,String sellerId, String status,BuildContext context) async {
+  Future<void> updateFeatureProduct(String featureId,String sellerId, Map<String,dynamic> status,BuildContext context) async {
     try {
       state = state.copyWith(isLoading: true);
 
@@ -77,7 +77,6 @@ class createfeatureProductViewModel extends StateNotifier<createFeatureProductSt
       state = state.copyWith(isLoading: false);
 
       Utils.toastMessage("Status Updated!");
-      Navigator.pop(context);
 
     } catch (e) {
       state = state.copyWith(isLoading: false);

@@ -56,6 +56,7 @@ class sessionViewModel extends StateNotifier<UserModel?> {
     if (token != null) {
       await ref.read(authprovider).logoutApi(token);
       await sp.clear();
+      print("SharedPreferences cleared: ${sp.getString('token')}");
       state = null;
       return true;
     }

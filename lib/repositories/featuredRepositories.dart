@@ -74,7 +74,7 @@ class featureRepositories {
     }
   }
 
-  Future<featureModel> updateFeaturedProducts(String id, String status) async {
+  Future<featureModel> updateFeaturedProducts(String id,  Map<String,dynamic>  status) async {
     try {
       final responseData=jsonEncode(status);
       final headers = {'Content-Type': 'application/json'};

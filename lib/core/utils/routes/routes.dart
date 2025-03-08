@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
-import '../../../Views/admin_screens/ProductView.dart';
+import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
+import '../../../Views/shared/widgets/getAllProductView.dart';
 import '../../../Views/admin_screens/adminhomeview.dart';
 import '../../../Views/auth/screens/login_View.dart';
 import '../../../Views/auth/screens/signUp_View.dart';
@@ -55,11 +56,16 @@ class Routes {
       case (routesName.auser):
         return MaterialPageRoute(builder: (BuildContext context) => const UserView(),);
 
+      case (routesName.afeature):
+        return MaterialPageRoute(builder: (BuildContext context) => const Featuredproductrequestview(),);
+
+
       case (routesName.ashop):
         return MaterialPageRoute(builder: (BuildContext context) => const ShopsView());
 
       case (routesName.aproduct):
-        return MaterialPageRoute(builder: (BuildContext context) => const ProductsView(),);
+        int id=arg as int;
+        return MaterialPageRoute(builder: (BuildContext context) => ProductsView(userid:id),);
 
       case (routesName.sEditShop):
         int id = arg['shopid'] as int;
