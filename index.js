@@ -14,17 +14,31 @@ import orderRouter from "./backend_code/Routes/orderRoutes.js";
 import categoryRouter from "./backend_code/Routes/categoryRoutes.js";
 import wishListRoutes from "./backend_code/Routes/wishListRoutes.js";
 import SellerOrderRouter from "./backend_code/Routes/sellerOrderRoutes.js";
+import chatRouter from "./backend_code/Routes/chatRoutes.js";
 import adsRouter from "./backend_code/Routes/adsRoutes.js"
 import path from "path";
 import scheduler from "./backend_code/services/scheduler.js";
 import featuredRouter from "./backend_code/Routes/featuredRoutes.js"
 import { fileURLToPath } from "url";
+import  http  from 'http';
+import { Server } from 'socket.io';
+import chatService from "./backend_code/services/chatService.js";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app=express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
+});
+
+chatService(io); // Initialize chat service with socket.io instance
+
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended:true}))
 app.use(cors());
@@ -33,7 +47,7 @@ app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_co
 modelsSyncs.modelsSync()
 .then(()=>{
   const port=5000
-  app.listen(port,()=>{
+  server.listen(port,()=>{
       console.log(`Server Runnind on Port ${port}`)
   })
 })
@@ -62,6 +76,7 @@ app.use("/api",wishListRoutes);
 app.use("/api",adsRouter);
 app.use("/api",SellerOrderRouter);
 app.use("/api",featuredRouter);
+app.use("/api",chatRouter);
 
 scheduler();
 

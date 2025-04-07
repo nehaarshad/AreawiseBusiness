@@ -1,6 +1,6 @@
 import cart from '../models/CartModel.js'
 import items from '../models/cartItemModel.js'
-import Product from '../models/productmodel.js'
+import Product from '../models/productModel.js'
 import order from '../models/orderModel.js'
 import Address from '../models/addressmodel.js'
 import image from "../models/imagesModel.js";

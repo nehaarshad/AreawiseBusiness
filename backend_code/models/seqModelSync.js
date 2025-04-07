@@ -1,6 +1,6 @@
 import sequelize from "../config/db_config.js";
 import User from "../models/userModel.js";
-import Product from "./productmodel.js";
+import Product from "./productModel.js";
 import Shop from "./shopmodel.js";
 import Address from "./addressmodel.js";
 import TokenBlacklist from "./tokenblacklist.js";

@@ -1,6 +1,6 @@
 import wishList from "../models/wishListModel.js";
 import User from "../models/userModel.js";
-import Product from "../models/productmodel.js";
+import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import subcategories from "../models/subCategoryModel.js";

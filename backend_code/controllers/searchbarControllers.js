@@ -1,5 +1,5 @@
-import User from "../models/userModel.js";
-import Product from "../models/productmodel.js";
+// import User from "../models/userModel.js";
+// import Product from "../models/productmodel.js";
 import Shop from "../models/shopmodel.js";
 
 //by location

@@ -1,6 +1,6 @@
 import shop from "../models/shopmodel.js";
 import User from "../models/userModel.js";
-import Product from "../models/productmodel.js";
+import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import dotenv from "dotenv" 
@@ -38,7 +38,7 @@ const addshop = async (req, res) => {
                 const imageRecords = images.map(file => ({
                     imagetype:'shop',
                     ShopId:newshop.id,
-                    imageUrl: `http://192.168.169.179:5000/backend_code/uploads/${file.filename}`
+                    imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
                 }));
     
                 await image.bulkCreate(imageRecords);
@@ -145,7 +145,7 @@ const updateshop=async(req,res)=>{
                 const imageRecords = images.map(file => ({
                     imagetype: entity,
                     ShopId: entityid,
-                    imageUrl: `http://192.168.169.179:5000/backend_code/uploads/${file.filename}`
+                    imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
                 }));
                 
                 await image.bulkCreate(imageRecords);

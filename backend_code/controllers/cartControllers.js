@@ -1,6 +1,6 @@
 import cart from '../models/CartModel.js'
 import items from '../models/cartItemModel.js'
-import Product from '../models/productmodel.js'
+import Product from '../models/productModel.js';
 import image from "../models/imagesModel.js";
 
    //on click of add to cart button

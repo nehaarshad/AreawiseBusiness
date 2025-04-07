@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 
 const scheduler=()=>{
     console.log("Cron job initialized. Waiting for the next scheduled run...");
-cron.schedule('0 * * * *', async () => { // runs after each hour 1-31 dayOfMonth 1-12 Month 1-7DayOfWeek
+cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth 1-12 Month 1-7DayOfWeek
     try {
         
       console.log("scheduler is in running state");

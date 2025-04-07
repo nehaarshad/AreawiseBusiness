@@ -1,5 +1,5 @@
 import featured from "../models/featuredModel.js";
-import Product from "../models/productmodel.js";
+import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import User from "../models/userModel.js";
 import category from "../models/categoryModel.js";

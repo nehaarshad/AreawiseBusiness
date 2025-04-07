@@ -1,9 +1,11 @@
 import Address from "../models/addressmodel.js";
-import Product from "../models/productmodel.js";
+import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import shop from "../models/shopmodel.js";
 import image from "../models/imagesModel.js";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+dotenv.config();
 
 //get all users
 const getallusers=async(req,res)=>{
@@ -145,7 +147,7 @@ const updateuser = async (req, res) => {
             const userImage = await image.findOne({
                 where: {  UserId: id }
             });
-            const imageUrl = `http://192.168.169.179:5000/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
+            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
             
             if (userImage) {
                 await userImage.update({ imageUrl });

@@ -1,7 +1,7 @@
 import User from "./userModel.js";
 import Address from "./addressmodel.js";
 import shop from "./shopmodel.js";
-import Product from "./productmodel.js";
+import Product from "./productModel.js";
 import category from "./categoryModel.js";
 import subcategory from "./subCategoryModel.js";
 import image from "./imagesModel.js";
@@ -12,6 +12,9 @@ import wishList from "./wishListModel.js";
 import SellerOrder from "./sellerOrderModel.js";
 import Ads from "./adsModel.js";
 import featured from "./featuredModel.js";
+import Chat from "./chatModel.js";
+import Message from "./msgModel.js";
+
 
 const relation = () => {
     //user relation.......
@@ -100,6 +103,23 @@ const relation = () => {
 
     Product.hasMany(featured, { foreignKey: { name: 'productID', allowNull: false } });  // can featured multiple times
     featured.belongsTo(Product, { foreignKey: 'productID' });
+
+
+    //chat and message relations
+    User.hasMany(Chat, { foreignKey: { name: 'buyerId', allowNull: false } });
+    Chat.belongsTo(User, { foreignKey: 'buyerId' });
+
+    User.hasMany(Chat, { foreignKey: { name: 'sellerId', allowNull: false } });
+    Chat.belongsTo(User, { foreignKey: 'sellerId' });
+
+    User.hasMany(Message, { foreignKey: { name: 'senderId', allowNull: false } });
+    Message.belongsTo(User, { foreignKey: 'senderId' });
+
+    Product.hasMany(Chat, { foreignKey: { name: 'productId', allowNull: false } });
+    Chat.belongsTo(Product, { foreignKey: 'productId' });
+
+    Chat.hasMany(Message, { foreignKey: { name: 'chatId', allowNull: false }});
+    Message.belongsTo(Chat, { foreignKey: 'chatId' });
 
 };
 

@@ -82,7 +82,7 @@ const logout=async(req,res)=>{
             }
     
             await TokenBlacklist.create({ token });
-    
+            console.log('Logged out successfully');
             return res.status(200).json({ message: 'Logged out successfully' });
         } catch (error) {
             console.log(error);
