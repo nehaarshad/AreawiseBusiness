@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/View_Model/auth/sessionmanagementViewModel.dart';
+import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
@@ -19,9 +20,8 @@ class LoginViewModel extends StateNotifier<bool> {
 
     try {
       dynamic response = await ref.read(authprovider).loginapi(data);
-      UserModel user = UserModel.fromJson(response);
+      UserDetailModel user= UserDetailModel.fromJson(response);
       await ref.read(sessionProvider.notifier).saveuser(user);
-
       if (user.role == 'Admin') {
         Navigator.pushNamed(context, routesName.aHome, arguments: user);
         Utils.flushBarErrorMessage("Login Successfully as Admin", context);
@@ -31,7 +31,8 @@ class LoginViewModel extends StateNotifier<bool> {
       //   Utils.flushBarErrorMessage("Login Successfully as Buyer", context);
       // }
       else {
-        Navigator.pushNamed(context, routesName.dashboard, arguments: user.id);
+
+        Navigator.pushNamed(context, routesName.dashboard, arguments: user);
         Utils.flushBarErrorMessage("Login Successfully", context);
       }
     } catch (error) {

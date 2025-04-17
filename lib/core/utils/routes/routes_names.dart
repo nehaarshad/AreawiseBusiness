@@ -33,4 +33,7 @@ class routesName {
   static const String productdetail = "ProductDetailView";
   static const String shopdetail = "ShopDetailView";
   static const String dashboard = "DashBoardView";
+  static const String chatList = "chatsListView";
+  static const String chatView = "chatView";
+
 }

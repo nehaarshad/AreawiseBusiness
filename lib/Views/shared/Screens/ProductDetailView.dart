@@ -6,6 +6,7 @@ import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import '../widgets/contactWithSellerButton.dart';
 import '../widgets/imageSlider.dart';
 import '../widgets/wishListButton.dart';
 
@@ -29,6 +30,17 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
          ],
       ),
       backgroundColor: Colors.white,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(100, 0, 100, 100),
+        child: SizedBox(
+          height: 50.0,
+          child: contactWithSellerButton(
+            userId: widget.userid.toString(),
+            productId: widget.product.id.toString(),
+            product: widget.product,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

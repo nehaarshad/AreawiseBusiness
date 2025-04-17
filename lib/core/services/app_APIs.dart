@@ -1,5 +1,5 @@
 class AppApis {
-  static var baseurl = "http://192.168.169.179:5000/api";
+  static var baseurl = "http://192.168.57.179:5000/api";
 
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
@@ -76,6 +76,14 @@ class AppApis {
   static var getSellerOrderRequestsEndPoints = "$baseurl/seller/:id";
   static var getCustomersOrdersEndPoints = "$baseurl/customer/:id";
   static var updateSellerOrderRequestsStatusEndPoints = "$baseurl/:id";
+
+  //chatApis
+  static var getChatsAsSellerEndPoints = "$baseurl/getChatsAsSeller/:id";
+  static var getChatsAsBuyerEndPoints = "$baseurl/getChatsAsBuyer/:id";
+  static var createChatEndPoints = "$baseurl/createChat/:id";
+  static var getChatMessagesEndPoints = "$baseurl/getChatMessages/:id";
+  static var deleteChatMessagesEndPoints = "$baseurl/deleteChat/:id";
+
 
   //Filter Operations (shop -> {name,category}  , products ->{category,name,subcategory,price)
   static var SearchShopByNameEndPoints = "$baseurl/getshopByName/:shopname";

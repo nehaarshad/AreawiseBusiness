@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
-import 'package:ecommercefrontend/core/resources/app_APIs.dart';
+import 'package:ecommercefrontend/core/services/app_APIs.dart';
 
 final authprovider = Provider<AuthRepositories>((ref) {
   return AuthRepositories();

@@ -1,4 +1,4 @@
-import 'package:ecommercefrontend/Views/shared/Services/splashServices.dart';
+import 'package:ecommercefrontend/core/services/splashServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

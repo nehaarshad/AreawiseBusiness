@@ -1,7 +1,12 @@
 import 'package:ecommercefrontend/Views/buyer_screens/buyerBottomnavigationBar.dart';
+import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/utils/routes/routes_names.dart';
+import '../../../models/UserDetailModel.dart';
+import '../../../models/auth_users.dart';
 import '../widgets/logout_button.dart';
+import '../widgets/profileImageWidget.dart';
 import 'ShopView.dart';
 import '../../buyer_screens/CartView.dart';
 import '../../buyer_screens/WishListView.dart';
@@ -13,14 +18,18 @@ import 'appHomeView.dart';
 import 'UserProfileView.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
-  int id;
-  DashboardView({required this.id});
+  UserDetailModel user;
+  int id; //UserId
+  DashboardView({required this.id, required this.user});
 
   @override
   ConsumerState<DashboardView> createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends ConsumerState<DashboardView> {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   int index = 2;
   bool isSeller = false;
 
@@ -62,7 +71,12 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           Padding(
@@ -78,15 +92,60 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            drawerHeader(),
+            drawerItems(
+              icon: Icons.chat,
+              title: 'Chats',
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  routesName.chatList,
+                  arguments: widget.id.toString(),
+                );
+              },
+            ),
+
+          ],
+        ),
+      ),
       body: isSeller ? SellerViews[index] : BuyerViews[index],
       bottomNavigationBar: isSeller ? SellerBottomNavigation(
                 selectedIndex: index,
                 onItemTapped: onTap,
               )
-              : BuyerBottomNavigationBar(
-                selectedIndex: index,
-                onItemTapped: onTap,
-              ),
+              : BuyerBottomNavigationBar(selectedIndex: index, onItemTapped: onTap),
     );
   }
+
+  Widget drawerHeader(){
+    return DrawerHeader(
+        decoration: BoxDecoration(
+          color: Appcolors.blueColor
+        ),
+        child: Column(
+          children: [
+            ProfileImageWidget(user: widget.user, height: 100, weidth: 100),
+            SizedBox(height: 10,),
+            Text(widget.user.username!,style: TextStyle(
+              color: Appcolors.whiteColor,
+              fontSize: 15,
+            ),)
+          ],
+
+    )
+    );
+  }
+
+  Widget drawerItems({required IconData icon, required String title, required GestureTapCallback onTap}){
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: onTap,
+    );
+  }
+
 }

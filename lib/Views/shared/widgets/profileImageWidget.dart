@@ -17,7 +17,7 @@ class ProfileImageWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final modelobject = ref.watch(
+    final modelobject =  ref.watch(
       UserProfileViewModelProvider(user.id.toString()).notifier,
     );
     final imageUrl = modelobject.getProfileImage(user); //retrive image
@@ -27,7 +27,7 @@ class ProfileImageWidget extends ConsumerWidget {
       height: height,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey.shade500, width: 2),
+       // border: Border.all(color: Colors.grey.shade500, width: 2),
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,

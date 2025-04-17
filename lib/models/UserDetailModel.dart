@@ -7,6 +7,7 @@ class UserDetailModel {
   int? contactnumber;
   String? password;
   String? role;
+  String? token;
   String? createdAt;
   String? updatedAt;
   Address? address;
@@ -19,6 +20,7 @@ class UserDetailModel {
     this.contactnumber,
     this.password,
     this.role,
+    this.token,
     this.createdAt,
     this.updatedAt,
     this.address,
@@ -31,6 +33,7 @@ class UserDetailModel {
     String? email,
     int? contactnumber,
     String? password,
+    String? token,
     String? role,
     String? createdAt,
     String? updatedAt,
@@ -44,6 +47,7 @@ class UserDetailModel {
       contactnumber: contactnumber ?? this.contactnumber,
       password: password ?? this.password,
       role: role ?? this.role,
+      token: token ?? this.token,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       address: address ?? this.address,
@@ -58,6 +62,7 @@ class UserDetailModel {
     contactnumber = json['contactnumber'];
     password = json['password'];
     role = json['role'];
+    token=json['token'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     address =
@@ -74,6 +79,7 @@ class UserDetailModel {
     data['contactnumber'] = this.contactnumber;
     data['password'] = this.password;
     data['role'] = this.role;
+    data['token'] = this.token;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     if (this.address != null) {

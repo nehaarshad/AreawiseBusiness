@@ -1,21 +1,22 @@
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../models/UserDetailModel.dart';
 import '../../models/auth_users.dart';
 
-final sessionProvider = StateNotifierProvider<sessionViewModel, UserModel?>((
+final sessionProvider = StateNotifierProvider<sessionViewModel, UserDetailModel?>((
   ref,
 ) {
   return sessionViewModel(ref);
 });
 
-class sessionViewModel extends StateNotifier<UserModel?> {
+class sessionViewModel extends StateNotifier<UserDetailModel?> {
   final Ref ref;
   sessionViewModel(this.ref) : super(null) {
     getuser();
   }
 
-  Future<void> saveuser(UserModel user) async {
+  Future<void> saveuser(UserDetailModel user) async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('username', user.username!.toString());
     sp.setString('email', user.email!.toString());
@@ -26,7 +27,7 @@ class sessionViewModel extends StateNotifier<UserModel?> {
     state = user;
   }
 
-  Future<UserModel?> getuser() async {
+  Future<UserDetailModel?> getuser() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     if (!sp.containsKey('token')) {
       return null;
@@ -38,7 +39,7 @@ class sessionViewModel extends StateNotifier<UserModel?> {
     final String? token = sp.getString('token');
     final int? id = sp.getInt('id');
     final int? contactnumber = sp.getInt('contactnumber');
-    UserModel user = UserModel(
+    UserDetailModel user = UserDetailModel(
       username: username,
       email: email,
       role: role,

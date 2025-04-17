@@ -1,6 +1,8 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
+import '../../../Views/shared/Screens/chatView.dart';
+import '../../../Views/shared/Screens/chatsListView.dart';
 import '../../../Views/shared/widgets/getAllProductView.dart';
 import '../../../Views/admin_screens/adminhomeview.dart';
 import '../../../Views/auth/screens/login_View.dart';
@@ -46,12 +48,12 @@ class Routes {
         return MaterialPageRoute(builder: (BuildContext context) => const signUp_View(),);
 
       case (routesName.aHome):
-        final user = arg as UserModel;
+        final user = arg as UserDetailModel;
         return MaterialPageRoute(builder: (BuildContext context) => adminhomeview(user: user),);
 
       case (routesName.dashboard):
-        final id = arg as int;
-        return MaterialPageRoute(builder: (BuildContext context) => DashboardView(id: id),);
+        final user = arg as UserDetailModel;
+        return MaterialPageRoute(builder: (BuildContext context) => DashboardView(id: user.id!,user: user,),);
 
       case (routesName.auser):
         return MaterialPageRoute(builder: (BuildContext context) => const UserView(),);
@@ -137,6 +139,19 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => editProfile(id: id),
         );
+
+      case (routesName.chatList):
+        final id = arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => ChatsListView(userId: id),
+        );
+
+      // case (routesName.chatView):
+      //   final chatId = arg['chatId'] as String;
+      //   final userId = arg['userId'] as String;
+      //   // return MaterialPageRoute(
+      //   //  // builder: (BuildContext context) => ChatView(chatId: chatId,userId:userId),
+      //   // );
 
       default:
         return MaterialPageRoute(

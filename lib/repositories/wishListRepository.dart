@@ -3,7 +3,7 @@ import 'package:ecommercefrontend/models/wishListModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/network/baseapiservice.dart';
 import '../core/network/networkapiservice.dart';
-import '../core/resources/app_APIs.dart';
+import '../core/services/app_APIs.dart';
 
 final wishListProvider=Provider<wishListRepository>((ref){
    return wishListRepository();

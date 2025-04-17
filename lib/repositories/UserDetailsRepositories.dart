@@ -7,7 +7,7 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
-import '../core/resources/app_APIs.dart';
+import '../core/services/app_APIs.dart';
 import '../models/UserDetailModel.dart';
 
 final userProvider = Provider<UserRepositories>((ref) {

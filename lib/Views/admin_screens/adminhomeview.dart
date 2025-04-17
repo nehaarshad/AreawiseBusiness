@@ -1,5 +1,6 @@
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/logout_button.dart';
+import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,7 @@ import 'UsersView.dart';
 import 'adminBottomNavigationView.dart';
 
 class adminhomeview extends ConsumerStatefulWidget {
-  UserModel user;
+  UserDetailModel user;
   adminhomeview({required this.user});
 
   @override
