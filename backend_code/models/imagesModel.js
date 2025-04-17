@@ -33,7 +33,7 @@ const image = sequelize.define('Image', {
     }, 
     imageUrl: {
          type: DataTypes.STRING, //path of uploaded image
-         allowNull: true, 
+         allowNull: false, 
     },
  },
  {

@@ -7,8 +7,7 @@ const chatService = (io) => {
     io.on('connection', (socket) => {
       console.log(`User connected: ${socket.id}`);
     
-      // Join room for each chat the user is part of
-      socket.on('joinChats', async (userId) => {
+      socket.on('userChats', async (userId) => {
         try {
           const chats = await Chat.findAll({
             where: {
@@ -18,22 +17,34 @@ const chatService = (io) => {
               ]
             }
           });
-          
+          // Join each chat room
           chats.forEach(chat => {
             socket.join(`chat_${chat.id}`);
           });
+          console.log(`User ${userId} joined their chat rooms`);
         } catch (error) {
           console.error('Error joining chats:', error);
         }
       });
       
-      // Handle new messages
-      socket.on('sendMessage', async ({ chatId, senderId, message }) => {
+      // Handle new messages  //on sent button
+      socket.on('sendMessage', async (data) => {
         try {
+          const { chatId, senderId, msg } = data;
+           // Check if chat already exists
+              // const [chatId] = await Chat.findOrCreate({
+              //   where: {
+              //     buyerId,
+              //     sellerId: product.seller,
+              //     productId:id
+              //   }
+              // });
+
           const newMessage = await Message.create({
             chatId,
-            senderId,
-            msg: message
+            senderId, //might be buyer or seller
+            msg,
+            status: false
           });
           
           // Update chat's last message timestamp
@@ -51,11 +62,42 @@ const chatService = (io) => {
           
           // Emit to all participants in the chat
           io.to(`chat_${chatId}`).emit('receiveMessage', fullMessage);
+          console.log(`Message sent in chat ${chatId}`);
         } catch (error) {
           console.error('Error sending message:', error);
         }
       });
       
+      // Handle marking messages as read
+    socket.on('markAsRead', async (data) => {
+      try {
+        const { chatId, userId } = data;
+        
+        // Update all unread messages sent by the other user
+        const result = await Message.update(
+          { status: true },
+          { 
+            where: { 
+              chatId,
+              senderId: { [Op.ne]: userId },
+              status: false
+            } 
+          }
+        );
+        
+        // // Notify about read status
+        // socket.to(`chat_${chatId}`).emit('messagesRead', {
+        //   chatId,
+        //   readBy: userId,
+        //   count: result[0]
+        // });
+        
+        console.log(`${result[0]} messages marked as read in chat ${chatId}`);
+      } catch (error) {
+        console.error('Error marking messages as read:', error);
+      }
+    });
+
       socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);
       });

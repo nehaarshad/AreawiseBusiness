@@ -1,6 +1,7 @@
 import Chat from '../models/chatModel.js';
 import Message from '../models/msgModel.js';
 import User from '../models/userModel.js';
+import image from '../models/imagesModel.js';
 import Product from '../models/productModel.js';
 import { Op } from 'sequelize';
 
@@ -14,7 +15,7 @@ import { Op } from 'sequelize';
         {
           model: User,
           include: [{
-            model: Image,
+            model: image,
             where: { imagetype: 'user' },
             required: false,
           }]
@@ -22,13 +23,14 @@ import { Op } from 'sequelize';
         {
           model: Product,
           include: [{
-            model: Image,
+            model: image,
             where: { imagetype: 'product' },
             required: false,
           }]
         },
         {
           model: Message,
+          limit:1,  //for chatListView
           order: [['createdAt', 'DESC']],
         }
       ],
@@ -52,7 +54,7 @@ const getChatsAsSeller = async (req, res) => {
         {
           model: User,
           include: [{
-            model: Image,
+            model: image,
             where: { imagetype: 'user' },
             required: false,
           }]
@@ -60,13 +62,14 @@ const getChatsAsSeller = async (req, res) => {
         {
           model: Product,
           include: [{
-            model: Image,
+            model: image,
             where: { imagetype: 'product' },
             required: false,
           }]
         },
         {
           model: Message,
+          limit:1,
           order: [['createdAt', 'DESC']],
         }
       ],
@@ -114,17 +117,127 @@ const getChatsAsSeller = async (req, res) => {
     }
     
     // Check if chat already exists
-    const [Chatting] = await Chat.findOrCreate({
+    const Chats = await Chat.findOne({
       where: {
         buyerId,
         sellerId: product.seller,
         productId:id
-      }
+      },
+      include: [
+        {
+          model: User,
+          include: [{
+            model: image,
+            where: { imagetype: 'user' },
+            required: false,
+          }]
+        },
+        {
+          model: Product,
+          include: [{
+            model: image,
+            where: { imagetype: 'product' },
+            required: false,
+          }]
+        },
+        {
+          model: Message,
+          limit:1,
+          order: [['createdAt', 'DESC']],
+        }
+      ],
+      order: [['lastMessageAt', 'DESC']]
     });
-    res.status(201).json(Chatting);
+    // If chat doesn't exist, create a new one
+    if (!Chats) {
+    const  newChat = await Chat.create({
+        buyerId,
+        sellerId: product.seller,
+        productId:id,
+        lastMessageAt: new Date()
+      });
+      
+      // Fetch with associations to match existing pattern
+      Chats = await Chat.findByPk(newChat.id, {
+        include: [
+          {
+            model: Message,
+            limit: 1,
+            order: [['createdAt', 'DESC']],
+          },
+          {
+            model: Product,
+            include: [
+              {
+                model: image,
+                limit: 1
+              }
+            ]
+          }
+        ]
+      });
+    }
+    res.status(201).json(Chats);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
-export default {getChatsAsBuyer,getChatsAsSeller,createChat,getChatMessages};
+
+const deleteChat=async(req,res)=>{
+  try {
+    const {id}=req.params;
+    const chat=await Chat.findByPk(id)
+      if(!chat){
+        return res.json({error:"Chat not Exit"});
+      } 
+      const chatId=chat.id;
+      const chatMessages=await Message.destroy({where:{chatId}});
+        if(chatMessages>0){
+            console.log(`${chatMessages} messages of this chat is deleted`)
+        }
+           
+     await chat.destroy();
+     res.json({
+        success:true,
+        message:"Chat Deleted Successfully"
+     });
+
+} catch (error) {
+    console.log(error);
+    return res.json({error:"ERROR!"});
+}
+
+}
+
+ const markMessagesAsRead = async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+    
+    if (!chatId || !userId) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Update all unread messages sent by others
+    const result = await Message.update(
+      { status: true },
+      { 
+        where: { 
+          chatId,
+          senderId: { [Op.ne]: userId },
+          status: false
+        } 
+      }
+    );
+    
+    res.status(200).json({ 
+      message: 'Messages marked as read',
+      updatedCount: result[0]
+    });
+  } catch (error) {
+    console.error('Error marking messages as read:', error);
+    res.status(500).json({ message: 'Failed to mark messages', error: error.message });
+  }
+};
+
+export default {getChatsAsBuyer,getChatsAsSeller,createChat,getChatMessages,deleteChat,markMessagesAsRead};
