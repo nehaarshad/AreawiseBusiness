@@ -117,7 +117,7 @@ const getChatsAsSeller = async (req, res) => {
     }
     
     // Check if chat already exists
-    const Chats = await Chat.findOne({
+    let Chats = await Chat.findOne({
       where: {
         buyerId,
         sellerId: product.seller,

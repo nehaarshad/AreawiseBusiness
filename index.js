@@ -35,6 +35,7 @@ const io = new Server(server, {
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
+  transports: ['websocket']
 });
 
 chatService(io); // Initialize chat service with socket.io instance
@@ -47,7 +48,7 @@ app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_co
 modelsSyncs.modelsSync()
 .then(()=>{
   const port=5000
-  server.listen(port,()=>{
+  server.listen(port,'0.0.0.0', () => {
       console.log(`Server Runnind on Port ${port}`)
   })
 })
