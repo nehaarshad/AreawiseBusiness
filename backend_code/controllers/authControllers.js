@@ -21,7 +21,14 @@ const createNewUser = async (req, res) => {
     
         const newuser = await User.create({ username, email,contactnumber, password: hashedPassword, role });
     
-        res.json(newuser);
+        res.json({ 
+            id: newuser.id, 
+            username: newuser.username, 
+            email: newuser.email,
+            contactnumber:newuser.contactnumber, 
+            role: newuser.role, 
+            token: generateToken(newuser.id) 
+        });
         }
        }
 

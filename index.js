@@ -48,7 +48,7 @@ app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_co
 modelsSyncs.modelsSync()
 .then(()=>{
   const port=5000
-  server.listen(port,'0.0.0.0', () => {
+  server.listen(port, () => {
       console.log(`Server Runnind on Port ${port}`)
   })
 })

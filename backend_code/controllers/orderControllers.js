@@ -37,17 +37,17 @@ const ViewCheckout = async (req, res) => {
       }
 
       // Check for existing pending order of this cart
-      const existingCart = await order.findOne({
-          where: {
-              cartId: id,
-              status: 'Pending'
-          }
-      });
+    //   const existingCart = await order.findOne({
+    //       where: {
+    //           cartId: id,
+    //           status: 'Pending'
+    //       }
+    //   });
 
-      if (existingCart) {
-          await userCart.update({ status: 'Active' });
-          await existingCart.destroy();
-      }
+    //   if (existingCart) {
+    //       await userCart.update({ status: 'Active' });
+    //       await existingCart.destroy();
+    //   }
 
       console.log('User Cart:', JSON.stringify(userCart, null, 2));
 
@@ -79,11 +79,11 @@ const ViewCheckout = async (req, res) => {
           total: total,
           discount: 0.1,
           shippingPrice: 120,
-          status: 'Pending' // Initial status of the order
+          status: 'InComplete' // Initial status of the order
       });
 
       // Update the cart status to 'Ordered'
-      await userCart.update({ status: 'Ordered' });
+   //   await userCart.update({ status: 'Ordered' });
 
       // Fetch the newly created order with its associated cart, CartItems, Product, and image
       const ordered = await order.findByPk(newOrder.id, {
@@ -199,16 +199,16 @@ const PlaceOrder = async (req, res) => {
         console.log('cartId from request:', cartId);
         // Check if cart exists
         const cartExists = await cart.findOne({
-            where: { id: cartId }
+            where: { id: cartId ,status: 'Active'}
         });
 
         if (!cartExists) {
             return res.status(404).json({ message: 'Cart not found' });
         }
 
-        // Find the order with cart details
+        // // Find the order with cart details
         const userOrder = await order.findOne({
-            where: { cartId },
+            where: { cartId ,status: 'InComplete'},
             include: [{
                 model: cart,
                 include: [{
@@ -227,16 +227,8 @@ const PlaceOrder = async (req, res) => {
 
         console.log('userOrder:', JSON.stringify(userOrder, null, 2));
 
-        // Check if order exists and has a cart
-        if (!userOrder || !userOrder.Cart) {
-            return res.status(404).json({ message: 'Order not found or cart is missing' });
-        }
-
         // Get userId from the cart
         const userId = userOrder.Cart.UserId; 
-        if (!userId) {
-            return res.status(400).json({ message: 'User ID is missing in the cart' });
-        }
 
         // Handle address
         let userAddress = await Address.findOne({ where: { userId } });
@@ -258,6 +250,7 @@ const PlaceOrder = async (req, res) => {
             });
         }
 
+
         // Update order with new address and status
         const updatedOrder = await userOrder.update({
             addressId: userAddress.id,
@@ -277,6 +270,9 @@ const PlaceOrder = async (req, res) => {
             });//seller and order id are same but product id is different
         });
 
+        await cartExists.update({
+            status:'Ordered'
+        })
         res.status(200).json(updatedOrder);
 
     } catch (error) {

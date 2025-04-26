@@ -123,7 +123,7 @@ const updateCartItem = async(req, res) => {
       res.status(500).json({ message: error.message });
     }
 }
-
+ //on back or close button
 const updateCart = async(req, res) => {
   try {
     const { id } = req.params;  //id of cart item to be updated
