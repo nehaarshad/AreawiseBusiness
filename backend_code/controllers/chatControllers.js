@@ -109,7 +109,7 @@ const getChatsAsSeller = async (req, res) => {
   try {
     const { id } = req.params; // Product ID
     const {buyerId} = req.body;
-    
+    console.log(`buyerID ${buyerId}`)
     // Get product to find seller
     const product = await Product.findByPk(id);
     if (!product) {
