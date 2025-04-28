@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart'
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../models/cartModel.dart';
 import '../shared/widgets/colors.dart';
 
 class Cartview extends ConsumerStatefulWidget {
@@ -14,14 +15,15 @@ class Cartview extends ConsumerStatefulWidget {
 }
 
 class _CartviewState extends ConsumerState<Cartview> {
-  late int? cartId;
+  Cart? cart;
+  var cartId;
   @override
   void initState() {
     super.initState();
 
     // Force refresh the cart data when this view is opened
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(cartViewModelProvider(widget.id.toString()).notifier).getUserCart(widget.id.toString());
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+        await ref.read(cartViewModelProvider(widget.id.toString()).notifier).getUserCart(widget.id.toString());
     });
   }
   @override
@@ -33,8 +35,7 @@ class _CartviewState extends ConsumerState<Cartview> {
         title: Text("CartView"),
         actions: [
           state.when(
-            loading:
-                () => const SizedBox.shrink(), // Hide button during loading
+            loading: () => const SizedBox.shrink(), // Hide button during loading
             data: (items) {
               cartId = items?.id; // Extract cart ID safely
               return IconButton(
@@ -228,6 +229,7 @@ class _CartviewState extends ConsumerState<Cartview> {
           height: 50.0,
           child: ElevatedButton(
             onPressed: () async{
+              print('cart ID Sent: ${cartId}');
               await ref.read(orderViewModelProvider.notifier).checkOut(cartId.toString(), context);
             },
             style: ElevatedButton.styleFrom(

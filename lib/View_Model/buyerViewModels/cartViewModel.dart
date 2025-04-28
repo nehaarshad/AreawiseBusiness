@@ -17,13 +17,15 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
     getUserCart(id);
   }
 
-  Future<void> getUserCart(String id) async {
+  Future<Cart?> getUserCart(String id) async {
     try {
       Cart items = await ref.read(cartProvider).getUserCart(id);
       state = AsyncValue.data(items);
+      return items;
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
+      return null;
     }
   }
 

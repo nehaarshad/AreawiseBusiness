@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:ecommercefrontend/View_Model/SellerViewModels/userShopViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/ShopStates.dart';
+import 'package:ecommercefrontend/View_Model/SharedViewModels/allShopsViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
@@ -126,9 +126,10 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       // Force reload the shops list - two important steps:
       // 1. Invalidate the provider
       ref.invalidate(sellerShopViewModelProvider(userId.toString()));
-      ref.invalidate(getAllShopProvider);
+      ref.invalidate(allShopViewModelProvider);
       // 2. Explicitly call getShops to ensure data refresh
       await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
+      await ref.read(allShopViewModelProvider.notifier).getAllShops();
 
       await Future.delayed(Duration(milliseconds: 500));
       Navigator.pop(context);

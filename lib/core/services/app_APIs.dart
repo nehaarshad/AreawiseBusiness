@@ -1,6 +1,6 @@
 class AppApis {
-  static var baseurl = "http://192.168.57.179:5000/api";
-
+  static var baseurl = "http://192.168.71.179:5000/api";
+  static var socketURL = "http://192.168.71.179:5000";
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";
@@ -82,7 +82,7 @@ class AppApis {
   static var getChatsAsBuyerEndPoints = "$baseurl/getChatsAsBuyer/:id";
   static var createChatEndPoints = "$baseurl/createChat/:id";
   static var getChatMessagesEndPoints = "$baseurl/getChatMessages/:id";
-  static var deleteChatMessagesEndPoints = "$baseurl/deleteChat/:id";
+  static var deleteChatEndPoints = "$baseurl/deleteChat/:id";
 
 
   //Filter Operations (shop -> {name,category}  , products ->{category,name,subcategory,price)

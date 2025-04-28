@@ -14,3 +14,14 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+user:1 (buyer)
+  username: buyer
+  password: buyer123
+
+username: newuser
+password: user1234
+
+user:2 (admin)
+username: adminuser
+password: admin123

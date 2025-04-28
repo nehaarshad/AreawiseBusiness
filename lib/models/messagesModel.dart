@@ -1,39 +1,41 @@
+
 class Message {
-  final String id;
-  final String chatId;
-  final String senderId;
-  final String text;
-  final DateTime createdAt;
-  final bool isRead;
+  int? id;
+  int? chatId;
+  int? senderId;
+  String? msg;
+  bool? status;
+  String? createdAt;
+  String? updatedAt;
 
-  Message({
-    required this.id,
-    required this.chatId,
-    required this.senderId,
-    required this.text,
-    required this.createdAt,
-    required this.isRead,
-  });
+  Message(
+      {this.id,
+        this.chatId,
+        this.senderId,
+        this.msg,
+        this.status,
+        this.createdAt,
+        this.updatedAt});
 
-  factory Message.fromJson(Map<String, dynamic> json) {
-    return Message(
-      id: json['id'],
-      chatId: json['chatId'],
-      senderId: json['senderId'],
-      text: json['msg'],
-      createdAt: DateTime.parse(json['createdAt']),
-      isRead: json['status'],
-    );
+  Message.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    chatId = json['chatId'];
+    senderId = json['senderId'];
+    msg = json['msg'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'chatId': chatId,
-      'senderId': senderId,
-      'msg': text,
-      'createdAt': createdAt.toIso8601String(),
-      'status': isRead,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['chatId'] = this.chatId;
+    data['senderId'] = this.senderId;
+    data['msg'] = this.msg;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    return data;
   }
 }

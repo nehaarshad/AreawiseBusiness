@@ -1,36 +1,42 @@
 import 'ProductModel.dart';
+import 'UserDetailModel.dart';
 import 'messagesModel.dart';
 
 class Chat {
-  final String id;
-  final String buyerId;
-  final String sellerId;
-  final String productId;
-  final DateTime lastMessageAt;
-  final List<Message?> messages;
-  final Message? lastMessage;
-  final ProductModel? product;
+  int? id;
+  int? buyerId;
+  int? sellerId;
+  int? productId;
+  String? lastMessageAt;
+  String? createdAt;
+  String? updatedAt;
+  UserDetailModel? user;
+  ProductModel? product;
+  List<Message>? messages;
 
-  Chat({
-    required this.id,
-    required this.buyerId,
-    required this.sellerId,
-    required this.productId,
-    required this.lastMessageAt,
-    required this.messages,
-    this.lastMessage,
-    required this.product,
-  });
+  Chat(
+      {this.id,
+        this.buyerId,
+        this.sellerId,
+        this.productId,
+        this.lastMessageAt,
+        this.createdAt,
+        this.updatedAt,
+        this.user,
+        this.product,
+        this.messages});
 
   Chat copyWith({
-    String? id,
-     String? buyerId,
-     String? sellerId,
-     String? productId,
-     DateTime? lastMessageAt,
-     List<Message?>? messages,
-     Message? lastMessage,
-     ProductModel? product,
+    int? id,
+    int? buyerId,
+    int? sellerId,
+    int? productId,
+    String? lastMessageAt,
+    String? createdAt,
+    String? updatedAt,
+    UserDetailModel? user,
+    ProductModel? product,
+    List<Message>? messages,
   }) {
     return Chat(
       id: id ?? this.id,
@@ -38,41 +44,54 @@ class Chat {
       sellerId: sellerId ?? this.sellerId,
       productId: productId ?? this.productId,
       lastMessageAt: lastMessageAt ?? this.lastMessageAt,
-      messages: messages ?? this.messages,
-      lastMessage: lastMessage ?? this.lastMessage,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      user: user ?? this.user,
       product: product ?? this.product,
+      messages: messages ?? this.messages,
     );
   }
 
-  factory Chat.fromJson(Map<String, dynamic> json) {
-    return Chat(
-      id: json['id']!.toString(),
-      buyerId: json['buyerId']!.toString(),
-      sellerId: json['sellerId']!.toString(),
-      productId: json['productId']!.toString(),
-      lastMessageAt: DateTime.parse(json['lastMessageAt']),
-      messages: json['Messages'] != null
-          ? (json['Messages'] as List)
-          .map((message) => Message.fromJson(message))
-          .toList()
-          : [], // Provide an empty list as default
-      lastMessage: json['lastMessage'] != null
-          ? Message.fromJson(json['lastMessage'])
-          : null,
-      product: json['product'] != null
-          ? ProductModel.fromJson(json['product'])
-          : null,
-    );
+  Chat.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    buyerId = json['buyerId'];
+    sellerId = json['sellerId'];
+    productId = json['productId'];
+    lastMessageAt = json['lastMessageAt'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    user = json['user'] != null ? new UserDetailModel.fromJson(json['user']) : null;
+    product =
+    json['product'] != null ? new ProductModel.fromJson(json['product']) : null;
+    if (json['Messages'] != null) {
+      messages = <Message>[];
+      json['Messages'].forEach((v) {
+        messages!.add(new Message.fromJson(v));
+      });
+    }
   }
+
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'buyerId': buyerId,
-      'sellerId': sellerId,
-      'productId': productId,
-      'lastMessageAt': lastMessageAt.toIso8601String(),
-      'messages': messages.map((message) => message?.toJson()).toList(),
-      'lastMessage': lastMessage?.toJson(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['buyerId'] = this.buyerId;
+    data['sellerId'] = this.sellerId;
+    data['productId'] = this.productId;
+    data['lastMessageAt'] = this.lastMessageAt;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.product != null) {
+      data['product'] = this.product!.toJson();
+    }
+    if (this.messages != null) {
+      data['Messages'] = this.messages!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
+
+
+

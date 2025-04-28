@@ -64,6 +64,15 @@ class ChatRepository {
     }
   }
 
+  Future<dynamic> deleteChat(String id) async {
+    try {
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteChatEndPoints.replaceFirst(':id', id));
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<List<Chat>> getChatsAsSeller(String id) async {
     List<Chat> chats;
     try {

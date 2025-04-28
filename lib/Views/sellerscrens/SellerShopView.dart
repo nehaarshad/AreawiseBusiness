@@ -1,4 +1,3 @@
-import 'package:ecommercefrontend/View_Model/SellerViewModels/userShopViewModel.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';

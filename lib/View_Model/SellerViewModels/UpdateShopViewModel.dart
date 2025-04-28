@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../models/categoryModel.dart';
 import '../../repositories/categoriesRepository.dart';
+import '../SharedViewModels/allShopsViewModel.dart';
 
 final updateShopProvider = StateNotifierProvider.family<UpdateShopViewModel, AsyncValue<ShopModel?>, String>((ref, id) {
   return UpdateShopViewModel(ref, id);
@@ -161,10 +162,11 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       final response = await ref.read(shopProvider).updateShop(data, id, imageFiles);
 
       final updatedShop = ShopModel.fromJson(response);
-      state = AsyncValue.data(updatedShop);
       ref.invalidate(sellerShopViewModelProvider(userid.toString()));
       await ref.read(sellerShopViewModelProvider(userid.toString()).notifier).getShops(userid.toString());
-      await Future.delayed(Duration(milliseconds: 500));
+      ref.invalidate(allShopViewModelProvider);
+      await ref.read(allShopViewModelProvider.notifier).getAllShops();
+   //   state = AsyncValue.data(updatedShop);
       Navigator.pop(context);
     } catch (e) {
       print(e);

@@ -2,9 +2,12 @@ import 'package:ecommercefrontend/Views/buyer_screens/buyerBottomnavigationBar.d
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import '../../../core/utils/utils.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../models/auth_users.dart';
+import '../widgets/drawerList.dart';
 import '../widgets/logout_button.dart';
 import '../widgets/profileImageWidget.dart';
 import 'ShopView.dart';
@@ -85,33 +88,12 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
               children: [
                 Text("SellerMode", style: TextStyle(fontSize: 12)),
                 Switch(value: isSeller, onChanged: toggglebutton),
-                SizedBox(width: 20,),
-                logoutbutton(),
               ],
             ),
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            drawerHeader(),
-            drawerItems(
-              icon: Icons.chat,
-              title: 'Chats',
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  routesName.chatList,
-                  arguments: widget.id.toString(),
-                );
-              },
-            ),
-
-          ],
-        ),
-      ),
+      drawer: DrawerListItems(user: widget.user,id: widget.id,),
       body: isSeller ? SellerViews[index] : BuyerViews[index],
       bottomNavigationBar: isSeller ? SellerBottomNavigation(
                 selectedIndex: index,
@@ -121,31 +103,5 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     );
   }
 
-  Widget drawerHeader(){
-    return DrawerHeader(
-        decoration: BoxDecoration(
-          color: Appcolors.blueColor
-        ),
-        child: Column(
-          children: [
-            ProfileImageWidget(user: widget.user, height: 100, weidth: 100),
-            SizedBox(height: 10,),
-            Text(widget.user.username!,style: TextStyle(
-              color: Appcolors.whiteColor,
-              fontSize: 15,
-            ),)
-          ],
-
-    )
-    );
-  }
-
-  Widget drawerItems({required IconData icon, required String title, required GestureTapCallback onTap}){
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      onTap: onTap,
-    );
-  }
 
 }

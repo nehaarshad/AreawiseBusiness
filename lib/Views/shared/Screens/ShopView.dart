@@ -1,8 +1,7 @@
-import 'package:ecommercefrontend/View_Model/SellerViewModels/userShopViewModel.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-
+import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 
 class ShopsView extends ConsumerStatefulWidget {
@@ -21,7 +20,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {
-                final shopState = ref.watch(getAllShopProvider);
+                final shopState = ref.watch(allShopViewModelProvider);
                 return shopState.when(
                   loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
                   data: (shops) {

@@ -30,10 +30,8 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
 
       ),
       body: userdetail.when(
-        loading:
-            () => Center(
-              child: CircularProgressIndicator(color: Appcolors.blackColor),
-            ),
+        loading: () => Center(
+              child: CircularProgressIndicator(color: Appcolors.blackColor),),
         data: (user) {
           if (user == null) return const Center(child: Text("User not found"));
           return Padding(
@@ -41,7 +39,7 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
             child: Center(
               child: Column(
                 children: [
-                  ProfileImageWidget(user: user, height: 150, weidth: 150),
+                  ProfileImageWidget(user: user, height: 150, width: 150),
                   SizedBox(height: 20),
                   userInfo(user: user),
                   SizedBox(height: 10),

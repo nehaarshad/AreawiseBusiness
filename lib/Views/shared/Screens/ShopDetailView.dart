@@ -24,7 +24,8 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          //  mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ImageSlider(images: widget.shop.images ?? [], height: 350),
               Container(
@@ -44,15 +45,34 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                           )),
                         SizedBox(height: 15),
                         Text("${widget.shop.category?.name}", style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Colors.black,
-                          )),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.black,
+                              )),
                         SizedBox(height: 10),
                         Text("${widget.shop.shopaddress}", style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                             color: Colors.grey,
+                          ),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              routesName.sAddProduct,
+                              arguments: widget.shop,
+                            );
+                          },
+                          icon: Icon(Icons.add, size: 18,color: Appcolors.whiteColor,),
+                          label: Text("Add Product"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Appcolors.blueColor,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                       ],
@@ -84,31 +104,7 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(100, 0, 100, 100),
-        child: SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, routesName.sAddProduct, arguments: widget.shop,);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Appcolors.blueColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40.0),
-              ),
-            ),
-            child: const Text(
-              "Add New Product",
-              style: TextStyle(
-                color: Appcolors.whiteColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-          ),
-        ),
-      ),
+     
     );
   }
 }

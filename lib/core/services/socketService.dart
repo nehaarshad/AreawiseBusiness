@@ -24,7 +24,7 @@ class SocketService {
   Stream<Message> get messageStream => messageController.stream;
 
   Future<void> initialize() async {
-    socket = IO.io(AppApis.baseurl,
+    socket = IO.io(AppApis.socketURL,
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
@@ -58,6 +58,7 @@ class SocketService {
   }
 
   void joinChats(String userId) {
+    print('Joining chats for user: $userId (${userId.runtimeType})');
     socket.emit('userChats', userId);
   }
 
@@ -66,7 +67,7 @@ class SocketService {
     required int senderId,
     required String message,
   }) {
-
+    print('Sending message to chat: $chatId (${chatId.runtimeType}), Sender: $senderId');
     socket.emit('sendMessage', {
       'chatId': chatId,
       'senderId': senderId,
@@ -75,6 +76,7 @@ class SocketService {
   }
 
   void disconnect() {
+    // Ensure cleanup and safe shutdown
     messageController.close();
     socket.disconnect();
   }

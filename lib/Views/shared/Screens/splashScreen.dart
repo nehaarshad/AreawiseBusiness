@@ -18,6 +18,10 @@ class _splashViewState extends ConsumerState<splashView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("SPLASH SCREEN")));
+    return Scaffold(
+      body: Center(
+        child: Image.asset('assets/images/logo.png',width: 900,height: 5000,),
+      ),
+    );
   }
 }

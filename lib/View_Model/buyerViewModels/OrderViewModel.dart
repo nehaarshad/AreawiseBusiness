@@ -6,6 +6,7 @@ import '../../Views/shared/widgets/colors.dart';
 import '../../models/cartModel.dart';
 import '../../models/orderModel.dart';
 import '../../repositories/checkoutRepositories.dart';
+import '../auth/sessionmanagementViewModel.dart';
 import 'cartViewModel.dart';
 import 'ordersHistoryViewModel.dart';
 
@@ -21,15 +22,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
   late TextEditingController city=TextEditingController();
   late TextEditingController address=TextEditingController();
   bool loading = false;
-
-
-  @override
-  void dispose() {
-    sector.dispose();
-    city.dispose();
-    address.dispose();
-    super.dispose();
-  }
+  
 
   Future<void> checkOut(String id,BuildContext context) async {
     try {
@@ -140,9 +133,12 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
       ref.invalidate(orderHistoryViewModelProvider(userId));
       await ref.read(orderHistoryViewModelProvider(userId).notifier).getCustomerOrdersHistory(userId);
 
+      ref.invalidate(sessionProvider);
+    final user= await ref.read(sessionProvider.notifier).getuser();
+
       Utils.flushBarErrorMessage("Order Sent Successfully", context);
         if (mounted) {
-          Navigator.pushNamed(context, routesName.dashboard,arguments: int.parse(userId));
+          Navigator.pushNamed(context, routesName.dashboard,arguments: user);
         } 
     } catch (e) {
       print(e);

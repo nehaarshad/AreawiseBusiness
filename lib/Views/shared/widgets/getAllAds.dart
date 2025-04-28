@@ -108,28 +108,28 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
                       );
                 },
               ),
-              Positioned(
-                bottom: 10,
-                left: 0,
-                right: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    ads.length,
-                        (index) => Container(
-                      width: 8,
-                      height: 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentPage == index
-                            ? Appcolors.blueColor
-                            : Colors.grey.shade500,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   bottom: 10,
+              //   left: 0,
+              //   right: 0,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: List.generate(
+              //       ads.length,
+              //           (index) => Container(
+              //         width: 8,
+              //         height: 8,
+              //         margin: const EdgeInsets.symmetric(horizontal: 4),
+              //         decoration: BoxDecoration(
+              //           shape: BoxShape.circle,
+              //           color: _currentPage == index
+              //               ? Appcolors.blueColor
+              //               : Colors.grey.shade500,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           );
         },

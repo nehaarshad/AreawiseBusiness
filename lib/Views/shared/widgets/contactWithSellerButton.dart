@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 import '../../../View_Model/SharedViewModels/chatListViewModel.dart';
+import '../../../models/chatsModel.dart';
 import '../Screens/chatView.dart';
 
 class contactWithSellerButton extends ConsumerWidget {
@@ -41,25 +42,46 @@ class contactWithSellerButton extends ConsumerWidget {
       print('UserID: $userId (${userId.runtimeType})');
       print('ProductID: $productId (${productId.runtimeType})');
 
-      // Create a chat
-      await ref.read(chatListProvider.notifier).createChat(userId, productId);
+      // Create a chat first
+      final createdChat = await ref.read(chatListProvider.notifier).createChat(userId, productId);
 
-      // After creation, fetch the latest state
-      final chatsState = ref.read(chatListProvider);
-
-      if (chatsState.hasValue) {
-        final chats = chatsState.value!;
-        final chat = chats.firstWhere(
-              (c) => c?.productId == productId && c?.buyerId == userId,
-          orElse: () => null,
+      // If chat was created successfully, navigate to it
+      if (createdChat != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatView(
+                chatId: createdChat.id.toString(),
+                userId: userId,
+                product: product
+            ),
+          ),
         );
+        return;
+      }
 
-        if (chat != null) {
+      // If creation returns null, try to find existing chat
+      final chatsState = ref.read(chatListProvider);
+      if (chatsState.hasValue && chatsState.value != null) {
+        final chats = chatsState.value!;
+
+        // Find the chat with matching product and buyer IDs
+        Chat? foundChat;
+        for (final chat in chats) {
+          if (chat != null &&
+              chat.productId.toString() == productId &&
+              chat.buyerId.toString() == userId) {
+            foundChat = chat;
+            break;
+          }
+        }
+
+        if (foundChat != null) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ChatView(
-                  chatId: chat.id.toString(),
+                  chatId: foundChat!.id.toString(),
                   userId: userId,
                   product: product
               ),

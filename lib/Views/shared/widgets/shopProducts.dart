@@ -41,7 +41,7 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
                   Navigator.pushNamed(
                     context,
                     routesName.productdetail,
-                    arguments: {'id': widget.shopId, 'product': product},
+                    arguments: {'id': int.tryParse(widget.shopId), 'product': product},
                   );
                 },
                 child: Card(
