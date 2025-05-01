@@ -105,7 +105,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
         ),
 
       ),
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.white60,
       body: Column(
         children: [
           Expanded(

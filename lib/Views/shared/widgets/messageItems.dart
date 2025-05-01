@@ -66,7 +66,7 @@ class MessageView extends StatelessWidget {
   String _formatTime(String? timestamp) {
     if (timestamp == null) return '';
     try {
-      final dateTime = DateTime.parse(timestamp);
+      final dateTime = DateTime.parse(timestamp).toLocal();
       final hour = dateTime.hour;
       final minute = dateTime.minute.toString().padLeft(2, '0');
       final period = hour < 12 ? 'AM' : 'PM';
