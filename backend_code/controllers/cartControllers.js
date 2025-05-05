@@ -7,7 +7,7 @@ import image from "../models/imagesModel.js";
 const addToCart=async(req,res)=>{
   try {
     const { id } = req.params;
-    const { productId} = req.body;
+    const { productId,quantity} = req.body;
     console.log('Received productId:', productId);
     const product=await Product.findByPk(productId,
       {
@@ -30,7 +30,6 @@ const addToCart=async(req,res)=>{
       }
     });
     console.log('userCart:', userCart);
-    const quantity=1;  //initial quantity of product is 1, 
     // quatity will modified when user click on + or - button only on view but send to checkout to calculate total amount
     const price=product.price*quantity;  //initialy the price the item is the price of product thar is added to cart
     const cartItem = await items.create({

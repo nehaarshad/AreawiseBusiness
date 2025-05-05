@@ -5,12 +5,14 @@ import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import subcategories from "../models/subCategoryModel.js";
 import dotenv from "dotenv";
+import shop from "../models/shopmodel.js";
 dotenv.config();
 
 
 const addproduct = async (req, res) => {
      const {id}=req.params;
-    const { name, price, description, stock,productcategory,productsubcategory} = req.body;
+    const { name, price,subtitle, description, stock,productcategory,productsubcategory} = req.body;
+    console.log(req.body)
     const images=req.files
     try {
         const usershop = await Shop.findByPk(id);
@@ -21,7 +23,16 @@ const addproduct = async (req, res) => {
         console.log(findcategory)//electronics
         const [findsubcategory]=await subcategories.findOrCreate({where:{name:productsubcategory,categoryId:findcategory.id}})
         console.log(findsubcategory)
-        const product = await Product.create({name, price, description, stock,seller:usershop.userId,shopid:usershop.id,categoryId:findcategory.id,subcategoryId:findsubcategory.id});
+        const product = await Product.create({
+            name,
+            price:Number(price),
+            subtitle, 
+            description, 
+            stock:Number(stock),
+            seller:usershop.userId,
+            shopid:usershop.id,
+            categoryId:findcategory.id,
+            subcategoryId:findsubcategory.id});
         const entityid = product.id;
             if (images && images.length > 0) {
                 const imageRecords = images.map(file => ({
@@ -49,6 +60,9 @@ const findproductbyid = async (req, res) => {
                 required:false //all products may not have image
             },
             {
+                model:shop,
+            },
+            {
                 model:category,
             },
             {
@@ -69,6 +83,9 @@ const getallproducts = async (req, res) => {
                 model:image,
                 where:{imagetype:"product"},
                 required:false //all products may not have image
+            },
+            {
+                model:shop,
             },
             {
                 model:category,
@@ -154,7 +171,7 @@ const getshopproducts = async (req, res) => {
 const updateproduct = async (req, res) => {
     try {
         const {  id } = req.params;
-        const { name, price, description, stock,categories,subcategory } = req.body;
+        const { name, price,subtitle, description, stock,categories,subcategory } = req.body;
         const images=req.files
         
         const product = await Product.findByPk(id,{
@@ -179,6 +196,7 @@ const updateproduct = async (req, res) => {
         const updatedproduct = {
             name: name || product.name,
             price: price || product.price,
+            subtitle:subtitle || product.subtitle,
             description: description || product.description,
             stock: stock || product.stock,
             categoryId:  findcategory.id,
