@@ -176,6 +176,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
   Future<void> updateProduct({
     required String name,
     required int price,
+    required String subtitle,
     required String description,
     required int stock,
     required String shopId,
@@ -192,6 +193,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       final data = {
         'name': name,
         'price': price,
+        'subtitle':subtitle,
         'description': description,
         'stock': stock,
         'categories': selectedCategory?.name ?? customCategoryName,
@@ -199,6 +201,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       };
 
       print("Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}",);
+      print("Request Body (subtitle): ${data['subtitle']} with type: ${data['subtitle'].runtimeType}",);
       print("Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}",);
       print("Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}",);
       print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}",);
@@ -211,7 +214,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
         // Invalidate the provider to refresh the product list
         ref.invalidate(sharedProductViewModelProvider);
         await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
-        await ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+        await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
         await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
       } catch (innerError) {
         print("Error refreshing product lists: $innerError");

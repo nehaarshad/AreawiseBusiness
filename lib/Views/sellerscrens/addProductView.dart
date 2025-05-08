@@ -20,15 +20,18 @@ class addProductView extends ConsumerStatefulWidget {
 }
 
 class _addProductViewState extends ConsumerState<addProductView> {
+
   final formkey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
+  final TextEditingController subtitle = TextEditingController();
   final TextEditingController price = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController stock = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     String shopId=widget.shop.id.toString();
-    print(shopId);
+    print("shopID: ${shopId} with type: ${shopId.runtimeType}");
     final state = ref.watch(addProductProvider(shopId));
     return Scaffold(
       appBar: AppBar(title: Text("Add Product")),
@@ -114,6 +117,17 @@ class _addProductViewState extends ConsumerState<addProductView> {
                   },
                 ),
                 TextFormField(
+                    controller: subtitle,
+                    decoration: InputDecoration(labelText: "Subtitle"),
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Provide subtitle of a product";
+                      }
+                      return null;
+                    },
+                ),
+                TextFormField(
                   controller: description,
                   decoration: InputDecoration(labelText: "Description"),
                   maxLines: 3,
@@ -144,9 +158,10 @@ class _addProductViewState extends ConsumerState<addProductView> {
                             if (formkey.currentState!.validate()) {
                               await ref.read(addProductProvider(shopId).notifier,)
                                   .addProduct(
-                                    name: name.text.toString(),
+                                    name: name.text,
                                     price: price.text,
-                                    description: description.text.toString(),
+                                  subtitle:subtitle.text,
+                                    description: description.text,
                                     stock: stock.text,
                                     user:widget.shop.userId.toString(),
                                     context: context,

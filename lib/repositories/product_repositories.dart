@@ -29,10 +29,10 @@ class ProductRepositories {
     }
   }
 
-  Future<List<ProductModel>> getProduct() async {
+  Future<List<ProductModel>> getProduct(String Category) async {
     List<ProductModel> productlist = [];
     try {
-      dynamic response = await apiservice.GetApiResponce(AppApis.GetProductsEndPoints);
+      dynamic response = await apiservice.GetApiResponce(AppApis.GetProductsEndPoints.replaceFirst(':Category', Category));
       if (response is List) {
         return response.map((products) => ProductModel.fromJson(products as Map<String, dynamic>),).toList();
       }

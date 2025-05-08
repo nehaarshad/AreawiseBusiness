@@ -14,13 +14,13 @@ class CartRepositories {
   CartRepositories();
   baseapiservice apiservice = networkapiservice();
 
-  Future<Cart> addToCart(String id, int productId) async {
+  Future<Cart> addToCart(String id, Map<String,dynamic> data) async {
     try {
-      final data = jsonEncode({'productId': productId});
       final headers = {'Content-Type': 'application/json'};
+      final body=jsonEncode(data);
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.addToCartEndPoints.replaceFirst(':id', id),
-        data,
+        body,
         headers,
       );
       if (response is Map<String, dynamic>) {

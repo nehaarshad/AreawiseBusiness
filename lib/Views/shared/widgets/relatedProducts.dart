@@ -1,36 +1,80 @@
-import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
-class AllProducts extends ConsumerWidget {
+import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import '../../../core/utils/routes/routes_names.dart';
+
+class RelatedProducts extends ConsumerStatefulWidget {
   final int userid;
-   AllProducts({required this.userid,  super.key});
+  final String? category;
+
+  const RelatedProducts({
+    required this.userid,
+    required this.category,
+    Key? key
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RelatedProducts> createState() => _RelatedProductsState();
+}
+
+class _RelatedProductsState extends ConsumerState<RelatedProducts> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch products by category when widget initializes
+    if (widget.category != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(sharedProductViewModelProvider.notifier)
+            .getAllProduct(widget.category!);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // Listen to the product state
     final productState = ref.watch(sharedProductViewModelProvider);
 
     return productState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(
+        child: SizedBox(
+          height: 100,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      ),
       data: (products) {
-        if (products.isEmpty) {
-          return const Center(child: Text("No Products available."));
+        // Filter products to show only ones in the same category
+        final relatedProducts = products.where((product) =>
+        product?.category?.name == widget.category).toList();
+
+        if (relatedProducts.isEmpty) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Text(
+                "No related products available.",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+          );
         }
+
         return SizedBox(
           height: 250, // Fixed height to prevent unbounded height
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: products.length,
+            itemCount: relatedProducts.length,
             itemBuilder: (context, index) {
-              final product = products[index];
+              final product = relatedProducts[index];
+              if (product == null) return const SizedBox.shrink();
+
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     context,
                     routesName.productdetail,
-                    arguments: {'id': userid, 'product': product},
+                    arguments: {'id': widget.userid, 'product': product},
                   );
                 },
                 child: Card(
@@ -45,7 +89,7 @@ class AllProducts extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: product?.images != null && product!.images!.isNotEmpty
+                          child: product.images != null && product.images!.isNotEmpty
                               ? Image.network(
                             product.images!.first.imageUrl!,
                             fit: BoxFit.cover,
@@ -56,18 +100,20 @@ class AllProducts extends ConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            product?.name ?? "Unknown",
+                            product.name ?? "Unknown",
                             style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
-                            "\$${product?.price ?? 0}",
+                            "\$${product.price ?? 0}",
                             style: const TextStyle(color: Colors.green),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 8),
                       ],
                     ),
                   ),

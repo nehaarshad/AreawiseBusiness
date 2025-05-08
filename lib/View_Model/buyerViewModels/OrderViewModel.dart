@@ -45,6 +45,24 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
     }
   }
 
+  // // Calculate the total price of items in the cart
+  // // userCart.CartItems.forEach(item => {
+  // // total += item.price;
+  // // });
+  //
+  // // Check if CartItems exist
+  // if (!userCart.CartItems || userCart.CartItems.length === 0) {
+  // return res.json({ message: 'No items found in the cart' });
+  // }
+  //
+  //
+  // //   if(total>5000){
+  // //   total = total - (total * discount) + shippingPrice;
+  // //   }
+  // //   else{
+  // //   total = total + shippingPrice;
+  // //   }
+
   void CheckoutDialogView(BuildContext context, orderModel order) {
     showDialog(
       context: context,

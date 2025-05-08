@@ -17,7 +17,7 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
   void initState() {
     super.initState();
     // Fetch all products when the widget is first created
-    ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+    ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
   }
 
   @override

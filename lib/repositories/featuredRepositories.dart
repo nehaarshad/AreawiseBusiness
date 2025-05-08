@@ -46,10 +46,10 @@ class featureRepositories {
     }
   }
 
-  Future<List<featureModel?>> getAllFeaturedProducts()async{
+  Future<List<featureModel?>> getAllFeaturedProducts(String category)async{
     List<featureModel> orders;
     try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getAllFeaturedProductsEndPoints);
+      dynamic response=await apiservice.GetApiResponce(AppApis.getAllFeaturedProductsEndPoints.replaceFirst(':Category', category));
       if (response is List) {
         return response.map((order) => featureModel.fromJson(order as Map<String, dynamic>),).toList();
       }

@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../core/services/app_APIs.dart';
-import '../models/UserDetailModel.dart';
 import '../models/adsModel.dart';
 
 final adProvider = Provider<AdsRepositories>((ref) {

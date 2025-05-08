@@ -123,9 +123,7 @@ class _CartviewState extends ConsumerState<Cartview> {
                                         ),
                                       ),
                             ),
-
                             const SizedBox(width: 16),
-
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

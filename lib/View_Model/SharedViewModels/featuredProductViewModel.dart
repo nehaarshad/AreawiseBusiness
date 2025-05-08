@@ -31,9 +31,9 @@ class featureProductViewModel extends StateNotifier<AsyncValue<List<featureModel
   }
 
   ///for dashboardView
-  Future<void> getAllFeaturedProducts() async {
+  Future<void> getAllFeaturedProducts(String category) async {
     try {
-      List<featureModel?> feature = await ref.read(featureProvider).getAllFeaturedProducts();
+      List<featureModel?> feature = await ref.read(featureProvider).getAllFeaturedProducts(category);
       state = AsyncValue.data(feature.isEmpty ? [] : feature);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

@@ -56,8 +56,17 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   }
 
   //send userId as params, and product id as req.body  //accesssd  on productdetailview
-  Future<void> addToCart(String id, int data) async {
+  Future<void> addToCart(String id,int productId, int quantity) async {
     try {
+      final data={
+        'productId':productId,
+        'quantity':quantity,
+      };
+
+      print("Request Body (productId): ${data['productId']} with type: ${data['productId'].runtimeType}");
+      print("Request Body (quantity): ${data['quantity']} with type: ${data['quantity'].runtimeType}");
+      print("(id): ${id} with type: ${id.runtimeType}");
+
       Cart items = await ref.read(cartProvider).addToCart(id, data);
       if (kDebugMode) {
         print(items);

@@ -43,7 +43,7 @@ class createfeatureProductViewModel extends StateNotifier<createFeatureProductSt
         ref.invalidate(featureProductViewModelProvider);
         await ref.read(featureProductViewModelProvider.notifier).getUserFeaturedProducts(sellerId);
         await ref.read(featureProductViewModelProvider.notifier).getAllRequestedFeatured();
-        await ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts();
+        await ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts('All');
       } catch (innerError) {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors
@@ -69,7 +69,7 @@ class createfeatureProductViewModel extends StateNotifier<createFeatureProductSt
         ref.invalidate(featureProductViewModelProvider);
         await ref.read(featureProductViewModelProvider.notifier).getUserFeaturedProducts(sellerId);
         await ref.read(featureProductViewModelProvider.notifier).getAllRequestedFeatured();
-        await ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts();
+        await ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts('All');
       } catch (innerError) {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors

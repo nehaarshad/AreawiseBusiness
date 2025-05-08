@@ -25,6 +25,7 @@ class updateProductView extends ConsumerStatefulWidget {
 class _updateProductViewState extends ConsumerState<updateProductView> {
   final formkey = GlobalKey<FormState>();
   late TextEditingController name = TextEditingController();
+  final TextEditingController subtitle = TextEditingController();
   late TextEditingController price = TextEditingController();
   late TextEditingController description = TextEditingController();
   late TextEditingController stock = TextEditingController();
@@ -45,10 +46,11 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     .value;
             print('Loaded product: ${product}');
             if (product != null) {
-              name.text = product.name ?? '';
-              price.text = product.price.toString() ?? '';
-              description.text = product.description ?? '';
-              stock.text = product.stock.toString() ?? '';
+              name.text = product.name!;
+              subtitle.text=product.subtitle!;
+              price.text = product.price.toString();
+              description.text = product.description!;
+              stock.text = product.stock.toString();
             }
           });
       ref
@@ -162,6 +164,16 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                       },
                     ),
                     TextFormField(
+                      controller: subtitle,
+                      decoration: InputDecoration(labelText: "Subtitle"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Provide subtitle of a product";
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
                       controller: description,
                       decoration: InputDecoration(labelText: "Description"),
                       validator: (value) {
@@ -206,6 +218,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                                       .updateProduct(
                                         name: name.text,
                                         price: int.parse(price.text),
+                                        subtitle: subtitle.text,
                                         description: description.text,
                                         stock: int.parse(stock.text),
                                         shopId: widget.product.shopid.toString(),

@@ -9,6 +9,7 @@ import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/utils.dart';
+import '../SharedViewModels/getAllCategories.dart';
 import 'sellerShopViewModel.dart';
 
 final addShopProvider = StateNotifierProvider.family<AddShopViewModel, ShopState, String>((ref, id,) {
@@ -127,10 +128,11 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       // 1. Invalidate the provider
       ref.invalidate(sellerShopViewModelProvider(userId.toString()));
       ref.invalidate(allShopViewModelProvider);
+      ref.invalidate(GetallcategoriesProvider);
       // 2. Explicitly call getShops to ensure data refresh
       await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
       await ref.read(allShopViewModelProvider.notifier).getAllShops();
-
+      await ref.read(GetallcategoriesProvider.notifier);
       await Future.delayed(Duration(milliseconds: 500));
       Navigator.pop(context);
     } catch (e) {

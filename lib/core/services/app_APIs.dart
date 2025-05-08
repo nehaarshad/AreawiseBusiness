@@ -1,5 +1,5 @@
 class AppApis {
-  static var baseurl = "http://192.168.71.179:5000/api";
+  static var baseurl = "http://192.168.161.179:5000/api";
   static var socketURL = "http://192.168.71.179:5000";
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
@@ -34,12 +34,19 @@ class AppApis {
   static var getAllsubcategoriesEndPoints = "$baseurl/getallsubcategories";
   static var getSubcategoriesOfCategoryEndPoints = "$baseurl/getsubcategoriesofcategory/:categories";
 
+  //Reviews URLs
+  static var getReviewEndPoints = "$baseurl/getReviews/:id";
+  static var AddReviewEndPoints = "$baseurl/addReview/:id";
+  static var UpdateReviewEndPoints = "$baseurl/updateReview/:id";
+  static var DeleteReviewEndPoints = "$baseurl/deleteReview/:id";
+
   //PRODUCTS URLS  (Seller Perform Operation on their Products + All Products Home Page URL)
   static var AddProductEndPoints = "$baseurl/addproduct/:id";
-  static var GetProductsEndPoints = "$baseurl/getallproducts";
+  static var GetProductsEndPoints = "$baseurl/getallproducts/:Category";
   static var GetProductByIDEndPoints = "$baseurl/getproducts/:id";
   static var GetUserProductsEndPoints = "$baseurl/getuserproducts/:id";
   static var GetShopProductsEndPoints = "$baseurl/getshopproducts/:id";
+  static var GetProductByCategoryEndPoints = "$baseurl/getProductByCategory";
   static var UpdateProductEndPoints = "$baseurl/updateproduct/:id";
   static var DeleteProductEndPoints = "$baseurl/deleteproduct/:id";
 
@@ -66,7 +73,7 @@ class AppApis {
   static var deleteAdEndPoints = "$baseurl/deleteAd/:id";
 
   //FeatureProduct APIS
-  static var getAllFeaturedProductsEndPoints = "$baseurl/getAllFeaturedProducts";
+  static var getAllFeaturedProductsEndPoints = "$baseurl/getAllFeaturedProducts/:Category";
   static var getAllRequestedFeaturedProductsEndPoints = "$baseurl/getAllRequestedFeaturedProducts";
   static var createProductFeaturedEndPoints = "$baseurl/createProductFeatured/:id";
   static var getUserFeaturedProductsEndPoints = "$baseurl/getUserFeaturedProducts/:id";

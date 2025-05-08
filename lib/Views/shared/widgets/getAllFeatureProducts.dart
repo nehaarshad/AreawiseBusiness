@@ -3,25 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 
-class allFeaturedProducts extends ConsumerStatefulWidget {
-  int userid;
-  allFeaturedProducts({required this.userid});
+class AllFeaturedProducts extends ConsumerWidget {
+  final int userid;
+  const AllFeaturedProducts({required this.userid, super.key});
 
   @override
-  ConsumerState<allFeaturedProducts> createState() => _allFeaturedProductsState();
-}
-
-class _allFeaturedProductsState extends ConsumerState<allFeaturedProducts> {
-
-  @override
-  void initState() {
-    super.initState();
-    ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Listen to the featured products state
     final featuredProducts = ref.watch(featureProductViewModelProvider);
+
     return featuredProducts.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (products) {
@@ -29,9 +19,8 @@ class _allFeaturedProductsState extends ConsumerState<allFeaturedProducts> {
           return const Center(child: Text("No Featured Products available."));
         }
         return SizedBox(
-          height: 200, //
+          height: 200,
           child: ListView.builder(
-            //physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
             itemBuilder: (context, index) {
@@ -41,7 +30,7 @@ class _allFeaturedProductsState extends ConsumerState<allFeaturedProducts> {
                   Navigator.pushNamed(
                     context,
                     routesName.productdetail,
-                    arguments: {'id': widget.userid, 'product': product!.product},
+                    arguments: {'id': userid, 'product': product!.product},
                   );
                 },
                 child: Card(
@@ -57,7 +46,8 @@ class _allFeaturedProductsState extends ConsumerState<allFeaturedProducts> {
                       children: [
                         Expanded(
                           child: product?.product?.images != null && product!.product!.images!.isNotEmpty
-                              ? Image.network(product.product!.images!.first.imageUrl!,
+                              ? Image.network(
+                            product.product!.images!.first.imageUrl!,
                             fit: BoxFit.cover,
                             width: double.infinity,
                           )

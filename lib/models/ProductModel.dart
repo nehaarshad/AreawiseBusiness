@@ -1,14 +1,20 @@
 import 'dart:io';
 
+import 'package:ecommercefrontend/models/reviewsModel.dart';
+import 'package:ecommercefrontend/models/shopModel.dart';
+
 import 'SubCategoryModel.dart';
 import 'categoryModel.dart';
 
 class ProductModel {
   int? id;
   String? name;
-  dynamic price;
+  String? subtitle;
+  int? price;
   String? description;
-  dynamic stock;
+  int? stock;
+  int? sold;
+  int? ratings;
   int? seller;
   int? shopid;
   int? categoryId;
@@ -16,40 +22,85 @@ class ProductModel {
   String? createdAt;
   String? updatedAt;
   List<ProductImages>? images;
+  ShopModel? shop;
   Category? category;
   Subcategory? subcategory;
+  List<Reviews>? reviews;
 
-  ProductModel({
-    this.id,
-    this.name,
-    this.price,
-    this.description,
-    this.stock,
-    this.seller,
-    this.shopid,
-    this.categoryId,
-    this.subcategoryId,
-    this.createdAt,
-    this.updatedAt,
-    this.images,
-    this.category,
-    this.subcategory,
-  });
+  ProductModel(
+      {this.id,
+        this.name,
+        this.subtitle,
+        this.price,
+        this.description,
+        this.stock,
+        this.sold,
+        this.ratings,
+        this.seller,
+        this.shopid,
+        this.categoryId,
+        this.subcategoryId,
+        this.createdAt,
+        this.updatedAt,
+        this.images,
+        this.shop,
+        this.category,
+        this.subcategory,
+        this.reviews});
+
+  ProductModel copyWith({
+    int? id,
+    String? name,
+    String? subtitle,
+    int? price,
+    String? description,
+    int? stock,
+    int? sold,
+    int? ratings,
+    int? seller,
+    int? shopid,
+    int? categoryId,
+    int? subcategoryId,
+    String? createdAt,
+    String? updatedAt,
+    List<ProductImages>? images,
+    ShopModel? shop,
+    Category? category,
+    Subcategory? subcategory,
+    List<Reviews>? reviews,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      subtitle: subtitle ?? this.subtitle,
+      price: price ?? this.price,
+      description: description ?? this.description,
+      stock: stock ?? this.stock,
+      sold: sold ?? this.sold,
+      ratings: ratings ?? this.ratings,
+      seller: seller ?? this.seller,
+      shopid: shopid ?? this.shopid,
+      categoryId: categoryId ?? this.categoryId,
+      subcategoryId: subcategoryId ?? this.subcategoryId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      images: images ?? this.images,
+      shop: shop ?? this.shop,
+      category: category ?? this.category,
+      subcategory: subcategory ?? this.subcategory,
+      reviews: reviews ?? this.reviews,
+    );
+  }
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    if (json['price'] is String) {
-      price = int.tryParse(json['price']) ?? 0;
-    } else {
-      price = json['price'];
-    }
+    subtitle = json['subtitle'];
+    price = json['price'];
     description = json['description'];
-    if (json['stock'] is String) {
-      stock = int.tryParse(json['stock']) ?? 0;
-    } else {
-      stock = json['stock'];
-    }
+    stock = json['stock'];
+    sold = json['sold'];
+    ratings = json['ratings'];
     seller = json['seller'];
     shopid = json['shopid'];
     categoryId = json['categoryId'];
@@ -62,23 +113,31 @@ class ProductModel {
         images!.add(new ProductImages.fromJson(v));
       });
     }
-    category =
-        json['category'] != null
-            ? new Category.fromJson(json['category'])
-            : null;
-    subcategory =
-        json['subcategory'] != null
-            ? new Subcategory.fromJson(json['subcategory'])
-            : null;
+    shop = json['shop'] != null ? new ShopModel.fromJson(json['shop']) : null;
+    category = json['category'] != null
+        ? new Category.fromJson(json['category'])
+        : null;
+    subcategory = json['subcategory'] != null
+        ? new Subcategory.fromJson(json['subcategory'])
+        : null;
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(new Reviews.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['subtitle'] = this.subtitle;
     data['price'] = this.price;
     data['description'] = this.description;
     data['stock'] = this.stock;
+    data['sold'] = this.sold;
+    data['ratings'] = this.ratings;
     data['seller'] = this.seller;
     data['shopid'] = this.shopid;
     data['categoryId'] = this.categoryId;
@@ -88,47 +147,19 @@ class ProductModel {
     if (this.images != null) {
       data['Images'] = this.images!.map((v) => v.toJson()).toList();
     }
+    if (this.shop != null) {
+      data['shop'] = this.shop!.toJson();
+    }
     if (this.category != null) {
       data['category'] = this.category!.toJson();
     }
     if (this.subcategory != null) {
       data['subcategory'] = this.subcategory!.toJson();
     }
+    if (this.reviews != null) {
+      data['reviews'] = this.reviews!.map((v) => v.toJson()).toList();
+    }
     return data;
-  }
-
-  ProductModel copyWith({
-    int? id,
-    String? name,
-   dynamic price,
-    String? description,
-    dynamic stock,
-    int? seller,
-    int? shopid,
-    int? categoryId,
-    int? subcategoryId,
-    String? createdAt,
-    String? updatedAt,
-    List<ProductImages>? images,
-    Category? category,
-    Subcategory? subcategory,
-  }) {
-    return ProductModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      price: price ?? this.price,
-      description: description ?? this.description,
-      stock: stock ?? this.stock,
-      seller: seller ?? this.seller,
-      shopid: shopid ?? this.shopid,
-      categoryId: categoryId ?? this.categoryId,
-      subcategoryId: subcategoryId ?? this.subcategoryId,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      images: images ?? this.images,
-      category: category ?? this.category,
-      subcategory: subcategory ?? this.subcategory,
-    );
   }
 }
 
@@ -179,3 +210,4 @@ class ProductImages {
     return 'Images(id: $id, imagetype: $imagetype, imageUrl: $imageUrl)';
   }
 }
+

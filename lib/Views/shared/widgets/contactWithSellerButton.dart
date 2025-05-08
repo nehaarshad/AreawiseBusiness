@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../View_Model/SharedViewModels/chatListViewModel.dart';
 import '../../../models/chatsModel.dart';
 import '../Screens/chatView.dart';
+import 'colors.dart';
 
 class contactWithSellerButton extends ConsumerWidget {
   final String userId;
@@ -20,19 +21,12 @@ class contactWithSellerButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        // Move the chat creation logic to an async function
-        _createChatAndNavigate(context, ref);
-      },
-      icon: const Icon(Icons.chat),
-      label: const Text('Contact Seller'),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
+    return  IconButton(
+      tooltip: 'Chat with Seller',
+      icon: const Icon(Icons.chat_outlined, color: Appcolors.blackColor),
+      onPressed: () => _createChatAndNavigate(context, ref),
     );
+
   }
 
   // Separate async function to handle chat creation

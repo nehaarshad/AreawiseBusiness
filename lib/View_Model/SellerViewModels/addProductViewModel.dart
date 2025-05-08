@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/utils.dart';
 import '../../repositories/product_repositories.dart';
+import '../SharedViewModels/getAllCategories.dart';
 import '../SharedViewModels/productViewModels.dart';
 import 'ProductStates.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
   Future<void> addProduct({
     required String name,
     required String price,
+    required String subtitle,
     required String description,
     required String stock,
     required String user,
@@ -150,9 +152,10 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       // Prepare data for the API request
       final data = {
         'name': name,
-        'price': parsedPrice, // Use parsed integer value
+        'price': parsedPrice,
+        'subtitle':subtitle,
         'description': description,
-        'stock': parsedStock, // Use parsed integer value
+        'stock': parsedStock,
         'productcategory': categoryName.trim(),
         'productsubcategory': subcategoryName.trim(),
       };
@@ -160,6 +163,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
 
       // Log request body for debugging
       print("Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}");
+      print("Request Body (subtitle): ${data['subtitle']} with type: ${data['subtitle'].runtimeType}");
       print("Request Body (description): ${data['description']} with type: ${data['description'].runtimeType}");
       print("Request Body (price): ${data['price']} with type: ${data['price'].runtimeType}");
       print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}");
@@ -173,7 +177,8 @@ class AddProductViewModel extends StateNotifier<ProductState> {
         // Invalidate the provider to refresh the product list
         ref.invalidate(sharedProductViewModelProvider);
         await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
-        await ref.read(sharedProductViewModelProvider.notifier).getAllProduct();
+        await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
+        await ref.read(GetallcategoriesProvider.notifier);
         await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
       } catch (innerError) {
         print("Error refreshing product lists: $innerError");

@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/buyerViewModels/WishListViewModel.dart';
@@ -46,7 +47,7 @@ class WishlistButton extends ConsumerWidget {
       icon: Icon(
         // Change icon based on whether product is in wishlist
         isInWishlist ? Icons.favorite : Icons.favorite_border_outlined,
-        color: isInWishlist ? Colors.red : Colors.grey,
+        color: isInWishlist ? Colors.red : Appcolors.blackColor,
         size: 24,
       ),
     );
