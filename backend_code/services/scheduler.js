@@ -30,8 +30,7 @@ cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth
       }
 
       for (const feature of expiredFeaturedProduct) {
-        feature.status="Dismissed"
-        await feature.save();
+       await feature.destroy(); //delete the expired featured product from the database
         console.log(`feature ${feature.id} deactivated due to expiration`);
       }
       

@@ -3,6 +3,10 @@ import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import User from "../models/userModel.js";
 import category from "../models/categoryModel.js";
+import subcategories from "../models/subCategoryModel.js";
+import reviews from "../models/reviewModel.js";
+import shop from "../models/shopmodel.js";
+
 import { Op } from "sequelize";
 
 // seller request for feature product...
@@ -29,11 +33,28 @@ const getUserFeaturedProducts=async(req,res)=>{
             where:{userID}, 
             include: {
                     model: Product,
-                    include:{
-                        model: image,
-                        where: { imagetype: "product" },
-                        required: false
-                    }
+                      include:[
+            {
+                model:image,
+                where:{imagetype:"product"},
+                required:false //all products may not have image
+            },
+            {
+                model:shop,
+            },
+            {
+                model:category,
+            },
+            {
+                model:subcategories,
+            },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+        ]
                 }
         })
         res.status(201).json(featuredProduct);
@@ -52,11 +73,28 @@ const getAllFeaturedProducts=async(req,res)=>{
                 where:{status:"Featured"}, 
                 include: {
                         model: Product,
-                        include:{
-                            model: image,
-                            where: { imagetype: "product" },
-                            required: false
-                        }
+                          include:[
+            {
+                model:image,
+                where:{imagetype:"product"},
+                required:false //all products may not have image
+            },
+            {
+                model:shop,
+            },
+            {
+                model:category,
+            },
+            {
+                model:subcategories,
+            },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+        ]
                     }
             })
         }
@@ -90,14 +128,28 @@ const getAllRequestedFeaturedProducts=async(req,res)=>{
             include: [
                 {
                     model: Product,
-                    include:[{
-                        model: image,
-                        where: { imagetype: "product" },
-                        required: false
-                    },
-                {
-                    model:category
-                }],
+                    include:[
+            {
+                model:image,
+                where:{imagetype:"product"},
+                required:false //all products may not have image
+            },
+            {
+                model:shop,
+            },
+            {
+                model:category,
+            },
+            {
+                model:subcategories,
+            },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+        ]
                 },
                 {
                 model:User
@@ -129,7 +181,7 @@ const updateFeaturedProducts=async(req,res)=>{
     requestedFeaturedProduct.expire_at=expire_at; //if featured then expire date
     requestedFeaturedProduct.save(); //save the status and expire date in the database
     
-        res.status(201).json(updated);
+        res.status(201).json(requestedFeaturedProduct);
     } catch (error) {
         console.log(error);
     }
