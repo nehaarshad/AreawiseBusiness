@@ -11,7 +11,7 @@ import SellerOrder from '../models/sellerOrderModel.js'
 const ViewCheckout = async (req, res) => {
   try {
       const { id } = req.params;  // id of cart to be checked out
-
+       let { shippingPrice, total} = req.body; // userId from the request body 
       // Fetch the cart with its associated CartItems, Product, and image
       const userCart = await cart.findByPk(id, {
           include: [
@@ -49,36 +49,26 @@ const ViewCheckout = async (req, res) => {
     //       await existingCart.destroy();
     //   }
 
+    let discountOffer = 0; // 0% discount
+    if(total>5000){
+        discountOffer = 0.1; // 10% discount
+          total = total - (total * discountOffer) + shippingPrice;
+          
+          discountOffer = discountOffer * 100; 
+    }
+          else{
+          total = total + shippingPrice;
+          }
+
       console.log('User Cart:', JSON.stringify(userCart, null, 2));
-
-      // Check if CartItems exist
-      if (!userCart.CartItems || userCart.CartItems.length === 0) {
-          return res.json({ message: 'No items found in the cart' });
-      }
-
-      let discount = 0.1; // 10% discount
-      let shippingPrice = 120;
-      let total = 0;
-
-      // Calculate the total price of items in the cart
-      userCart.CartItems.forEach(item => {
-          total += item.price;
-      });
-
-      if(total>5000){
-      total = total - (total * discount) + shippingPrice;
-      }
-      else{
-      total = total + shippingPrice;
-      }
 
       // Create the order
       const newOrder = await order.create({
           cartId: userCart.id,
           addressId: 1,  // by default address id is 1 randomly but can be set when user places order
           total: total,
-          discount: 0.1,
-          shippingPrice: 120,
+          discount: discountOffer,
+          shippingPrice: shippingPrice,
           status: 'InComplete' // Initial status of the order
       });
 
@@ -114,6 +104,7 @@ const ViewCheckout = async (req, res) => {
       // Return the order details to the client
       res.status(201).json(ordered);
   } catch (error) {
+    console.error('ViewCheckout Error:', error);
       res.status(500).json({ message: error.message });
   }
 };

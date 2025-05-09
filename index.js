@@ -23,6 +23,7 @@ import { fileURLToPath } from "url";
 import  http  from 'http';
 import { Server } from 'socket.io';
 import chatService from "./backend_code/services/chatService.js";
+import reviewsRouter from "./backend_code/Routes/reviewsRoutes.js";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -78,6 +79,7 @@ app.use("/api",adsRouter);
 app.use("/api",SellerOrderRouter);
 app.use("/api",featuredRouter);
 app.use("/api",chatRouter);
+app.use("/api",reviewsRouter);
 
 scheduler();
 

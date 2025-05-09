@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import subcategories from "../models/subCategoryModel.js";
+import reviews from "../models/reviewModel.js";
 import dotenv from "dotenv";
 import shop from "../models/shopmodel.js";
 dotenv.config();
@@ -54,7 +55,8 @@ const findproductbyid = async (req, res) => {
     try {
         const {id}=req.params;
         const products = await Product.findByPk(id,{
-            include:[{
+            include:[
+            {
                 model:image,
                 where:{imagetype:"product"},
                 required:false //all products may not have image
@@ -67,7 +69,14 @@ const findproductbyid = async (req, res) => {
             },
             {
                 model:subcategories,
-            },]
+            },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+        ]
         });
         res.json(products);
     } catch (error) {
@@ -77,24 +86,67 @@ const findproductbyid = async (req, res) => {
 };
 
 const getallproducts = async (req, res) => {
+
+    const {Category}= req.params;
+    console.log(Category);
     try {
-        const products = await Product.findAll({
-            include:[{
-                model:image,
-                where:{imagetype:"product"},
-                required:false //all products may not have image
-            },
-            {
-                model:shop,
-            },
-            {
-                model:category,
-            },
-            {
-                model:subcategories,
-            },
-        ]
-        });
+        let products;
+        if(Category=="All"){
+            products = await Product.findAll({
+                include:[{
+                    model:image,
+                    where:{imagetype:"product"},
+                    required:false //all products may not have image
+                },
+                {
+                    model:shop,
+                },
+                {
+                    model:category,
+                },
+                {
+                    model:subcategories,
+                },
+                {
+                    model:reviews,
+                    include:[{
+                        model:User,
+                    }]
+                }
+            ]
+            });
+        }
+       
+        else{
+            const categoryID=await category.findOne({where:{name:Category}})
+            products=await Product.findAll(
+                        {where:{categoryId:categoryID.id},
+                        include:[
+                            {
+                                model:image,
+                                where:{imagetype:"product"},
+                                required:false //all products may not have image
+                            },
+                            {
+                                model:shop,
+                            },
+                            {
+                                model:category,
+                            },
+                            {
+                                model:subcategories,
+                            },
+                            {
+                                model:reviews,
+                                include:[{
+                                    model:User,
+                                }]
+                            }
+                        ]
+                    
+            })
+        }
+
         res.json(products);
     } catch (error) {
         console.log(error);
@@ -123,6 +175,12 @@ const getuserproducts = async (req, res) => {
             {
                 model:subcategories,
             },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
         ]
             });
         if (!products) {
@@ -156,6 +214,12 @@ const getshopproducts = async (req, res) => {
             {
                 model:subcategories,
             },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
         ]
          });
         if (!products) {
@@ -166,6 +230,51 @@ const getshopproducts = async (req, res) => {
         console.log(error);
         res.json({ error: "Failed to find products" });
     }
+};
+
+const getProductByCategory = async (req, res) => {
+   const {Category} = req.body;
+   console.log(req.body)
+   try {
+       
+       const findcategory=await category.findOne({where:{name:Category}});
+       if (!findcategory) {
+              return res.json({ error: "Category not Found" });
+         }
+         const categoryId = findcategory.id;
+         const products = await Product.findAll({ 
+             where: {categoryId },
+             include:[{
+                 model:image,
+                 where:{imagetype:"product"},
+                 required:false //all products may not have image
+             },
+             {
+                model:shop,
+            },
+             {
+                 model:category,
+             },
+             {
+                 model:subcategories,
+             },
+             ,
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+         ]
+          });
+         if (!products) {
+             return res.json({ error: `Products of ${Category} not available` });
+         }
+         res.json(products);
+   } catch (err) {
+       res.status(500).json(err);
+       console.log(err);
+   }
 };
 
 const updateproduct = async (req, res) => {
@@ -255,4 +364,4 @@ const deleteproduct = async (req, res) => {
     }
 }
 
-export default { addproduct, findproductbyid,getallproducts,getuserproducts,getshopproducts,updateproduct, deleteproduct };
+export default { addproduct, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,updateproduct, deleteproduct };

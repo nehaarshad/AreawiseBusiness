@@ -14,6 +14,7 @@ import Ads from "./adsModel.js";
 import featured from "./featuredModel.js";
 import Chat from "./chatModel.js";
 import Message from "./msgModel.js";
+import review from "./reviewModel.js";
 
 
 const relation = () => {
@@ -121,6 +122,12 @@ const relation = () => {
     Chat.hasMany(Message, { foreignKey: { name: 'chatId', allowNull: false }});
     Message.belongsTo(Chat, { foreignKey: 'chatId' });
 
+    //review relations
+    User.hasMany(review, { foreignKey: {name: 'userId', allowNull: false } });
+    review.belongsTo(User, { foreignKey: 'userId' });
+
+    Product.hasMany(review, { foreignKey: {name: 'productId', allowNull: false } });
+    review.belongsTo(Product, { foreignKey: 'productId' });
 };
 
 

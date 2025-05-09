@@ -22,7 +22,7 @@ const featured=sequelize.define("featuredProducts",{
     },
     expire_at:{
         type:DataTypes.DATE,
-        allowNull:false
+        allowNull:true
     }
 },
 {

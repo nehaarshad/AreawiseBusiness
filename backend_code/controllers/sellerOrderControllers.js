@@ -128,20 +128,51 @@ const getCustomerOrders = async (req, res) => {
 
 const updateOrderStatus = async (req, res) => {
     try {
-        const { id } = req.params;  //order
-        const {productId,status } = req.body;
-        const order = await SellerOrder.findOne({
-            where:{
-                orderId:id,
-                orderProductId:productId,
+        const { id } = req.params;  // order id
+        const { productId, status } = req.body;
+        
+        const sellerOrder = await SellerOrder.findOne({
+            where: {
+                orderId: id,
+                orderProductId: productId,
             }
         });
-        if (!order) {
+        
+        if (!sellerOrder) {
             return res.status(404).json({ message: "Order not found" });
         }
-        order.status = status;
-        await order.save();
-        res.json(order);
+        
+        // If status is being updated to "Approved", update product stock and sold count
+        if (status === "Approved" && sellerOrder.status !== "Approved") {
+            // First, get the order details to access the cart
+            const orderDetails = await order.findOne({ 
+                where: { id: id },
+                include: [{
+                    model: cart,
+                    include: [{
+                        model: items,
+                        where: { productId: productId }
+                    }]
+                }]
+            });
+            
+            // ordered quantity
+            const orderedQuantity = orderDetails.Cart.CartItems[0].quantity;
+            
+            // Get product to update its stock and sold count
+            const product = await Product.findByPk(productId);
+            product.stock = product.stock - orderedQuantity;
+            product.sold = product.sold + orderedQuantity;
+            
+            // Save the product changes
+            await product.save();
+        }
+        
+        // Update the order status
+        sellerOrder.status = status;
+        await sellerOrder.save();
+        
+        res.json(sellerOrder);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server Error" });

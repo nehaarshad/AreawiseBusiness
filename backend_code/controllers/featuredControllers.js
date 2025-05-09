@@ -5,24 +5,28 @@ import User from "../models/userModel.js";
 import category from "../models/categoryModel.js";
 import { Op } from "sequelize";
 
-//by seller...
+// seller request for feature product...
 const createProductFeatured=async(req,res)=>{
     try {
         const {id}=req.params; //userID
-        const {productID,expire_at}=req.body;
-        const reqProduct=await featured.create({productID,userID:id,expire_at});
+        const userID=parseInt(id);
+        const {productID}=req.body;
+        const reqProduct=await featured.create({productID,userID});
         res.status(201).json(reqProduct);
     } catch (error) {
         console.log(error);
     }
-}
+}   
+
 
 //for seller...
 const getUserFeaturedProducts=async(req,res)=>{
     try {
         const {id}=req.params; //userID
+        const userID=parseInt(id);
+        console.log(userID);
         const featuredProduct=await featured.findAll({
-            where:{id}, 
+            where:{userID}, 
             include: {
                     model: Product,
                     include:{
@@ -40,18 +44,37 @@ const getUserFeaturedProducts=async(req,res)=>{
 
 //dashboard...
 const getAllFeaturedProducts=async(req,res)=>{
+    const {Category}=req.params;
     try {
-        const featuredProduct=await featured.findAll({
-            where:{status:"Featured"}, 
-            include: {
-                    model: Product,
-                    include:{
-                        model: image,
-                        where: { imagetype: "product" },
-                        required: false
+        let featuredProduct;
+        if(Category=="All"){
+            featuredProduct=await featured.findAll({
+                where:{status:"Featured"}, 
+                include: {
+                        model: Product,
+                        include:{
+                            model: image,
+                            where: { imagetype: "product" },
+                            required: false
+                        }
                     }
-                }
-        })
+            })
+        }
+        else{
+            const categoryID=await category.findOne({where:{name:Category}})
+            featuredProduct=await featured.findAll({
+                where:{status:"Featured"}, 
+                include: {
+                        model: Product,
+                        where:{categoryId:categoryID.id},
+                        include:{
+                            model: image,
+                            where: { imagetype: "product" },
+                            required: false
+                        }
+                    }
+            })
+        }
         res.status(201).json(featuredProduct);
     } catch (error) {
         console.log(error);
@@ -63,7 +86,7 @@ const getAllRequestedFeaturedProducts=async(req,res)=>{
     try {
         const currentDate=new Date()
         const featuredProduct=await featured.findAll({
-            where:{status:"Requested",expire_at:{ [Op.gt]: currentDate }, }, 
+            where:{status:"Requested", }, 
             include: [
                 {
                     model: Product,
@@ -90,7 +113,7 @@ const getAllRequestedFeaturedProducts=async(req,res)=>{
 const updateFeaturedProducts=async(req,res)=>{
     try {
         const {id}=req.params; //featuredID
-        const {status}=req.body;
+        const {status,expire_at}=req.body;
         const requestedFeaturedProduct=await featured.findByPk(id,{
         include: {
                     model: Product,
@@ -102,11 +125,29 @@ const updateFeaturedProducts=async(req,res)=>{
                 }
     })
 
-    const updated=await requestedFeaturedProduct.update({status});  //to featured or rejected
+    requestedFeaturedProduct.status=status; //featured / rejected / dismissed
+    requestedFeaturedProduct.expire_at=expire_at; //if featured then expire date
+    requestedFeaturedProduct.save(); //save the status and expire date in the database
+    
         res.status(201).json(updated);
     } catch (error) {
         console.log(error);
     }
 }
 
-export default {createProductFeatured,getAllFeaturedProducts,getAllRequestedFeaturedProducts,getUserFeaturedProducts,updateFeaturedProducts}
+const deleteFeaturedProducts=async(req,res)=>{
+    try {
+        const {id}=req.params; //featuredID
+       
+        const requestedFeaturedProduct=await featured.findByPk(id)
+        await requestedFeaturedProduct.destroy(); //delete the status and expire date in the database
+    
+        res.status(201).json({
+            message: "Product deleted Successfully",
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export default {createProductFeatured,getAllFeaturedProducts,getAllRequestedFeaturedProducts,getUserFeaturedProducts,updateFeaturedProducts,deleteFeaturedProducts}

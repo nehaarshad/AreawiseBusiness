@@ -46,7 +46,7 @@ const addshop = async (req, res) => {
            
         res.status(201).json({
             success:true,
-            message:"Shop Added Successfullt!"
+            message:"Shop Added Successfully!"
         });
     } catch (error) {
         console.error(error);
@@ -68,7 +68,12 @@ const getusershop=async(req,res)=>{
                 model:image,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
-            },{
+            },
+            {
+                model:User,
+                required:true //all shops may  have category
+            },
+            {
                 model:category,
                 required:true //all shops may  have category
             },
@@ -90,7 +95,12 @@ const getallshops=async(req,res)=>{
                 model:image,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
-            },{
+            },
+            {
+                model:User,
+                required:true //all shops may  have category
+            },
+            {
                 model:category,
                 required:true //all shops may  have category
             },
@@ -172,7 +182,12 @@ const getshopId=async(req,res)=>{
                 model:image,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
-            },{
+            },
+            {
+                model:User,
+                required:true //all shops may  have category
+            },
+            {
                 model:category,
                 required:true //all shops may  have category
             },
@@ -199,7 +214,12 @@ const getshopcategory=async(req,res)=>{
                 model:image,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
-            },{
+            },
+            {
+                model:User,
+                required:true //all shops may  have category
+            },
+            {
                 model:category,
                 required:true //all shops may  have category
             },

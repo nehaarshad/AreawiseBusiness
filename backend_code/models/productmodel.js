@@ -31,6 +31,14 @@ const Product = sequelize.define('products', {
         type: DataTypes.INTEGER, 
         allowNull: false 
     },
+    sold: { 
+        type: DataTypes.INTEGER, 
+        defaultValue:0,
+    },
+    ratings: { 
+        type: DataTypes.INTEGER, 
+        defaultValue:0,
+    },
     seller: {
         type: DataTypes.INTEGER,
         references: {
