@@ -28,7 +28,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
     // Initial load with 'All' category
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final selectedCategory = ref.read(selectedCategoryProvider);
-      ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts(selectedCategory);
+      ref.read(featureProductViewModelProvider(widget.id.toString()).notifier).getAllFeaturedProducts(selectedCategory);
       ref.read(sharedProductViewModelProvider.notifier).getAllProduct(selectedCategory);
     });
   }
@@ -42,7 +42,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
         children: [
           const SizedBox(height: 10),
           const searchBar(),
-          const CategoriesButton(),
+           CategoriesButton(id: widget.id.toString(),),
           const SizedBox(height: 10),
           const getAdsView(),
           const SizedBox(height: 10),

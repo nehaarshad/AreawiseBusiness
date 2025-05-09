@@ -24,7 +24,7 @@ class splashservice {
     if (value == null || value.token == null || value.token == '') {
       Navigator.pushNamed(context, routesName.login);
     } else {
-      if (value.role == 'admin') {
+      if (value.role == 'Admin') {
         Navigator.pushNamed(context, routesName.aHome, arguments: value);
       }
       // else if (value.role == 'seller') {

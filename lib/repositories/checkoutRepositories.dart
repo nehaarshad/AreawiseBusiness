@@ -15,10 +15,12 @@ class OrderRepositories {
   OrderRepositories();
   baseapiservice apiservice = networkapiservice();
 
-  Future<orderModel> getUserCheckout(String id) async {
+  Future<orderModel> getUserCheckout(String id,Map<String,dynamic> data) async {
     try {
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.viewCheckOutEndPoints.replaceFirst(':id', id),
+      final headers = {'Content-Type': 'application/json'};
+      final body=jsonEncode(data);
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.viewCheckOutEndPoints.replaceFirst(':id', id),body,headers
       );
       return orderModel.fromJson(response);
     } catch (e) {

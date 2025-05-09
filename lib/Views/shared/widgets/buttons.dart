@@ -20,7 +20,8 @@ class CustomButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: 40,
-        width: 100,
+        margin: EdgeInsets.symmetric(horizontal: 25),
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Appcolors.blueColor,
           borderRadius: BorderRadius.circular(15),
@@ -29,7 +30,7 @@ class CustomButton extends StatelessWidget {
           child:
               isLoading
                   ? CircularProgressIndicator(color: Appcolors.whiteColor)
-                  : Text(text, style: TextStyle(color: Appcolors.whiteColor)),
+                  : Text(text, style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15)),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
+import '../../../core/utils/utils.dart';
 
 class AllFeaturedProducts extends ConsumerWidget {
   final int userid;
@@ -10,7 +11,7 @@ class AllFeaturedProducts extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Listen to the featured products state
-    final featuredProducts = ref.watch(featureProductViewModelProvider);
+    final featuredProducts = ref.watch(featureProductViewModelProvider(userid.toString()));
 
     return featuredProducts.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -24,14 +25,22 @@ class AllFeaturedProducts extends ConsumerWidget {
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
             itemBuilder: (context, index) {
-              final product = products[index];
+              final featuredProduct = products[index];
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    routesName.productdetail,
-                    arguments: {'id': userid, 'product': product!.product},
-                  );
+                  print(featuredProduct!.product!);
+                  if (featuredProduct?.product != null) {
+                    Navigator.pushNamed(
+                      context,
+                      routesName.productdetail,
+                      arguments: {
+                        'id': userid,
+                        'product': featuredProduct.product!
+                      },
+                    );
+                  } else {
+                    Utils.toastMessage("Product information is not available");
+                  }
                 },
                 child: Card(
                   elevation: 3,
@@ -45,9 +54,9 @@ class AllFeaturedProducts extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: product?.product?.images != null && product!.product!.images!.isNotEmpty
+                          child: featuredProduct?.product?.images != null && featuredProduct!.product!.images!.isNotEmpty
                               ? Image.network(
-                            product.product!.images!.first.imageUrl!,
+                            featuredProduct.product!.images!.first.imageUrl!,
                             fit: BoxFit.cover,
                             width: double.infinity,
                           )
@@ -56,7 +65,7 @@ class AllFeaturedProducts extends ConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            product?.product?.name ?? "Unknown",
+                            featuredProduct?.product?.name ?? "Unknown",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

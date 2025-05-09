@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import 'colors.dart';
 
 class RelatedProducts extends ConsumerStatefulWidget {
   final int userid;
@@ -79,6 +80,7 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
                 },
                 child: Card(
                   elevation: 4,
+                  color: Appcolors.whiteColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

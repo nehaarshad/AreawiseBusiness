@@ -19,6 +19,10 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
   final ImagePicker pickimage = ImagePicker();
 
 
+  void resetState() {
+    state = CreateAdState(isLoading: false); // Reset to initial state
+  }
+
   Future<void> pickImages(BuildContext context) async {
     try {
       final XFile? pickedFiles = await pickimage.pickImage(

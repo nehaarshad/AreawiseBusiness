@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:ecommercefrontend/models/UserDetailModel.dart';
+
 import 'categoryModel.dart';
 
 class ShopModel {
@@ -13,21 +15,22 @@ class ShopModel {
   String? createdAt;
   String? updatedAt;
   List<ShopImages>? images;
+  UserDetailModel? user;
   Category? category;
 
-  ShopModel({
-    this.id,
-    this.shopname,
-    this.shopaddress,
-    this.sector,
-    this.city,
-    this.categoryId,
-    this.userId,
-    this.createdAt,
-    this.updatedAt,
-    this.images,
-    this.category,
-  });
+  ShopModel(
+      {this.id,
+        this.shopname,
+        this.shopaddress,
+        this.sector,
+        this.city,
+        this.categoryId,
+        this.userId,
+        this.createdAt,
+        this.updatedAt,
+        this.images,
+        this.user,
+        this.category});
 
   ShopModel copyWith({
     int? id,
@@ -39,8 +42,9 @@ class ShopModel {
     int? userId,
     String? createdAt,
     String? updatedAt,
-    Category? category,
     List<ShopImages>? images,
+    UserDetailModel? user,
+    Category? category,
   }) {
     return ShopModel(
       id: id ?? this.id,
@@ -52,8 +56,9 @@ class ShopModel {
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      category: category ?? this.category,
       images: images ?? this.images,
+      user: user ?? this.user,
+      category: category ?? this.category,
     );
   }
 
@@ -73,10 +78,10 @@ class ShopModel {
         images!.add(new ShopImages.fromJson(v));
       });
     }
-    category =
-        json['category'] != null
-            ? new Category.fromJson(json['category'])
-            : null;
+    user = json['user'] != null ? new UserDetailModel.fromJson(json['user']) : null;
+    category = json['category'] != null
+        ? new Category.fromJson(json['category'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -93,12 +98,16 @@ class ShopModel {
     if (this.images != null) {
       data['Images'] = this.images!.map((v) => v.toJson()).toList();
     }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
     if (this.category != null) {
       data['category'] = this.category!.toJson();
     }
     return data;
   }
 }
+
 
 class ShopImages {
   int? id;

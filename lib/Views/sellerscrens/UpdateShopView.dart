@@ -165,7 +165,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                                   print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",); // Debugging line
 
                                   await ref.read(updateShopProvider(widget.id.toString(),).notifier,)
-                                      .updateShop(shopname: shopname.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:widget.userid.toString(), context: context,);
+                                      .updateShop(shopname: shopname.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:shop!.userId.toString(), context: context,);
                                 }
                               },
                       child: state.isLoading ? Center(child: CircularProgressIndicator(color: Appcolors.blueColor,),)

@@ -24,9 +24,13 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
   bool loading = false;
   
 
-  Future<void> checkOut(String id,BuildContext context) async {
+  Future<void> checkOut(String id,double shippingCost,double total,BuildContext context,) async {
     try {
-      orderModel order = await ref.read(orderProvider).getUserCheckout(id);
+      final data={
+        "shippingPrice":shippingCost,
+        "total":total
+      };
+      orderModel order = await ref.read(orderProvider).getUserCheckout(id,data);
       state = AsyncValue.data(order);
       CheckoutDialogView(context,order);
     } catch (e) {
@@ -45,70 +49,138 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
     }
   }
 
-  // // Calculate the total price of items in the cart
-  // // userCart.CartItems.forEach(item => {
-  // // total += item.price;
-  // // });
-  //
-  // // Check if CartItems exist
-  // if (!userCart.CartItems || userCart.CartItems.length === 0) {
-  // return res.json({ message: 'No items found in the cart' });
-  // }
-  //
-  //
-  // //   if(total>5000){
-  // //   total = total - (total * discount) + shippingPrice;
-  // //   }
-  // //   else{
-  // //   total = total + shippingPrice;
-  // //   }
-
   void CheckoutDialogView(BuildContext context, orderModel order) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Order Confirmation'),
-          content: Column(
+          content: SizedBox(
+            height: 400, // Fixed height
+            width: double.maxFinite,
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Order header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Order ID: ${order.id}'),
-                    Text('Status: ${order.status}',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),),
+                    Text('Status: ${order.status}',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ],
                 ),
-                Center(child: const Text('Cart Items:',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
-                Divider(),
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...order.cart!.cartItems!.map((item) {  //al items in order are join as list
-                        return ListTile(
-                          title: Text(item.product!.name!),
-                          subtitle: Text('Quantity: ${item.quantity}, Price: \$${item.price}'),
+                const SizedBox(height: 8),
+
+                // Cart items section with fixed height scroll
+                const Text('Cart Items:',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                  ),
+                ),
+                const Divider(),
+
+                // Scrollable cart items
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: order.cart!.cartItems!.length,
+                      itemBuilder: (context, index) {
+                        final item = order.cart!.cartItems![index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          elevation: 1,
+                          child: ListTile(
+                            leading: item.product?.images?.isNotEmpty == true
+                                ? Image.network(
+                              item.product!.images!.first.imageUrl!,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.image_not_supported);
+                              },
+                            )
+                                : const Icon(Icons.image_not_supported),
+                            title: Text(item.product!.name!),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Quantity: ${item.quantity}'),
+                                Text('Price: \$${item.price}'),
+                              ],
+                            ),
+                          ),
                         );
-                      }).toList(),
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Order summary
+                const Divider(),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Delivery:'),
+                      Text('Rs.${order.shippingPrice}'),
                     ],
                   ),
                 ),
-                Divider(),
-                if(order.total != null && order.total! >5000)
-                  Text('Discount: 10%'),
-                Text('Delivery Charges: \$${order.shippingPrice}'),
-                Text('Total: \$${order.total}'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Discount:'),
+                      Text('Rs.${order.discount} %'),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Total:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
+                        ),
+                      ),
+                      Text('Rs.${order.total}',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.blue
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
+          ),
           actions: [
             Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () async{
-
+                  onPressed: () async {
                     await cancelOrder(order.cart!.id.toString());
                     ref.refresh(cartViewModelProvider(order.cart!.userId.toString()));
                     Navigator.of(context).pop();
@@ -116,21 +188,32 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
                   child: const Text('Close'),
                 ),
                 ElevatedButton(
-                      onPressed: () async{
-                        final parameters={
-                          'CartId':order.cartId,
-                          'userid':order.cart!.userId.toString(),
-                        };
-                        Navigator.pushNamed(context, routesName.deliveryAddress,arguments: parameters);
-                          },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Appcolors.blueColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                        ),
-                      ),
-                      child: const Text("Proceed...", style: TextStyle(color: Appcolors.whiteColor, fontWeight: FontWeight.bold, fontSize: 15,),),
+                  onPressed: () async {
+                    final parameters = {
+                      'CartId': order.cartId,
+                      'userid': order.cart!.userId.toString(),
+                    };
+                    Navigator.pushNamed(
+                        context,
+                        routesName.deliveryAddress,
+                        arguments: parameters
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Appcolors.blueColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0),
                     ),
+                  ),
+                  child: const Text(
+                    "Proceed",
+                    style: TextStyle(
+                      color: Appcolors.whiteColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
@@ -138,7 +221,6 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
       },
     );
   }
-
 //only cartId,address are send as req.body
   Future<void> placeOrder(Map<String,dynamic> data,String userId,BuildContext context) async {
     try {
@@ -154,10 +236,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
       ref.invalidate(sessionProvider);
     final user= await ref.read(sessionProvider.notifier).getuser();
 
-      Utils.flushBarErrorMessage("Order Sent Successfully", context);
-        if (mounted) {
-          Navigator.pushNamed(context, routesName.dashboard,arguments: user);
-        } 
+          Navigator.pushNamed(context, routesName.confirmOrder,arguments: user);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);

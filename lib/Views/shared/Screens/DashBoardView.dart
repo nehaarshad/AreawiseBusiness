@@ -61,14 +61,14 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
       Wishlistview(id: widget.id),
       appHomeview(id: widget.id),
       Cartview(id: widget.id),
-      profileDetailView(id: widget.id),
+      profileDetailView(id: widget.id,role: 'Buyer',),
     ];
     SellerViews = [
       SellerShopsView(id: widget.id),
       Sellerproductsview(id: widget.id),
       appHomeview(id: widget.id),
       OrdersView(sellerId: widget.id),
-      profileDetailView(id: widget.id),
+      profileDetailView(id: widget.id,role: 'Seller',),
     ];
   }
 

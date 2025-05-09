@@ -1,7 +1,9 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/createAdViewModel.dart';
+import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/utils/routes/routes_names.dart';
 import '../shared/widgets/SetDateTime.dart';
 
 class createAds extends ConsumerStatefulWidget {
@@ -13,6 +15,24 @@ class createAds extends ConsumerStatefulWidget {
 }
 
 class _createAdsState extends ConsumerState<createAds> {
+
+
+
+  late final createAdsViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = ref.read(createAdsViewModelProvider.notifier);
+  }
+
+  @override
+  void dispose() {
+    // Reset the state when the widget is disposed
+    _viewModel.resetState();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ad = ref.watch(createAdsViewModelProvider);
@@ -28,6 +48,16 @@ class _createAdsState extends ConsumerState<createAds> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Create Ad"),
+        actions: [
+          TextButton(
+              onPressed: (){
+                Navigator.pushNamed(
+                  context,
+                  routesName.activeADS,
+                  arguments: widget.SellerId,
+                );
+          }, child: Text("Active ADs"))
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -92,8 +122,8 @@ class _createAdsState extends ConsumerState<createAds> {
                   padding: EdgeInsets.symmetric(vertical: 16),
                   backgroundColor: Colors.blue,
                 ),
-                child: ad.isLoading ? CircularProgressIndicator(color: Colors.white)
-                    : Text("Create Ad", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: ad.isLoading ? CircularProgressIndicator(color: Appcolors.whiteColor, )
+                    : Text("Create Ad", style: TextStyle(fontSize: 16,color: Appcolors.whiteColor, fontWeight: FontWeight.bold)),
               ),
             ],
           ),

@@ -85,4 +85,15 @@ class featureRepositories {
     }
   }
 
+  Future<dynamic> deleteFeaturedProducts(String id)async{
+
+    try{
+      dynamic response=await apiservice.DeleteApiResponce(AppApis.deleteFeaturedProductsEndPoints.replaceFirst(':id', id));
+
+      return response;
+    }catch(e){
+      rethrow;
+    }
+  }
+
 }

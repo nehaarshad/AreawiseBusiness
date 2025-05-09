@@ -1,6 +1,12 @@
+import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
+import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
+import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
+import '../../../Views/admin_screens/FeaturedProducts.dart';
+import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
+import '../../../Views/sellerscrens/sellerShopDetailView.dart';
 import '../../../Views/shared/Screens/chatView.dart';
 import '../../../Views/shared/Screens/chatsListView.dart';
 import '../../../Views/shared/widgets/getAllProductView.dart';
@@ -19,10 +25,11 @@ import '../../../Views/sellerscrens/addShopView.dart';
 import '../../../Views/sellerscrens/updateProductView.dart';
 import '../../../Views/shared/Screens/EditProfileView.dart';
 import '../../../Views/shared/Screens/ProductDetailView.dart';
-import '../../../Views/shared/Screens/ShopDetailView.dart';
+import '../../../Views/buyer_screens/ShopDetailView.dart';
 import '../../../Views/shared/Screens/UserProfileView.dart';
 import '../../../Views/sellerscrens/orderDetailView.dart';
 import '../../../Views/shared/Screens/splashScreen.dart';
+import '../../../Views/shared/widgets/getSellerAds.dart';
 import '../../../models/ProductModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../models/auth_users.dart';
@@ -55,11 +62,17 @@ class Routes {
         final user = arg as UserDetailModel;
         return MaterialPageRoute(builder: (BuildContext context) => DashboardView(id: user.id!,user: user,),);
 
+      case (routesName.confirmOrder):
+        final user = arg as UserDetailModel;
+        return MaterialPageRoute(builder: (BuildContext context) => Orderplacemessageview(user: user,),);
+
       case (routesName.auser):
         return MaterialPageRoute(builder: (BuildContext context) => const UserView(),);
 
-      case (routesName.afeature):
-        return MaterialPageRoute(builder: (BuildContext context) => const Featuredproductrequestview(),);
+      case (routesName.profile):
+        int id = arg['id'] as int;
+        String role = arg['role'] as String;
+        return MaterialPageRoute(builder: (BuildContext context) =>  profileDetailView(id: id,role: role,),);
 
 
       case (routesName.ashop):
@@ -122,10 +135,46 @@ class Routes {
           builder: (BuildContext context) => ShopDetailView(shop: shop),
         );
 
-      case (routesName.profile):
+      case (routesName.SellerShopDetailView):
+        final shop = arg as ShopModel;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => SellerShopDetailView(shop: shop),
+        );
+
+      case (routesName.featuredProducts):
+        final id = arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => UserFeaturedProducts(sellerId: id,),
+        );
+
+    case (routesName.activeADS):
+    final id = arg as String;
+    return MaterialPageRoute(
+    builder: (BuildContext context) => UserAdsView(sellerId: id,),
+    );
+
+      case (routesName.requestfeature):
+        final id = arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Featuredproductrequestview(id: id,),
+        );
+
+      case (routesName.activefeature):
+        final id = arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Featuredproducts(id: id,),
+        );
+
+      case (routesName.favorite):
         final id = arg as int;
         return MaterialPageRoute(
-          builder: (BuildContext context) => profileDetailView(id: id),
+          builder: (BuildContext context) => Wishlistview(id: id,),
+        );
+
+      case (routesName.cart):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Cartview(id: id),
         );
 
       case (routesName.createAds):

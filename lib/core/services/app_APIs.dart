@@ -78,6 +78,7 @@ class AppApis {
   static var createProductFeaturedEndPoints = "$baseurl/createProductFeatured/:id";
   static var getUserFeaturedProductsEndPoints = "$baseurl/getUserFeaturedProducts/:id";
   static var updateFeaturedProductsEndPoints = "$baseurl/updateFeaturedProducts/:id";
+  static var deleteFeaturedProductsEndPoints = "$baseurl/deleteFeaturedProducts/:id";
 
   //ordersAPIS
   static var getSellerOrderRequestsEndPoints = "$baseurl/seller/:id";

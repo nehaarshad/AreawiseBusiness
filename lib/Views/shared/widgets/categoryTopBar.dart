@@ -6,7 +6,8 @@ import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
 
 class CategoriesButton extends ConsumerWidget {
-  const CategoriesButton({super.key});
+  String id;
+  CategoriesButton({super.key,required this.id});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +19,7 @@ class CategoriesButton extends ConsumerWidget {
       ref.read(selectedCategoryProvider.notifier).state = category;
 
       // Fetch products based on selected category
-      ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts(category);
+      ref.read(featureProductViewModelProvider(id).notifier).getAllFeaturedProducts(category);
       ref.read(sharedProductViewModelProvider.notifier).getAllProduct(category);
     }
 

@@ -16,116 +16,46 @@ class getSellerProductView extends ConsumerStatefulWidget {
 }
 
 class _getSellerProductView extends ConsumerState<getSellerProductView> {
-  DateTime? selectedDate;
-  final key = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.sellerId);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.sellerId);
     });
   }
 
-  Future<void> featureProduct(BuildContext context, String sellerId, int productId) async {
-    selectedDate = null;
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) {
-        return StatefulBuilder(
-            builder: (stateContext, setDialogState) {
-              return AlertDialog(
-                title: const Text("Feature Product"),
-                content: Form(
-                  key: key,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("Set expiration date and time for featuring this product:"),
-                      const SizedBox(height: 16),
-                      GestureDetector(
-                        onTap: () async {
-                          final DateTime? dateTime = await setDateTime(stateContext);
-                          if (dateTime != null) {
-                            setDialogState(() {
-                              selectedDate = dateTime; // Update selectedDate in dialog state
-                            });
-                            await ref.read(createfeatureProductViewModelProvider.notifier)
-                                .selectExpirationDateTime(dateTime);
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(selectedDate != null
-                                  ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year} at ${selectedDate!.hour}:${selectedDate!.minute.toString().padLeft(2, '0')}"
-                                  : "Select Date and Time"),
-                              Icon(Icons.calendar_today, color: Colors.blue),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: [
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(dialogContext, false); // Cancel
-                        },
-                        child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          Navigator.pop(dialogContext, true); // Confirm with true result
-                        },
-                        child: const Text("Request to Feature", style: TextStyle(color: Appcolors.blueColor)),
-                      ),
-                    ],
-                  ),
-                ],
-              );
-            }
-        );
-      },
-    );
-
-    // Process the result outside the dialog context
-    if (result == true) {
-      try {
-        await ref.read(createfeatureProductViewModelProvider.notifier).createFeatureProduct(
-          sellerId.toString(),
-          productId,
-          context, // Using the parent context which is still valid
-        );
-        Utils.flushBarErrorMessage("Product feature request sent successfully!", context);
-      } catch(e) {
-        Utils.flushBarErrorMessage("Failed to send feature request. Please try again.", context);
-      }
-    }
-  }
   @override
   Widget build(BuildContext context) {
     final productState = ref.watch(sharedProductViewModelProvider);
-    print("Product State: $productState"); // Debugging
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("My Products", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+              "My Products",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+          ),
+        ),
         Consumer(
           builder: (context, ref, child) {
             return productState.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+              loading: () => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: CircularProgressIndicator(color: Appcolors.blueColor),
+                ),
+              ),
               data: (products) {
                 if (products.isEmpty) {
-                  return const Center(child: Text("No Products Available"));
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Text("No Products Available"),
+                    ),
+                  );
                 }
                 return ListView.builder(
                   shrinkWrap: true,
@@ -137,6 +67,11 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                       return const SizedBox.shrink();
                     }
                     return Card(
+                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: InkWell(
                         onTap: () {
                           Navigator.pushNamed(
@@ -145,63 +80,110 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                             arguments: {'id': int.tryParse(widget.sellerId), 'product': product},
                           );
                         },
-                        child: ListTile(
-                          leading: (product.images != null &&
-                              product.images!.isNotEmpty &&
-                              product.images!.first.imageUrl != null)
-                              ? Image.network(
-                            product.images!.first.imageUrl!,
-                            fit: BoxFit.cover,
-                            width: 50,
-                            height: 50,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.error);
-                            },
-                          )
-                              : const Icon(Icons.image_not_supported),
-                          title: Text(product.name ?? 'No Name'),
-                          subtitle: Text(
-                            product.category?.name ?? 'No Category',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          trailing: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    routesName.sEditProduct,
-                                    arguments: product,
-                                  );
-                                },
-                                icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.all(10),
+                              leading: Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: (product.images != null &&
+                                    product.images!.isNotEmpty &&
+                                    product.images!.first.imageUrl != null)
+                                    ? Image.network(
+                                  product.images!.first.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(Icons.error);
+                                  },
+                                )
+                                    : const Icon(Icons.image_not_supported, size: 40),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () async {
-                                  if (product.id != null) {
-                                    await ref.read(sharedProductViewModelProvider.notifier)
-                                        .deleteProduct(product.id.toString(), widget.sellerId);
-                                  }
-                                },
+                              title: Text(
+                                product.name ?? 'No Name',
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.star_border),
-                                onPressed: () async {
-                                    await featureProduct(context, widget.sellerId, product.id!);
-                                },
+                              subtitle: Text(
+                                product.category?.name ?? 'No Category',
+                                style: const TextStyle(fontSize: 12),
                               ),
-                            ],
-                          ),
+                            ),
+                            Divider(height: 1),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            routesName.sEditProduct,
+                                            arguments: product,
+                                          );
+                                        },
+                                        icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                        tooltip: "Edit Product",
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () async {
+                                          if (product.id != null) {
+                                            await ref.read(sharedProductViewModelProvider.notifier)
+                                                .deleteProduct(product.id.toString(), widget.sellerId);
+                                          }
+                                        },
+                                        tooltip: "Delete Product",
+                                      ),
+                                    ],
+                                  ),
+                                  ElevatedButton.icon(
+                                    onPressed: () async {
+                                      await ref.read(createfeatureProductViewModelProvider.notifier)
+                                          .createFeatureProduct(widget.sellerId,product.id!,context);
+                                    },
+                                    icon: Icon(Icons.star, size: 16),
+                                    label: Text("Request to Feature"),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Appcolors.blueColor,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
                   },
                 );
               },
-              error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}')),
+              error: (error, stackTrace) => Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red, size: 48),
+                      SizedBox(height: 16),
+                      Text('Error loading products: ${error.toString()}'),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.sellerId);
+                        },
+                        child: Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             );
           },
         ),

@@ -6,6 +6,9 @@ class routesName {
   //Admin Screens Routes Names
   static const String aHome = "adminhomeview";
   static const String ashop = "ShopView";
+  static const String activeADS = "getSellerAds";
+  static const String activefeature = "FeaturedProducts";
+  static const String requestfeature = "FeaturedProductRequestView";
   static const String afeature = "Featuredproductrequestview";
   static const String aproduct = "ProductView";
   static const String auser = "UsersView";
@@ -13,17 +16,20 @@ class routesName {
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";
   static const String favorite = "FavoriteView";
+  static const String cart = "CartView";
   static const String deliveryAddress = "deliveryAddress";
-
+  static const String confirmOrder = "orderPlaceMessageView";
 
   //Seller Screens Routes Names
   static const String sHome = "sellerhomeview";
   static const String sShop = "SellerShopView";
+  static const String SellerShopDetailView = "SellerShopDetailView";
   static const String sAddProduct = "addProductView";
   static const String sAddShop = "addShopView";
   static const String sEditProduct = "updateProductView";
   static const String sEditShop = "UpdateShopView";
   static const String orderDetails = "orderDetailView";
+  static const String featuredProducts = "getSellerFeatureProducts";
   static const String createAds = "createAds";
 
   //Common\Shared Screens Routes Names

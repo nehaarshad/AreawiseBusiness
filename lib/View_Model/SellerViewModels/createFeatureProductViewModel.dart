@@ -4,6 +4,7 @@ import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/repositories/adRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../core/utils/routes/routes_names.dart';
 import '../../models/featureModel.dart';
 import '../../repositories/featuredRepositories.dart';
 import '../SharedViewModels/AdViewModel.dart';
@@ -11,77 +12,89 @@ import '../SharedViewModels/featuredProductViewModel.dart';
 import 'AdStates.dart';
 import 'featureStates.dart';
 
-final createfeatureProductViewModelProvider = StateNotifierProvider<createfeatureProductViewModel, createFeatureProductState>((ref,) {
-  return createfeatureProductViewModel(ref);
+final createfeatureProductViewModelProvider = StateNotifierProvider<CreateFeatureProductViewModel, createFeatureProductState>((ref) {
+  return CreateFeatureProductViewModel(ref);
 });
 
-class createfeatureProductViewModel extends StateNotifier<createFeatureProductState> {
+class CreateFeatureProductViewModel extends StateNotifier<createFeatureProductState> {
   final Ref ref;
-  createfeatureProductViewModel(this.ref) : super(createFeatureProductState(isLoading: false));
+  CreateFeatureProductViewModel(this.ref) : super(createFeatureProductState(isLoading: false));
 
-  Future<void> selectExpirationDateTime(DateTime dateTime) async{
+  void showRequestSentDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text("Request sent successfully."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Closes the dialog
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> selectExpirationDateTime(DateTime dateTime) async {
     state = state.copyWith(expirationDateTime: dateTime);
   }
 
-  ///for seller
-  Future<void> createFeatureProduct(String sellerId,int productID,BuildContext context) async {
+  // For seller
+  Future<void> createFeatureProduct(String sellerId, int productID, BuildContext context) async {
     try {
-      if (state.expirationDateTime == null) {
-        Utils.flushBarErrorMessage("Please Complete missing Fields", context);
-        return;
-      }
       state = state.copyWith(isLoading: true);
 
       final reqData = {
-        'productID':productID,
-        'expire_at': state.expirationDateTime!.toIso8601String(),  ///YYYY-MM-DDTHH:mm:ss.mmm+00:00
+        'productID': productID,
       };
-      print('productID: ${reqData['productID'].runtimeType} expire_at:${reqData['expire_at'].runtimeType}');
-      final response = await ref.read(featureProvider).createProductFeatured(sellerId,reqData);
-      try {
-        // Invalidate the provider to refresh the product list
-        ref.invalidate(featureProductViewModelProvider);
-        await ref.read(featureProductViewModelProvider.notifier).getUserFeaturedProducts(sellerId);
-        await ref.read(featureProductViewModelProvider.notifier).getAllRequestedFeatured();
-        await ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts('All');
-      } catch (innerError) {
-        print("Error refreshing product lists: $innerError");
-        // Continue with success flow despite refresh errors
-      }
+
+      await ref.read(featureProvider).createProductFeatured(sellerId, reqData);
+
+      // Show success dialog
+      showRequestSentDialog(context);
+
+      // Refresh only seller's featured products
+      final viewModel = ref.read(featureProductViewModelProvider(sellerId).notifier);
+      await viewModel.getUserFeaturedProducts(sellerId);
+
       state = state.copyWith(isLoading: false);
-
-      Utils.toastMessage("Request Sent!");
-
     } catch (e) {
       state = state.copyWith(isLoading: false);
+      Utils.toastMessage("Error creating feature request: ${e.toString()}");
       print(e);
     }
   }
 
-  ///for admin  //fetch seller id from featuredRequestProduct
-  Future<void> updateFeatureProduct(String featureId,String sellerId, Map<String,dynamic> status,BuildContext context) async {
+  // For admin
+  Future<void> updateFeatureProduct(String featureId, String sellerId, Map<String, dynamic> data, BuildContext context) async {
     try {
       state = state.copyWith(isLoading: true);
 
-      final response = await ref.read(featureProvider).updateFeaturedProducts(featureId, status);
-      try {
-        // Invalidate the provider to refresh the product list
-        ref.invalidate(featureProductViewModelProvider);
-        await ref.read(featureProductViewModelProvider.notifier).getUserFeaturedProducts(sellerId);
-        await ref.read(featureProductViewModelProvider.notifier).getAllRequestedFeatured();
-        await ref.read(featureProductViewModelProvider.notifier).getAllFeaturedProducts('All');
-      } catch (innerError) {
-        print("Error refreshing product lists: $innerError");
-        // Continue with success flow despite refresh errors
+      await ref.read(featureProvider).updateFeaturedProducts(featureId, data);
+
+      // Determine which screen we're on and refresh accordingly
+      final currentRoute = ModalRoute.of(context)?.settings.name;
+      final viewModel = ref.read(featureProductViewModelProvider(sellerId).notifier);
+
+      if (currentRoute == routesName.activefeature) {
+        // We're on the Featured Products screen
+        await viewModel.getAllFeaturedProducts('All');
+      } else {
+        // We're on the Requests screen
+        await viewModel.getAllRequestedFeatured();
       }
+
       state = state.copyWith(isLoading: false);
-
       Utils.toastMessage("Status Updated!");
-
     } catch (e) {
       state = state.copyWith(isLoading: false);
+      Utils.toastMessage("Error updating feature: ${e.toString()}");
       print(e);
     }
   }
-
 }

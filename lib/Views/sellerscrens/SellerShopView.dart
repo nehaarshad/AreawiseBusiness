@@ -19,8 +19,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
     final shopState = ref.watch(sellerShopViewModelProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(child: Text("My Shops")),
+        title: Text("Shop's",style: TextStyle(color: Appcolors.blueColor,fontSize: 25,fontWeight: FontWeight.bold),),
       ),
       body: shopState.when(
         loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
@@ -37,7 +36,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      routesName.shopdetail,
+                      routesName.SellerShopDetailView,
                       arguments: shop,
                     );
                   },
@@ -86,10 +85,8 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
         },
         error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(100, 0, 100, 100),
-        child: SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
+        child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(
                 context,
@@ -112,7 +109,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
               ),
             ),
           ),
-        ),
+
       ),
     );
   }

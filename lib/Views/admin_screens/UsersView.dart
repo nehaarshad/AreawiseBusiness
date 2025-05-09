@@ -17,7 +17,10 @@ class _UsersViewState extends ConsumerState<UserView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("All Users"),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Text("All Users",style:  TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+        ),
         SizedBox(height: 10,),
         Expanded(
           child: Consumer(
@@ -37,27 +40,78 @@ class _UsersViewState extends ConsumerState<UserView> {
                       itemBuilder: (context, index) {
                         final user = users[index];
                         return Card(
+                          color: Appcolors.whiteColor,
                           child: InkWell(
                             onTap: () {},
-                            child: ListTile(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  routesName.profile,
-                                  arguments: user.id,
-                                );
-                              },
-                              leading: Image.network(
-                                user!.image?.imageUrl?.isEmpty == false
-                                    ? user.image!.imageUrl!
-                                    : "https://th.bing.com/th/id/R.8e2c571ff125b3531705198a15d3103c?rik=gzhbzBpXBa%2bxMA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-big-image-png-2240.png&ehk=VeWsrun%2fvDy5QDv2Z6Xm8XnIMXyeaz2fhR3AgxlvxAc%3d&risl=&pid=ImgRaw&r=0",
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                              ),
-                              title: Text("${user.username}"),
-                              subtitle: Text("${user.role}"),
-                              trailing: Icon(Icons.arrow_forward_ios_sharp, size: 15),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  onTap: () {
+                                    final parameters={
+                                      'id':user.id,
+                                      'role':user.role
+                                    };
+                                    Navigator.pushNamed(
+                                      context,
+                                      routesName.profile,
+                                      arguments:parameters,
+                                    );
+                                  },
+                                  leading: Image.network(
+                                    user!.image?.imageUrl?.isEmpty == false
+                                        ? user.image!.imageUrl!
+                                        : "https://th.bing.com/th/id/R.8e2c571ff125b3531705198a15d3103c?rik=gzhbzBpXBa%2bxMA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-big-image-png-2240.png&ehk=VeWsrun%2fvDy5QDv2Z6Xm8XnIMXyeaz2fhR3AgxlvxAc%3d&risl=&pid=ImgRaw&r=0",
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
+                                  subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14)),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          onPressed: (){
+
+                                          },
+                                          icon: Icon(Icons.delete, size: 25,color: Colors.red,),),
+                                      Icon(Icons.arrow_forward_ios_sharp, size: 14,color: Colors.grey,),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(100, 0, 100, 10),
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              routesName.sShop,
+                                              arguments: user.id,//send userId
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Appcolors.blueColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(40.0),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            "User Shops",
+                                            style: TextStyle(
+                                              color: Appcolors.whiteColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         );

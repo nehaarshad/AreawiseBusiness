@@ -12,13 +12,27 @@ import '../widgets/profileImageWidget.dart';
 
 class profileDetailView extends ConsumerStatefulWidget {
   int id;
-  profileDetailView({required this.id});
+  String role;
+  profileDetailView({required this.id,required this.role});
 
   @override
   ConsumerState<profileDetailView> createState() => _profileDetailViewState();
 }
 
 class _profileDetailViewState extends ConsumerState<profileDetailView> {
+
+  late String setRole;
+  String  userRole(UserDetailModel user){
+    if(user.role=='Admin'){
+      setRole=user.role!;
+
+    }
+    else{
+      setRole=widget.role;
+    }
+    return setRole;
+  }
+
   @override
   Widget build(BuildContext context) {
     final userdetail = ref.watch(
@@ -26,13 +40,12 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
     ); //get user detail from model
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-
       ),
       body: userdetail.when(
         loading: () => Center(
               child: CircularProgressIndicator(color: Appcolors.blackColor),),
         data: (user) {
+          setRole=userRole(user!);
           if (user == null) return const Center(child: Text("User not found"));
           return Padding(
             padding: const EdgeInsets.all(28.0),
@@ -41,7 +54,7 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
                 children: [
                   ProfileImageWidget(user: user, height: 150, width: 150),
                   SizedBox(height: 20),
-                  userInfo(user: user),
+                  userInfo(user: user,role: setRole,),
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
@@ -76,16 +89,17 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
 
 class userInfo extends StatelessWidget {
   final UserDetailModel user;
-
-  const userInfo({required this.user});
+   final String role;
+   userInfo({required this.user,required this.role});
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
-        infoWidget(heading: "Username", value: user.username ?? 'No username'),
-        infoWidget(heading: "Username", value: user.email ?? 'No email'),
-        infoWidget(heading: "Role", value: user.role ?? 'No role'),
+        infoWidget(heading: "Username", value: user.username!),
+        infoWidget(heading: "Username", value: user.email!),
+        infoWidget(heading: "Role", value: role),
         infoWidget(
           heading: "Contact",
           value: user.contactnumber?.toString() ?? 'No number',

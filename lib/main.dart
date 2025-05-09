@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,15 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'E-Commerce Seventeen',
-        theme: ThemeData(),
+        theme: ThemeData(
+          // Setting colorScheme with primary color
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Appcolors.blueColor,
+            primary: Appcolors.blueColor,
+          ),
+          // Set the primary color as well for legacy components
+       //   primaryColor: Appcolors.blueColor,
+        ),
         initialRoute: routesName.splash,
         onGenerateRoute: Routes.createroutes,
       ),
