@@ -95,6 +95,45 @@ const getuserbyid=async(req,res)=>{
     }
 }
 
+const addUser = async (req, res) => {
+    try {
+        const { username, email, contactnumber, password, role, sector, city, address } = req.body;
+
+        if (!username || !email || !contactnumber || !password || !role) {
+            return res.json({ error: "All fields are required to be filled!" });
+        }
+        
+        const existingUser = await User.findOne({ where: { username } });
+        if (existingUser) {
+            return res.json({ error: "Username already exists" });
+        }
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const newUser = await User.create({
+            username,
+            email,
+            contactnumber,
+            password: hashedPassword,
+            role
+        });
+        
+        await Address.create({ sector, city, address, userId: newUser.id });
+        
+        if (req.file) {
+            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
+            await image.create({ imagetype: 'user', UserId: newUser.id, imageUrl });
+        }
+        
+        res.json({
+            message: "User created successfully",
+            user: newUser
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "USER FAILED TO CREATE!" });
+    }
+}
 const updateuser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -204,5 +243,5 @@ const deleteuser=async(req,res)=>{
     }
 };
 
-export default {getallusers,getusers,getuserbyid,getuser,updateuser,deleteuser};
+export default {getallusers,getusers,getuserbyid,getuser,addUser,updateuser,deleteuser};
 

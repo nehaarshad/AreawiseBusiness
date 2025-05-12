@@ -39,6 +39,24 @@ const createNewUser = async (req, res) => {
 
 };
 
+const forgetPassword = async (req, res) => {
+    try {
+        const { email ,password } = req.body;
+
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await User.update({ password: hashedPassword }, { where: { email } });
+        res.status(200).json({ message: "Password updated successfully" });
+
+    } catch (error) {
+        console.error("Error in forgetPassword:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 const loginUser = async (req, res) => {
     try{
     const { username, password } = req.body;
@@ -97,4 +115,4 @@ const logout=async(req,res)=>{
         }
     
 }
-export default { createNewUser, loginUser,logout };
+export default { createNewUser, loginUser,logout ,forgetPassword };
