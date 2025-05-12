@@ -277,6 +277,7 @@ class _UpdateCategorySelectorState
           controller: shopcategory,
           focusNode: focus,
           decoration: InputDecoration(
+
             labelText: 'Category',
             hintText: 'Search Category',
             suffixIcon:

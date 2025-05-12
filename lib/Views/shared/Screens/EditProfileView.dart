@@ -68,33 +68,44 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           controller: model.username,
           decoration: const InputDecoration(labelText: "Username"),
         ),
-        const SizedBox(height: 10),
+
         TextFormField(
           controller: model.email,
           decoration: const InputDecoration(labelText: "Email"),
         ),
-        const SizedBox(height: 10),
+
+        TextFormField(
+          controller: model.password,
+          decoration: const InputDecoration(labelText: "Password",
+            helperMaxLines: 2,
+            helperText:"For security reasons, your password is hidden."
+                " You can’t view it, but you can change it."
+          ),
+
+        ),
+
+        SizedBox(height: 10,),
         TextFormField(
           controller: model.contactnumber,
           decoration: const InputDecoration(labelText: "Contact Number"),
           keyboardType: TextInputType.phone,
         ),
-        const SizedBox(height: 10),
+
         TextFormField(
           controller: model.role,
           decoration: const InputDecoration(labelText: "Role"),
         ),
-        const SizedBox(height: 10),
+
         TextFormField(
           controller: model.sector,
           decoration: const InputDecoration(labelText: "Sector"),
         ),
-        const SizedBox(height: 10),
+
         TextFormField(
           controller: model.city,
           decoration: const InputDecoration(labelText: "City"),
         ),
-        const SizedBox(height: 10),
+
         TextFormField(
           controller: model.address,
           decoration: const InputDecoration(labelText: "Address"),

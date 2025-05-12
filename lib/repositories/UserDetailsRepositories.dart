@@ -74,11 +74,29 @@ class UserRepositories {
     }
   }
 
+  Future<Map<String, dynamic>> addUser(
+      Map<String, dynamic> data,
+      File? image,
+      ) async
+  {
+    try {
+      dynamic response = await apiservice.SingleFileUploadApiWithMultiport(
+        AppApis.AddUserEndPoints,
+        data,
+        image,
+      );
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<Map<String, dynamic>> updateUser(
     Map<String, dynamic> data,
     String id,
     File? image,
-  ) async {
+  ) async
+  {
     try {
       dynamic response = await apiservice.SingleFileUpdateApiWithMultiport(
         AppApis.UpdateUserEndPoints.replaceFirst(':id', id),

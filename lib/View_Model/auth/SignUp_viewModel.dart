@@ -41,7 +41,7 @@ class signupviewmodel extends StateNotifier<bool> {
       }
     } catch (error) {
       print("Error: $error");
-      Utils.flushBarErrorMessage(error.toString(), context);
+      Utils.flushBarErrorMessage('Error During Registeration, Try Later!', context);
     } finally {
       state = false;
     }

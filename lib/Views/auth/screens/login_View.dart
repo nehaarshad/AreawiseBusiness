@@ -80,6 +80,13 @@ class _login_viewState extends ConsumerState<login_view> {
                   );
                 },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                TextButton(onPressed: (){
+                  Navigator.pushNamed(context, routesName.forget);
+                }, child: Text("forget password?"))
+              ],),
               SizedBox(height: height * .07),
               Consumer(
                 builder: (context, ref, child) {

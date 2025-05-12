@@ -1,20 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../View_Model/auth/SignUp_viewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/utils.dart';
-import '../../shared/widgets/buttons.dart';
-import '../../shared/widgets/colors.dart';
+import 'package:riverpod/riverpod.dart';
+import '../../../View_Model/UserProfile/EditProfileViewModel.dart';
+import '../../../models/UserDetailModel.dart';
+import '../../View_Model/adminViewModels/addUserViewModel.dart';
+import '../../core/utils/utils.dart';
+import '../shared/widgets/buttons.dart';
+import '../shared/widgets/colors.dart';
 
-class signUp_View extends ConsumerStatefulWidget {
-  const signUp_View({super.key});
+class addUser extends ConsumerStatefulWidget {
+
+  addUser({super.key});
 
   @override
-  ConsumerState<signUp_View> createState() => _signUp_ViewState();
+  _AddUserViewState createState() => _AddUserViewState();
 }
 
-class _signUp_ViewState extends ConsumerState<signUp_View> {
+class _AddUserViewState extends ConsumerState<addUser> {
+
   ValueNotifier<bool> pswrd = ValueNotifier<bool>(true);
   ValueNotifier<bool> cpswrd = ValueNotifier<bool>(true);
   final formkey = GlobalKey<FormState>();
@@ -23,12 +27,18 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _contactNumberController = TextEditingController();
+  final TextEditingController _sectoreController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   FocusNode username = FocusNode();
   FocusNode email = FocusNode();
   FocusNode password = FocusNode();
   FocusNode confirmPassword = FocusNode();
   FocusNode contactNumber = FocusNode();
+  FocusNode sector = FocusNode();
+  FocusNode city = FocusNode();
+  FocusNode address = FocusNode();
 
   String? _selectedRole;
 
@@ -74,18 +84,57 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
             DropdownMenuItem(value: "Buyer", child: Text("Buyer")),
             DropdownMenuItem(value: "Seller", child: Text("Seller")),
             DropdownMenuItem(value: "Both", child: Text("Both")),
+            DropdownMenuItem(value: "Admin", child: Text("Admin")),
           ],
         ),
       ],
     );
   }
 
+  Widget UserImage( addUserViewModel model) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: model.pickImages,
+          child: Stack(
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage:
+                model.uploadimage != null
+                    ? FileImage(model.uploadimage!)
+                    :NetworkImage(
+                  "https://th.bing.com/th/id/OIP.GnqZiwU7k5f_kRYkw8FNNwHaF3?rs=1&pid=ImgDetMain",
+                ),
+              ),
+              Positioned(
+                bottom: 5, // Adjust position of the camera icon
+                right: 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.blueGrey,
+                    size: 25,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final signUpviewmodel = ref.read(signupProvider.notifier);
-    final double height = MediaQuery.of(context).size.height * 1;
 
-    void handleSignUp() {
+    final state = ref.read(addUserViewModelProvider.notifier);
+    void addUser() {
       if (formkey.currentState!.validate()) {
         if (_passwordController.text.trim().length < 8) {
           Utils.flushBarErrorMessage(
@@ -112,26 +161,31 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
             'contactnumber': int.parse(_contactNumberController.text.trim()),
             'password': _passwordController.text.toString().trim(),
             'role': _selectedRole!,
+            'sector':_sectoreController.text.trim().toString(),
+            'city':_cityController.text.trim().toString(),
+            'address':_addressController.text.trim().toString()
           };
           if(kDebugMode){
 
-          print("useranme:  ${data['username']} with type:  ${data['username'].runtimeType}");
-          print("email:  ${data['email']} with type:  ${data['email'].runtimeType}");
-          print("contactnumber:  ${data['contactnumber']} with type:  ${data['contactnumber'].runtimeType}");
-          print("password:  ${data['password']} with type:  ${data['password'].runtimeType}");
-          print("role:  ${data['role']} with type:  ${data['role'].runtimeType}");
+            print("useranme:  ${data['username']} with type:  ${data['username'].runtimeType}");
+            print("email:  ${data['email']} with type:  ${data['email'].runtimeType}");
+            print("contactnumber:  ${data['contactnumber']} with type:  ${data['contactnumber'].runtimeType}");
+            print("password:  ${data['password']} with type:  ${data['password'].runtimeType}");
+            print("role:  ${data['role']} with type:  ${data['role'].runtimeType}");
+            print("sector:  ${data['sector']} with type:  ${data['sector'].runtimeType}");
+            print("city:  ${data['city']} with type:  ${data['city'].runtimeType}");
+            print("address:  ${data['address']} with type:  ${data['address'].runtimeType}");
           }
 
-          signUpviewmodel.SignUpApi(data, context);
+          state.addUser(data,context);
         }
       }
     }
+
+    final double height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(child: Text('Sign Up')),
-      ),
-      body: SafeArea(
+      appBar: AppBar(title: Text("Add User")),
+      body:SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -141,6 +195,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  UserImage(state),
                   // Username field
                   TextFormField(
                     controller: _usernameController,
@@ -267,41 +322,66 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                     },
                   ),
                   buildRoleDropdown(),
+
+                  TextFormField(
+                    controller: _sectoreController,
+                    focusNode: sector,
+                    decoration: InputDecoration(
+                      hintText: "Sector",
+                      prefixIcon: Icon(Icons.location_on_outlined),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter Sector";
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (value) {
+                      Utils.focusarea(context, sector, city);
+                    },
+                  ),
+                  TextFormField(
+                    controller: _cityController,
+                    focusNode: city,
+                    decoration: InputDecoration(
+                      hintText: "City",
+                      prefixIcon: Icon(Icons.location_city_outlined),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter City";
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (value) {
+                      Utils.focusarea(context, city, address);
+                    },
+                  ),
+                  TextFormField(
+                    controller: _addressController,
+                    focusNode: address,
+                    decoration: InputDecoration(
+                      hintText: "Address",
+                      prefixIcon: Icon(Icons.holiday_village_outlined),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter address";
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: height * .1),
                   // SignUp button
                   Consumer(
                     builder: (context, ref, child) {
-                      final loading = ref.watch(signupProvider);
+                      final loading = ref.watch(addUserViewModelProvider);
                       return CustomButton(
-                        text: "Sign Up",
-                        onPressed: handleSignUp,
-                        isLoading: loading,
+                        text: "Create User",
+                        onPressed: addUser,
+                        isLoading: loading.isLoading,
                       );
                     },
-                  ),
-                  SizedBox(height: height * .02),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 2,
-                      horizontal: 15,
-                    ),
-                    child: Row(
-                      children: [
-                        Text("Already have an Account?"),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, routesName.login);
-                          },
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Appcolors.blueColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -310,5 +390,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
         ),
       ),
     );
+
+
   }
 }

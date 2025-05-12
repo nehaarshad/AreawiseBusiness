@@ -19,7 +19,17 @@ class _UsersViewState extends ConsumerState<UserView> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 10),
-          child: Text("All Users",style:  TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(width: 100,),
+              Text("All Users",style:  TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+              SizedBox(width: 50,),
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, routesName.addUser);
+              }, child: Text(" + Add User"))
+            ],
+          ),
         ),
         SizedBox(height: 10,),
         Expanded(
@@ -71,8 +81,8 @@ class _UsersViewState extends ConsumerState<UserView> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                          onPressed: (){
-
+                                          onPressed: () async{
+                                                   await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString());
                                           },
                                           icon: Icon(Icons.delete, size: 25,color: Colors.red,),),
                                       Icon(Icons.arrow_forward_ios_sharp, size: 14,color: Colors.grey,),

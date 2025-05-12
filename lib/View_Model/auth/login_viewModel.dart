@@ -36,7 +36,7 @@ class LoginViewModel extends StateNotifier<bool> {
         Utils.flushBarErrorMessage("Login Successfully", context);
       }
     } catch (error) {
-      Utils.flushBarErrorMessage(error.toString(), context);
+      Utils.flushBarErrorMessage("Incorrect Usename or Password", context);
     } finally {
       state = false;
     }

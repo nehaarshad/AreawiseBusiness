@@ -2,6 +2,7 @@ class routesName {
   //Auth Screens Routes Names
   static const String login = "login_View";
   static const String signUp = "signUp_View";
+  static const String forget = "forgetPasswordView";
 
   //Admin Screens Routes Names
   static const String aHome = "adminhomeview";
@@ -12,6 +13,7 @@ class routesName {
   static const String afeature = "Featuredproductrequestview";
   static const String aproduct = "ProductView";
   static const String auser = "UsersView";
+  static const String addUser = "addUserView";
 
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";

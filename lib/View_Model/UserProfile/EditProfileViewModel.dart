@@ -24,7 +24,7 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
   late TextEditingController username;
   late TextEditingController email;
   late TextEditingController contactnumber;
-  late TextEditingController password;
+  late TextEditingController  password=TextEditingController();
   late TextEditingController role;
   late TextEditingController sector;
   late TextEditingController city;
@@ -40,6 +40,7 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       email = TextEditingController(text: userdata.email);
       contactnumber = TextEditingController(text: userdata.contactnumber.toString());
       role = TextEditingController(text: userdata.role);
+      password.text='***********';
       sector = TextEditingController(text: userdata.address?.sector ?? "");
       city = TextEditingController(text: userdata.address?.city ?? "");
       address = TextEditingController(text: userdata.address?.address ?? "");

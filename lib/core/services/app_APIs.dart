@@ -5,12 +5,14 @@ class AppApis {
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";
   static var logoutEndPoints = "$baseurl/logout";
+  static var forgetPasswordEndPoints = "$baseurl/forgetpassword";
 
   //USER PROFILE URLS
   static var getAllUserEndPoints = "$baseurl/getallusers";
   static var SearchUsersByRoleEndPoints = "$baseurl/getallusersbyrole/:role";
   static var SearchUserBynameEndPoints = "$baseurl/getuserbyname/:username";
   static var SearchUserByIdEndPoints = "$baseurl/getuserbyid/:id";
+  static var AddUserEndPoints = "$baseurl/adduser";
   static var UpdateUserEndPoints = "$baseurl/updateuser/:id";
   static var DeleteUserEndPoints = "$baseurl/deleteuser/:id";
 

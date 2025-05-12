@@ -50,6 +50,24 @@ class AuthRepositories {
     }
   }
 
+  Future<dynamic> forgetPassword(Map<String,dynamic> data) async {
+    try {
+
+      final request=jsonEncode(data);
+      print("Send Data As: ${request}");
+      final headers = {'Content-Type': 'application/json'};
+      dynamic response = await apiservice.PostApiWithJson(
+        AppApis.forgetPasswordEndPoints,
+        request,
+        headers,
+      );
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
   Future<dynamic> logoutApi(String token) async {
     try {
       Map<String, String> headers = {

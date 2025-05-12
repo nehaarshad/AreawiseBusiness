@@ -100,7 +100,7 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           controller: ProductCategory,
           focusNode: focus,
           decoration: InputDecoration(
-            labelText: 'Category',
+            labelText: 'Select Category',
             suffixIcon:
                 ProductCategory.text.isNotEmpty
                     ? IconButton(
@@ -161,8 +161,8 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'New Category!',
-              style: TextStyle(color: Colors.orange),
+              'No Category Available!',
+              style: TextStyle(color: Colors.red),
             ),
           ),
       ],

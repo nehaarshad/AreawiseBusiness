@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
@@ -9,6 +10,7 @@ import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
 import '../../../Views/sellerscrens/sellerShopDetailView.dart';
 import '../../../Views/shared/Screens/chatView.dart';
 import '../../../Views/shared/Screens/chatsListView.dart';
+import '../../../Views/shared/Screens/forgetPasswordView.dart';
 import '../../../Views/shared/widgets/getAllProductView.dart';
 import '../../../Views/admin_screens/adminhomeview.dart';
 import '../../../Views/auth/screens/login_View.dart';
@@ -145,6 +147,16 @@ class Routes {
         final id = arg as String;
         return MaterialPageRoute(
           builder: (BuildContext context) => UserFeaturedProducts(sellerId: id,),
+        );
+
+      case (routesName.addUser):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addUser(),
+        );
+
+      case (routesName.forget):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Forgetpasswordview(),
         );
 
     case (routesName.activeADS):
