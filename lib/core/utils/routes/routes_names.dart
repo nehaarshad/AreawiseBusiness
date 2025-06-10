@@ -14,6 +14,8 @@ class routesName {
   static const String aproduct = "ProductView";
   static const String auser = "UsersView";
   static const String addUser = "addUserView";
+  static const String categories = "appCategories";
+  static const String subcategories = "appSubcategories";
 
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";
@@ -43,5 +45,6 @@ class routesName {
   static const String dashboard = "DashBoardView";
   static const String chatList = "chatsListView";
   static const String chatView = "chatView";
+  static const String history = "historyView";
 
 }

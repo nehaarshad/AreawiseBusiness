@@ -6,6 +6,7 @@ class CartItems {
   int? productId;
   int? quantity;
   int? price;
+  String? status;
   String? createdAt;
   String? updatedAt;
   ProductModel? product;
@@ -16,6 +17,7 @@ class CartItems {
     this.productId,
     this.quantity,
     this.price,
+    this.status,
     this.createdAt,
     this.updatedAt,
     this.product,
@@ -27,6 +29,7 @@ class CartItems {
     productId = json['productId'];
     quantity = json['quantity'];
     price = json['price'];
+    status=json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     product =
@@ -42,6 +45,7 @@ class CartItems {
     data['productId'] = this.productId;
     data['quantity'] = this.quantity;
     data['price'] = this.price;
+    data['status'] = this.status;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     if (this.product != null) {

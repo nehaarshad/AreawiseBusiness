@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
@@ -59,4 +61,48 @@ class CategoriesRepositories {
       throw e;
     }
   }
+
+  Future<Category> addCategory(String name)async{
+    try {
+      final data = jsonEncode({'name': name});
+      final headers = {'Content-Type': 'application/json'};
+      dynamic response = await apiservice.PostApiWithJson(AppApis.addCategoryEndPoints, data,headers);
+      return Category.fromJson(response);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<Category> addSubcategory(String name,int id)async{
+    try {
+      final data = jsonEncode({
+        'name': name,
+         'categoryId':id
+      });
+      final headers = {'Content-Type': 'application/json'};
+      dynamic response = await apiservice.PostApiWithJson(AppApis.addSubcategoryEndPoints, data,headers);
+      return Category.fromJson(response);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future <void> deleteCategory(String id)async{
+    try {
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteCategoryEndPoints.replaceFirst(':id', id));
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future <void> deleteSubcategory(String id)async{
+    try {
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteSubcategoryEndPoints.replaceFirst(':id', id));
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
 }

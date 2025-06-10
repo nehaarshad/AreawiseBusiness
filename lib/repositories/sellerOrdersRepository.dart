@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/services/app_APIs.dart';
+import '../models/orderModel.dart';
 import '../models/ordersRequestModel.dart';
 
 final sellerOrderProvider=Provider<sellerOrderRepository>((ref){
@@ -27,14 +28,14 @@ class sellerOrderRepository{
     }
   }
 
-  Future<List<OrdersRequestModel?>> getCustomerOrders(String id)async{
-    List<OrdersRequestModel> orders;
+  Future<List<orderModel?>> getCustomerOrders(String id)async{
+    List<orderModel> orders;
     try{
       dynamic response=await apiservice.GetApiResponce(AppApis.getCustomersOrdersEndPoints.replaceFirst(':id', id));
       if (response is List) {
-        return response.map((order) => OrdersRequestModel.fromJson(order as Map<String, dynamic>),).toList();
+        return response.map((order) => orderModel.fromJson(order as Map<String, dynamic>),).toList();
       }
-      orders = [OrdersRequestModel.fromJson(response)];
+      orders = [orderModel.fromJson(response)];
       return orders;
     }catch(e){
       rethrow;

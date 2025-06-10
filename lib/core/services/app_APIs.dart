@@ -1,11 +1,12 @@
 class AppApis {
   static var baseurl = "http://192.168.161.179:5000/api";
-  static var socketURL = "http://192.168.71.179:5000";
+  static var socketURL = "http://192.168.161.179:5000";
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";
   static var logoutEndPoints = "$baseurl/logout";
   static var forgetPasswordEndPoints = "$baseurl/forgetpassword";
+
 
   //USER PROFILE URLS
   static var getAllUserEndPoints = "$baseurl/getallusers";
@@ -51,6 +52,10 @@ class AppApis {
   static var GetProductByCategoryEndPoints = "$baseurl/getProductByCategory";
   static var UpdateProductEndPoints = "$baseurl/updateproduct/:id";
   static var DeleteProductEndPoints = "$baseurl/deleteproduct/:id";
+  static var addCategoryEndPoints = "$baseurl/addcategory";
+  static var addSubcategoryEndPoints = "$baseurl/addsubcategory";
+  static var deleteCategoryEndPoints = "$baseurl/deletecategory/:id";
+  static var deleteSubcategoryEndPoints = "$baseurl/deletesubcategory/:id";
 
   //CART and ORDER URLS
   static var getUserCartEndPoints = "$baseurl/getCart/:id";

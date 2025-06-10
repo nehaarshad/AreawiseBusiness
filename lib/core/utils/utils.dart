@@ -12,7 +12,7 @@ class Utils {
   static toastMessage(String msg) {
     Fluttertoast.showToast(
       msg: msg,
-      backgroundColor: Colors.black38,
+      backgroundColor: Colors.blue[400],
       textColor: Colors.white,
     );
   }
@@ -22,7 +22,7 @@ class Utils {
       context: context,
       flushbar: Flushbar(
         message: msg,
-        backgroundColor: Colors.black38,
+        backgroundColor: Colors.blue.shade400,
         duration: Duration(seconds: 2),
         forwardAnimationCurve: Curves.decelerate,
         reverseAnimationCurve: Curves.easeInOut,

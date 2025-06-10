@@ -2,10 +2,14 @@ import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/historyView.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
+import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
 import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
 import '../../../Views/admin_screens/FeaturedProducts.dart';
+import '../../../Views/admin_screens/appCategories.dart';
+import '../../../Views/admin_screens/appSubcategories.dart';
 import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
 import '../../../Views/sellerscrens/sellerShopDetailView.dart';
 import '../../../Views/shared/Screens/chatView.dart';
@@ -141,6 +145,23 @@ class Routes {
         final shop = arg as ShopModel;
         return MaterialPageRoute(
           builder: (BuildContext context) => SellerShopDetailView(shop: shop),
+        );
+
+      case (routesName.categories):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => AllCategories(),
+        );
+
+      case (routesName.subcategories):
+        Category category=arg as Category;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => SubcategoriesView(category: category,),
+        );
+
+      case (routesName.history):
+        String id=arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => OrdersHistoryView(id: id,),
         );
 
       case (routesName.featuredProducts):

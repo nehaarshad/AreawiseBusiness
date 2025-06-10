@@ -33,6 +33,17 @@ class DrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
+            icon: Icons.history_outlined,
+            title: 'Orders History',
+            onTap: () {
+              Navigator.pushNamed(
+                  context,
+                  routesName.history,
+                  arguments: id.toString()
+              );
+            },
+          ),
+          drawerItems(
               icon: Icons.logout,
               title: 'Logout',
               onTap:(){

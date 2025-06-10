@@ -35,11 +35,11 @@ class _CartviewState extends ConsumerState<Cartview> {
     final state = ref.watch(cartViewModelProvider(widget.id.toString())); //get user cart
     return Scaffold(
       appBar: AppBar(
-
+        automaticallyImplyLeading: false,
         title: Text("CartView"),
         actions: [
           state.when(
-            loading: () => const SizedBox.shrink(), // Hide button during loading
+            loading: () => const SizedBox.shrink(),
             data: (items) {
               cartId = items?.id; // Extract cart ID safely
               return IconButton(

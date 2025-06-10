@@ -33,13 +33,12 @@ class AdminDrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
-            icon: Icons.shopping_cart_outlined,
-            title: 'Cart',
+            icon: Icons.category_outlined,
+            title: 'Categories',
             onTap: () {
               Navigator.pushNamed(
                 context,
-                routesName.cart,
-                arguments: id,
+                routesName.categories,
               );
             },
           ),
@@ -54,6 +53,29 @@ class AdminDrawerListItems extends ConsumerWidget {
               );
             },
           ),
+          drawerItems(
+            icon: Icons.shopping_cart_outlined,
+            title: 'Cart',
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.cart,
+                arguments: id,
+              );
+            },
+          ),
+          drawerItems(
+            icon: Icons.history_outlined,
+            title: 'Orders History',
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.history,
+                arguments: id.toString()
+              );
+            },
+          ),
+
           drawerItems(
               icon: Icons.logout,
               title: 'Logout',
