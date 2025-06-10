@@ -37,4 +37,59 @@ const getsubcategoriesofcategory = async (req, res) => {
     }
 };
 
-export default {getallcategories,getallsubcategories,getsubcategoriesofcategory}
+const addcategory = async (req, res) => {
+    try {
+        const { name } = req.body;
+        const newCategory = await category.create({ name });
+        res.json(newCategory);
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to add category" });
+    }
+};
+
+const addsubcategory = async (req, res) => {
+    try {
+        const { name, categoryId } = req.body;
+        const newSubcategory = await subcategories.create({ name, categoryId });
+        res.json(newSubcategory);
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to add subcategory" });
+    }
+}
+
+const deletecategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedCategory = await category.findByPk(id);
+        if (deletedCategory) {
+            await subcategories.destroy({ where: { categoryId: id } });
+            await deletedCategory.destroy();
+            res.json({ message: "Category deleted successfully" });
+        } else {
+            res.json({ message: "Category not found" });
+        }
+       
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to delete category" });
+    }
+}   
+
+const deletesubcategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedSubcategory = await subcategories.destroy({ where: { id } });
+        if (deletedSubcategory) {
+            res.json({ message: "Subcategory deleted successfully" });
+        } else {
+            res.json({ message: "Subcategory not found" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to delete subcategory" });
+    }
+}
+
+export default {getallcategories,getallsubcategories,getsubcategoriesofcategory,addcategory,addsubcategory,deletecategory,deletesubcategory};

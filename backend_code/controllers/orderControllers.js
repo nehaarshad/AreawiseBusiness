@@ -259,6 +259,7 @@ const PlaceOrder = async (req, res) => {
                 orderProductId: product.id,//1 or 2 or 4
                 status: 'Requested'
             });//seller and order id are same but product id is different
+           await item.update({ status: 'Requested' });
         });
 
         await cartExists.update({

@@ -11,6 +11,7 @@ dotenv.config();
 const getallusers=async(req,res)=>{
     try {
             const users=await User.findAll({
+                 order: [['createdAt', 'DESC']], 
                 include:{
                     model:image,
                     where: { imagetype: 'user'},
@@ -30,6 +31,7 @@ const getusers=async(req,res)=>{
     try {
         const {role}=req.params;
         const user=await User.findAll({ where:{role},
+             order: [['createdAt', 'DESC']], 
             include:{
                 model:image,
                 where: { imagetype: 'user'},
@@ -52,6 +54,7 @@ const getuser=async(req,res)=>{
     try {
         const {username}=req.params;
         const user=await User.findOne({
+             order: [['createdAt', 'DESC']], 
             where:{username},
             include:{
             model:image,

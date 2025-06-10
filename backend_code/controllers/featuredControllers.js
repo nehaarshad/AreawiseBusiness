@@ -31,6 +31,7 @@ const getUserFeaturedProducts=async(req,res)=>{
         console.log(userID);
         const featuredProduct=await featured.findAll({
             where:{userID}, 
+             order: [['createdAt', 'DESC']], 
             include: {
                     model: Product,
                       include:[
@@ -71,6 +72,7 @@ const getAllFeaturedProducts=async(req,res)=>{
         if(Category=="All"){
             featuredProduct=await featured.findAll({
                 where:{status:"Featured"}, 
+                 order: [['createdAt', 'DESC']], 
                 include: {
                         model: Product,
                           include:[
@@ -102,6 +104,7 @@ const getAllFeaturedProducts=async(req,res)=>{
             const categoryID=await category.findOne({where:{name:Category}})
             featuredProduct=await featured.findAll({
                 where:{status:"Featured"}, 
+                 order: [['createdAt', 'DESC']], 
                 include: {
                         model: Product,
                         where:{categoryId:categoryID.id},
@@ -125,6 +128,7 @@ const getAllRequestedFeaturedProducts=async(req,res)=>{
         const currentDate=new Date()
         const featuredProduct=await featured.findAll({
             where:{status:"Requested", }, 
+             order: [['createdAt', 'DESC']], 
             include: [
                 {
                     model: Product,

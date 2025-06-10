@@ -23,6 +23,10 @@ const items=sequelize.define('CartItems',{
    price:{  //product.price * quatity
     type:DataTypes.INTEGER,
      allowNull:false,
+   },
+   status:{
+    type:DataTypes.STRING, //order item is approved or rejectedd etc...
+    allowNull:true
    }
    
 },{

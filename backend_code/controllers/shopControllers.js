@@ -63,6 +63,7 @@ const getusershop=async(req,res)=>{
         }
         const userId=user.id;
         const usershop=await shop.findAll({
+             order: [['createdAt', 'DESC']], 
             where:{userId},
             include:[{
                 model:image,
@@ -91,6 +92,7 @@ const getusershop=async(req,res)=>{
 const getallshops=async(req,res)=>{
     try {
         const shops=await shop.findAll({
+             order: [['createdAt', 'DESC']], 
             include:[{
                 model:image,
                 where: { imagetype: 'shop' },

@@ -93,6 +93,7 @@ const getallproducts = async (req, res) => {
         let products;
         if(Category=="All"){
             products = await Product.findAll({
+                 order: [['createdAt', 'DESC']], 
                 include:[{
                     model:image,
                     where:{imagetype:"product"},
@@ -121,6 +122,7 @@ const getallproducts = async (req, res) => {
             const categoryID=await category.findOne({where:{name:Category}})
             products=await Product.findAll(
                         {where:{categoryId:categoryID.id},
+                         order: [['createdAt', 'DESC']], 
                         include:[
                             {
                                 model:image,
@@ -164,6 +166,7 @@ const getuserproducts = async (req, res) => {
         const seller = user.id;
         const products = await Product.findAll({
              where: { seller } , 
+              order: [['createdAt', 'DESC']], 
              include:[{
                 model:image,
                 where:{imagetype:"product"},
@@ -203,6 +206,7 @@ const getshopproducts = async (req, res) => {
         const shopid = findshop.id;
         const products = await Product.findAll({ 
             where: {shopid  },
+             order: [['createdAt', 'DESC']], 
             include:[{
                 model:image,
                 where:{imagetype:"product"},
@@ -244,6 +248,7 @@ const getProductByCategory = async (req, res) => {
          const categoryId = findcategory.id;
          const products = await Product.findAll({ 
              where: {categoryId },
+              order: [['createdAt', 'DESC']], 
              include:[{
                  model:image,
                  where:{imagetype:"product"},

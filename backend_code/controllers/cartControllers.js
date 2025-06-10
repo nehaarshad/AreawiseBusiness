@@ -57,6 +57,7 @@ const getCart =async (req, res) => {
         include: [
           {
           model: items,
+           order: [['createdAt', 'DESC']], 
           include: [
             {
               model: Product,

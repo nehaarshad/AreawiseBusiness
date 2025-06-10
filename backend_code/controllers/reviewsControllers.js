@@ -49,6 +49,7 @@ const getReviews = async (req, res) => {
         try {
             const reviews = await review.findAll({
                 where: { productId: id },
+                 order: [['createdAt', 'DESC']], 
                 include:[ {
                     model: Product,
                 },

@@ -14,6 +14,7 @@ const getSellerOrders = async (req, res) => {
             where: {
                 sellerId: id,
             },
+             order: [['createdAt', 'DESC']], 
             include: [{
                 model:order,
                 include:[
@@ -70,56 +71,39 @@ const getSellerOrders = async (req, res) => {
 const getCustomerOrders = async (req, res) => { 
     try {
         const { id } = req.params; // id of the customer
-        const orders = await SellerOrder.findAll({
-            where: {
-                customerId: id,
-            },
-            include: [{
-                model:order,
-                include:[
-                    {
-                    model: cart,
+          // Fetch all orders for the user
+        const orders = await order.findAll({
+             where: { status: 'send'},
+            order: [['createdAt', 'DESC']], // Order by creation date, most recent first
                     include: [
                         {
-                            model:User,
-                            include:{
-                                model:Address,
-                            }
-                        },
-                        {
-                        model: items,
-                        include: [{
-                            model: Product,
-                            include: {
-                                model: image,
-                                where: { imagetype: "product" },
-                                required: false
-                            }
-                        }]
-                    }
-                ]
-            }
-        ]
-            }
-        ]
-        });
-        const filteredOrders = orders.map(order => {
-            const filteredCartItems = order.Order.Cart.CartItems.filter(item => 
-                item.productId === order.orderProductId);
-                
-            return {//returning the filtered orders  //spreading the original order details and replacing the CartItems with the filtered list.
-                ...order.toJSON(),
-                Order: {
-                    ...order.Order.toJSON(),
-                    Cart: {
-                        ...order.Order.Cart.toJSON(),
-                        CartItems: filteredCartItems
-                    }
-                }
-            };
+                            model: cart,
+                             where: { UserId: id },
+                            include: [
+                                {
+                                    model: items,
+                                    include: [
+                                        {
+                                            model: Product,
+                                            include: {
+                                                model: image,
+                                                where: { imagetype: "product" },
+                                                required: false
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+               
         });
 
-        res.json(filteredOrders);
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: 'No orders found for this user' });
+        }
+
+        res.status(200).json(orders);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server Error" });
@@ -141,11 +125,8 @@ const updateOrderStatus = async (req, res) => {
         if (!sellerOrder) {
             return res.status(404).json({ message: "Order not found" });
         }
-        
-        // If status is being updated to "Approved", update product stock and sold count
-        if (status === "Approved" && sellerOrder.status !== "Approved") {
-            // First, get the order details to access the cart
-            const orderDetails = await order.findOne({ 
+
+         const orderDetails = await order.findOne({ 
                 where: { id: id },
                 include: [{
                     model: cart,
@@ -155,10 +136,13 @@ const updateOrderStatus = async (req, res) => {
                     }]
                 }]
             });
+        
+        // If status is being updated to "Approved", update product stock and sold count
+        if (status === "Approved" && sellerOrder.status !== "Approved") {
             
             // ordered quantity
             const orderedQuantity = orderDetails.Cart.CartItems[0].quantity;
-            
+           
             // Get product to update its stock and sold count
             const product = await Product.findByPk(productId);
             product.stock = product.stock - orderedQuantity;
@@ -168,7 +152,16 @@ const updateOrderStatus = async (req, res) => {
             await product.save();
         }
         
-        // Update the order status
+        // If status is being updated to "Rejected", update order total price
+         if (status === "Rejected" && sellerOrder.status !== "Rejected") {
+          // ordered quantity
+            const orderedPrice = orderDetails.Cart.CartItems[0].price;
+            orderDetails.total=orderDetails.total-orderedPrice;
+            await orderDetails.save();
+
+         }
+        // Update the order and item status
+        await orderDetails.Cart.CartItems[0].update({ status: status });
         sellerOrder.status = status;
         await sellerOrder.save();
         
