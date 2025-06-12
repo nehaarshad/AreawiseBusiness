@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/chatListViewModel.dart';
 import '../../../models/chatsModel.dart';
@@ -23,7 +24,7 @@ class contactWithSellerButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return  IconButton(
       tooltip: 'Chat with Seller',
-      icon: const Icon(Icons.chat_outlined, color: Appcolors.blackColor),
+      icon:  Icon(Icons.chat_outlined, color: Appcolors.blackColor,size: 18.h,),
       onPressed: () => _createChatAndNavigate(context, ref),
     );
 

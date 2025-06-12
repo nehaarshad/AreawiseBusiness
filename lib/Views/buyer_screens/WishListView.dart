@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +19,9 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
   Widget build(BuildContext context) {
     final state = ref.watch(wishListViewModelProvider(widget.id.toString()));
     return Scaffold(
-      appBar: AppBar(title: const Text("WishList")),
+      appBar: AppBar(
+          automaticallyImplyLeading:false,
+          title:  Text("WishList",style: AppTextStyles.headline,)),
       body: state.when(
             loading: () => const Center(
                 child: CircularProgressIndicator(color: Appcolors.blueColor)),
@@ -33,8 +36,9 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                   if (item?.product == null) return const SizedBox.shrink();
 
                   return Card(
-                    margin: const EdgeInsets.only(bottom: 16),
+                    margin: const EdgeInsets.only(top:8,bottom: 16),
                     child: ListTile(
+
                       onTap: () {
                         Navigator.pushNamed(
                           context,

@@ -75,13 +75,11 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
 
   Future<void> findSubcategories(String category) async {
     try {
-      state = AsyncValue.loading();
       // Fetch subcategories for selected category
       Subcategories = await ref
           .read(categoryProvider)
           .FindSubCategories(category);
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
       print('Error loading subcategories: $e');
     }
   }
@@ -133,6 +131,9 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
 
   void setCategory(Category? category) {
     selectedCategory = category;
+    if(selectedCategory!=null){
+    findSubcategories(selectedCategory!.name!);
+    }
     state.whenData((product) {
       if (product != null) {
         state = AsyncValue.data(product.copyWith(category: category));
@@ -165,11 +166,11 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     }
   }
 
-  void setCustomCategoryName(String name) {
+  void setCustomCategoryName(String? name) {
     customCategoryName = name;
   }
 
-  void setCustomSubcategoryName(String name) {
+  void setCustomSubcategoryName(String? name) {
     customSubCategoryName = name;
   }
 
@@ -188,16 +189,26 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       if (images.isEmpty || images.length > 7) {
         throw Exception('Please select 1 to 7 images');
       }
-      state = const AsyncValue.loading();
 
+
+      final categoryName = isCustomCategory ? null : selectedCategory?.name;
+      final subcategoryName = isCustomSubCategory ? null : selectedSubCategory?.name;
+
+      if (categoryName == null || subcategoryName == null) {
+        Utils.flushBarErrorMessage("Select Existed category or Subcategory", context);
+        return;
+
+      }
+
+      state = const AsyncValue.loading();
       final data = {
         'name': name,
         'price': price,
         'subtitle':subtitle,
         'description': description,
         'stock': stock,
-        'categories': selectedCategory?.name ?? customCategoryName,
-        'subcategory': selectedSubCategory?.name ?? customSubCategoryName,
+        'categories': categoryName ,
+        'subcategory': subcategoryName ,
       };
 
       print("Request Body (name): ${data['name']} with type: ${data['name'].runtimeType}",);

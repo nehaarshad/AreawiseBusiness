@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,7 @@ class AllProducts extends ConsumerWidget {
           return const Center(child: Text("No Products available."));
         }
         return SizedBox(
-          height: 290.h,
+          height: 320.h,
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Number of columns in the grid
@@ -49,6 +50,7 @@ class AllProducts extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
+
                           child: product?.images != null && product!.images!.isNotEmpty
                               ? Image.network(
                             product.images!.first.imageUrl!,
@@ -57,20 +59,32 @@ class AllProducts extends ConsumerWidget {
                           )
                               : const Icon(Icons.image_not_supported),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            product?.name ?? "Unknown",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    product?.name ?? "Unknown",
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                WishlistButton( userId: userid.toString(),product:product!),
+                              ],
+                            ),
+                            Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                              child: Text(
+                                "Rs.${product.price ?? 0}",
+                                style: const TextStyle(color: Colors.green),
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                          child: Text(
-                            "\$${product?.price ?? 0}",
-                            style: const TextStyle(color: Colors.green),
-                          ),
-                        ),
+
                       ],
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,19 +62,30 @@ class AllFeaturedProducts extends ConsumerWidget {
                           )
                               : const Icon(Icons.image_not_supported),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            featuredProduct?.product?.name ?? "Unknown",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                          child: Text(
-                            "\$${featuredProduct?.product?.price ?? 0}",
-                            style: const TextStyle(color: Colors.green),
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    featuredProduct?.product?.name ?? "Unknown",
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                WishlistButton( userId: userid.toString(),product:featuredProduct!.product!),
+                              ],
+                            ),
+                            Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                              child: Text(
+                                "Rs.${featuredProduct.product?.price ?? 0}",
+                                style: const TextStyle(color: Colors.green),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

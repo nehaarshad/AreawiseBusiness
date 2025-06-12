@@ -72,22 +72,11 @@ class AddShopViewModel extends StateNotifier<ShopState> {
   void toggleCustomCategory(bool value) {
     state = state.copyWith(
       isCustomCategory: value, //new category (true)
-      selectedCategory:
-          value
-              ? null
-              : state
-                  .selectedCategory, //null -> previously selected predefined category
-      customCategoryName:
-          value
-              ? null
-              : state
-                  .customCategoryName, //null to initialize its value in other function
+      selectedCategory: value ? null : state.selectedCategory, //null -> previously selected predefined category
+      //null to initialize its value in other function
     );
   }
 
-  void setCustomCategoryName(String name) {
-    state = state.copyWith(customCategoryName: name);
-  }
 
   Future<void> addShop({
     required String shopname,
@@ -103,14 +92,18 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       if (state.images.isEmpty || state.images.length > 4) {
         throw Exception('Please select 1 to 4 images');
       }
-      state = state.copyWith(isLoading: true);
+
       final categoryName =
           state.isCustomCategory
-              ? state.customCategoryName
+              ? null
               : state.selectedCategory?.name;
-      if (categoryName == null) {
-        throw Exception('Category Field is empty!');
+      if (categoryName == null ) {
+        Utils.flushBarErrorMessage("Select Existed category ", context);
+        return;
+
       }
+
+      state = state.copyWith(isLoading: true);
 
       final data = {
         'shopname': shopname,

@@ -9,7 +9,6 @@ class ShopState {
   final List<Category> categories;
   final Category? selectedCategory;
   final bool isCustomCategory;
-  final String? customCategoryName;
   final bool isLoading;
 
   ShopState({
@@ -18,7 +17,6 @@ class ShopState {
     this.categories = const [],
     this.selectedCategory,
     this.isCustomCategory = false,
-    this.customCategoryName,
     this.isLoading = false,
   });
 
@@ -37,7 +35,6 @@ class ShopState {
       categories: categories ?? this.categories,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       isCustomCategory: isCustomCategory ?? this.isCustomCategory,
-      customCategoryName: customCategoryName ?? this.customCategoryName,
       isLoading: isLoading ?? this.isLoading,
     );
   }

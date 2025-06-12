@@ -38,8 +38,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
   Widget build(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
-    return Expanded(
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
         child: Column(
           children: [
              SizedBox(height: 10.h),
@@ -87,7 +86,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
             AllProducts(userid: widget.id),
           ],
         ),
-      ),
-    );
+      );
+
   }
 }

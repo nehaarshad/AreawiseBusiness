@@ -204,23 +204,27 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                               product?.name ?? 'No Name',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            subtitle: Row(
+                            subtitle: Column(
                               children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                                  decoration: BoxDecoration(
-                                    color: statusColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    border: Border.all(color: statusColor, width: 0.5.w),
-                                  ),
-                                  child: Text(
-                                    status ?? 'Unknown',
-                                    style: TextStyle(
-                                      color: statusColor,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.bold,
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                                      decoration: BoxDecoration(
+                                        color: statusColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12.r),
+                                        border: Border.all(color: statusColor, width: 0.5.w),
+                                      ),
+                                      child: Text(
+                                        status ?? 'Unknown',
+                                        style: TextStyle(
+                                          color: statusColor,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                                 if (featuredProduct.expireAt != null) ...[
                                   SizedBox(width: 8.w),

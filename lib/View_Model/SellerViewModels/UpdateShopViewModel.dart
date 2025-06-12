@@ -146,6 +146,14 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
         throw Exception('Please select 1 to 4 images');
       }
 
+      final categoryName = isCustomCategory ? null : selectedCategory?.name;
+      if (categoryName == null ) {
+        Utils.flushBarErrorMessage("Select Existed category ", context);
+        return;
+
+      }
+
+
       state = const AsyncValue.loading();
 
       final data = {
@@ -153,7 +161,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
         'shopaddress': shopaddress,
         'sector': sector,
         'city': city,
-        'name': selectedCategory?.name ?? customCategoryName,
+        'name': categoryName
       };
 
       print('Data send: ${data}');

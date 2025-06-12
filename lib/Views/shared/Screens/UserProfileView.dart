@@ -41,43 +41,47 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
     ); //get user detail from model
     return Scaffold(
       appBar: AppBar(
+backgroundColor: Appcolors.whiteColor,
+        actions: [
+          Row(
+            children: [
+              Text("Edit",style: TextStyle(fontSize: 18.sp,color: Appcolors.blueColor),),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      routesName.editprofile,
+                      arguments: widget.id,
+                    );
+                  },
+                  icon: Icon(Icons.edit,color: Appcolors.blueColor,size: 20.h,)),
+            ],
+          )
+        ],
       ),
+      backgroundColor: Appcolors.whiteColor,
       body: userdetail.when(
         loading: () => Center(
               child: CircularProgressIndicator(color: Appcolors.blackColor),),
         data: (user) {
           setRole=userRole(user!);
           if (user == null) return const Center(child: Text("User not found"));
-          return Padding(
-            padding: const EdgeInsets.all(28.0),
-            child: Center(
-              child: Column(
-                children: [
-                  ProfileImageWidget(user: user, height: 150.h, width: 150.w),
-                  SizedBox(height: 20.h),
-                  userInfo(user: user,role: setRole,),
-                  SizedBox(height: 10.h),
-                  Divider(),
-                  SizedBox(height: 10.h),
-                  Expanded(child: addressInfo(address: user.address)),
-                  SizedBox(height: 10.h),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          routesName.editprofile,
-                          arguments: widget.id,
-                        );
-                      },
-                      child: Text(
-                        "Edit Profile",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(28.0),
+              child: Center(
+                child: Column(
+                  children: [
+                    ProfileImageWidget(user: user, height: 150.h, width: 200.w),
+                    SizedBox(height: 20.h),
+                    userInfo(user: user,role: setRole,),
+                    SizedBox(height: 10.h),
+                    Divider(),
+                    SizedBox(height: 10.h),
+                    addressInfo(address: user.address),
+
+                  ],
+                ),
               ),
             ),
           );

@@ -75,7 +75,7 @@ class DrawerListItems extends ConsumerWidget {
           },
           child: Column(
             children: [
-              ProfileImageWidget(user: user, height: 80.h, width: 80.w),
+              ProfileImageWidget(user: user, height: 70.h, width: 100.w),
               Text(user.username!,style: TextStyle(
                 color: Appcolors.whiteColor,
                 fontSize: 15.sp,

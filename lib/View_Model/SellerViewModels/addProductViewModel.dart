@@ -108,11 +108,11 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     );
   }
 
-  void setCustomCategoryName(String name) {
+  void setCustomCategoryName(String? name) {
     state = state.copyWith(customCategoryName: name);
   }
 
-  void setCustomSubcategoryName(String name) {
+  void setCustomSubcategoryName(String? name) {
     state = state.copyWith(customSubcategoryName: name);
   }
 
@@ -126,7 +126,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     required BuildContext context,
   }) async {
     try {
-      state = state.copyWith(isLoading: true);
+
       print("Shop ID: $shopId");
       // Validate images
       if (state.images.isEmpty || state.images.length > 7) {
@@ -142,12 +142,16 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       }
 
       // Validate category and subcategory
-      final categoryName = state.isCustomCategory ? state.customCategoryName : state.selectedCategory?.name;
-      final subcategoryName = state.isCustomSubcategory ? state.customSubcategoryName : state.selectedSubcategory?.name;
+      final categoryName = state.isCustomCategory ? null : state.selectedCategory?.name;
+      final subcategoryName = state.isCustomSubcategory ? null : state.selectedSubcategory?.name;
 
       if (categoryName == null || subcategoryName == null) {
-        throw Exception('Category or subcategory field is empty!');
+         Utils.flushBarErrorMessage("Select Existed category or Subcategory", context);
+          return;
+
       }
+
+      state = state.copyWith(isLoading: true);
 
       // Prepare data for the API request
       final data = {

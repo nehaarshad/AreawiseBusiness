@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/searchBar.dart';
+import '../widgets/wishListButton.dart';
 
 class searchView extends ConsumerStatefulWidget {
   final String search;
@@ -33,12 +34,12 @@ class _searchViewState extends ConsumerState<searchView> {
 
     return Scaffold(
         backgroundColor: Appcolors.whiteColor,
-        appBar: AppBar(
-          backgroundColor: Appcolors.whiteColor,),
+
         body: Column(
             children: [
+              SizedBox(height: 60.h,),
               searchBar(id: widget.userid,),
-              SizedBox(height: 30.h,),
+              SizedBox(height: 8.h,),
               productState.when(
                   loading: () => const Center(child: CircularProgressIndicator()),
                   data: (products) {
@@ -68,7 +69,6 @@ class _searchViewState extends ConsumerState<searchView> {
                                 );
                               },
                               child: Card(
-                                elevation: 3,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0.r),
                                 ),
@@ -86,19 +86,30 @@ class _searchViewState extends ConsumerState<searchView> {
                                         )
                                             : const Icon(Icons.image_not_supported),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          product?.name ?? "Unknown",
-                                          style: const TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                                        child: Text(
-                                          "\$${product?.price ?? 0}",
-                                          style: const TextStyle(color: Colors.green),
-                                        ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  product?.name ?? "Unknown",
+                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                              WishlistButton( userId: widget.userid.toString(),product:product!),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                                            child: Text(
+                                              "Rs.${product.price ?? 0}",
+                                              style: const TextStyle(color: Colors.green),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

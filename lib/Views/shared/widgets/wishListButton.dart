@@ -49,7 +49,7 @@ class WishlistButton extends ConsumerWidget {
         // Change icon based on whether product is in wishlist
         isInWishlist ? Icons.favorite : Icons.favorite_border_outlined,
         color: isInWishlist ? Colors.red : Appcolors.blackColor,
-        size: 24.h,
+        size: 18.h,
       ),
     );
   }
