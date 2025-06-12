@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/core/services/splashServices.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,8 +21,9 @@ class _splashViewState extends ConsumerState<splashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Appcolors.whiteColor,
       body: Center(
-        child: Image.asset('assets/images/logo.png',width: 900.w,height: 5000.h,),
+        child: Image.asset('assets/images/splashImage.jpg',width: 900.w,height: 5000.h,),
       ),
     );
   }
