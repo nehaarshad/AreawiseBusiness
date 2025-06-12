@@ -282,6 +282,52 @@ const getProductByCategory = async (req, res) => {
    }
 };
 
+const getProductBySubcategory = async (req, res) => {
+   const { name } = req.params;
+   console.log(req.params)
+   try {
+
+    //    const findsubcategory = await subcategories.findOne({ where: { name:name } });
+    //    if (!findsubcategory) {
+    //        return res.status(200).json({ error: "Subcategory not Found" });
+    //    }
+    //    const subcategoryId = findsubcategory.id;
+       const products = await Product.findAll({
+            //  where: {subcategoryId },
+              order: [['createdAt', 'DESC']], 
+             include:[{
+                 model:image,
+                 where:{imagetype:"product"},
+                 required:false //all products may not have image
+             },
+             {
+                model:shop,
+            },
+             {
+                 model:category,
+             },
+             {
+                 model:subcategories,
+                 where: { name:name }
+             },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+         ]
+          });
+         if (!products) {
+             return res.json({ error: `Products of ${subcategory} not available` });
+         }
+         res.json(products);
+   } catch (err) {
+       res.status(500).json(err);
+       console.log(err);
+   }
+};
+
 const updateproduct = async (req, res) => {
     try {
         const {  id } = req.params;
@@ -369,4 +415,4 @@ const deleteproduct = async (req, res) => {
     }
 }
 
-export default { addproduct, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,updateproduct, deleteproduct };
+export default { addproduct, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,getProductBySubcategory,updateproduct, deleteproduct };
