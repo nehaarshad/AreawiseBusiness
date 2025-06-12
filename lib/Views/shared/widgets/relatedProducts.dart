@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class RelatedProducts extends ConsumerStatefulWidget {
   final int userid;
@@ -38,9 +39,9 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
     final productState = ref.watch(sharedProductViewModelProvider);
 
     return productState.when(
-      loading: () => const Center(
+      loading: () =>  Center(
         child: SizedBox(
-          height: 100,
+          height: 100.h,
           child: Center(child: CircularProgressIndicator()),
         ),
       ),
@@ -50,9 +51,9 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
         product?.category?.name == widget.category).toList();
 
         if (relatedProducts.isEmpty) {
-          return const Center(
+          return Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0.h),
               child: Text(
                 "No related products available.",
                 style: TextStyle(color: Colors.grey),
@@ -62,7 +63,7 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
         }
 
         return SizedBox(
-          height: 250, // Fixed height to prevent unbounded height
+          height: 200.h, // Fixed height to prevent unbounded height
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: relatedProducts.length,
@@ -82,11 +83,10 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
                   elevation: 4,
                   color: Appcolors.whiteColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(8.0.r),
                   ),
                   child: Container(
-                    width: 150,
-                    margin: const EdgeInsets.all(10.0),
+                    width: 170.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -100,7 +100,7 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
                               : const Icon(Icons.image_not_supported),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             product.name ?? "Unknown",
                             style: const TextStyle(fontWeight: FontWeight.bold),
@@ -109,13 +109,13 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
                           child: Text(
                             "\$${product.price ?? 0}",
                             style: const TextStyle(color: Colors.green),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                         SizedBox(height: 8.h),
                       ],
                     ),
                   ),
@@ -125,7 +125,7 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
           ),
         );
       },
-      error: (err, stack) => Center(child: Text('Error: $err')),
+      error: (err, stack) => Center(child: Text('Error while loading')),
     );
   }
 }

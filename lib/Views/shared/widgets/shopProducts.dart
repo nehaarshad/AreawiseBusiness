@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
 class shopProducts extends ConsumerStatefulWidget {
@@ -24,13 +25,26 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
   Widget build(BuildContext context) {
     final productState =ref.watch(sharedProductViewModelProvider);
     return productState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () =>  Center(
+        child: SizedBox(
+          height: 100.h,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      ),
       data: (products) {
         if (products.isEmpty) {
-          return const Center(child: Text("No Products available."));
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0.h),
+              child: Text(
+                "No products available.",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+          );
         }
         return SizedBox(
-          height: 250, // Fixed height to prevent unbounded height
+          height: 200.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -47,11 +61,10 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
                 child: Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(8.0.r),
                   ),
                   child: Container(
-                    width: 150,
-                    margin: const EdgeInsets.all(10.0),
+                    width: 170.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -74,13 +87,13 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
                           child: Text(
                             "\$${product?.price ?? 0}",
                             style: const TextStyle(color: Colors.green),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                       ],
                     ),
                   ),

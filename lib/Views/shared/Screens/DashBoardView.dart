@@ -1,7 +1,8 @@
 import 'package:ecommercefrontend/Views/buyer_screens/buyerBottomnavigationBar.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/utils.dart';
@@ -83,10 +84,10 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+            padding:  EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 10.w),
             child: Row(
               children: [
-                Text("SellerMode", style: TextStyle(fontSize: 12)),
+                Text("SellerMode", style: TextStyle(fontSize: 12.sp)),
                 Switch(value: isSeller, onChanged: toggglebutton),
               ],
             ),

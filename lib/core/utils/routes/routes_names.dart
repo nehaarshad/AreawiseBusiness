@@ -46,5 +46,6 @@ class routesName {
   static const String chatList = "chatsListView";
   static const String chatView = "chatView";
   static const String history = "historyView";
+  static const String search = "searchView";
 
 }

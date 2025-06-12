@@ -2,10 +2,11 @@ import 'package:ecommercefrontend/Views/shared/widgets/SetDateTime.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class getSellerProductView extends ConsumerStatefulWidget {
   final String sellerId;
@@ -36,7 +37,7 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
           padding: const EdgeInsets.all(16.0),
           child: Text(
               "My Products",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.h)
           ),
         ),
         Consumer(
@@ -67,10 +68,10 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                       return const SizedBox.shrink();
                     }
                     return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: InkWell(
                         onTap: () {
@@ -85,10 +86,10 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                             ListTile(
                               contentPadding: EdgeInsets.all(10),
                               leading: Container(
-                                width: 60,
-                                height: 60,
+                                width: 60.w,
+                                height: 60.h,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 clipBehavior: Clip.antiAlias,
                                 child: (product.images != null &&
@@ -101,7 +102,7 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                                     return const Icon(Icons.error);
                                   },
                                 )
-                                    : const Icon(Icons.image_not_supported, size: 40),
+                                    :  Icon(Icons.image_not_supported, size: 40.h),
                               ),
                               title: Text(
                                 product.name ?? 'No Name',
@@ -109,12 +110,12 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                               ),
                               subtitle: Text(
                                 product.category?.name ?? 'No Category',
-                                style: const TextStyle(fontSize: 12),
+                                style:  TextStyle(fontSize: 12.h),
                               ),
                             ),
-                            Divider(height: 1),
+                            Divider(height: 1.h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                              padding:  EdgeInsets.symmetric(horizontal: 12.0.h, vertical: 8.0.w),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -148,7 +149,7 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                                       await ref.read(createfeatureProductViewModelProvider.notifier)
                                           .createFeatureProduct(widget.sellerId,product.id!,context);
                                     },
-                                    icon: Icon(Icons.star, size: 16),
+                                    icon: Icon(Icons.star, size: 16.h),
                                     label: Text("Request to Feature"),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Appcolors.blueColor,
@@ -170,10 +171,10 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: 48),
-                      SizedBox(height: 16),
+                      Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                      SizedBox(height: 16.h),
                       Text('Error loading products: ${error.toString()}'),
-                      SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       ElevatedButton(
                         onPressed: () {
                           ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.sellerId);

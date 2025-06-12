@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
 class ProductsView extends ConsumerStatefulWidget {
@@ -51,10 +52,10 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
                     child: Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0.r),
                       ),
                       child: Container(
-                        width: 150,
+                        width: 150.w,
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,11 +1,8 @@
-import 'package:ecommercefrontend/Views/shared/widgets/profileImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/ReviewsViewModel.dart';
-import '../../../View_Model/SharedViewModels/reviewItems.dart';
-import '../../../models/reviewsModel.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 import 'expandedReviewWidget.dart';
 
 
@@ -68,7 +65,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
                           color: _selectedRating > index
                               ? Colors.blue
                               : Colors.grey,
-                          size: 25,
+                          size: 25.h,
                         ),
                         onPressed: () {
                           setState(() {
@@ -79,7 +76,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
                     }),
                   ),
                 ),
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
                 TextField(
                   controller: _commentController,
                   decoration: const InputDecoration(
@@ -129,7 +126,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
                     );
                   }
                 },
-                child: const Text('Post',style: TextStyle(color: Appcolors.blueColor,fontSize: 18,fontWeight: FontWeight.bold),),
+                child: Text('Post',style: TextStyle(color: Appcolors.blueColor,fontSize: 18.sp,fontWeight: FontWeight.bold),),
               ),
             ],
           );
@@ -148,17 +145,17 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+             Text(
               "Reviews",
               style: TextStyle(
                 color: Colors.blueGrey,
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),
             TextButton(
                 onPressed: _showReviewDialog,
-                child: Text("Add Review",style: TextStyle(color: Appcolors.blueColor,fontSize: 13),))
+                child: Text("Add Review",style: TextStyle(color: Appcolors.blueColor,fontSize: 13.sp),))
 
           ],
         ),
@@ -168,9 +165,9 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
           error: (error, stack) => Center(child: Text('Error: $error')),
     data: (comments) {
     if (comments.isEmpty) {
-    return const Center(
+    return  Center(
     child: Padding(
-    padding: EdgeInsets.symmetric(vertical: 20.0),
+    padding: EdgeInsets.symmetric(vertical: 20.0.h),
     child: Text(
     'No reviews yet. Be the first to review!',
     style: TextStyle(color: Colors.grey),

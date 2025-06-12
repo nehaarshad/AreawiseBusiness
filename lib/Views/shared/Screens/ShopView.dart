@@ -1,6 +1,7 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 
@@ -16,7 +17,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(child: Text(" All Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),)),
+        Center(child: Text(" All Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {
@@ -40,7 +41,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                         return Card(
                           elevation: 4,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: InkWell(
                             onTap: () {
@@ -54,11 +55,9 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Shop image
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
+                               Container(
                                     width: double.infinity,
-                                    height: 100,
+                                    height: 100.h,
                                     decoration: BoxDecoration(color: Colors.white),
                                     child:
                                         shop?.images != null &&
@@ -74,27 +73,27 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                                               ),
                                             ),
                                   ),
-                                ),
+
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0,
+                                  padding:  EdgeInsets.symmetric(
+                                    horizontal: 12.0.w,
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "${shop?.shopname}",
-                                        style: const TextStyle(
+                                        style:  TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 14,
+                                          fontSize: 14.sp,
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                       SizedBox(height: 4.h),
                                       Text(
                                         "${shop?.category?.name}",
-                                        style: const TextStyle(
+                                        style:  TextStyle(
                                           color: Colors.grey,
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                         ),
                                       ),
                                     ],

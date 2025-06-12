@@ -1,9 +1,10 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/UserViewModel.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class UserView extends ConsumerStatefulWidget {
   const UserView({super.key});
@@ -18,20 +19,20 @@ class _UsersViewState extends ConsumerState<UserView> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding:  EdgeInsets.only(top: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 100,),
-              Text("All Users",style:  TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
-              SizedBox(width: 50,),
+              SizedBox(width: 100.w,),
+              Text("All Users",style:  TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp)),
+              SizedBox(width: 50.w,),
               TextButton(onPressed: (){
                 Navigator.pushNamed(context, routesName.addUser);
               }, child: Text(" + Add User"))
             ],
           ),
         ),
-        SizedBox(height: 10,),
+        SizedBox(height: 10.h,),
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {
@@ -71,12 +72,12 @@ class _UsersViewState extends ConsumerState<UserView> {
                                     user!.image?.imageUrl?.isEmpty == false
                                         ? user.image!.imageUrl!
                                         : "https://th.bing.com/th/id/R.8e2c571ff125b3531705198a15d3103c?rik=gzhbzBpXBa%2bxMA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-big-image-png-2240.png&ehk=VeWsrun%2fvDy5QDv2Z6Xm8XnIMXyeaz2fhR3AgxlvxAc%3d&risl=&pid=ImgRaw&r=0",
-                                    width: 50,
-                                    height: 50,
+                                    width: 56.w,
+                                    height: 60.h,
                                     fit: BoxFit.cover,
                                   ),
-                                  title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
-                                  subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14)),
+                                  title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
+                                  subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14.sp)),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -84,8 +85,8 @@ class _UsersViewState extends ConsumerState<UserView> {
                                           onPressed: () async{
                                                    await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString());
                                           },
-                                          icon: Icon(Icons.delete, size: 25,color: Colors.red,),),
-                                      Icon(Icons.arrow_forward_ios_sharp, size: 14,color: Colors.grey,),
+                                          icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
+                                      Icon(Icons.arrow_forward_ios_sharp, size: 14.h,color: Colors.grey,),
                                     ],
                                   ),
                                 ),
@@ -105,15 +106,15 @@ class _UsersViewState extends ConsumerState<UserView> {
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Appcolors.blueColor,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(40.0),
+                                              borderRadius: BorderRadius.circular(40.0.r),
                                             ),
                                           ),
-                                          child: const Text(
+                                          child:  Text(
                                             "User Shops",
                                             style: TextStyle(
                                               color: Appcolors.whiteColor,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 15,
+                                              fontSize: 15.sp,
                                             ),
                                           ),
                                         ),

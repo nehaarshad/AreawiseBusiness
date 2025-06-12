@@ -1,9 +1,10 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/logout_button.dart';
 import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../shared/Screens/ShopView.dart';
 import '../shared/Screens/appHomeView.dart';
 import '../shared/widgets/getAllProductView.dart';
@@ -61,7 +62,7 @@ class _adminhomeviewState extends ConsumerState<adminhomeview> {
           automaticallyImplyLeading: false,
           title: Padding(
             padding: const EdgeInsets.all(11),
-            child:Text("Areawise Business", style: TextStyle(color:Appcolors.blueColor,fontWeight: FontWeight.bold, fontSize: 20),),
+            child:Text("Areawise Business", style: TextStyle(color:Appcolors.blueColor,fontWeight: FontWeight.bold, fontSize: 18.sp),),
 
           ),
         ),

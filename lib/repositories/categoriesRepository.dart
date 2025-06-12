@@ -38,6 +38,26 @@ class CategoriesRepositories {
     }
   }
 
+  Future<List<Subcategory>> getSubcategories() async {
+    List<Subcategory> categories = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+        AppApis.getAllsubcategoriesEndPoints,
+      );
+      if (response is List) {
+        return response
+            .map(
+              (category) => Subcategory.fromJson(category as Map<String, dynamic>),
+        )
+            .toList();
+      }
+      categories = [Subcategory.fromJson(response)];
+      return categories;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<List<Subcategory>> FindSubCategories(String category) async {
     List<Subcategory> Subcategorylist = [];
     try {

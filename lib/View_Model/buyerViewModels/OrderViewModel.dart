@@ -2,7 +2,7 @@ import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../Views/shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 import '../../models/cartModel.dart';
 import '../../models/orderModel.dart';
 import '../../repositories/checkoutRepositories.dart';

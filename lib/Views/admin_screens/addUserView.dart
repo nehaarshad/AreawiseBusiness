@@ -1,13 +1,15 @@
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:riverpod/riverpod.dart';
 import '../../../View_Model/UserProfile/EditProfileViewModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../View_Model/adminViewModels/addUserViewModel.dart';
 import '../../core/utils/utils.dart';
 import '../shared/widgets/buttons.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class addUser extends ConsumerStatefulWidget {
 
@@ -99,7 +101,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
           child: Stack(
             children: [
               CircleAvatar(
-                radius: 50,
+                radius: 50.r,
                 backgroundImage:
                 model.uploadimage != null
                     ? FileImage(model.uploadimage!)
@@ -118,7 +120,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
                   child: Icon(
                     Icons.camera_alt,
                     color: Colors.blueGrey,
-                    size: 25,
+                    size: 25.h,
                   ),
                 ),
               ),
@@ -182,13 +184,13 @@ class _AddUserViewState extends ConsumerState<addUser> {
       }
     }
 
-    final double height = MediaQuery.of(context).size.height * 1;
+
     return Scaffold(
-      appBar: AppBar(title: Text("Add User")),
+      appBar: AppBar(title: Text("Add User",style: AppTextStyles.headline,)),
       body:SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.w),
             child: Form(
               key: formkey,
               child: Column(
@@ -371,7 +373,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
                       return null;
                     },
                   ),
-                  SizedBox(height: height * .1),
+                  SizedBox(height: 10.h),
                   // SignUp button
                   Consumer(
                     builder: (context, ref, child) {

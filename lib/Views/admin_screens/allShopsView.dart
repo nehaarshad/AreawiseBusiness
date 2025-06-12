@@ -1,6 +1,8 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../View_Model/SharedViewModels/allShopsViewModel.dart';
@@ -21,7 +23,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Center(child: Text("All Shops")),
+        title: Center(child: Text("All Shops",style: AppTextStyles.headline,)),
       ),
       body: shopState.when(
           loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
@@ -49,7 +51,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                         children: [
                           Text(
                             shop?.category?.name ?? 'No Category',
-                            style: const TextStyle(fontSize: 12),
+                            style:  TextStyle(fontSize: 12.sp),
                           ),
                         ],
                       ),

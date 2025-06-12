@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/categoriesViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
+import '../../core/utils/textStyles.dart';
 import '../../models/categoryModel.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class AllCategories extends ConsumerStatefulWidget {
   const AllCategories({super.key});
@@ -32,17 +34,17 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
     return Scaffold(
       backgroundColor: Appcolors.whiteColor,
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           ' Categories',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
+          style: AppTextStyles.headline
         ),
         backgroundColor: Appcolors.whiteColor,
         actions: [ TextButton(onPressed: (){
           AddCategoryDialog();
-        }, child: Text(" + Add  "))],
+        }, child: Padding(
+          padding:  EdgeInsets.only(right: 5.0),
+          child: Text("+ Add"),
+        ))],
       ),
       body: categoriesAsync.when(
         loading: () => const Center(
@@ -57,10 +59,10 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                Icon(Icons.error_outline, color: Colors.red, size: 48),
-                SizedBox(height: 16),
+                Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                SizedBox(height: 16.h),
                 Text('Error loading products: ${error.toString()}'),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 ElevatedButton(
                   onPressed: () {
                     ref.read(categoryViewModelProvider.notifier).getCategories();
@@ -102,7 +104,7 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
                       arguments:category,
                     );
                   },
-                  title: Text("${category!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
+                  title: Text("${category!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -110,8 +112,8 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
                         onPressed: (){
                          DeleteDialogBox(category);
                         },
-                        icon: Icon(Icons.delete, size: 25,color: Colors.red,),),
-                      Icon(Icons.arrow_forward_ios_sharp, size: 18,color: Colors.grey,),
+                        icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
+                      Icon(Icons.arrow_forward_ios_sharp, size: 18.h,color: Colors.grey,),
                     ],
                   ),
                 ),
@@ -130,11 +132,11 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: const Text(
+        title:  Text(
           'Add New Category',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 20.h,
           ),
         ),
         content: TextField(
@@ -142,11 +144,11 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
           decoration: InputDecoration(
             hintText: 'Enter category name',
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: Colors.blue.shade600, width: 2.w),
             ),
             prefixIcon: const Icon(Icons.category),
           ),
@@ -172,7 +174,7 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
               backgroundColor: Colors.blue.shade600,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: const Text('Add'),
@@ -187,13 +189,13 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
-        title: const Text(
+        title:  Text(
           'Delete Category',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 20.sp,
           ),
         ),
         content: Text(
@@ -217,7 +219,7 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
               backgroundColor: Colors.red.shade600,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: const Text('Delete'),

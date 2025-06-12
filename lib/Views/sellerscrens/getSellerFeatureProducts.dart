@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class UserFeaturedProducts extends ConsumerStatefulWidget {
   final String sellerId;
@@ -36,9 +37,9 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
 
     return showDialog(
       context: context,
-      builder: (BuildContext dialogContext) { // Use dialogContext instead of context
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text("Are you sure you want to remove this featured product?", style: TextStyle(fontSize: 20)),
+          title: Text("Are you sure you want to remove this featured product?", style: TextStyle(fontSize: 20.sp)),
           actions: [
             TextButton(
               onPressed: () {
@@ -61,7 +62,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                       content: Row(
                         children: [
                           CircularProgressIndicator(color: Colors.white),
-                          SizedBox(width: 16),
+                          SizedBox(width: 16.w),
                           Text("Removing featured product...")
                         ],
                       ),
@@ -117,7 +118,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
       appBar: AppBar(
         title: Text(
             "My Featured Products",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)
         ),
       ),
       body: SafeArea(
@@ -137,13 +138,13 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
                         children: [
-                          Icon(Icons.star_border, size: 48, color: Colors.grey),
-                          SizedBox(height: 16),
+                          Icon(Icons.star_border, size: 48.h, color: Colors.grey),
+                          SizedBox(height: 16.h),
                           Text("No featured products yet"),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                           Text(
                             "Request to feature your products for better visibility",
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                            style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -175,16 +176,16 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                     }
 
                     return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                       child: Column(
                         children: [
                           ListTile(
                             contentPadding: EdgeInsets.all(12),
                             leading: Container(
-                              width: 60,
-                              height: 60,
+                              width: 60.w,
+                              height: 60.h,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.r),
                               ),
                               clipBehavior: Clip.antiAlias,
                               child: (product?.images != null &&
@@ -197,7 +198,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                                   return const Icon(Icons.error);
                                 },
                               )
-                                  : const Icon(Icons.image_not_supported, size: 40),
+                                  :  Icon(Icons.image_not_supported, size: 40.h),
                             ),
                             title: Text(
                               product?.name ?? 'No Name',
@@ -206,28 +207,28 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                             subtitle: Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                                   decoration: BoxDecoration(
                                     color: statusColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: statusColor, width: 0.5),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(color: statusColor, width: 0.5.w),
                                   ),
                                   child: Text(
                                     status ?? 'Unknown',
                                     style: TextStyle(
                                       color: statusColor,
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                                 if (featuredProduct.expireAt != null) ...[
-                                  SizedBox(width: 8),
-                                  Icon(Icons.timer_outlined, size: 12, color: Colors.grey),
-                                  SizedBox(width: 4),
+                                  SizedBox(width: 8.w),
+                                  Icon(Icons.timer_outlined, size: 12.h, color: Colors.grey),
+                                  SizedBox(width: 4.w),
                                   Text(
                                     "Expires: ${_formatDate(DateTime.parse(featuredProduct.expireAt!))}",
-                                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                                    style: TextStyle(fontSize: 10.sp, color: Colors.grey),
                                   ),
                                 ],
                               ],
@@ -252,10 +253,10 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: 48),
-                      SizedBox(height: 16),
+                      Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                      SizedBox(height: 16.h),
                       Text('Error loading featured products: ${error.toString()}'),
-                      SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       ElevatedButton(
                         onPressed: () {
                           if (mounted) {

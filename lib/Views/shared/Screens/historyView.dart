@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
 import '../../../View_Model/buyerViewModels/ordersHistoryViewModel.dart';
@@ -60,7 +61,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
 
               return Card(
                 elevation: 3,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                margin:  EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
                 child: ExpansionTile(
                   title: Text(
                     "Order #${order?.id}",
@@ -82,18 +83,18 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                   children: [
                     if (cartItems != null && cartItems.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding:  EdgeInsets.symmetric(horizontal: 16.w),
                         child: Column(
                           children: [
                             const Divider(),
-                            const Text(
+                             Text(
                               "Ordered Items",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                             SizedBox(height: 8.h),
                             ...cartItems.map((item) {
                               final product = item.product;
                               final imageUrl = product?.images?.isNotEmpty == true
@@ -106,39 +107,39 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8.r),
                                       child: imageUrl != null
                                           ? Image.network(
                                         imageUrl,
-                                        width: 80,
-                                        height: 80,
+                                        width: 80.w,
+                                        height: 80.h,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stackTrace) =>
                                         const _ErrorImage(),
                                       )
                                           : const _ErrorImage(),
                                     ),
-                                    const SizedBox(width: 12),
+                                     SizedBox(width: 12.w),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             product?.name ?? 'Unknown Product',
-                                            style: const TextStyle(
+                                            style:  TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 16,
+                                              fontSize: 16.sp,
                                             ),
                                           ),
-                                          const SizedBox(height: 4),
+                                           SizedBox(height: 4.h),
                                           Text(
                                             'Quantity: ${item.quantity}',
-                                            style: const TextStyle(fontSize: 14),
+                                            style:  TextStyle(fontSize: 14.sp),
                                           ),
                                           Text(
                                             'Price: \$${item.price}',
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                            style:  TextStyle(
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
@@ -146,7 +147,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                                             'Status: ${item.status}',
                                             style: TextStyle(
                                               color: _getItemStatusColor(item.status),
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                             ),
                                           ),
                                         ],
@@ -200,12 +201,12 @@ class _ErrorImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
-      height: 80,
+      width: 80.w,
+      height: 80.h,
       color: Colors.grey[200],
-      child: const Icon(
+      child:  Icon(
         Icons.image_not_supported,
-        size: 40,
+        size: 40.h,
         color: Colors.grey,
       ),
     );

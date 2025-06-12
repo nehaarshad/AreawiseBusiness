@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/AdViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class getAdsView extends ConsumerStatefulWidget {
   const getAdsView({Key? key,}) : super(key: key);
@@ -63,7 +64,7 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
   Widget build(BuildContext context) {
     final adsState = ref.watch(AdsViewModelProvider);
     return Container(
-      height: 200,
+      height: 200.h,
       child: adsState.when(
         loading: () => const Center(
           child: CircularProgressIndicator(color: Appcolors.blueColor),
@@ -87,9 +88,9 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
                 itemBuilder: (context, index) {
                   final ad = ads[index];
                   return ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10.r),
                     child: Container(
-                      height: 240,
+                      height: 240.h,
                       width: double.infinity, // Ensure it takes the full width
                       child: ad?.image != null && ad?.image!.imageUrl != null
                           ? Image.network(
@@ -102,34 +103,12 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
                       )
                           : Container(
                         color: Colors.grey[300],
-                        child: const Center(child: Icon(Icons.image_not_supported, size: 50)),
+                        child:  Center(child: Icon(Icons.image_not_supported, size: 50.h)),
                       ),
                     ),
                       );
                 },
               ),
-              // Positioned(
-              //   bottom: 10,
-              //   left: 0,
-              //   right: 0,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: List.generate(
-              //       ads.length,
-              //           (index) => Container(
-              //         width: 8,
-              //         height: 8,
-              //         margin: const EdgeInsets.symmetric(horizontal: 4),
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.circle,
-              //           color: _currentPage == index
-              //               ? Appcolors.blueColor
-              //               : Colors.grey.shade500,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           );
         },

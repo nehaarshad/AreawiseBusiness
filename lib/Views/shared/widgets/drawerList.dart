@@ -1,11 +1,12 @@
 import 'package:ecommercefrontend/Views/shared/widgets/profileImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/utils.dart';
 import '../../../models/UserDetailModel.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class DrawerListItems extends ConsumerWidget {
   UserDetailModel user;
@@ -20,7 +21,7 @@ class DrawerListItems extends ConsumerWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          drawerHeader(),
+          drawerHeader(context),
           drawerItems(
             icon: Icons.chat,
             title: 'Chats',
@@ -55,21 +56,33 @@ class DrawerListItems extends ConsumerWidget {
     );
   }
 
-  Widget drawerHeader(){
+  Widget drawerHeader(BuildContext context){
     return DrawerHeader(
         decoration: BoxDecoration(
             color: Appcolors.blueColor
         ),
-        child: Column(
-          children: [
-            ProfileImageWidget(user: user, height: 100, width: 100),
-            SizedBox(height: 10,),
-            Text(user.username!,style: TextStyle(
-              color: Appcolors.whiteColor,
-              fontSize: 15,
-            ),)
-          ],
+        child: GestureDetector(
+          onTap: (){
+            final parameters={
+              'id':user.id,
+              'role':user.role
+            };
+            Navigator.pushNamed(
+              context,
+              routesName.profile,
+              arguments:parameters,
+            );
+          },
+          child: Column(
+            children: [
+              ProfileImageWidget(user: user, height: 80.h, width: 80.w),
+              Text(user.username!,style: TextStyle(
+                color: Appcolors.whiteColor,
+                fontSize: 15.sp,
+              ),)
+            ],
 
+          ),
         )
     );
   }

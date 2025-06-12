@@ -1,8 +1,10 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/chatListViewModel.dart';
+import '../../../core/utils/textStyles.dart';
 import '../../../models/chatsModel.dart';
 import 'chatView.dart';
 
@@ -50,7 +52,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
     final chatsList = ref.watch(chatListProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Chats')),
+      appBar: AppBar(title: Text('Chats',style: AppTextStyles.headline,)),
       body: Column(
         children: [
           topBarButtons(),
@@ -81,14 +83,14 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
           InkWell(
             onTap: () => toggleButton(false),
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 20),
-               padding: const EdgeInsets.symmetric(vertical: 12.0),
+              margin:  EdgeInsets.symmetric(vertical: 12.0.h,horizontal: 20.w),
+               padding:  EdgeInsets.symmetric(vertical: 12.0.h),
                decoration: BoxDecoration(
-               color: !widget.isSeller ? Appcolors.blueColor : Appcolors.blackColor,
-               borderRadius: BorderRadius.circular(10),
+               color: !widget.isSeller ? Appcolors.blueColor : Colors.grey,
+               borderRadius: BorderRadius.circular(25.r),
                   ),
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.40,
+                maxWidth: 140.w,
               ),
               child: Center(
                   child: Text('As Buyer',style: TextStyle(
@@ -102,14 +104,14 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
           InkWell(
             onTap: () => toggleButton(true),
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 6),
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              margin:  EdgeInsets.symmetric(vertical: 12.0.h,horizontal: 6.w),
+              padding:  EdgeInsets.symmetric(vertical: 12.0.h),
               decoration: BoxDecoration(
-                color: widget.isSeller ? Appcolors.blueColor : Appcolors.blackColor,
-                borderRadius: BorderRadius.circular(10),
+                color: widget.isSeller ? Appcolors.blueColor : Colors.grey,
+                borderRadius: BorderRadius.circular(25.r),
               ),
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.40,
+                maxWidth: 140.w,
               ),
               child:Center(
                   child: Text('As Seller',style: TextStyle(
@@ -120,26 +122,6 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
 
             ),
           ),
-          //  InkWell(
-          //     onTap: () => toggleButton(true),
-          //     borderRadius: BorderRadius.circular(8.0),
-          //     child: Container(
-          //       padding: const EdgeInsets.symmetric(vertical: 12.0),
-          //       decoration: BoxDecoration(
-          //         color: widget.isSeller ? Appcolors.blueColor : Appcolors.blackColor,
-          //         borderRadius: BorderRadius.circular(8.0),
-          //       ),
-          //       child: Center(
-          //         child: Text(
-          //           'As Seller',
-          //           style: TextStyle(
-          //             color: Appcolors.whiteColor,
-          //             fontWeight: widget.isSeller ? FontWeight.bold : FontWeight.normal,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          // ),
         ],
       );
 
@@ -153,33 +135,39 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
       child: ListTile(
         leading: chat.product?.images?.isNotEmpty == true && chat.product?.images?.first.imageUrl != null
             ? ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(30.r),
           child: Image.network(
             chat.product!.images!.first.imageUrl!,
-            width: 50,
-            height: 50,
+            width: 45.w,
+            height: 38.h,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) =>
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: 45.w,
+                  height: 38.h,
                   color: Colors.grey[300],
                   child: const Icon(Icons.image_not_supported),
                 ),
           ),
         )
             : Container(
-          width: 50,
-          height: 50,
+          width: 45.w,
+          height: 38.h,
           color: Colors.grey[300],
           child: const Icon(Icons.shopping_bag),
         ),
-        title: Text(chat.product!.name! ),
+        title: Text(chat.product!.name! ,style: TextStyle(
+          fontSize: 18.sp,
+        ),),
         subtitle: chat.messages != null && chat.messages!.isNotEmpty
             ? Text(
           chat.messages!.last.msg!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Colors.grey[600],
+            fontSize: 12.sp,
+          ),
         )
             : const Text(" "),
         trailing: chat.lastMessageAt != null
@@ -187,7 +175,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
           _formatTime(DateTime.parse(chat.lastMessageAt!)),
           style: TextStyle(
             color: Colors.grey[600],
-            fontSize: 12,
+            fontSize: 10.sp,
           ),
         )
             : null,

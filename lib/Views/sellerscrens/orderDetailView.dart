@@ -1,7 +1,8 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
 import '../../models/ordersRequestModel.dart';
 import '../shared/widgets/infoRow.dart';
@@ -42,7 +43,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Order Details",),
-            const SizedBox(height: 16),
+             SizedBox(height: 16.h),
             if (cartItems != null)
               ...cartItems.map((item) {
                 final product = item.product;
@@ -56,24 +57,24 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                           child: imageUrl != null ? Image.network(
                             imageUrl,
-                            width: 80,
-                            height: 80,
+                            width: 80.w,
+                            height: 80.h,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) => const _ErrorImage(),
                           ) : const _ErrorImage(),
                         ),
-                        const SizedBox(width: 12),
+                         SizedBox(width: 12.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(product?.name ?? 'Unknown Product', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                              const SizedBox(height: 4),
-                              Text('Quantity: ${item.quantity}', style: const TextStyle(fontSize: 14)),
-                              Text('Price: \$${item.price}', style: const TextStyle(fontSize: 14)),
+                              Text(product?.name ?? 'Unknown Product', style:  TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+                               SizedBox(height: 4.h),
+                              Text('Quantity: ${item.quantity}', style:  TextStyle(fontSize: 14.sp)),
+                              Text('Price: \$${item.price}', style:  TextStyle(fontSize: 14.sp)),
                             ],
                           ),
                         ),
@@ -81,35 +82,35 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                     ),
                   );
               }).toList(),
-            const SizedBox(height: 16),
-            Center(child: Text("User Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
-            const SizedBox(height: 8),
+             SizedBox(height: 16.h),
+            Center(child: Text("User Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.sp),)),
+             SizedBox(height: 8.h),
             infoWidget(heading:"Name" ,value: "${order?.cart?.user?.username }" ,),
             infoWidget(heading:"Contact Number" ,value: "${order?.cart?.user?.contactnumber }"),
-            const SizedBox(height: 16),
-            Center(child: Text("Shipping Address",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
-            const SizedBox(height: 8),
+             SizedBox(height: 16.h),
+            Center(child: Text("Shipping Address",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.sp))),
+             SizedBox(height: 8.h),
             infoWidget(heading:"Address" ,value: "${order?.cart?.user?.address?.address }" ,),
             infoWidget(heading:"City" ,value: "${order?.cart?.user?.address?.city }" ,),
             infoWidget(heading:"Sector" ,value: "${order?.cart?.user?.address?.sector }" ,),
-            const SizedBox(height: 8),
+             SizedBox(height: 8.h),
             Row(
               children: [
                 Text("Current Status:",style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 15
+                    fontSize: 15.sp
                 ),),
                 Text(
                   " ${currentOrderRequest.status}",
                   style: TextStyle(
                     color: StatusColor(currentOrderRequest.status!),
                     fontWeight: FontWeight.bold,
-                    fontSize: 15
+                    fontSize: 15.sp
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+             SizedBox(height: 16.h),
             if (currentOrderRequest.status == "Requested")
               Row(
                 children: [
@@ -120,7 +121,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                       child: const Text("Approve",style: TextStyle(color: Appcolors.whiteColor),),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                   SizedBox(width: 16.w),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => updateStatus("Rejected"),
@@ -174,12 +175,12 @@ class _ErrorImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
-      height: 80,
+      width: 80.w,
+      height: 80.h,
       color: Colors.grey[200],
-      child: const Icon(
+      child:  Icon(
         Icons.image_not_supported,
-        size: 40,
+        size: 40.h,
         color: Colors.grey,
       ),
     );

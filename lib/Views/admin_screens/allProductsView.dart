@@ -1,9 +1,11 @@
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class AllProductsview extends ConsumerStatefulWidget {
   final int id;
@@ -29,7 +31,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("All Products"),
+        title: Text("All Products",style: AppTextStyles.headline,),
       ),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -64,10 +66,10 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                               return const SizedBox.shrink();
                             }
                             return Card(
-                              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                               elevation: 2,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: InkWell(
                                 onTap: () {
@@ -82,10 +84,10 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                     ListTile(
                                       contentPadding: EdgeInsets.all(10),
                                       leading: Container(
-                                        width: 60,
-                                        height: 60,
+                                        width: 60.w,
+                                        height: 60.h,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(8.r),
                                         ),
                                         clipBehavior: Clip.antiAlias,
                                         child: (product.images != null &&
@@ -98,7 +100,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                             return const Icon(Icons.error);
                                           },
                                         )
-                                            : const Icon(Icons.image_not_supported, size: 40),
+                                            :  Icon(Icons.image_not_supported, size: 40.h),
                                       ),
                                       title: Text(
                                         product.name ?? 'No Name',
@@ -106,7 +108,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                       ),
                                       subtitle: Text(
                                         product.category?.name ?? 'No Category',
-                                        style: const TextStyle(fontSize: 12),
+                                        style:  TextStyle(fontSize: 12.sp),
                                       ),
                                       trailing: Row(
                                         mainAxisSize: MainAxisSize.min,
@@ -125,7 +127,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                                 tooltip: "Edit Product",
                                               ),
                                               IconButton(
-                                                icon: const Icon(Icons.delete, color: Colors.red),
+                                                icon: Icon(Icons.delete, color: Colors.red),
                                                 onPressed: () async {
                                                   if (product.id != null) {
                                                     await ref.read(sharedProductViewModelProvider.notifier)
@@ -153,10 +155,10 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                           padding: const EdgeInsets.all(20.0),
                           child: Column(
                             children: [
-                              Icon(Icons.error_outline, color: Colors.red, size: 48),
-                              SizedBox(height: 16),
+                              Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                              SizedBox(height: 16.h),
                               Text('Error loading products: ${error.toString()}'),
-                              SizedBox(height: 16),
+                              SizedBox(height: 16.h),
                               ElevatedButton(
                                 onPressed: () {
                                   ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.id.toString());

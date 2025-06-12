@@ -43,6 +43,20 @@ class ProductRepositories {
     }
   }
 
+  Future<List<ProductModel>> searchProduct(String subCategory) async {
+    List<ProductModel> productlist = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(AppApis.GetProductBySubCategoryEndPoints.replaceFirst(':name', subCategory));
+      if (response is List) {
+        return response.map((products) => ProductModel.fromJson(products as Map<String, dynamic>),).toList();
+      }
+      productlist = [ProductModel.fromJson(response)];
+      return productlist;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<ProductModel> FindProduct(String id) async {
     try {
       dynamic response = await apiservice.GetApiResponce(

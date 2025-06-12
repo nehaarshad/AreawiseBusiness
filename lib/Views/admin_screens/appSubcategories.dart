@@ -1,8 +1,10 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/categoriesViewModel.dart';
 import '../../View_Model/adminViewModels/subCategoriesViewModel.dart';
@@ -24,12 +26,9 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
     return Scaffold(
       backgroundColor: Appcolors.whiteColor,
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           ' Subcategories',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
+          style: AppTextStyles.headline
         ),
         backgroundColor: Appcolors.whiteColor,
       ),
@@ -51,7 +50,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                Icon(Icons.error_outline, color: Colors.red, size: 48),
+                Icon(Icons.error_outline, color: Colors.red, size: 48.h),
                 SizedBox(height: 16),
                 Text('Error loading SubCategories'),
                 SizedBox(height: 16),
@@ -86,7 +85,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
       itemBuilder: (context, index) {
         final subcategory = sub[index];
         return ListTile(
-                  title: Text("${subcategory!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
+                  title: Text("${subcategory!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -94,7 +93,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
                         onPressed: (){
                           DeleteDialogBox(subcategory);
                         },
-                        icon: Icon(Icons.delete, size: 25,color: Colors.red,),),
+                        icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
                     ],
                   ),
                 );
@@ -109,11 +108,11 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: const Text(
+        title:  Text(
           'Add New Subcategory',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 20.h,
           ),
         ),
         content: TextField(
@@ -121,11 +120,11 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
           decoration: InputDecoration(
             hintText: 'Enter category name',
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: Colors.blue.shade600, width: 2.w),
             ),
           ),
           textCapitalization: TextCapitalization.words,
@@ -150,7 +149,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
               backgroundColor: Colors.blue.shade600,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: const Text('Add'),
@@ -165,13 +164,13 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
-        title: const Text(
+        title:  Text(
           'Delete Subcategory',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 20.sp,
           ),
         ),
         content: Text(
@@ -195,7 +194,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
               backgroundColor: Colors.red.shade600,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: const Text('Delete'),

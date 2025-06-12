@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../models/ProductModel.dart';
 
-class ImageSlider extends StatefulWidget {
+class ImageSlider extends ConsumerStatefulWidget {
   final List<dynamic> images;
   final double height;
 
-  const ImageSlider({required this.images, this.height = 350});
+   ImageSlider({required this.images,required this.height });
 
   @override
-  State<ImageSlider> createState() => _ImageSliderState();
+  ConsumerState<ImageSlider> createState() => _ImageSliderState();
 }
 
-class _ImageSliderState extends State<ImageSlider> {
+class _ImageSliderState extends ConsumerState<ImageSlider> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
 
@@ -40,17 +42,14 @@ class _ImageSliderState extends State<ImageSlider> {
             },
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  // You can add image viewing functionality here
-                },
                 child: Image.network(
                   widget.images[index].imageUrl ??
                       "https://th.bing.com/th/id/OIP.GnqZiwU7k5f_kRYkw8FNNwHaF3?rs=1&pid=ImgDetMain",
                   fit: BoxFit.contain,
                   errorBuilder:
-                      (context, error, stackTrace) => const Icon(
+                      (context, error, stackTrace) =>  Icon(
                         Icons.image_not_supported_outlined,
-                        size: 50,
+                        size: 50.h,
                         color: Colors.grey,
                       ),
                 ),
@@ -67,9 +66,9 @@ class _ImageSliderState extends State<ImageSlider> {
             children: List.generate(
               widget.images.length,
               (index) => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: 8,
-                height: 8,
+                margin:  EdgeInsets.symmetric(horizontal: 4.w),
+                width: 8.w,
+                height: 8.h,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color:

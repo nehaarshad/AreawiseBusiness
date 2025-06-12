@@ -3,10 +3,11 @@ import 'package:ecommercefrontend/View_Model/SellerViewModels/UpdateShopViewMode
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/utils.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
 import '../shared/widgets/ShopCategoryDropDownMenu.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class updateShopView extends ConsumerStatefulWidget {
   int id;
@@ -68,11 +69,11 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                 key: formkey,
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     if (state.value?.images != null &&
                         state.value!.images!.isNotEmpty)
                       Container(
-                        height: 120,
+                        height: 120.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: state.value?.images?.length ?? 0,
@@ -83,14 +84,14 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    width: 100,
-                                    height: 100,
+                                    width: 100.w,
+                                    height: 100.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8.r),
                                       child: UpdateImage(image),
                                     ),
                                   ),
@@ -158,7 +159,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                       },
                     ),
                     UpdateShopcategoryDropdown(userid: widget.id.toString()),
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     ElevatedButton(
                       onPressed: state.isLoading ? null : () async {
                                 if (formkey.currentState!.validate()) {

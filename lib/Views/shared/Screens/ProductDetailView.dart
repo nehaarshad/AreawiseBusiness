@@ -1,11 +1,12 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/WishListViewModel.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/DashBoardProductsView.dart';
 import '../widgets/contactWithSellerButton.dart';
@@ -51,7 +52,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ImageSlider(images: widget.product.images ?? [], height: 350),
+              ImageSlider(images: widget.product.images ?? [], height: 350.h),
 
               SingleChildScrollView(
                 child: Container(
@@ -64,23 +65,23 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               Icon(Icons.store,color: Colors.grey,),
                               Text('${widget.product.shop?.shopname!}',style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 15
+                                fontSize: 15.sp
                               ),)
                             ],
                           ),
-                          Divider(thickness: 0.4,),
+                          Divider(thickness: 0.4.h,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("${widget.product.name}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black,),),
+                              Text("${widget.product.name}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: Colors.black,),),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text("Rs.",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w400),),
+                                  Text("Rs.",style: TextStyle(color: Colors.black,fontSize: 20.sp,fontWeight: FontWeight.w400),),
                                   Text("${widget.product.price}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w900,
-                                      fontSize: 20,
+                                      fontSize: 20.sp,
                                       color: Appcolors.blueColor,
                                     ),
                                   ),
@@ -88,35 +89,35 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 3),
+                          SizedBox(height: 3.h),
                           Text("${widget.product.subtitle}",style: TextStyle(
-                            fontWeight: FontWeight.normal,fontSize: 15, color: Colors.black87,),),
-                          SizedBox(height: 10),
+                            fontWeight: FontWeight.normal,fontSize: 15.sp, color: Colors.black87,),),
+                          SizedBox(height: 10.h),
                           Row(
                                 children: [
-                                  Text("Sold: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15,fontWeight: FontWeight.w500),),
+                                  Text("Sold: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                   Text(
                                     "${widget.product.sold}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.normal,
-                                      fontSize: 15,
+                                      fontSize: 15.sp,
                                       color: Colors.black87,
                                     ),
                                   ),
-                                  Text(" (${widget.product.stock} available)",style: TextStyle(color: Colors.red,fontSize: 15,fontWeight: FontWeight.w500),),
+                                  Text(" (${widget.product.stock} available)",style: TextStyle(color: Colors.red,fontSize: 15.sp,fontWeight: FontWeight.w500),),
 
                                 ],
                               ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           Row(
                             children: [
-                              Text("Qty: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15,fontWeight: FontWeight.w500),),
+                              Text("Qty: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                               Container(
-                                height: 35,
-                                width: 124,
+                                height: 35.h,
+                                width: 124.w,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.grey, width: 1),
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  border: Border.all(color: Colors.grey, width: 1.w),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,7 +126,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                     IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: BoxConstraints(),
-                                      iconSize: 20,
+                                      iconSize: 20.h,
                                       onPressed: (Qty > 1)
                                           ? () {
                                        setState(() {
@@ -140,12 +141,12 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                     ),
                                     Text(
                                       '$Qty',
-                                      style: const TextStyle(fontSize: 16),
+                                      style:  TextStyle(fontSize: 16.sp),
                                     ),
                                     IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: BoxConstraints(),
-                                      iconSize: 20,
+                                      iconSize: 20.h,
                                       onPressed: (widget.product.stock != null && Qty < widget.product.stock!)
                                           ? () {
                                         setState(() {
@@ -164,46 +165,46 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
 
                             ],
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Text("Category: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15,fontWeight: FontWeight.w500),),
+                                  Text("Category: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                   Text(
                                     "${widget.product.subcategory?.name}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.normal,
-                                      fontSize: 15,
+                                      fontSize: 15.sp,
                                       color: Colors.black87,
                                     ),
                                   ),
                                 ],
                               ),
                               Container(
-                                width: 60,
-                                height: 30,
+                                width: 60.w,
+                                height: 30.h,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(15.r),
                                   color: Colors.deepOrange,
                                 ),
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
                                 child: Row(
                                   children: [
                                     Icon(
                                       Icons.star,
                                       color: Colors.white,
-                                      size: 18,
+                                      size: 18.h,
                                     ),
-                                    Text('${widget.product.ratings}',style: TextStyle(color: Colors.white,fontSize: 15)),
+                                    Text('${widget.product.ratings}',style: TextStyle(color: Colors.white,fontSize: 15.sp)),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           RichText(
                             text: TextSpan(
                               children: [
@@ -211,7 +212,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   text: "Product Description: ",
                                   style: TextStyle(
                                     color: Colors.blueGrey,
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -219,7 +220,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   text: widget.product.description,
                                   style: TextStyle(
                                     color: Colors.black87,
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                     wordSpacing: 5,
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -227,23 +228,23 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           ProductReviews(productId: widget.product.id!,userId: widget.userid,),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8,),
+                               Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.h,),
                                 child: Text(
                                   "Related Products",
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Row(
                                 children: [
                                   const Text("See All", style: TextStyle(color: Colors.grey)),
-                                  const Icon(Icons.arrow_forward_ios_sharp, size: 10),
+                                   Icon(Icons.arrow_forward_ios_sharp, size: 10.h),
                                 ],
                               ),
                             ],
@@ -263,7 +264,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
     padding: const EdgeInsets.all(12.0),
     child: SizedBox(
     width: double.infinity,
-    height: 50,
+    height: 50.h,
     child: ElevatedButton.icon(
     onPressed: () async {
     await ref.read(cartViewModelProvider(widget.userid.toString()).notifier)
@@ -273,14 +274,14 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
     style: ElevatedButton.styleFrom(
     backgroundColor: Appcolors.blueColor,
     shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30),
+    borderRadius: BorderRadius.circular(30.r),
     ),
-    padding: const EdgeInsets.symmetric(horizontal: 20),
+    padding:  EdgeInsets.symmetric(horizontal: 20.w),
     ),
     icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-    label: const Text(
+    label:  Text(
     'Add to Cart',
-    style: TextStyle(color: Colors.white, fontSize: 16),
+    style: TextStyle(color: Colors.white, fontSize: 16.sp),
     ),
     ),
     ),

@@ -1,11 +1,12 @@
 import 'package:ecommercefrontend/Views/shared/widgets/profileImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/utils.dart';
 import '../../../models/UserDetailModel.dart';
-import '../../shared/widgets/colors.dart';
+import '../../../core/utils/colors.dart';
 
 class AdminDrawerListItems extends ConsumerWidget {
   UserDetailModel user;
@@ -107,11 +108,10 @@ class AdminDrawerListItems extends ConsumerWidget {
           },
           child: Column(
             children: [
-              ProfileImageWidget(user: user, height: 100, width: 100),
-              SizedBox(height: 10,),
+              ProfileImageWidget(user: user, height: 80.h, width: 80.h),
               Text(user.username!,style: TextStyle(
                 color: Appcolors.whiteColor,
-                fontSize: 15,
+                fontSize: 15.sp,
               ),)
             ],
 

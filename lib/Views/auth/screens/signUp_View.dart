@@ -1,11 +1,13 @@
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/SignUp_viewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/utils.dart';
 import '../../shared/widgets/buttons.dart';
-import '../../shared/widgets/colors.dart';
+import '../../../core/utils/colors.dart';
 
 class signUp_View extends ConsumerStatefulWidget {
   const signUp_View({super.key});
@@ -83,7 +85,6 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
   @override
   Widget build(BuildContext context) {
     final signUpviewmodel = ref.read(signupProvider.notifier);
-    final double height = MediaQuery.of(context).size.height * 1;
 
     void handleSignUp() {
       if (formkey.currentState!.validate()) {
@@ -129,15 +130,17 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Center(child: Text('Sign Up')),
+        title: Center(child: Text('Sign Up',style: AppTextStyles.headline,)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            padding:  EdgeInsets.symmetric(vertical: 50.h, horizontal: 20.w),
             child: Form(
               key: formkey,
+
               child: Column(
+                spacing: 10.h,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -267,7 +270,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                     },
                   ),
                   buildRoleDropdown(),
-                  SizedBox(height: height * .1),
+                  SizedBox(height: 50.h),
                   // SignUp button
                   Consumer(
                     builder: (context, ref, child) {
@@ -279,11 +282,11 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                       );
                     },
                   ),
-                  SizedBox(height: height * .02),
+                  SizedBox(height: 20.h),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 2,
-                      horizontal: 15,
+                    padding:  EdgeInsets.symmetric(
+                      vertical: 2.h,
+                      horizontal: 15.w,
                     ),
                     child: Row(
                       children: [

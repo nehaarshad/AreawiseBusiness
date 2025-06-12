@@ -1,6 +1,7 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
@@ -19,7 +20,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
     final shopState = ref.watch(sellerShopViewModelProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shop's",style: TextStyle(color: Appcolors.blueColor,fontSize: 25,fontWeight: FontWeight.bold),),
+        title: Text("Shop's",style: TextStyle(color: Appcolors.blueColor,fontSize: 25.sp,fontWeight: FontWeight.bold),),
       ),
       body: shopState.when(
         loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
@@ -47,7 +48,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                       children: [
                         Text(
                           shop?.category?.name ?? 'No Category',
-                          style: const TextStyle(fontSize: 12),
+                          style:  TextStyle(fontSize: 12.sp),
                         ),
                       ],
                     ),
@@ -100,12 +101,12 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                 borderRadius: BorderRadius.circular(40.0),
               ),
             ),
-            child: const Text(
+            child:  Text(
               "Add New Shop",
               style: TextStyle(
                 color: Appcolors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 15,
+                fontSize: 15.sp,
               ),
             ),
           ),

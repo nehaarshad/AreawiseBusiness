@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/reviewItems.dart';
 import '../../../models/reviewsModel.dart';
@@ -50,7 +51,7 @@ class _ExpandedReviewsWidgetState extends State<ExpandedReviewsWidget> {
         // Show expand/collapse button if there are more than 2 reviews
         if (hasMoreReviews)
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding:  EdgeInsets.symmetric(vertical: 8.0.h),
             child: InkWell(
               onTap: () {
                 setState(() {
@@ -59,10 +60,10 @@ class _ExpandedReviewsWidgetState extends State<ExpandedReviewsWidget> {
               },
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding:  EdgeInsets.symmetric(vertical: 8.0.h),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(8.0.r),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +77,7 @@ class _ExpandedReviewsWidgetState extends State<ExpandedReviewsWidget> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                     SizedBox(width: 4.w),
                     Icon(
                       _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
                       color: Colors.blue,

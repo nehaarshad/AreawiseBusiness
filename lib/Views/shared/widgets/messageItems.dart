@@ -1,5 +1,7 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/utils/textStyles.dart';
 import '../../../models/messagesModel.dart';
 
 class MessageView extends StatelessWidget {
@@ -23,15 +25,15 @@ class MessageView extends StatelessWidget {
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.65, // Max 75% of screen width
             ),
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            margin:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: isMe ? Colors.blue[100] : Colors.grey[200],
               borderRadius: BorderRadius.only(
-                topRight: isMe ? const Radius.circular(0) : const Radius.circular(12),
-                topLeft: isMe ? const Radius.circular(12) : const Radius.circular(0),
-                bottomLeft: const Radius.circular(12),
-                bottomRight: const Radius.circular(12),
+                topRight: isMe ?  Radius.circular(0.r) :  Radius.circular(12.r),
+                topLeft: isMe ?  Radius.circular(12.r) :  Radius.circular(0.r),
+                bottomLeft:  Radius.circular(12.r),
+                bottomRight:  Radius.circular(12.r),
               ),
             ),
             child: IntrinsicWidth(
@@ -41,17 +43,14 @@ class MessageView extends StatelessWidget {
                 children: [
                   Text(
                     message.msg ?? '',
-                    style: const TextStyle(fontSize: 16),
+                    style: AppTextStyles.msgText,
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 5.h),
                   Align(
                     alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                     child: Text(
                       _formatTime(message.createdAt),
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey[600],
-                      ),
+                      style: AppTextStyles.msgTime
                     ),
                   ),
                 ],

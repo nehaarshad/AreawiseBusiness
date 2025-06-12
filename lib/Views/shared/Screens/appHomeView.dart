@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/Views/shared/widgets/searchBar.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
@@ -37,57 +38,55 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
   Widget build(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          const searchBar(),
-           CategoriesButton(id: widget.id.toString(),),
-          const SizedBox(height: 10),
-          const getAdsView(),
-          const SizedBox(height: 10),
-          // Featured Products
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                child: Text(
-                  "Featured Products",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+             SizedBox(height: 10.h),
+             searchBar(id: widget.id,),
+            SizedBox(height: 10.h),
+             CategoriesButton(id: widget.id.toString(),),
+             SizedBox(height: 10.h),
+            const getAdsView(),
+             SizedBox(height: 14.h),
+            // Featured Products
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+                  child: Text(
+                    "Featured Products",
+                    style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                  ),
                 ),
-              ),
-              Row(
-                children: [
-                  const Text("See All", style: TextStyle(color: Colors.grey)),
-                  const Icon(Icons.arrow_forward_ios_sharp, size: 10),
-                ],
-              ),
-            ],
-          ),
-          AllFeaturedProducts(userid: widget.id),
-          const SizedBox(height: 20),
-          // New Arrivals
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                child: Text(
-                  "New Arrival",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                     Text("See All", style: TextStyle(color: Colors.grey,fontSize: 12.sp)),
+                     Icon(Icons.arrow_forward_ios_sharp, size: 9.h,color: Colors.grey,),
+                  ],
                 ),
-              ),
-              Row(
-                children: [
-                  const Text("See All", style: TextStyle(color: Colors.grey)),
-                  const Icon(Icons.arrow_forward_ios_sharp, size: 10),
-                ],
-              ),
-            ],
-          ),
-          AllProducts(userid: widget.id),
-        ],
+              ],
+            ),
+            AllFeaturedProducts(userid: widget.id),
+            SizedBox(height: 10.h),
+            // New Arrivals
+           Row(
+             mainAxisAlignment: MainAxisAlignment.start,
+             children: [
+               Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+                      child: Text(
+                        "New Arrival",
+                        style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+             ],
+           ),
+        
+            AllProducts(userid: widget.id),
+          ],
+        ),
       ),
     );
   }

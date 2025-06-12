@@ -2,11 +2,12 @@ import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../core/utils/utils.dart';
 import '../shared/widgets/ShopCategoryDropDownMenu.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class addShopView extends ConsumerStatefulWidget {
   int id;
@@ -36,12 +37,12 @@ class _addShopViewState extends ConsumerState<addShopView> {
             key: formkey,
             child: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 if (state.images.isNotEmpty) ...[
                   if (state.images.length > 4)
                     Utils.flushBarErrorMessage("Select only 4 images", context),
                   SizedBox(
-                    height: 100,
+                    height: 100.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: state.images.length,
@@ -128,7 +129,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
                   },
                 ),
                 ShopcategoryDropdown(userid: widget.id.toString()),
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 ElevatedButton(
                   onPressed:
                       state.isLoading

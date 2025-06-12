@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/forgetKeyViewModel.dart';
 import '../../../core/utils/utils.dart';
@@ -143,9 +144,9 @@ class _ForgetpasswordviewState extends ConsumerState<Forgetpasswordview> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 2,
-                    horizontal: 15,
+                  padding:  EdgeInsets.symmetric(
+                    vertical: 2.h,
+                    horizontal: 15.w,
                   ),
                   child: TextButton(onPressed: (){
                     final data={

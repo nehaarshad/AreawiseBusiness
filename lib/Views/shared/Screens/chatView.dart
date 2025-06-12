@@ -1,7 +1,8 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/chatsViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/messageItems.dart';
@@ -77,28 +78,28 @@ class _ChatViewState extends ConsumerState<ChatView> {
               children: [
                 widget.product?.images?.first.imageUrl != null
                     ? ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(30.r),
                   child: Image.network(
                     widget.product!.images!.first.imageUrl!,
-                    width: 40,
-                    height: 40,
+                    width: 40.w,
+                    height: 40.h,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) =>
                         Container(
-                          width: 50,
-                          height: 50,
+                          width: 50.w,
+                          height: 50.h,
                           color: Colors.grey[300],
                           child: const Icon(Icons.image_not_supported),
                         ),
                   ),
                 )
                     : Container(
-                  width: 50,
-                  height: 50,
+                  width: 50.w,
+                  height: 50.h,
                   color: Colors.grey[300],
                   child: const Icon(Icons.shopping_bag),
                 ),
-                SizedBox(width: 15,),
+                SizedBox(width: 15.w,),
                 Text(widget.product!.name!),
               ],
             )
@@ -148,14 +149,14 @@ class _ChatViewState extends ConsumerState<ChatView> {
                       decoration: InputDecoration(
                         hintText: 'Type a message...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.r),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
                         fillColor: Colors.grey[300],
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
+                        contentPadding:  EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 10.h,
                         ),
                       ),
                       textCapitalization: TextCapitalization.sentences,
@@ -163,12 +164,12 @@ class _ChatViewState extends ConsumerState<ChatView> {
                       minLines: 1,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                   SizedBox(width: 8.w),
                   Container(
                     padding: const EdgeInsets.all(11),
                     decoration: BoxDecoration(
                       color: Appcolors.blueColor,
-                      borderRadius: BorderRadius.circular(10)
+                      borderRadius: BorderRadius.circular(10.r)
                     ),
                     child: InkWell(
                       onTap: () {

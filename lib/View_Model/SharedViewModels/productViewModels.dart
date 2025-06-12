@@ -37,6 +37,19 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
     }
   }
 
+  Future<void> searchProduct(String subcategory) async {
+    try {
+      List<ProductModel?> product = await ref.read(productProvider).searchProduct(subcategory);
+      if (product.isEmpty) {
+        state = const AsyncValue.data([]); // Explicit empty list
+      } else {
+        state = AsyncValue.data(product.where((p) => p != null).toList());
+      }
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
   Future<void> deleteProduct(String id,String userId) async {
     try {
       await ref.read(productProvider).deleteProduct(id);

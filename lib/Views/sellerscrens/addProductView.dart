@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
@@ -42,10 +43,10 @@ class _addProductViewState extends ConsumerState<addProductView> {
             key: formkey,
             child: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 if (state.images.isNotEmpty)
                   SizedBox(
-                    height: 120,
+                    height: 120.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: state.images.length,
@@ -55,14 +56,14 @@ class _addProductViewState extends ConsumerState<addProductView> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 100, // Define explicit width
-                                height: 100, // Define explicit height
+                                width: 100.w, // Define explicit width
+                                height: 100.h, // Define explicit height
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8.r),
                                   child: Image.file(
                                     state.images[index],
                                     fit: BoxFit.cover, // Important for proper display

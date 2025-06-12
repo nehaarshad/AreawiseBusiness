@@ -1,8 +1,9 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/buyerViewModels/WishListViewModel.dart';
 import '../../../core/utils/utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
 class WishlistButton extends ConsumerWidget {
@@ -48,7 +49,7 @@ class WishlistButton extends ConsumerWidget {
         // Change icon based on whether product is in wishlist
         isInWishlist ? Icons.favorite : Icons.favorite_border_outlined,
         color: isInWishlist ? Colors.red : Appcolors.blackColor,
-        size: 24,
+        size: 24.h,
       ),
     );
   }

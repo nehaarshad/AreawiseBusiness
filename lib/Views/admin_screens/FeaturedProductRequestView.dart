@@ -1,6 +1,7 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
@@ -58,7 +59,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 16),
+                       SizedBox(height: 16.h),
                       GestureDetector(
                         onTap: () async {
                           final DateTime? dateTime = await setDateTime(stateContext);
@@ -71,10 +72,10 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                           }
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8.0.r),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,11 +137,12 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Requests to Feature Products", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-        elevation: 2,
+        automaticallyImplyLeading: false,
+        backgroundColor: Appcolors.whiteColor,
+        title:  Text("Requests to Feature Products", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon:  Icon(Icons.refresh,size: 20.h,),
             onPressed:  () {
               ref.read(featureProductViewModelProvider(widget.id).notifier)
                   .getAllRequestedFeatured();
@@ -159,7 +161,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                   return Center(
                     child: Text(
                       "No featured product requests available",
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                      style: TextStyle(fontSize: 18.sp, color: Colors.grey),
                     ),
                   );
                 }
@@ -173,7 +175,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                   return Center(
                     child: Text(
                       "No pending requests available",
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                      style: TextStyle(fontSize: 18.sp, color: Colors.grey),
                     ),
                   );
                 }
@@ -187,7 +189,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
 
                     return Card(
                       elevation: 3,
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                      margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
                       child: ListTile(
                           leading: (featuredProduct.product?.images != null &&
                               featuredProduct.product!.images!.isNotEmpty &&
@@ -195,8 +197,8 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                               ? Image.network(
                             featuredProduct.product!.images!.first.imageUrl!,
                             fit: BoxFit.cover,
-                            width: 50,
-                            height: 50,
+                            width: 50.w,
+                            height: 50.h,
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(Icons.error);
                             },
@@ -246,14 +248,14 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: 48),
-                      SizedBox(height: 16),
+                      Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                      SizedBox(height: 16.h),
                       Text(
                         "Error loading featured product requests: $err",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.red),
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       ElevatedButton(
                         onPressed: () {
                           ref.read(featureProductViewModelProvider(widget.id).notifier)
@@ -270,7 +272,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: ElevatedButton(
           onPressed: () {
             Navigator.pushNamed(
@@ -282,16 +284,16 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
           style: ElevatedButton.styleFrom(
             backgroundColor: Appcolors.blueColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40.0),
+              borderRadius: BorderRadius.circular(40.0.r),
             ),
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: EdgeInsets.symmetric(vertical: 12.h),
           ),
-          child: const Text(
+          child:  Text(
             "Featured Products",
             style: TextStyle(
               color: Appcolors.whiteColor,
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 15.sp,
             ),
           ),
         ),

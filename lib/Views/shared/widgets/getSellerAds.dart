@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/AdViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class UserAdsView extends ConsumerStatefulWidget {
   final String sellerId;
@@ -26,7 +27,7 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
     final adsState = ref.watch(AdsViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Active Ads",style: TextStyle(color:Appcolors.blueColor,fontWeight: FontWeight.bold,fontSize: 20),),
+        title: Text("Active Ads",style: TextStyle(color:Appcolors.blueColor,fontWeight: FontWeight.bold,fontSize: 20.sp),),
 
       ),
       backgroundColor: Appcolors.whiteColor,
@@ -53,7 +54,7 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
                           children: [
                             // Ad image
                             Container(
-                              height: 200, // Set a fixed height or adjust as needed
+                              height: 200.h, // Set a fixed height or adjust as needed
                               width: double.infinity, // Ensure it takes the full width
                               child: ad?.image != null && ad?.image!.imageUrl != null
                                   ? Image.network(
@@ -66,7 +67,7 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
                               )
                                   : Container(
                                 color: Colors.grey[300],
-                                child: const Center(child: Icon(Icons.image_not_supported, size: 50)),
+                                child:  Center(child: Icon(Icons.image_not_supported, size: 50.h)),
                               ),
                             ),
                             // Delete icon positioned at the top-right corner

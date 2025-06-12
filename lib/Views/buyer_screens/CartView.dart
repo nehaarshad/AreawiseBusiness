@@ -1,11 +1,13 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/cartModel.dart';
 import '../shared/widgets/cartBottomBar.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class Cartview extends ConsumerStatefulWidget {
   int id; //user id...
@@ -36,7 +38,7 @@ class _CartviewState extends ConsumerState<Cartview> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("CartView"),
+        title: Text("CartView",style: AppTextStyles.headline,),
         actions: [
           state.when(
             loading: () => const SizedBox.shrink(),
@@ -103,58 +105,58 @@ class _CartviewState extends ConsumerState<Cartview> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
           child:
           (item.product!.images?.isNotEmpty == true &&
           item.product!.images!.first.imageUrl?.isNotEmpty == true)
           ? Image.network(
           item.product!.images!.first.imageUrl!,
           fit: BoxFit.cover,
-          width: 100,
-          height: 100,
+          width: 100.w,
+          height: 100.h,
           errorBuilder: (context, error, stackTrace) {
-          return const SizedBox(
-          width: 100,
-          height: 100,
+          return  SizedBox(
+          width: 100.w,
+          height: 100.h,
           child: Icon(
           Icons.image_not_supported,
-          size: 50,
+          size: 50.h,
           color: Colors.grey,
           ),
           );
           },
           )
-              : const SizedBox(
-          width: 100,
-          height: 100,
+              :  SizedBox(
+          width: 100.w,
+          height: 100.h,
           child: Icon(
           Icons.image_not_supported,
-          size: 50,
+          size: 50.h,
           color: Colors.grey,
           ),
           ),
           ),
-          const SizedBox(width: 16),
+           SizedBox(width: 16.w),
           Expanded(
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           Text(
           "${item.product!.name}",
-          style: const TextStyle(
-          fontSize: 16,
+          style:  TextStyle(
+          fontSize: 16.sp,
           fontWeight: FontWeight.bold,
           ),
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8.h),
           Text(
           '\$${item.product!.price}',
-          style: const TextStyle(
-          fontSize: 16,
+          style:  TextStyle(
+          fontSize: 16.sp,
           color: Colors.blue,
           ),
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8.h),
           Row(
           children: [
           IconButton(
@@ -183,7 +185,7 @@ class _CartviewState extends ConsumerState<Cartview> {
               : null, // Disable button if quantity is 1
           icon: const Icon(Icons.remove_circle_outline),
           ),
-          Text('${item.quantity!}', style: const TextStyle(fontSize: 16),),
+          Text('${item.quantity!}', style:  TextStyle(fontSize: 16.sp),),
           IconButton(
           onPressed:
           (item.quantity != null &&

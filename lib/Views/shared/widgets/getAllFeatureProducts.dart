@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../core/utils/utils.dart';
 
@@ -20,7 +21,7 @@ class AllFeaturedProducts extends ConsumerWidget {
           return const Center(child: Text("No Featured Products available."));
         }
         return SizedBox(
-          height: 200,
+          height: 180.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -43,13 +44,11 @@ class AllFeaturedProducts extends ConsumerWidget {
                   }
                 },
                 child: Card(
-                  elevation: 3,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(8.0.r),
                   ),
                   child: Container(
-                    width: 130,
-                    margin: const EdgeInsets.all(10.0),
+                    width: 170.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -67,6 +66,13 @@ class AllFeaturedProducts extends ConsumerWidget {
                           child: Text(
                             featuredProduct?.product?.name ?? "Unknown",
                             style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                          child: Text(
+                            "\$${featuredProduct?.product?.price ?? 0}",
+                            style: const TextStyle(color: Colors.green),
                           ),
                         ),
                       ],

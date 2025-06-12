@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:riverpod/riverpod.dart';
 import '../../../View_Model/UserProfile/EditProfileViewModel.dart';
 import '../../../models/UserDetailModel.dart';
-import '../widgets/colors.dart';
+import '../../../core/utils/colors.dart';
 
 class editProfile extends ConsumerStatefulWidget {
   final int id;
@@ -28,7 +29,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           child: Stack(
             children: [
               CircleAvatar(
-                radius: 50,
+                radius: 50.r,
                 backgroundImage:
                     model.uploadimage != null
                         ? FileImage(model.uploadimage!)
@@ -40,7 +41,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
                         ),
               ),
               Positioned(
-                bottom: 5, // Adjust position of the camera icon
+                bottom: 5,
                 right: 3,
                 child: Container(
                   decoration: BoxDecoration(
@@ -84,7 +85,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
 
         ),
 
-        SizedBox(height: 10,),
+        SizedBox(height: 10.h,),
         TextFormField(
           controller: model.contactnumber,
           decoration: const InputDecoration(labelText: "Contact Number"),
@@ -177,9 +178,9 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
                 child: Column(
                   children: [
                     UserImage(user, editProfile),
-                    const SizedBox(height: 20),
+                     SizedBox(height: 20.h),
                     formFields(editProfile),
-                    const SizedBox(height: 20),
+                     SizedBox(height: 20.h),
                     UpdateButton(userState, editProfile, context),
                   ],
                 ),

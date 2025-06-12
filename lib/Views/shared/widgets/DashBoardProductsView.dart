@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
 class AllProducts extends ConsumerWidget {
@@ -19,10 +20,15 @@ class AllProducts extends ConsumerWidget {
           return const Center(child: Text("No Products available."));
         }
         return SizedBox(
-          height: 250, // Fixed height to prevent unbounded height
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
+          height: 290.h,
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Number of columns in the grid
+              crossAxisSpacing: 4, // Horizontal spacing between grid items
+              mainAxisSpacing: 15, // Adjust based on the desired item dimensions
+            ),
             itemCount: products.length,
+            physics:ScrollPhysics(),
             itemBuilder: (context, index) {
               final product = products[index];
               return GestureDetector(
@@ -34,13 +40,11 @@ class AllProducts extends ConsumerWidget {
                   );
                 },
                 child: Card(
-                  elevation: 4,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(8.0.r),
                   ),
                   child: Container(
-                    width: 150,
-                    margin: const EdgeInsets.all(10.0),
+                    width: 170.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -61,13 +65,12 @@ class AllProducts extends ConsumerWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
                           child: Text(
                             "\$${product?.price ?? 0}",
                             style: const TextStyle(color: Colors.green),
                           ),
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
                   ),

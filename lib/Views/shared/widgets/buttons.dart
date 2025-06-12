@@ -1,5 +1,6 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -19,18 +20,18 @@ class CustomButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        height: 40,
-        margin: EdgeInsets.symmetric(horizontal: 25),
+        height: 40.h,
+        margin: EdgeInsets.symmetric(horizontal: 25.w),
         width: double.infinity,
         decoration: BoxDecoration(
           color: Appcolors.blueColor,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15.r),
         ),
         child: Center(
           child:
               isLoading
                   ? CircularProgressIndicator(color: Appcolors.whiteColor)
-                  : Text(text, style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15)),
+                  : Text(text, style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15.sp)),
         ),
       ),
     );

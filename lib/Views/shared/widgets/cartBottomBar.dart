@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/buyerViewModels/OrderViewModel.dart';
 import '../../../models/cartModel.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class cartViewBottomWidget extends ConsumerStatefulWidget {
   final Cart cart;
@@ -38,16 +39,16 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
     double total = subtotal ;
 
     return Container(
-      height: 240,
+      height: 240.h,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40),topRight: Radius.circular(40)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(40.r),topRight: Radius.circular(40.r)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade100,
-            spreadRadius: 1,
-            blurRadius: 5,
+            spreadRadius: 1.r,
+            blurRadius: 5.r,
             offset: const Offset(0, -2),
           ),
         ],
@@ -55,22 +56,22 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+           Text(
             "Order Summary",
             style: TextStyle(
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.bold
             ),
           ),
-          const SizedBox(height: 12),
+           SizedBox(height: 12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Subtotal:"),
-              Text("Rs.${subtotal.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text("Rs.${subtotal.toStringAsFixed(2)}", style:  TextStyle(fontWeight: FontWeight.w500)),
             ],
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -78,24 +79,24 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
               Text("Rs.${shippingCost.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
             ],
           ),
-          const Divider(height: 24),
+           Divider(height: 24.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Total:", style: TextStyle(fontWeight: FontWeight.bold)),
+               Text("Total:", style: TextStyle(fontWeight: FontWeight.bold)),
               Text("Rs.${total.toStringAsFixed(2)}",
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       color: Colors.blue
                   )
               ),
             ],
           ),
-          const SizedBox(height: 16),
+           SizedBox(height: 16.h),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 50.h,
             child: ElevatedButton(
               onPressed: widget.cart.id != null ? () async {
                 if (kDebugMode) {
@@ -106,15 +107,15 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.blueColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(8.0.r),
                 ),
               ),
-              child: const Text(
+              child:  Text(
                 "CHECKOUT",
                 style: TextStyle(
                   color: Appcolors.whiteColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                 ),
               ),
             ),

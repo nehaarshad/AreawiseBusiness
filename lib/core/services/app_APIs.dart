@@ -50,6 +50,7 @@ class AppApis {
   static var GetUserProductsEndPoints = "$baseurl/getuserproducts/:id";
   static var GetShopProductsEndPoints = "$baseurl/getshopproducts/:id";
   static var GetProductByCategoryEndPoints = "$baseurl/getProductByCategory";
+  static var GetProductBySubCategoryEndPoints = "$baseurl/getProductBySubcategory/:name";
   static var UpdateProductEndPoints = "$baseurl/updateproduct/:id";
   static var DeleteProductEndPoints = "$baseurl/deleteproduct/:id";
   static var addCategoryEndPoints = "$baseurl/addcategory";

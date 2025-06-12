@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
@@ -42,7 +43,7 @@ class CategoriesButton extends ConsumerWidget {
             itemBuilder: (context, index) {
               final categoryName = allCategories[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
                 child: ChoiceChip(
                   label: Text(categoryName),
                   selected: selectedCategory == categoryName,

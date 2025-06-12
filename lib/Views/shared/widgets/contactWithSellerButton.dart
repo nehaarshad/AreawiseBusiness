@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../View_Model/SharedViewModels/chatListViewModel.dart';
 import '../../../models/chatsModel.dart';
 import '../Screens/chatView.dart';
-import 'colors.dart';
+import '../../../core/utils/colors.dart';
 
 class contactWithSellerButton extends ConsumerWidget {
   final String userId;

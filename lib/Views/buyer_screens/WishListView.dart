@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/buyerViewModels/WishListViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class Wishlistview extends ConsumerStatefulWidget {
   int id;
@@ -42,37 +43,37 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         );
                       },
                       leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                         child: (item?.product?.images?.isNotEmpty == true &&
                             item?.product?.images?.first.imageUrl?.isNotEmpty == true)
                             ? Image.network(
                           item!.product!.images!.first.imageUrl!,
                           fit: BoxFit.cover,
-                          width: 100,
-                          height: 100,
-                          errorBuilder: (context, error, stackTrace) => const Icon(
+                          width: 100.w,
+                          height: 100.h,
+                          errorBuilder: (context, error, stackTrace) =>  Icon(
                             Icons.image_not_supported,
-                            size: 50,
+                            size: 50.h,
                             color: Colors.grey,
                           ),
                         )
-                            : const Icon(
+                            :  Icon(
                           Icons.image_not_supported,
-                          size: 50,
+                          size: 50.h,
                           color: Colors.grey,
                         ),
                       ),
                       title: Text(
                         "${item?.product?.name}",
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style:  TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       subtitle: Text(
                         '\$${item?.product?.price}',
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style:  TextStyle(
+                          fontSize: 16.sp,
                           color: Colors.blue,
                         ),
                       ),

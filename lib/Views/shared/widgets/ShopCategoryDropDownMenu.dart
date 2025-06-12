@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SellerViewModels/UpdateShopViewModel.dart';
 import '../../../models/categoryModel.dart';
 
@@ -17,7 +18,6 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
   final TextEditingController shopcategory = TextEditingController();
   final FocusNode focus = FocusNode();
   List<Category> SelectCategories = [];
-  bool addnewCategory = false;
   bool showDropdown = false;
 
   @override
@@ -47,7 +47,6 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
     if (input.isEmpty) {
       setState(() {
         SelectCategories = [];
-        addnewCategory = false;
         showDropdown = false;
       });
       return;
@@ -58,35 +57,19 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
           categories
               .where((category) => category.name!.toLowerCase().contains(input))
               .toList();
-      addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
 
-    if (addnewCategory) {
-      ref
-          .read(addShopProvider(widget.userid).notifier)
-          .toggleCustomCategory(true);
-      ref
-          .read(addShopProvider(widget.userid).notifier)
-          .setCustomCategoryName(shopcategory.text);
-    } else {
-      ref
-          .read(addShopProvider(widget.userid).notifier)
-          .toggleCustomCategory(false);
-    }
   }
 
   void _onCategorySelected(Category category) {
     setState(() {
       shopcategory.text = category.name!;
       showDropdown = false;
-      addnewCategory = false;
       SelectCategories = []; // Clear the suggestions
     });
-    ref
-        .read(addShopProvider(widget.userid).notifier)
-        .toggleCustomCategory(false);
-    ref.read(addShopProvider(widget.userid).notifier).setCategory(category);
+        ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+        ref.read(addShopProvider(widget.userid).notifier).setCategory(category);
     focus.unfocus();
   }
 
@@ -100,7 +83,7 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
           focusNode: focus,
           decoration: InputDecoration(
             labelText: 'Category',
-            hintText: 'Search Category',
+            hintText: 'Select Category',
             suffixIcon:
                 shopcategory.text.isNotEmpty
                     ? IconButton(
@@ -136,11 +119,11 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
-                  blurRadius: 4,
+                  blurRadius: 4.r,
                   offset: Offset(0, 2),
                 ),
               ],
@@ -155,15 +138,6 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
                   onTap: () => _onCategorySelected(category),
                 );
               },
-            ),
-          ),
-
-        if (addnewCategory && shopcategory.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'New Category!',
-              style: TextStyle(color: Colors.orange),
             ),
           ),
       ],
@@ -182,12 +156,10 @@ class UpdateShopcategoryDropdown extends ConsumerStatefulWidget {
       _UpdateCategorySelectorState();
 }
 
-class _UpdateCategorySelectorState
-    extends ConsumerState<UpdateShopcategoryDropdown> {
+class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropdown> {
   final TextEditingController shopcategory = TextEditingController();
   final FocusNode focus = FocusNode();
   List<Category> SelectCategories = [];
-  bool addnewCategory = false;
   bool showDropdown = false;
 
   @override
@@ -221,7 +193,6 @@ class _UpdateCategorySelectorState
     if (input.isEmpty) {
       setState(() {
         SelectCategories = [];
-        addnewCategory = false;
         showDropdown = false;
       });
       return;
@@ -236,29 +207,15 @@ class _UpdateCategorySelectorState
                     category.name!.toLowerCase().contains(input),
               )
               .toList();
-      addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
 
-    if (addnewCategory) {
-      ref
-          .read(updateShopProvider(widget.userid).notifier)
-          .toggleCustomCategory(true);
-      ref
-          .read(updateShopProvider(widget.userid).notifier)
-          .setCustomCategoryName(shopcategory.text);
-    } else {
-      ref
-          .read(updateShopProvider(widget.userid).notifier)
-          .toggleCustomCategory(false);
-    }
   }
 
   void _onCategorySelected(Category category) {
     setState(() {
       shopcategory.text = category.name!;
       showDropdown = false;
-      addnewCategory = false;
       SelectCategories = []; // Clear the suggestions
     });
     ref
@@ -279,7 +236,7 @@ class _UpdateCategorySelectorState
           decoration: InputDecoration(
 
             labelText: 'Category',
-            hintText: 'Search Category',
+            hintText: 'Select Category',
             suffixIcon:
                 shopcategory.text.isNotEmpty
                     ? IconButton(
@@ -315,11 +272,11 @@ class _UpdateCategorySelectorState
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
-                  blurRadius: 4,
+                  blurRadius: 4.r,
                   offset: Offset(0, 2),
                 ),
               ],
@@ -337,14 +294,6 @@ class _UpdateCategorySelectorState
             ),
           ),
 
-        if (addnewCategory && shopcategory.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'New Category!',
-              style: TextStyle(color: Colors.orange),
-            ),
-          ),
       ],
     );
   }

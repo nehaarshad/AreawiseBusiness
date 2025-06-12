@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/services/splashServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class splashView extends ConsumerStatefulWidget {
   const splashView({super.key});
@@ -20,7 +21,7 @@ class _splashViewState extends ConsumerState<splashView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset('assets/images/logo.png',width: 900,height: 5000,),
+        child: Image.asset('assets/images/logo.png',width: 900.w,height: 5000.h,),
       ),
     );
   }

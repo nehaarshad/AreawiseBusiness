@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/updateProductViewModel.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/ProductDetailView.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
@@ -77,11 +78,11 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                 key: formkey,
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     if (state.value?.images != null &&
                         state.value!.images!.isNotEmpty)
                       Container(
-                        height: 120,
+                        height: 120.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: state.value?.images?.length ?? 0,
@@ -92,14 +93,14 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    width: 100,
-                                    height: 100,
+                                    width: 100.w,
+                                    height: 100.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8.r),
                                       child: UpdateImage(image),
                                     ),
                                   ),
@@ -199,7 +200,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     updateProductSubcategoryDropdown(
                       shopId: widget.product.id.toString(),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     ElevatedButton(
                       onPressed:
                           state.isLoading

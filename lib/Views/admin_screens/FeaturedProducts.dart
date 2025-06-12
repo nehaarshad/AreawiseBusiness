@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../shared/widgets/SetDateTime.dart';
-import '../shared/widgets/colors.dart';
+import '../../core/utils/colors.dart';
 
 class Featuredproducts extends ConsumerStatefulWidget {
   String id;
@@ -58,7 +59,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 16),
+                       SizedBox(height: 16.h),
                       GestureDetector(
                         onTap: () async {
                           final DateTime? dateTime = await setDateTime(
@@ -75,10 +76,10 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 16),
+                              horizontal: 12.w, vertical: 16.h),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8.0.r),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -208,7 +209,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
 
                     return Card(
                       elevation: 3,
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                      margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -222,8 +223,8 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                                 featuredProduct.product!.images!.first
                                     .imageUrl!,
                                 fit: BoxFit.cover,
-                                width: 50,
-                                height: 50,
+                                width: 50.w,
+                                height: 50.h,
                                 errorBuilder: (context, error, stackTrace) {
                                   return const Icon(Icons.error);
                                 },
@@ -259,7 +260,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                             children: [
                               Text("Expires: ", style: TextStyle(
                                   color: Colors.blue,
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w500)),
                               Text(
                                 "${_formatDate(featuredProduct.expireAt)}",
@@ -271,7 +272,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
 
                             ],
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                         ],
                       ),
                     );
@@ -286,14 +287,14 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                              Icons.error_outline, color: Colors.red, size: 48),
-                          SizedBox(height: 16),
+                              Icons.error_outline, color: Colors.red, size: 48.h),
+                          SizedBox(height: 16.h),
                           Text(
                             "Error loading featured products: $err",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.red),
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                           ElevatedButton(
                             onPressed: ()async{
                             await  ref.read(featureProductViewModelProvider(widget.id).notifier)

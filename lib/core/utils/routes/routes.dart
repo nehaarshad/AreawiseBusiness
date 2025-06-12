@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/historyView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/searchView.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
@@ -156,6 +157,13 @@ class Routes {
         Category category=arg as Category;
         return MaterialPageRoute(
           builder: (BuildContext context) => SubcategoriesView(category: category,),
+        );
+
+      case (routesName.search):
+        final id = arg['id'] as int;
+        String search=arg['search'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => searchView(search: search,userid: id,),
         );
 
       case (routesName.history):

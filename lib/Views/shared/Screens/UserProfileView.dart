@@ -2,11 +2,12 @@ import 'package:ecommercefrontend/Views/shared/widgets/logout_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/UserProfile/UserProfileViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../models/UserAddressModel.dart';
 import '../../../models/UserDetailModel.dart';
-import '../widgets/colors.dart';
+import '../../../core/utils/colors.dart';
 import '../widgets/infoRow.dart';
 import '../widgets/profileImageWidget.dart';
 
@@ -52,14 +53,14 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
             child: Center(
               child: Column(
                 children: [
-                  ProfileImageWidget(user: user, height: 150, width: 150),
-                  SizedBox(height: 20),
+                  ProfileImageWidget(user: user, height: 150.h, width: 150.w),
+                  SizedBox(height: 20.h),
                   userInfo(user: user,role: setRole,),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Divider(),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Expanded(child: addressInfo(address: user.address)),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: ElevatedButton(
@@ -124,11 +125,11 @@ class addressInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+         Text(
           'Address Information',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 8),
+         SizedBox(height: 8.h),
         infoWidget(heading: "Sector", value: address?.sector ?? 'N/A'),
         infoWidget(heading: "City", value: address?.city ?? 'N/A'),
         infoWidget(heading: "Address", value: address?.address ?? 'N/A'),

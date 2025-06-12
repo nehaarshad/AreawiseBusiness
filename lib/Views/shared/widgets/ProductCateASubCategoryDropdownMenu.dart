@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewMode
 import 'package:ecommercefrontend/View_Model/SellerViewModels/updateProductViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../models/SubCategoryModel.dart';
 import '../../../models/categoryModel.dart';
 
@@ -20,7 +21,6 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
   final TextEditingController ProductCategory = TextEditingController();
   final FocusNode focus = FocusNode();
   List<Category> SelectCategories = [];
-  bool addnewCategory = false;
   bool showDropdown = false;
 
   @override
@@ -49,7 +49,6 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
     if (input.isEmpty) {
       setState(() {
         SelectCategories = [];
-        addnewCategory = false;
         showDropdown = false;
       });
       return;
@@ -60,28 +59,14 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           categories
               .where((category) => category.name!.toLowerCase().contains(input))
               .toList();
-      addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
-    if (addnewCategory) {
-      ref
-          .read(addProductProvider(widget.shopid).notifier)
-          .toggleCustomCategory(true);
-      ref
-          .read(addProductProvider(widget.shopid).notifier)
-          .setCustomCategoryName(ProductCategory.text);
-    } else {
-      ref
-          .read(addProductProvider(widget.shopid).notifier)
-          .toggleCustomCategory(false);
-    }
   }
 
   void _onCategorySelected(Category category) {
     setState(() {
       ProductCategory.text = category.name!;
-      showDropdown = false; // Hide dropdown after selection
-      addnewCategory = false;
+      showDropdown = false;
       SelectCategories = []; // Clear the suggestions
     });
     ref
@@ -157,14 +142,7 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
               },
             ),
           ),
-        if (addnewCategory && ProductCategory.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'No Category Available!',
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
+
       ],
     );
   }
@@ -187,7 +165,6 @@ class _SubcategoryDropdownState
   final FocusNode subcategoryFocus = FocusNode();
   List<Subcategory> recommendedSubcategories = [];
   bool showSubcategoryDropdown = false;
-  bool addnewSubCategory = false;
 
   @override
   void initState() {
@@ -217,7 +194,6 @@ class _SubcategoryDropdownState
       setState(() {
         recommendedSubcategories = [];
         showSubcategoryDropdown = false;
-        addnewSubCategory = false;
       });
       return;
     }
@@ -231,27 +207,14 @@ class _SubcategoryDropdownState
               )
               .toList();
       showSubcategoryDropdown = true;
-      addnewSubCategory = recommendedSubcategories.isEmpty;
+
     });
-    if (addnewSubCategory) {
-      ref
-          .read(addProductProvider(widget.shopId).notifier)
-          .toggleCustomSubcategory(true);
-      ref
-          .read(addProductProvider(widget.shopId).notifier)
-          .setCustomSubcategoryName(subcategoryController.text);
-    } else {
-      ref
-          .read(addProductProvider(widget.shopId).notifier)
-          .toggleCustomSubcategory(false);
-    }
   }
 
   void SubcategorySelection(Subcategory subcategory) {
     setState(() {
       subcategoryController.text = subcategory.name!;
       showSubcategoryDropdown = false;
-      addnewSubCategory = false;
       recommendedSubcategories = [];
     });
     ref
@@ -286,7 +249,7 @@ class _SubcategoryDropdownState
           focusNode: subcategoryFocus,
           decoration: InputDecoration(
             labelText: 'Subcategory',
-            hintText: 'Search Subcategory',
+            hintText: 'Select Subcategory',
             suffixIcon:
                 subcategoryController.text.isNotEmpty
                     ? IconButton(
@@ -322,11 +285,11 @@ class _SubcategoryDropdownState
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
-                  blurRadius: 4,
+                  blurRadius: 4.r,
                   offset: Offset(0, 2),
                 ),
               ],
@@ -343,14 +306,7 @@ class _SubcategoryDropdownState
               },
             ),
           ),
-        if (addnewSubCategory && subcategoryController.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'New SubCategory!',
-              style: TextStyle(color: Colors.orange),
-            ),
-          ),
+
       ],
     );
   }
@@ -374,7 +330,6 @@ class _updateCategorySelectorState
   final TextEditingController ProductCategory = TextEditingController();
   final FocusNode focus = FocusNode();
   List<Category> SelectCategories = [];
-  bool addnewCategory = false;
   bool showDropdown = false;
 
   @override
@@ -409,7 +364,6 @@ class _updateCategorySelectorState
     if (input.isEmpty) {
       setState(() {
         SelectCategories = [];
-        addnewCategory = false;
         showDropdown = false;
       });
       return;
@@ -424,28 +378,14 @@ class _updateCategorySelectorState
                     category.name!.toLowerCase().contains(input),
               )
               .toList();
-      addnewCategory = SelectCategories.isEmpty;
       showDropdown = true;
     });
-    if (addnewCategory) {
-      ref
-          .read(updateProductProvider(widget.shopid).notifier)
-          .toggleCustomCategory(true);
-      ref
-          .read(updateProductProvider(widget.shopid).notifier)
-          .setCustomCategoryName(ProductCategory.text);
-    } else {
-      ref
-          .read(updateProductProvider(widget.shopid).notifier)
-          .toggleCustomCategory(false);
-    }
   }
 
   void _onCategorySelected(Category category) {
     setState(() {
       ProductCategory.text = category.name!;
       showDropdown = false; // Hide dropdown after selection
-      addnewCategory = false;
       SelectCategories = []; // Clear the suggestions
     });
     ref
@@ -502,11 +442,11 @@ class _updateCategorySelectorState
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
-                  blurRadius: 4,
+                  blurRadius: 4.r,
                   offset: Offset(0, 2),
                 ),
               ],
@@ -521,14 +461,6 @@ class _updateCategorySelectorState
                   onTap: () => _onCategorySelected(category),
                 );
               },
-            ),
-          ),
-        if (addnewCategory && ProductCategory.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'New Category!',
-              style: TextStyle(color: Colors.orange),
             ),
           ),
       ],
@@ -552,7 +484,6 @@ class _updateSubcategoryDropdownState
   final FocusNode subcategoryFocus = FocusNode();
   List<Subcategory> recommendedSubcategories = [];
   bool showSubcategoryDropdown = false;
-  bool addnewSubCategory = false;
 
   @override
   void initState() {
@@ -588,7 +519,6 @@ class _updateSubcategoryDropdownState
       setState(() {
         recommendedSubcategories = [];
         showSubcategoryDropdown = false;
-        addnewSubCategory = false;
       });
       return;
     }
@@ -603,27 +533,13 @@ class _updateSubcategoryDropdownState
               )
               .toList();
       showSubcategoryDropdown = true;
-      addnewSubCategory = recommendedSubcategories.isEmpty;
     });
-    if (addnewSubCategory) {
-      ref
-          .read(updateProductProvider(widget.shopId).notifier)
-          .toggleCustomSubcategory(true);
-      ref
-          .read(updateProductProvider(widget.shopId).notifier)
-          .setCustomSubcategoryName(subcategoryController.text);
-    } else {
-      ref
-          .read(updateProductProvider(widget.shopId).notifier)
-          .toggleCustomSubcategory(false);
-    }
   }
 
   void SubcategorySelection(Subcategory subcategory) {
     setState(() {
       subcategoryController.text = subcategory.name!;
       showSubcategoryDropdown = false;
-      addnewSubCategory = false;
       recommendedSubcategories = [];
     });
     ref
@@ -645,7 +561,7 @@ class _updateSubcategoryDropdownState
           focusNode: subcategoryFocus,
           decoration: InputDecoration(
             labelText: 'Subcategory',
-            hintText: 'Search Subcategory',
+            hintText: 'Select Subcategory',
             suffixIcon:
                 subcategoryController.text.isNotEmpty
                     ? IconButton(
@@ -681,11 +597,11 @@ class _updateSubcategoryDropdownState
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
-                  blurRadius: 4,
+                  blurRadius: 4.r,
                   offset: Offset(0, 2),
                 ),
               ],
@@ -700,14 +616,6 @@ class _updateSubcategoryDropdownState
                   onTap: () => SubcategorySelection(subcategory),
                 );
               },
-            ),
-          ),
-        if (addnewSubCategory && subcategoryController.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'New SubCategory!',
-              style: TextStyle(color: Colors.orange),
             ),
           ),
       ],

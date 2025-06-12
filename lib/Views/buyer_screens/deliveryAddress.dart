@@ -2,7 +2,8 @@ import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart
 import 'package:ecommercefrontend/models/orderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../shared/widgets/colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../core/utils/colors.dart';
 
 class deliveryAddress extends ConsumerStatefulWidget {
   int cartId;
@@ -28,7 +29,7 @@ class _deliveryAddressState extends ConsumerState<deliveryAddress> {
             return null;
           },
         ),
-        const SizedBox(height: 10),
+         SizedBox(height: 10.h),
         TextFormField(
           controller: model.city,
           decoration: const InputDecoration(labelText: "City"),
@@ -39,7 +40,7 @@ class _deliveryAddressState extends ConsumerState<deliveryAddress> {
             return null;
           },
         ),
-        const SizedBox(height: 10),
+         SizedBox(height: 10.h),
         TextFormField(
           controller: model.address,
           decoration: const InputDecoration(labelText: "Address"),
@@ -110,7 +111,7 @@ class _deliveryAddressState extends ConsumerState<deliveryAddress> {
                 child: Column(
                   children: [
                     formFields(viewModel),
-                    const SizedBox(height: 20),
+                     SizedBox(height: 20.h),
                     sendAddress(state,viewModel,context),
                   ],
                 ),

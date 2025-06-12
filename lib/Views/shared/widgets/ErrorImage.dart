@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class _ErrorImage extends StatelessWidget {
   const _ErrorImage();
@@ -6,12 +7,12 @@ class _ErrorImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
-      height: 80,
+      width: 80.w,
+      height: 80.h,
       color: Colors.grey[200],
-      child: const Icon(
+      child:  Icon(
         Icons.image_not_supported,
-        size: 40,
+        size: 40.h,
         color: Colors.grey,
       ),
     );

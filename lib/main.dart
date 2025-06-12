@@ -1,8 +1,9 @@
-import 'package:ecommercefrontend/Views/shared/widgets/colors.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,22 +14,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'E-Commerce Seventeen',
-        theme: ThemeData(
-          // Setting colorScheme with primary color
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Appcolors.blueColor,
-            primary: Appcolors.blueColor,
-          ),
-          // Set the primary color as well for legacy components
-       //   primaryColor: Appcolors.blueColor,
-        ),
-        initialRoute: routesName.splash,
-        onGenerateRoute: Routes.createroutes,
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+     builder: (_,child){
+        return ProviderScope(
+          child: MaterialApp(
+                 debugShowCheckedModeBanner: false,
+                 title: 'E-Commerce Seventeen',
+                 theme: ThemeData(
+                 // Setting colorScheme with primary color
+                 colorScheme: ColorScheme.fromSeed(
+                 seedColor: Appcolors.blueColor,
+                 primary: Appcolors.blueColor,
+                 ),
+                 // Set the primary color as well for legacy components
+                 //   primaryColor: Appcolors.blueColor,
+                 ),
+                 initialRoute: routesName.splash,
+                 onGenerateRoute: Routes.createroutes,
+                 ),
+        );
+
+     },
     );
   }
 }
