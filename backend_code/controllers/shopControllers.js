@@ -4,6 +4,7 @@ import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import dotenv from "dotenv" 
+import { Op } from "sequelize";
 dotenv.config();
 
 const addshop = async (req, res) => {
@@ -113,6 +114,39 @@ const getallshops=async(req,res)=>{
         console.log(error);
         res.json({error:"Failed to find shops"})
     }
+}
+
+const getShopByName=async(req,res)=>{
+    const { name } = req.body;
+    console.log(req.body)
+   console.log(name)
+   try {
+
+       const searchResults = await shop.findAll({
+              where: { shopname: {
+                    [Op.like]:`${name}%`
+                } },
+             include:[{
+                model:image,
+                where: { imagetype: 'shop' },
+                required:false //all shops may not have image
+            },
+            {
+                model:User,
+                required:true //all shops may  have category
+            },
+            {
+                model:category,
+                required:true //all shops may  have category
+            },
+        ]
+          });
+        
+         res.json(searchResults);
+   } catch (err) {
+       res.status(500).json(err);
+       console.log(err);
+   }
 }
 
 const updateshop=async(req,res)=>{  
@@ -270,4 +304,4 @@ const deleteshopbyid=async(req,res)=>{
     }
 }
 
-export default {addshop,getallshops,getusershop,updateshop,getshopId,getshopcategory,deleteshopbyid};
+export default {addshop,getallshops,getusershop,updateshop,getshopId,getshopcategory,deleteshopbyid,getShopByName};

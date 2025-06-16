@@ -7,6 +7,8 @@ import subcategories from "../models/subCategoryModel.js";
 import reviews from "../models/reviewModel.js";
 import dotenv from "dotenv";
 import shop from "../models/shopmodel.js";
+import { Op } from "sequelize";
+import Day from "../models/dayModel.js";
 dotenv.config();
 
 
@@ -119,7 +121,10 @@ const getallproducts = async (req, res) => {
         }
        
         else{
-            const categoryID=await category.findOne({where:{name:Category}})
+            const categoryID=await category.findOne({where:  { name: {
+                    [Op.like]:`${Category}`
+                } }})
+                console.log(categoryID);
             products=await Product.findAll(
                         {where:{categoryId:categoryID.id},
                          order: [['createdAt', 'DESC']], 
@@ -147,6 +152,106 @@ const getallproducts = async (req, res) => {
                         ]
                     
             })
+            console.log(products)
+        }
+
+        res.json(products);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const getNewArrivalproducts = async (req, res) => {
+
+    const {Category}= req.params;
+    console.log(Category);
+    try {
+        let products;
+
+        const days=await Day.findByPk(1);
+ console.log("Days Record:", days);
+
+        const dayLimit = days.day;
+        const dateThreshold = new Date();
+        dateThreshold.setDate(dateThreshold.getDate() - dayLimit);
+console.log(dateThreshold);
+        if(Category=="All"){
+            products = await Product.findAll({
+                where:{
+                    createdAt: {
+                [Op.gte]: dateThreshold 
+            }
+                },
+                 order: [['createdAt', 'DESC']], 
+                include:[{
+                    model:image,
+                    where:{imagetype:"product"},
+                    required:false //all products may not have image
+                },
+                {
+                    model:shop,
+                },
+                {
+                    model:category,
+                },
+                {
+                    model:subcategories,
+                },
+                {
+                    model:reviews,
+                    include:[{
+                        model:User,
+                    }]
+                }
+            ]
+            });
+            console.log(products)
+        }
+       
+        else{
+        //     const categoryID=await category.findOne({
+        //        where:{
+        //          name: {
+        //             [Op.like]:`${Category}`
+        //         }},
+        // })
+            products=await Product.findAll(
+                        {
+                            where:{
+                          //  categoryId:categoryID.id,
+                            createdAt: {
+                         [Op.gte]: dateThreshold 
+            }
+                        },
+                         order: [['createdAt', 'DESC']], 
+                        include:[
+                            {
+                                model:image,
+                                where:{imagetype:"product"},
+                                required:false //all products may not have image
+                            },
+                            {
+                                model:shop,
+                            },
+                            {
+                                model:category,
+                                where:{
+                 name: {
+                    [Op.like]:`${Category}`
+                }},
+                            },
+                            {
+                                model:subcategories,
+                            },
+                            {
+                                model:reviews,
+                                include:[{
+                                    model:User,
+                                }]
+                            }
+                        ]
+                    
+            })
         }
 
         res.json(products);
@@ -155,6 +260,7 @@ const getallproducts = async (req, res) => {
         res.json({ error: "Failed to find products" });
     }
 };
+
 
 const getuserproducts = async (req, res) => {
     try {
@@ -241,13 +347,12 @@ const getProductByCategory = async (req, res) => {
    console.log(req.body)
    try {
        
-       const findcategory=await category.findOne({where:{name:Category}});
-       if (!findcategory) {
-              return res.json({ error: "Category not Found" });
-         }
+    //    const findcategory=await category.findOne({where:{name:Category}});
+    //    if (!findcategory) {
+    //           return res.json({ error: "Category not Found" });
+    //      }
          const categoryId = findcategory.id;
-         const products = await Product.findAll({ 
-             where: {categoryId },
+         const products = await Product.findAll({
               order: [['createdAt', 'DESC']], 
              include:[{
                  model:image,
@@ -259,6 +364,9 @@ const getProductByCategory = async (req, res) => {
             },
              {
                  model:category,
+                 where: { name: {
+                    [Op.like]:`%${Category}%`
+                } }
              },
              {
                  model:subcategories,
@@ -282,7 +390,7 @@ const getProductByCategory = async (req, res) => {
    }
 };
 
-const getProductBySubcategory = async (req, res) => {
+const getProductByName = async (req, res) => {
    const { name } = req.params;
    console.log(req.params)
    try {
@@ -293,7 +401,9 @@ const getProductBySubcategory = async (req, res) => {
     //    }
     //    const subcategoryId = findsubcategory.id;
        const products = await Product.findAll({
-            //  where: {subcategoryId },
+              where: {  name: {
+                    [Op.like]:`${name}`
+                }},
               order: [['createdAt', 'DESC']], 
              include:[{
                  model:image,
@@ -308,7 +418,7 @@ const getProductBySubcategory = async (req, res) => {
              },
              {
                  model:subcategories,
-                 where: { name:name }
+        
              },
             {
                 model:reviews,
@@ -319,7 +429,7 @@ const getProductBySubcategory = async (req, res) => {
          ]
           });
          if (!products) {
-             return res.json({ error: `Products of ${subcategory} not available` });
+             return res.json({ error: `Products of ${name} not available` });
          }
          res.json(products);
    } catch (err) {
@@ -327,6 +437,32 @@ const getProductBySubcategory = async (req, res) => {
        console.log(err);
    }
 };
+
+
+const updateproductArrivalDays = async (req, res) => {
+    try {
+
+        const { day } = req.body;
+
+        const update = await Day.update(
+            { day }, 
+            { 
+                where: {
+                    id: 1
+                }
+            }
+        );
+
+        res.status(200).json({ 
+            message: "Product arrival days updated successfully",
+            updatedDays: update
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "  FAILED TO UPDATE!" })
+    }
+}
 
 const updateproduct = async (req, res) => {
     try {
@@ -415,4 +551,4 @@ const deleteproduct = async (req, res) => {
     }
 }
 
-export default { addproduct, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,getProductBySubcategory,updateproduct, deleteproduct };
+export default { addproduct,updateproductArrivalDays, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,getNewArrivalproducts,getProductByName,updateproduct, deleteproduct };

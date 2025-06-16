@@ -5,6 +5,7 @@ import shop from "../models/shopmodel.js";
 import image from "../models/imagesModel.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import { Op } from "sequelize";
 dotenv.config();
 
 //get all users
@@ -53,17 +54,17 @@ const getusers=async(req,res)=>{
 const getuser=async(req,res)=>{
     try {
         const {username}=req.params;
+        console.log(username);
         const user=await User.findOne({
-             order: [['createdAt', 'DESC']], 
-            where:{username},
+            where:{username: {
+                    [Op.like]:`${username}%`
+                }},
             include:{
             model:image,
             where: { imagetype: 'user' },
             required:false //all users may not have image
         },});
-        if(!user){
-            return res.json({error:"User not Found"})
-        }
+        console.log(user)
         res.json(user);
     } catch (error) {
         console.log(error);
