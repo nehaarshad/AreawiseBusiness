@@ -464,6 +464,18 @@ const updateproductArrivalDays = async (req, res) => {
     }
 }
 
+const getproductArrivalDays = async (req, res) => {
+    try {
+        const day = await Day.findByPk(1);
+
+        res.status(200).json(day);
+
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "  FAILED TO Fetch!" })
+    }
+}
+
 const updateproduct = async (req, res) => {
     try {
         const {  id } = req.params;
@@ -551,4 +563,4 @@ const deleteproduct = async (req, res) => {
     }
 }
 
-export default { addproduct,updateproductArrivalDays, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,getNewArrivalproducts,getProductByName,updateproduct, deleteproduct };
+export default { addproduct,updateproductArrivalDays,getproductArrivalDays, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductByCategory,getNewArrivalproducts,getProductByName,updateproduct, deleteproduct };

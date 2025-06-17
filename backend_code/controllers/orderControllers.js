@@ -294,9 +294,9 @@ const updateDeliveryOrderAttributes=async (req, res) => {
             }
         );
 
-        res.status(200).json({ 
+        res.status(200).json(
            update
-        });
+        );
 
         
     } catch (error) {
@@ -306,5 +306,22 @@ const updateDeliveryOrderAttributes=async (req, res) => {
     }
 }
 
+const getDeliveryOrderAttributes=async (req, res) => {
+    try {
+         const get = await delivery.findByPk(1);
+        
 
-  export default {ViewCheckout,PlaceOrder,updateDeliveryOrderAttributes}
+        res.status(200).json(
+           get
+        );
+
+        
+    } catch (error) {
+           console.log(error);
+        res.json({ error: "  FAILED TO Fetch!" })
+        
+    }
+}
+
+
+  export default {ViewCheckout,PlaceOrder,updateDeliveryOrderAttributes,getDeliveryOrderAttributes};
