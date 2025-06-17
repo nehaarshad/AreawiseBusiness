@@ -1,40 +1,44 @@
-import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/textStyles.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
-import '../../View_Model/SharedViewModels/allShopsViewModel.dart';
-import '../../core/utils/routes/routes_names.dart';
-import '../../models/shopModel.dart';
-import '../shared/widgets/searchShop.dart';
+import '../../../View_Model/SellerViewModels/sellerShopViewModel.dart';
+import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
+import '../../../core/utils/colors.dart';
+import '../../../core/utils/routes/routes_names.dart';
 
-class allShopsView extends ConsumerStatefulWidget {
-  int id;//userId
-  allShopsView({required this.id});
+class searchShopView extends ConsumerStatefulWidget {
+  final String search;
+  final int userid;
+   searchShopView({super.key,required this.search,required this.userid});
 
   @override
-  ConsumerState<allShopsView> createState() => _AllShopsViewState();
+  ConsumerState<searchShopView> createState() => _searchShopViewState();
 }
 
-class _AllShopsViewState extends ConsumerState<allShopsView> {
+class _searchShopViewState extends ConsumerState<searchShopView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(allShopViewModelProvider.notifier).searchShops(widget.search);
+    });
+  }
 
-  List<ShopModel?> ShopList=[];
+
   @override
   Widget build(BuildContext context) {
     final shopState = ref.watch(allShopViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-         actions: [
-          searchShop(id:widget.id),
-         ]
+        backgroundColor: Appcolors.whiteColor,
       ),
+      backgroundColor: Appcolors.whiteColor,
+
       body: shopState.when(
           loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
           data: (shops) {
-            ShopList=shops;
             if (shops.isEmpty) {
               return const Center(child: Text("No Shops Available"));
             }
@@ -69,7 +73,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                             onPressed: () {
                               final parameters={
                                 'shopid':shop!.id,
-                                'userid':widget.id.toString(),
+                                'userid':widget.userid.toString(),
                               };
                               Navigator.pushNamed(
                                 context,
@@ -82,7 +86,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () async {
-                              await ref.read(sellerShopViewModelProvider(widget.id.toString(),).notifier)
+                              await ref.read(sellerShopViewModelProvider(widget.userid.toString(),).notifier)
                                   .deleteShop(shop!.id.toString());
 
                             },

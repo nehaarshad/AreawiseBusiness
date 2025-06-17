@@ -33,6 +33,9 @@ class _searchViewState extends ConsumerState<searchView> {
     final productState = ref.watch(sharedProductViewModelProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Appcolors.whiteColor,
+      ),
         backgroundColor: Appcolors.whiteColor,
 
         body: Column(

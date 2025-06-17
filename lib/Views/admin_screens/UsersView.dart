@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/UserViewModel.dart';
 import '../../core/utils/colors.dart';
+import 'Widgets/searchUser.dart';
 
 class UserView extends ConsumerStatefulWidget {
   const UserView({super.key});
@@ -14,27 +16,32 @@ class UserView extends ConsumerStatefulWidget {
 }
 
 class _UsersViewState extends ConsumerState<UserView> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(UserViewModelProvider.notifier).getallusers();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        searchUser(),
         Padding(
           padding:  EdgeInsets.only(top: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(width: 100.w,),
-              Text("All Users",style:  TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp)),
-              SizedBox(width: 50.w,),
               TextButton(onPressed: (){
                 Navigator.pushNamed(context, routesName.addUser);
               }, child: Text(" + Add User"))
             ],
           ),
         ),
-        SizedBox(height: 10.h,),
-        Expanded(
-          child: Consumer(
+        SizedBox(height: 20.h,),
+        Consumer(
               builder: (context, ref, child) {
                 final userState = ref.watch(UserViewModelProvider);
                 return userState.when(
@@ -47,6 +54,8 @@ class _UsersViewState extends ConsumerState<UserView> {
                       return Center(child: Text("No User available."));
                     }
                     return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: users.length,
                       itemBuilder: (context, index) {
                         final user = users[index];
@@ -133,7 +142,7 @@ class _UsersViewState extends ConsumerState<UserView> {
                 );
               },
             ),
-        ),
+
       ],
     );
   }

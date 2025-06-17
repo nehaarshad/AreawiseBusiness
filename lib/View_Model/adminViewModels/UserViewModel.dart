@@ -25,6 +25,15 @@ class UserViewModel extends StateNotifier<AsyncValue<List<UserDetailModel?>>> {
     }
   }
 
+  Future<void> searchuser(String name) async {
+    try {
+      List<UserDetailModel?> users = await ref.read(userProvider).getuserbyname(name);
+      state = AsyncValue.data(users.isEmpty ? [] : users);
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+    }
+  }
+
   Future<void> deleteusers(String id) async {
     try {
       await ref.read(userProvider).deleteUser(id);

@@ -84,12 +84,29 @@ class ShopRepositories {
       throw e;
     }
   }
+  Future<List<ShopModel?>> searchShop(String name) async {
+    List<ShopModel> shoplist = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+        AppApis.GetShopByNameEndPoints.replaceFirst(":name", name),
+      );
+      if (response is List) {
+        return response
+            .map((shop) => ShopModel.fromJson(shop as Map<String, dynamic>))
+            .toList();
+      }
+      return shoplist;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   Future<Map<String, dynamic>> updateShop(
     Map<String, dynamic> data,
     String id,
     List<File>? images,
-  ) async {
+  ) async
+  {
     try {
       dynamic response = await apiservice.UpdateApiWithMultiport(
         AppApis.UpdateUserShopEndPoints.replaceFirst(':id', id),
@@ -103,7 +120,8 @@ class ShopRepositories {
     }
   }
 
-  Future<dynamic> deleteShop(String id) async {
+  Future<dynamic> deleteShop(String id) async
+  {
     try {
       dynamic response = await apiservice.DeleteApiResponce(
         AppApis.DeleteShopEndPoints.replaceFirst(':id', id),

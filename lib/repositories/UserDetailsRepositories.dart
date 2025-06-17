@@ -50,12 +50,21 @@ class UserRepositories {
     }
   }
 
-  Future<UserDetailModel> getuserbyname(String username) async {
+  Future<List<UserDetailModel>> getuserbyname(String username) async {
     try {
+      List<UserDetailModel> userlist = [];
       dynamic response = await apiservice.GetApiResponce(
         AppApis.SearchUserBynameEndPoints.replaceFirst(':username', username),
       );
-      return response;
+      if (response is List) {
+        return response
+            .map(
+              (user) => UserDetailModel.fromJson(user as Map<String, dynamic>),
+        )
+            .toList();
+      }
+      userlist = [UserDetailModel.fromJson(response)];
+      return userlist;
     } catch (e) {
       throw e;
     }

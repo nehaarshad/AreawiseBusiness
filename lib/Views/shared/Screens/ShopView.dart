@@ -1,12 +1,15 @@
+import 'package:ecommercefrontend/Views/shared/widgets/searchShop.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import '../../admin_screens/Widgets/searchUser.dart';
 
 class ShopsView extends ConsumerStatefulWidget {
-  const ShopsView({super.key});
+  int id;
+   ShopsView({super.key,required this.id});
 
   @override
   ConsumerState<ShopsView> createState() => _ShopsViewState();
@@ -17,7 +20,8 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(child: Text(" All Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
+        Center(child: Text(" Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
+        searchShop(id:widget.id),
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {

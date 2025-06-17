@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../View_Model/adminViewModels/DeliveryOrderAttributesViewModel.dart';
 import '../../../View_Model/buyerViewModels/OrderViewModel.dart';
 import '../../../models/cartModel.dart';
 import '../../../core/utils/colors.dart';
@@ -17,6 +18,30 @@ class cartViewBottomWidget extends ConsumerStatefulWidget {
 
 class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
 
+   int shippingPrice=0;
+   String discount='0.0';
+   String Offer='0.0';
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(attributesViewModelProvider.notifier)
+          .getAttributes()
+          .then((_) {
+        final attribute =
+            ref
+                .read(attributesViewModelProvider)
+                .value;
+        print('Loaded Attributes: ${attribute}');
+        if (attribute != null) {
+         shippingPrice=attribute.shippingPrice!;
+         discount=attribute.discount!;
+         Offer=attribute.totalBill!;
+        }
+      });
+    });
+  }
   // Calculate subtotal from cart items
   double calculateSubtotal(Cart cart) {
     double subtotal = 0;
@@ -34,8 +59,7 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
   Widget build(BuildContext context) {
 
 
-    double subtotal = calculateSubtotal(widget.cart!);
-    double shippingCost = 200;
+    double subtotal = calculateSubtotal(widget.cart);
     double total = subtotal ;
 
     return Container(
@@ -76,7 +100,19 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Shipping:"),
-              Text("Rs.${shippingCost.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text("Rs.${shippingPrice.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          total < (double.tryParse(Offer) ?? 5000.0 )
+              ?
+          Center(child: Text("${discount} is Offer, if you spent RS.${Offer} ", style:  TextStyle(fontWeight: FontWeight.w300,color: Appcolors.blueColor)))
+              :
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Shipping:"),
+              Text("Rs.${shippingPrice.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
             ],
           ),
            Divider(height: 24.h),
@@ -102,7 +138,7 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
                 if (kDebugMode) {
                   print('cart ID Sent: ${widget.cart.id}');
                 }
-                await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), shippingCost, total, context);
+                await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), total, context);
               } : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.blueColor,

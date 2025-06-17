@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:ecommercefrontend/models/NewArrivalDuration.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,10 +45,46 @@ class ProductRepositories {
     }
   }
 
-  Future<List<ProductModel>> searchProduct(String subCategory) async {
+  Future<List<ProductModel>> getNewArrivalProduct(String Category) async {
     List<ProductModel> productlist = [];
     try {
-      dynamic response = await apiservice.GetApiResponce(AppApis.GetProductBySubCategoryEndPoints.replaceFirst(':name', subCategory));
+      dynamic response = await apiservice.GetApiResponce(AppApis.getNewArrivalProductsEndPoints.replaceFirst(':Category', Category));
+      if (response is List) {
+        return response.map((products) => ProductModel.fromJson(products as Map<String, dynamic>),).toList();
+      }
+      productlist = [ProductModel.fromJson(response)];
+      return productlist;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<dynamic> updateArrivalDuration(Map<String,dynamic> data) async{
+    try{
+
+      final jsonData=jsonEncode(data);
+      final headers = {'Content-Type': 'application/json'};
+      dynamic response=await apiservice.UpdateApiWithJson(AppApis.setNewArrivalDaysEndPoints, jsonData,headers);
+      return response;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  Future<NewArrivalDuration> getArrivalDuration() async{
+    try{
+
+      dynamic response=await apiservice.GetApiResponce(AppApis.getNewArrivalDaysEndPoints);
+      return NewArrivalDuration.fromJson(response);
+    }catch(e){
+      throw e;
+    }
+  }
+
+  Future<List<ProductModel>> searchProduct(String name) async {
+    List<ProductModel> productlist = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(AppApis.getProductByNameEndPoints.replaceFirst(':name', name));
       if (response is List) {
         return response.map((products) => ProductModel.fromJson(products as Map<String, dynamic>),).toList();
       }

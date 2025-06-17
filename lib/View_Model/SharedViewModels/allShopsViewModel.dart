@@ -21,5 +21,13 @@ class allShopsViewModel extends StateNotifier<AsyncValue<List<ShopModel?>>> {
     }
   }
 
+  Future<void> searchShops(String name) async {
+    try {
+      List<ShopModel?> shoplist = await ref.read(shopProvider).searchShop(name);
+      state = AsyncValue.data(shoplist.isEmpty ? [] : shoplist);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
 
 }

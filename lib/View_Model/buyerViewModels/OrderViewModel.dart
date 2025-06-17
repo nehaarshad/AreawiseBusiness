@@ -24,10 +24,9 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
   bool loading = false;
   
 
-  Future<void> checkOut(String id,double shippingCost,double total,BuildContext context,) async {
+  Future<void> checkOut(String id,double total,BuildContext context,) async {
     try {
       final data={
-        "shippingPrice":shippingCost,
         "total":total
       };
       orderModel order = await ref.read(orderProvider).getUserCheckout(id,data);

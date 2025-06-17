@@ -13,9 +13,11 @@ class routesName {
   static const String afeature = "Featuredproductrequestview";
   static const String aproduct = "ProductView";
   static const String auser = "UsersView";
+  static const String updateAttributes="updateDeliveryOrderAttributes";
   static const String addUser = "addUserView";
   static const String categories = "appCategories";
   static const String subcategories = "appSubcategories";
+  static const String searchUser = "searchUserView";
 
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";
@@ -46,6 +48,8 @@ class routesName {
   static const String chatList = "chatsListView";
   static const String chatView = "chatView";
   static const String history = "historyView";
-  static const String search = "searchView";
+  static const String search = "searchProductView";
+  static const String searchShop = "searchShopView";
+
 
 }

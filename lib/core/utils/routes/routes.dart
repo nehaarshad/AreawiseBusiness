@@ -1,9 +1,10 @@
 import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
+import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/historyView.dart';
-import 'package:ecommercefrontend/Views/shared/Screens/searchView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/searchProductView.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,13 @@ import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
 import '../../../Views/admin_screens/FeaturedProducts.dart';
 import '../../../Views/admin_screens/appCategories.dart';
 import '../../../Views/admin_screens/appSubcategories.dart';
+import '../../../Views/admin_screens/updateDeliveryOrderAttributes.dart';
 import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
 import '../../../Views/sellerscrens/sellerShopDetailView.dart';
 import '../../../Views/shared/Screens/chatView.dart';
 import '../../../Views/shared/Screens/chatsListView.dart';
 import '../../../Views/shared/Screens/forgetPasswordView.dart';
+import '../../../Views/shared/Screens/searchShopView.dart';
 import '../../../Views/shared/widgets/getAllProductView.dart';
 import '../../../Views/admin_screens/adminhomeview.dart';
 import '../../../Views/auth/screens/login_View.dart';
@@ -65,6 +68,9 @@ class Routes {
         final user = arg as UserDetailModel;
         return MaterialPageRoute(builder: (BuildContext context) => adminhomeview(user: user),);
 
+      case (routesName.updateAttributes):
+        return MaterialPageRoute(builder: (BuildContext context) => UpdateAttributes(),);
+
       case (routesName.dashboard):
         final user = arg as UserDetailModel;
         return MaterialPageRoute(builder: (BuildContext context) => DashboardView(id: user.id!,user: user,),);
@@ -83,7 +89,8 @@ class Routes {
 
 
       case (routesName.ashop):
-        return MaterialPageRoute(builder: (BuildContext context) => const ShopsView());
+        int id=arg as int;
+        return MaterialPageRoute(builder: (BuildContext context) =>  ShopsView(id: id,));
 
       case (routesName.aproduct):
         int id=arg as int;
@@ -164,6 +171,20 @@ class Routes {
         String search=arg['search'] as String;
         return MaterialPageRoute(
           builder: (BuildContext context) => searchView(search: search,userid: id,),
+        );
+
+      case (routesName.searchUser):
+
+        String search=arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => searchUserView(search: search),
+        );
+
+      case (routesName.searchShop):
+        final id = arg['id'] as int;
+        String search=arg['search'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => searchShopView(search: search,userid: id,),
         );
 
       case (routesName.history):

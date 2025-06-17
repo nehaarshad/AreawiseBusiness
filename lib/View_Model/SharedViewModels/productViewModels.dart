@@ -37,6 +37,15 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
     }
   }
 
+  Future<void> getNewArrivalProduct(String category) async {
+    try {
+      List<ProductModel?> product = await ref.read(productProvider).getNewArrivalProduct(category);
+      state = AsyncValue.data(product.isEmpty ? [] : product);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
   Future<void> searchProduct(String subcategory) async {
     try {
       List<ProductModel?> product = await ref.read(productProvider).searchProduct(subcategory);

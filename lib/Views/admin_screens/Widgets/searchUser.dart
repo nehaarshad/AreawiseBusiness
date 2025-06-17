@@ -5,24 +5,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/routes/routes_names.dart';
 
-class searchBar extends ConsumerStatefulWidget {
-  final int id;
-  const searchBar({super.key, required this.id});
+
+class searchUser extends ConsumerStatefulWidget {
+  searchUser({super.key});
 
   @override
-  ConsumerState<searchBar> createState() => _SearchBarState();
+  ConsumerState<searchUser> createState() => _searchShopState();
 }
 
-class _SearchBarState extends ConsumerState<searchBar> {
+class _searchShopState extends ConsumerState<searchUser> {
   final TextEditingController searchController = TextEditingController();
 
   void _navigateToSearch(String search) {
     if (search.trim().isNotEmpty) {
-      final parameters = {
-        'id': widget.id,
-        'search': search.trim(),
-      };
-      Navigator.pushNamed(context, routesName.search, arguments: parameters);
+      Navigator.pushNamed(context, routesName.searchUser, arguments: search.trim());
     }
   }
 
@@ -38,7 +34,7 @@ class _SearchBarState extends ConsumerState<searchBar> {
       padding: EdgeInsets.symmetric(horizontal: 10.0.w),
       child: SearchBar(
         controller: searchController,
-        hintText: "Search Products",
+        hintText: "Search ",
         leading: const Icon(
           Icons.search,
           color: Appcolors.blueColor,
@@ -61,3 +57,4 @@ class _SearchBarState extends ConsumerState<searchBar> {
     );
   }
 }
+

@@ -58,7 +58,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     super.initState();
     // Initialize pages with user ID
     BuyerViews = [
-      ShopsView(),
+      ShopsView(id: widget.id),
       Wishlistview(id: widget.id),
       appHomeview(id: widget.id),
       Cartview(id: widget.id),

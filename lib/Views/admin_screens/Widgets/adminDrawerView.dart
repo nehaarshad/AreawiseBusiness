@@ -24,7 +24,7 @@ class AdminDrawerListItems extends ConsumerWidget {
           drawerHeader(context),
           drawerItems(
             icon: Icons.ad_units_outlined,
-            title: "ADs",
+            title: "Ads",
             onTap: () {
               Navigator.pushNamed(
                 context,
@@ -76,7 +76,16 @@ class AdminDrawerListItems extends ConsumerWidget {
               );
             },
           ),
-
+          drawerItems(
+            icon: Icons.settings,
+            title: 'Settings',
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.updateAttributes,
+              );
+            },
+          ),
           drawerItems(
               icon: Icons.logout,
               title: 'Logout',
@@ -91,30 +100,33 @@ class AdminDrawerListItems extends ConsumerWidget {
 
   Widget drawerHeader(BuildContext context){
     return DrawerHeader(
+      
         decoration: BoxDecoration(
             color: Appcolors.blueColor
         ),
-        child: GestureDetector(
-          onTap: (){
-            final parameters={
-              'id':user.id,
-              'role':user.role
-            };
-            Navigator.pushNamed(
-              context,
-              routesName.profile,
-              arguments:parameters,
-            );
-          },
-          child: Column(
-            children: [
-              ProfileImageWidget(user: user, height: 80.h, width: 80.h),
-              Text(user.username!,style: TextStyle(
-                color: Appcolors.whiteColor,
-                fontSize: 15.sp,
-              ),)
-            ],
-
+        child: SingleChildScrollView(
+          child: GestureDetector(
+            onTap: (){
+              final parameters={
+                'id':user.id,
+                'role':user.role
+              };
+              Navigator.pushNamed(
+                context,
+                routesName.profile,
+                arguments:parameters,
+              );
+            },
+            child: Column(
+              children: [
+                ProfileImageWidget(user: user, height: 70.h, width: 100.w),
+                Text(user.username!,style: TextStyle(
+                  color: Appcolors.whiteColor,
+                  fontSize: 15.sp,
+                ),)
+              ],
+          
+            ),
           ),
         )
     );

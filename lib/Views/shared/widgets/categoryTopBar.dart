@@ -22,6 +22,7 @@ class CategoriesButton extends ConsumerWidget {
       // Fetch products based on selected category
       ref.read(featureProductViewModelProvider(id).notifier).getAllFeaturedProducts(category);
       ref.read(sharedProductViewModelProvider.notifier).getAllProduct(category);
+      ref.read(sharedProductViewModelProvider.notifier).getNewArrivalProduct(category);
     }
 
     final categoriesAsync = ref.watch(GetallcategoriesProvider);

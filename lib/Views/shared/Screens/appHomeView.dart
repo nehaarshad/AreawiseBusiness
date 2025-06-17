@@ -11,6 +11,7 @@ import '../widgets/DashBoardProductsView.dart';
 import '../widgets/categoryTopBar.dart';
 import '../widgets/getAllAds.dart';
 import '../widgets/getAllFeatureProducts.dart';
+import '../widgets/getNewArrivals.dart';
 import '../widgets/logout_button.dart';
 
 class appHomeview extends ConsumerStatefulWidget {
@@ -70,13 +71,33 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
             AllFeaturedProducts(userid: widget.id),
             SizedBox(height: 10.h),
             // New Arrivals
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+                  child: Text(
+                    "New Arrivals",
+                    style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text("See All", style: TextStyle(color: Colors.grey,fontSize: 12.sp)),
+                    Icon(Icons.arrow_forward_ios_sharp, size: 9.h,color: Colors.grey,),
+                  ],
+                ),
+              ],
+            ),
+            NewArrivals(userid: widget.id,),
+            //All Products
            Row(
              mainAxisAlignment: MainAxisAlignment.start,
              children: [
                Padding(
                       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
                       child: Text(
-                        "New Arrival",
+                        "Recommended for You",
                         style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
                       ),
                     ),
