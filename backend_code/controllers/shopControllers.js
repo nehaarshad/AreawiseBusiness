@@ -117,8 +117,7 @@ const getallshops=async(req,res)=>{
 }
 
 const getShopByName=async(req,res)=>{
-    const { name } = req.body;
-    console.log(req.body)
+    const { name } = req.params;
    console.log(name)
    try {
 

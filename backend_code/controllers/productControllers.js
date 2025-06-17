@@ -402,7 +402,7 @@ const getProductByName = async (req, res) => {
     //    const subcategoryId = findsubcategory.id;
        const products = await Product.findAll({
               where: {  name: {
-                    [Op.like]:`${name}`
+                    [Op.like]:`${name}%`
                 }},
               order: [['createdAt', 'DESC']], 
              include:[{

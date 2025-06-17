@@ -5,13 +5,14 @@ import order from '../models/orderModel.js'
 import Address from '../models/addressmodel.js'
 import image from "../models/imagesModel.js";
 import SellerOrder from '../models/sellerOrderModel.js'
+import delivery from '../models/deliveryOrderAttributes.js'
 
 
 //onCheckoutButtonClick
 const ViewCheckout = async (req, res) => {
   try {
       const { id } = req.params;  // id of cart to be checked out
-       let { shippingPrice, total} = req.body; // userId from the request body 
+       let { total} = req.body; // userId from the request body 
       // Fetch the cart with its associated CartItems, Product, and image
       const userCart = await cart.findByPk(id, {
           include: [
@@ -49,15 +50,16 @@ const ViewCheckout = async (req, res) => {
     //       await existingCart.destroy();
     //   }
 
+
+        const attributes=await delivery.findByPk(1);
     let discountOffer = 0; // 0% discount
-    if(total>5000){
-        discountOffer = 0.1; // 10% discount
-          total = total - (total * discountOffer) + shippingPrice;
-          
-          discountOffer = discountOffer * 100; 
+    if(total>=attributes.totalBill){
+        discountOffer = attributes.discount; // 10% discount
+          total = total - (total * discountOffer) + attributes.shippingPrice;
+          discountOffer = discountOffer * 100;
     }
           else{
-          total = total + shippingPrice;
+          total = total + attributes.shippingPrice;
           }
 
       console.log('User Cart:', JSON.stringify(userCart, null, 2));
@@ -67,8 +69,8 @@ const ViewCheckout = async (req, res) => {
           cartId: userCart.id,
           addressId: 1,  // by default address id is 1 randomly but can be set when user places order
           total: total,
-          discount: discountOffer,
-          shippingPrice: shippingPrice,
+          discount: attributes.discount,
+          shippingPrice: attributes.shippingPrice,
           status: 'InComplete' // Initial status of the order
       });
 
@@ -277,5 +279,32 @@ const PlaceOrder = async (req, res) => {
     }
 };
 
+const updateDeliveryOrderAttributes=async (req, res) => {
+    try {
 
-  export default {ViewCheckout,PlaceOrder}
+        const {totalBill,discount,shippingPrice}=req.body;
+        console.log(req.body);
+
+         const update = await delivery.update(
+            { totalBill, discount, shippingPrice }, 
+            { 
+                where: {
+                    id: 1
+                }
+            }
+        );
+
+        res.status(200).json({ 
+           update
+        });
+
+        
+    } catch (error) {
+           console.log(error);
+        res.json({ error: "  FAILED TO UPDATE!" })
+        
+    }
+}
+
+
+  export default {ViewCheckout,PlaceOrder,updateDeliveryOrderAttributes}

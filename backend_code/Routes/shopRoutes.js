@@ -9,7 +9,7 @@ shopRouter.get("/getallshops",getallshops);
 shopRouter.get("/getusershop/:id",getusershop);
 shopRouter.put("/updateshop/:id",upload.array('image',5),updateshop);
 shopRouter.get("/getshopById/:id",getshopId);
-shopRouter.get("/getShopByName",getShopByName);
+shopRouter.get("/getShopByName/:name",getShopByName);
 shopRouter.get("/getshopByCategory/:category",getshopcategory);
 shopRouter.delete("/deleteshopbyid/:id",deleteshopbyid);
 
