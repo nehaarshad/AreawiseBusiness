@@ -76,14 +76,23 @@ const loginUser = async (req, res) => {
             res.status(401).json({ message: "Incorrect Password" });
         }
         else{
+            const token = generateToken(existingUser.id);
             res.json({ 
                 id: existingUser.id, 
                 username: existingUser.username, 
                 email: existingUser.email,
                 contactnumber:existingUser.contactnumber, 
                 role: existingUser.role, 
-                token: generateToken(existingUser.id) 
+                token: token
             });
+            console.log({
+                id: existingUser.id, 
+                username: existingUser.username, 
+                email: existingUser.email,
+                contactnumber:existingUser.contactnumber, 
+                role: existingUser.role, 
+                token: token
+            })
         }
        
     } 

@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyparser from "body-parser";
 import  sequelize  from "./backend_code/config/db_config.js";
 import dotenv from "dotenv"
+import auth from "./backend_code/MiddleWares/authMiddleware.js";
 import modelsSyncs from "./backend_code/models/seqModelSync.js";
 import authroutes from "./backend_code/Routes/authRoutes.js";
 import userRouter from "./backend_code/Routes/userRoutes.js";
@@ -67,19 +68,19 @@ modelsSyncs.modelsSync()
 
 
 app.use("/api",authroutes );
-app.use("/api",userRouter);
-app.use("/api",productRouter);
-app.use("/api",shopRouter);
-app.use("/api",addressRouter);
-app.use("/api",categoryRouter);
-app.use("/api",cartRouter);
-app.use("/api",orderRouter);
-app.use("/api",wishListRoutes);
-app.use("/api",adsRouter);
-app.use("/api",SellerOrderRouter);
-app.use("/api",featuredRouter);
-app.use("/api",chatRouter);
-app.use("/api",reviewsRouter);
+app.use("/api",auth,userRouter);
+app.use("/api",auth,productRouter);
+app.use("/api",auth,shopRouter);
+app.use("/api",auth,addressRouter);
+app.use("/api",auth,categoryRouter);
+app.use("/api",auth,cartRouter);
+app.use("/api",auth,orderRouter);
+app.use("/api",auth,wishListRoutes);
+app.use("/api",auth,adsRouter);
+app.use("/api",auth,SellerOrderRouter);
+app.use("/api",auth,featuredRouter);
+app.use("/api",auth,chatRouter);
+app.use("/api",auth,reviewsRouter);
 
 scheduler();
 

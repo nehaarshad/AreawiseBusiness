@@ -55,7 +55,7 @@ const getuser=async(req,res)=>{
     try {
         const {username}=req.params;
         console.log(username);
-        const user=await User.findOne({
+        const user=await User.findAll({
             where:{username: {
                     [Op.like]:`${username}%`
                 }},
@@ -64,7 +64,11 @@ const getuser=async(req,res)=>{
             where: { imagetype: 'user' },
             required:false //all users may not have image
         },});
-        console.log(user)
+         console.log(user)
+        if(!user){
+                return res.json({ error: `Users of ${username} not found` });
+        }
+       
         res.json(user);
     } catch (error) {
         console.log(error);

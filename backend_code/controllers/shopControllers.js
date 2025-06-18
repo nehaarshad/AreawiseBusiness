@@ -140,7 +140,7 @@ const getShopByName=async(req,res)=>{
             },
         ]
           });
-        
+        console.log(searchResults);
          res.json(searchResults);
    } catch (err) {
        res.status(500).json(err);
