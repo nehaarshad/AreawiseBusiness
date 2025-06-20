@@ -54,6 +54,15 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reset user list when coming back to this view
+    Future.microtask(() async{
+      await   ref.read(AdsViewModelProvider.notifier).getAllAds();
+    });
+  }
+
+  @override
   void dispose() {
     timer?.cancel();
     page.dispose();
@@ -72,7 +81,7 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
         data: (ads) {
           if (ads.isEmpty) {
             return Center(
-              child: Center(child: Text("No Featured Ads",style: TextStyle(fontWeight: FontWeight.bold,color: Appcolors.blueColor),)),
+              child: Center(child: Text("No Ads",style: TextStyle(fontWeight: FontWeight.bold,color: Appcolors.blueColor),)),
             );
           }
           return Stack(

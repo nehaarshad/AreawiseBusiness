@@ -1,6 +1,6 @@
 class AppApis {
   static var baseurl = "http://192.168.133.179:5000/api";
-  static var socketURL = "http://192.168.161.179:5000";
+  static var socketURL = "http://192.168.133.179:5000";
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";

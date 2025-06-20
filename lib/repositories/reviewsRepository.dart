@@ -6,21 +6,33 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
 
 final reviewsProvider = Provider<ReviewsRepositories>((ref) {
-  return ReviewsRepositories();
+  return ReviewsRepositories(ref);
 });
 
 class ReviewsRepositories {
-  ReviewsRepositories();
+  Ref ref;
 
+  ReviewsRepositories(this.ref);
+
+  Map<String, String> headers() {
+    final token = ref
+        .read(sessionProvider)
+        ?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
   baseapiservice apiservice = networkapiservice();
 
   Future<List<Reviews?>> getReview(String id) async {
     try {
       List<Reviews> review = [];
-      dynamic response = await apiservice.GetApiResponce(AppApis.getReviewEndPoints.replaceFirst(':id', id));
+      dynamic response = await apiservice.GetApiResponce(AppApis.getReviewEndPoints.replaceFirst(':id', id),headers());
       if (response is List) {
         return response.map((products) => Reviews.fromJson(products as Map<String, dynamic>),).toList();
       }
@@ -34,11 +46,11 @@ class ReviewsRepositories {
   Future<Reviews> addReview(Map<String, dynamic> data, String id) async {
     try {
       final body = jsonEncode(data);
-      final headers = {'Content-Type': 'application/json'};
+
       dynamic response = await apiservice.PostApiWithJson(
           AppApis.AddReviewEndPoints.replaceFirst(':id', id),
           body,
-          headers);
+          headers());
       return Reviews.fromJson(response);
     } catch (e) {
       throw e;
@@ -48,11 +60,10 @@ class ReviewsRepositories {
   Future<Reviews> updateReview(String id, String comment) async {
     try {
       final data = jsonEncode({'comment': comment});
-      final headers = {'Content-Type': 'application/json'};
       dynamic response = await apiservice.UpdateApiWithJson(
         AppApis.UpdateReviewEndPoints.replaceFirst(':id', id),
         data,
-        headers,
+        headers(),
       );
       return Reviews.fromJson(response);
     } catch (e) {
@@ -62,7 +73,7 @@ class ReviewsRepositories {
 
   Future<dynamic> deleteReview(String id) async {
     try {
-      dynamic response = await apiservice.DeleteApiResponce(AppApis.DeleteReviewEndPoints.replaceFirst(':id', id));
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.DeleteReviewEndPoints.replaceFirst(':id', id),headers());
       return response;
     } catch (e) {
       throw e;

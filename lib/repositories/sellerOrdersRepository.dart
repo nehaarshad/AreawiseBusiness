@@ -2,22 +2,33 @@ import 'dart:convert';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
 import '../models/orderModel.dart';
 import '../models/ordersRequestModel.dart';
 
 final sellerOrderProvider=Provider<sellerOrderRepository>((ref){
-  return sellerOrderRepository();
+  return sellerOrderRepository(ref);
 });
 
 class sellerOrderRepository{
-  sellerOrderRepository();
+  Ref ref;
+  sellerOrderRepository(this.ref);
   baseapiservice apiservice=networkapiservice();
 
+  Map<String, String> headers() {
+    final token = ref
+        .read(sessionProvider)
+        ?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
   Future<List<OrdersRequestModel?>> getSellerOrders(String id)async{
     List<OrdersRequestModel> orders;
     try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getSellerOrderRequestsEndPoints.replaceFirst(':id', id));
+      dynamic response=await apiservice.GetApiResponce(AppApis.getSellerOrderRequestsEndPoints.replaceFirst(':id', id),headers());
       if (response is List) {
         return response.map((order) => OrdersRequestModel.fromJson(order as Map<String, dynamic>)).toList();
       }
@@ -31,7 +42,7 @@ class sellerOrderRepository{
   Future<List<orderModel?>> getCustomerOrders(String id)async{
     List<orderModel> orders;
     try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getCustomersOrdersEndPoints.replaceFirst(':id', id));
+      dynamic response=await apiservice.GetApiResponce(AppApis.getCustomersOrdersEndPoints.replaceFirst(':id', id),headers());
       if (response is List) {
         return response.map((order) => orderModel.fromJson(order as Map<String, dynamic>),).toList();
       }
@@ -45,8 +56,7 @@ class sellerOrderRepository{
   Future<OrdersRequestModel> updateOrderStatus(String id, Map<String,dynamic> data) async {
     try {
       final responseData=jsonEncode(data);
-      final headers = {'Content-Type': 'application/json'};
-      dynamic response = await apiservice.UpdateApiWithJson(AppApis.updateSellerOrderRequestsStatusEndPoints.replaceFirst(':id', id), responseData, headers,);
+      dynamic response = await apiservice.UpdateApiWithJson(AppApis.updateSellerOrderRequestsStatusEndPoints.replaceFirst(':id', id), responseData, headers(),);
       return OrdersRequestModel.fromJson(response);
     } catch (e) {
       rethrow;

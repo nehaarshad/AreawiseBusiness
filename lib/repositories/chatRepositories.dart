@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/network/baseapiservice.dart';
 import '../core/network/networkapiservice.dart';
 import '../core/services/app_APIs.dart';
@@ -10,14 +11,22 @@ import '../models/messagesModel.dart';
 
 final chatRepositoryProvider = Provider<ChatRepository>((ref) {
   final socketService = ref.watch(socketServiceProvider);
-  return ChatRepository(socketService);
+  return ChatRepository(socketService,ref);
 });
 
 class ChatRepository {
   final SocketService socketService;
+  Ref ref;
   final baseapiservice apiservice = networkapiservice();
 
-  ChatRepository(this.socketService);
+  ChatRepository(this.socketService,this.ref);
+  Map<String, String> headers() {
+    final token = ref.read(sessionProvider)?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
 
   // Expose message stream from socket
   Stream<Message> get messageStream => socketService.messageStream;
@@ -48,8 +57,9 @@ class ChatRepository {
   Future<List<Chat>> getChatsAsBuyer(String id) async {
     List<Chat> chats;
     try {
+
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getChatsAsBuyerEndPoints.replaceFirst(':id', id),
+        AppApis.getChatsAsBuyerEndPoints.replaceFirst(':id', id),headers()
       );
 
       if (response is List) {
@@ -66,7 +76,8 @@ class ChatRepository {
 
   Future<dynamic> deleteChat(String id) async {
     try {
-      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteChatEndPoints.replaceFirst(':id', id));
+
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteChatEndPoints.replaceFirst(':id', id),headers());
       return response;
     } catch (e) {
       throw e;
@@ -76,8 +87,9 @@ class ChatRepository {
   Future<List<Chat>> getChatsAsSeller(String id) async {
     List<Chat> chats;
     try {
+
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getChatsAsSellerEndPoints.replaceFirst(':id', id),
+        AppApis.getChatsAsSellerEndPoints.replaceFirst(':id', id),headers()
       );
 
       if (response is List) {
@@ -97,8 +109,9 @@ class ChatRepository {
   Future<List<Message>> getChatMessages(String chatId) async {
     List<Message> msgs;
     try {
+
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getChatMessagesEndPoints.replaceFirst(':id', chatId),
+        AppApis.getChatMessagesEndPoints.replaceFirst(':id', chatId),headers()
       );
 
       if (response is List) {
@@ -116,13 +129,13 @@ class ChatRepository {
   }
 
   Future<Chat?> createChat(String productId, Map<String, dynamic> data) async {
-    final headers = {'Content-Type': 'application/json'};
+
     final jsonData = jsonEncode(data);
     try {
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.createChatEndPoints.replaceFirst(':id', productId),
         jsonData,
-        headers,
+        headers(),
       );
 
       if (response != null) {

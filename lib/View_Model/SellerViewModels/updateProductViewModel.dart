@@ -12,6 +12,7 @@ import '../../repositories/product_repositories.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../SharedViewModels/NewArrivalsViewModel.dart';
 import '../SharedViewModels/productViewModels.dart';
 
 final updateProductProvider = StateNotifierProvider.family<UpdateProductViewModel, AsyncValue<ProductModel?>, String>((ref, id) {
@@ -224,6 +225,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       try {
         // Invalidate the provider to refresh the product list
         ref.invalidate(sharedProductViewModelProvider);
+        await ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
         await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
         await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
         await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);

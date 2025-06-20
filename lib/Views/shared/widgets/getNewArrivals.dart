@@ -3,8 +3,7 @@ import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
-import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../core/utils/utils.dart';
 
 class NewArrivals extends ConsumerStatefulWidget {
@@ -21,12 +20,12 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
   void initState() {
     super.initState();
     // Fetch all products when the widget is first created
-    ref.read(sharedProductViewModelProvider.notifier).getNewArrivalProduct('All');
+    ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
   }
 
   @override
   Widget build(BuildContext context) {
-    final productState = ref.watch(sharedProductViewModelProvider);
+    final productState = ref.watch(newArrivalViewModelProvider);
     return productState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (products) {

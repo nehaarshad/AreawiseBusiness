@@ -7,6 +7,8 @@ import '../../core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '../../repositories/deliveryOrderAttributesRepository.dart';
 import '../../repositories/product_repositories.dart';
+import '../SharedViewModels/NewArrivalsViewModel.dart';
+import '../SharedViewModels/productViewModels.dart';
 
 
 final attributesViewModelProvider = StateNotifierProvider<attributesViewModel,AsyncValue<DeliveryOrderAttributes>>((ref) {
@@ -71,6 +73,9 @@ class attributesViewModel extends StateNotifier<AsyncValue<DeliveryOrderAttribut
       await ref.read(productProvider).updateArrivalDuration(data);
       Utils.toastMessage("Updated Successfully!");
       getDays();
+      ref.invalidate(sharedProductViewModelProvider);
+      await ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
+      await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
       print('Error loading categories: $e');

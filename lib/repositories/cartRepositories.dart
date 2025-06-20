@@ -1,27 +1,37 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/network/baseapiservice.dart';
 import '../core/network/networkapiservice.dart';
 import '../core/services/app_APIs.dart';
 import '../models/cartModel.dart';
 
 final cartProvider = Provider<CartRepositories>((ref) {
-  return CartRepositories();
+  return CartRepositories(ref: ref);
 });
 
 class CartRepositories {
-  CartRepositories();
+  Ref  ref;
+  CartRepositories({required this.ref});
   baseapiservice apiservice = networkapiservice();
 
-  Future<Cart> addToCart(String id, Map<String,dynamic> data) async {
+
+  Map<String, String> headers() {
+    final token = ref.read(sessionProvider)?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
+  Future<Cart> addToCart(String id, Map<String,dynamic> data,) async {
     try {
-      final headers = {'Content-Type': 'application/json'};
+
       final body=jsonEncode(data);
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.addToCartEndPoints.replaceFirst(':id', id),
         body,
-        headers,
+          headers(),
       );
       if (response is Map<String, dynamic>) {
         return Cart.fromJson(response);
@@ -34,8 +44,9 @@ class CartRepositories {
 
   Future<Cart> getUserCart(String id) async {
     try {
+
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getUserCartEndPoints.replaceFirst(':id', id),
+        AppApis.getUserCartEndPoints.replaceFirst(':id', id), headers(),
       );
       return Cart.fromJson(response);
     } catch (e) {
@@ -43,14 +54,14 @@ class CartRepositories {
     }
   }
 
-  Future<Cart> updateCartItem(String id, int quantity) async {
+  Future<Cart> updateCartItem(String id, int quantity,) async {
     try {
       final data = jsonEncode({'quantity': quantity});
-      final headers = {'Content-Type': 'application/json'};
+
       dynamic response = await apiservice.UpdateApiWithJson(
         AppApis.updateCartItemEndPoints.replaceFirst(':id', id),
         data,
-        headers,
+          headers(),
       );
       return Cart.fromJson(response);
     } catch (e) {
@@ -61,7 +72,7 @@ class CartRepositories {
   Future<dynamic> deleteCartItem(String id) async {
     try {
       dynamic response = await apiservice.DeleteApiResponce(
-        AppApis.deleteCartItemEndPoints.replaceFirst(':id', id),
+        AppApis.deleteCartItemEndPoints.replaceFirst(':id', id), headers(),
       );
       return response;
     } catch (e) {
@@ -72,7 +83,7 @@ class CartRepositories {
   Future<dynamic> deleteUserCart(String id) async {
     try {
       dynamic response = await apiservice.DeleteApiResponce(
-        AppApis.deleteCartofUserEndPoints.replaceFirst(':id', id),
+        AppApis.deleteCartofUserEndPoints.replaceFirst(':id', id), headers(),
       );
       return response;
     } catch (e) {

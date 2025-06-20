@@ -8,17 +8,29 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
 
 final shopProvider = Provider<ShopRepositories>((ref) {
-  return ShopRepositories();
+  return ShopRepositories(ref);
 });
 
 class ShopRepositories {
-  ShopRepositories();
+
+  Ref ref;
+
+  ShopRepositories(this.ref);
 
   baseapiservice apiservice = networkapiservice();
-
+  Map<String, String> headers() {
+    final token = ref
+        .read(sessionProvider)
+        ?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
   //Add Shop of Seller by giving its ID
   Future<Map<String, dynamic>> addShop(
     Map<String, dynamic> data,
@@ -30,7 +42,7 @@ class ShopRepositories {
       dynamic response = await apiservice.PostApiWithMultiport(
         AppApis.AddUserShopEndPoints.replaceFirst(':id', id),
         data,
-        images,
+        images,headers()
       );
       return response;
     } catch (e) {
@@ -43,7 +55,7 @@ class ShopRepositories {
     List<ShopModel> shoplist = [];
     try {
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.GetAllShopEndPoints,
+        AppApis.GetAllShopEndPoints,headers()
       );
       if (response is List) {
         return response
@@ -61,7 +73,7 @@ class ShopRepositories {
     List<ShopModel> shoplist = [];
     try {
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.GetUserShopEndPoints.replaceFirst(':id', id),
+        AppApis.GetUserShopEndPoints.replaceFirst(':id', id),headers()
       );
       if (response is List) {
         return response
@@ -77,7 +89,7 @@ class ShopRepositories {
   Future<ShopModel> findShop(String id) async {
     try {
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.FindShopEndPoints.replaceFirst(':id', id),
+        AppApis.FindShopEndPoints.replaceFirst(':id', id),headers()
       );
       return ShopModel.fromJson(response);
     } catch (e) {
@@ -88,7 +100,7 @@ class ShopRepositories {
     List<ShopModel> shoplist = [];
     try {
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.GetShopByNameEndPoints.replaceFirst(":name", name),
+        AppApis.GetShopByNameEndPoints.replaceFirst(":name", name),headers()
       );
       if (response is List) {
         return response
@@ -111,7 +123,7 @@ class ShopRepositories {
       dynamic response = await apiservice.UpdateApiWithMultiport(
         AppApis.UpdateUserShopEndPoints.replaceFirst(':id', id),
         data,
-        images,
+        images,headers()
       );
       print(response);
       return response;
@@ -124,7 +136,7 @@ class ShopRepositories {
   {
     try {
       dynamic response = await apiservice.DeleteApiResponce(
-        AppApis.DeleteShopEndPoints.replaceFirst(':id', id),
+        AppApis.DeleteShopEndPoints.replaceFirst(':id', id),headers()
       );
       return response;
     } catch (e) {
@@ -135,7 +147,7 @@ class ShopRepositories {
   Future<dynamic> deleteUserShop(String id) async {
     try {
       dynamic response = await apiservice.DeleteApiResponce(
-        AppApis.DeleteUserShopEndPoints.replaceFirst(':id', id),
+        AppApis.DeleteUserShopEndPoints.replaceFirst(':id', id),headers()
       );
       return response;
     } catch (e) {

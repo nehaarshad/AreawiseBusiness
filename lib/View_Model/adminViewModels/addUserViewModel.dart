@@ -31,6 +31,7 @@ class addUserViewModel extends StateNotifier<UserState> {
 
     if (pickedimage != null) {
       uploadimage = File(pickedimage.path);
+      Utils.toastMessage("Uploading...");
       state = state.copyWith(image: uploadimage);
     }
   }

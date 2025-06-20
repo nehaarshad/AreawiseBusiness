@@ -24,6 +24,7 @@ class sessionViewModel extends StateNotifier<UserDetailModel?> {
     sp.setString('token', user.token!.toString());
     sp.setInt('id', user.id!.toInt());
     sp.setInt('contactnumber', user.contactnumber!.toInt());
+    print(sp.getString('token'));
     state = user;
   }
 

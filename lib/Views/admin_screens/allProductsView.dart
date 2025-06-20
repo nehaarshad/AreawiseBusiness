@@ -6,6 +6,7 @@ import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
+import '../shared/widgets/searchBar.dart';
 
 class AllProductsview extends ConsumerStatefulWidget {
   final int id;
@@ -30,14 +31,15 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
     final productState = ref.watch(sharedProductViewModelProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("All Products",style: AppTextStyles.headline,),
-      ),
+
       body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 10.h,),
+                searchBar(id: widget.id,),
+                SizedBox(height: 10.h,),
                 Consumer(
                   builder: (context, ref, child) {
                     return productState.when(

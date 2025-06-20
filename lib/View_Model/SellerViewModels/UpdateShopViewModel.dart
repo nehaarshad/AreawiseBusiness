@@ -29,7 +29,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
   bool isCustomCategory = false;
   String? customCategoryName;
 
-  UpdateShopViewModel(this.ref, this.id) : super(const AsyncValue.loading()) {
+  UpdateShopViewModel(this.ref, this.id) : super( AsyncValue.loading()) {
     initValues(id);
     getCategories();
   }

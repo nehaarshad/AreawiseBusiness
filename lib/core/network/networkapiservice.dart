@@ -9,11 +9,11 @@ import 'package:http_parser/http_parser.dart';
 
 class networkapiservice extends baseapiservice {
   @override
-  Future GetApiResponce(String url) async {
+  Future GetApiResponce(String url, Map<String, String> headers,) async {
     dynamic responseJson;
     try {
       final response = await http
-          .get(Uri.parse(url))
+          .get(Uri.parse(url), headers: headers,)
           .timeout(Duration(seconds: 10));
       responseJson = httpResponse(response);
     } on SocketException {
@@ -29,8 +29,10 @@ class networkapiservice extends baseapiservice {
     Map<String, String> headers,
   ) async
   {
+
     dynamic responseJson;
     try {
+      print("in header sent ${headers}");
       Response response = await post(
         Uri.parse(url),
         body: data,
@@ -52,6 +54,7 @@ class networkapiservice extends baseapiservice {
   {
     dynamic responseJson;
     try {
+      print("in header sent ${headers}");
       Response response = await put(
         Uri.parse(url),
         body: data,
@@ -66,16 +69,22 @@ class networkapiservice extends baseapiservice {
   }
 
   Future PostApiWithMultiport(
-      String url, Map<String, dynamic> data, List<File>? files,
+      String url, Map<String, dynamic> data, List<File>? files, Map<String, String> headers,
       ) async
   {
     try {
-      final request = new http.MultipartRequest('POST', Uri.parse(url));
+      final request = new http.MultipartRequest('POST', Uri.parse(url),);
 
       data.forEach((key, value) {
         //to add data into fields
         request.fields[key] = value.toString();
       });
+      final authHeader = headers['Authorization'];
+      final token = authHeader?.split(' ').last;
+      print("inMultiport post token ${token}");
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Authorization'] = 'Bearer $token';
+      print("inMultiport headers ${request.headers}");
       //upload files of images
       if (files != null) {
         for (var i = 0; i < files.length; i++) {
@@ -108,6 +117,7 @@ class networkapiservice extends baseapiservice {
     String url,
     Map<String, dynamic> data,
     List<File>? files,
+      Map<String, String> headers,
   ) async
   {
     try {
@@ -117,6 +127,12 @@ class networkapiservice extends baseapiservice {
         //to add data into fields
         request.fields[key] = value.toString();
       });
+      final authHeader = headers['Authorization'];
+      final token = authHeader?.split(' ').last;
+      print("inMultiport post token ${token}");
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Authorization'] = 'Bearer $token';
+      print("inMultiport headers ${request.headers}");
       //upload files of images
       if (files != null) {
         for (var i = 0; i < files.length; i++) {
@@ -148,6 +164,7 @@ class networkapiservice extends baseapiservice {
       String url,
       Map<String, dynamic> data,
       File? files,
+      Map<String, String> headers,
       ) async
   {
     try {
@@ -157,6 +174,14 @@ class networkapiservice extends baseapiservice {
         //to add data into fields
         request.fields[key] = value.toString();
       });
+
+      final authHeader = headers['Authorization'];
+      final token = authHeader?.split(' ').last;
+      print("inMultiport post token ${token}");
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Authorization'] = 'Bearer $token';
+
+      print("inMultiport headers ${request.headers}");
       //upload files of images
       if (files != null) {
         final stream = http.ByteStream(files.openRead());
@@ -186,6 +211,7 @@ class networkapiservice extends baseapiservice {
     String url,
     Map<String, dynamic> data,
     File? files,
+      Map<String, String> headers,
   ) async
   {
     try {
@@ -195,6 +221,13 @@ class networkapiservice extends baseapiservice {
         //to add data into fields
         request.fields[key] = value.toString();
       });
+      final authHeader = headers['Authorization'];
+      final token = authHeader?.split(' ').last;
+      print("inMultiport post token ${token}");
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Authorization'] = 'Bearer $token';
+
+      print("inMultiport headers ${request.headers}");
       //upload files of images
       if (files != null) {
         final stream = http.ByteStream(files.openRead());
@@ -220,12 +253,12 @@ class networkapiservice extends baseapiservice {
     }
   }
 
-  Future DeleteApiResponce(String url) async
+  Future DeleteApiResponce(String url, Map<String, String> headers,) async
   {
     dynamic responseJson;
     try {
       Response response = await delete(
-        Uri.parse(url),
+        Uri.parse(url),headers: headers
       ).timeout(Duration(seconds: 10));
 
       responseJson = httpResponse(response);

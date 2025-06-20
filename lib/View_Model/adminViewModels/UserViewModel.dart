@@ -28,6 +28,11 @@ class UserViewModel extends StateNotifier<AsyncValue<List<UserDetailModel?>>> {
   Future<void> searchuser(String name) async {
     try {
       List<UserDetailModel?> users = await ref.read(userProvider).getuserbyname(name);
+      if (users.isEmpty) {
+        state = const AsyncValue.data([]); // Explicit empty list
+      } else {
+        state = AsyncValue.data(users.where((p) => p != null).toList());
+      }
       state = AsyncValue.data(users.isEmpty ? [] : users);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);

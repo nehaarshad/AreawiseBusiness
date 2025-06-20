@@ -8,14 +8,13 @@ import '../../core/utils/routes/routes_names.dart';
 
 class searchUserView extends ConsumerStatefulWidget {
   final String search;
-   searchUserView({super.key,required this.search});
+  const searchUserView({super.key, required this.search});
 
   @override
-  ConsumerState<searchUserView> createState() => _searchUserViewState();
+  ConsumerState<searchUserView> createState() => _SearchUserViewState();
 }
 
-class _searchUserViewState extends ConsumerState<searchUserView> {
-
+class _SearchUserViewState extends ConsumerState<searchUserView> {
   @override
   void initState() {
     super.initState();
@@ -24,108 +23,137 @@ class _searchUserViewState extends ConsumerState<searchUserView> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final userState = ref.watch(UserViewModelProvider);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Appcolors.whiteColor,
-      ),
       backgroundColor: Appcolors.whiteColor,
-      body: userState.when(
-        loading:
-            () => const Center(
-          child: CircularProgressIndicator(color: Appcolors.blueColor),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () async {
+            await ref.read(UserViewModelProvider.notifier).getallusers();
+            if (mounted) Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
         ),
-        data: (users) {
-          if (users.isEmpty) {
-            return Center(child: Text("No User available."));
-          }
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              final user = users[index];
-              return Card(
-                color: Appcolors.whiteColor,
-                child: InkWell(
-                  onTap: () {},
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {
-                          final parameters={
-                            'id':user.id,
-                            'role':user.role
-                          };
-                          Navigator.pushNamed(
-                            context,
-                            routesName.profile,
-                            arguments:parameters,
-                          );
-                        },
-                        leading: Image.network(
-                          user!.image?.imageUrl?.isEmpty == false
-                              ? user.image!.imageUrl!
-                              : "https://th.bing.com/th/id/R.8e2c571ff125b3531705198a15d3103c?rik=gzhbzBpXBa%2bxMA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-big-image-png-2240.png&ehk=VeWsrun%2fvDy5QDv2Z6Xm8XnIMXyeaz2fhR3AgxlvxAc%3d&risl=&pid=ImgRaw&r=0",
-                          width: 56.w,
-                          height: 60.h,
-                          fit: BoxFit.cover,
-                        ),
-                        title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
-                        subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14.sp)),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
+      ),
+      body: Consumer(
+        builder: (context, ref, child) {
+          final userState = ref.watch(UserViewModelProvider);
+          return userState.when(
+            loading: () => const Center(
+              child: CircularProgressIndicator(color: Appcolors.blueColor),
+            ),
+            data: (users) {
+              if (users.isEmpty) {
+                return const Center(child: Text("No users found"));
+              }
+              return ListView.builder(
+                itemCount: users.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final user = users[index];
+                  if (user == null) return const SizedBox();
+
+                  return Card(
+                    color: Appcolors.whiteColor,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Column(
                           children: [
-                            IconButton(
-                              onPressed: () async{
-                                await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString());
-                              },
-                              icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
-                            Icon(Icons.arrow_forward_ios_sharp, size: 14.h,color: Colors.grey,),
-                          ],
+                          ListTile(
+                          onTap: () {
+                    final parameters = {
+                    'id': user.id,
+                    'role': user.role
+                    };
+                    Navigator.pushNamed(
+                    context,
+                    routesName.profile,
+                    arguments: parameters,
+                    );
+                    },
+                      leading: Image.network(
+                        user.image?.imageUrl?.isNotEmpty == true
+                            ? user.image!.imageUrl!
+                            : "https://via.placeholder.com/56",
+                        width: 56.w,
+                        height: 60.h,
+                        fit: BoxFit.cover,
+                      ),
+                      title: Text(
+                        user.username ?? 'No username',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.sp,
                         ),
                       ),
-                      Divider(),
-                      Row(
+                      subtitle: Text(
+                        user.role ?? 'No role',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(100, 0, 100, 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  routesName.sShop,
-                                  arguments: user.id,//send userId
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Appcolors.blueColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40.0.r),
-                                ),
-                              ),
-                              child:  Text(
-                                "User Shops",
-                                style: TextStyle(
-                                  color: Appcolors.whiteColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.sp,
-                                ),
-                              ),
+                          IconButton(
+                            onPressed: () async {
+                              await ref
+                                  .read(UserViewModelProvider.notifier)
+                                  .deleteusers(user.id.toString());
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              size: 25.h,
+                              color: Colors.red,
                             ),
-
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            size: 14.h,
+                            color: Colors.grey,
                           ),
                         ],
+                      ),
+                    ),
+                    const Divider(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            routesName.sShop,
+                            arguments: user.id,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Appcolors.blueColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40.0.r),
+                          )),
+                          child: Text(
+                            "User Shops",
+                            style: TextStyle(
+                              color: Appcolors.whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ),
                       )
-                    ],
+                                          ],
+                    ),
                   ),
-                ),
+                  );
+                },
               );
             },
+            error: (err, stack) => Center(child: Text('Error: $err')),
           );
         },
-        error: (err, stack) => Center(child: Text('Error: $err')),
       ),
     );
   }

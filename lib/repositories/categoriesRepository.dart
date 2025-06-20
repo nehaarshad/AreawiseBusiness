@@ -6,23 +6,32 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
 import '../models/SubCategoryModel.dart';
 
 final categoryProvider = Provider<CategoriesRepositories>((ref) {
-  return CategoriesRepositories();
+  return CategoriesRepositories(ref: ref);
 });
 
 class CategoriesRepositories {
-  CategoriesRepositories();
+  Ref ref;
+  CategoriesRepositories({required this.ref});
 
+  Map<String, String> headers() {
+    final token = ref.read(sessionProvider)?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
   baseapiservice apiservice = networkapiservice();
 
   Future<List<Category>> getCategories() async {
     List<Category> categories = [];
     try {
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getCategoriesEndPoints,
+        AppApis.getCategoriesEndPoints, headers(),
       );
       if (response is List) {
         return response
@@ -41,8 +50,9 @@ class CategoriesRepositories {
   Future<List<Subcategory>> getSubcategories() async {
     List<Subcategory> categories = [];
     try {
+
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getAllsubcategoriesEndPoints,
+        AppApis.getAllsubcategoriesEndPoints, headers(),
       );
       if (response is List) {
         return response
@@ -61,11 +71,12 @@ class CategoriesRepositories {
   Future<List<Subcategory>> FindSubCategories(String category) async {
     List<Subcategory> Subcategorylist = [];
     try {
+
       dynamic response = await apiservice.GetApiResponce(
         AppApis.getSubcategoriesOfCategoryEndPoints.replaceFirst(
           ':categories',
           category,
-        ),
+        ), headers(),
       );
       if (response is List) {
         return response
@@ -85,8 +96,8 @@ class CategoriesRepositories {
   Future<Category> addCategory(String name)async{
     try {
       final data = jsonEncode({'name': name});
-      final headers = {'Content-Type': 'application/json'};
-      dynamic response = await apiservice.PostApiWithJson(AppApis.addCategoryEndPoints, data,headers);
+
+      dynamic response = await apiservice.PostApiWithJson(AppApis.addCategoryEndPoints, data, headers(),);
       return Category.fromJson(response);
     } catch (e) {
       throw e;
@@ -99,8 +110,8 @@ class CategoriesRepositories {
         'name': name,
          'categoryId':id
       });
-      final headers = {'Content-Type': 'application/json'};
-      dynamic response = await apiservice.PostApiWithJson(AppApis.addSubcategoryEndPoints, data,headers);
+
+      dynamic response = await apiservice.PostApiWithJson(AppApis.addSubcategoryEndPoints, data, headers(),);
       return Category.fromJson(response);
     } catch (e) {
       throw e;
@@ -109,7 +120,8 @@ class CategoriesRepositories {
 
   Future <void> deleteCategory(String id)async{
     try {
-      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteCategoryEndPoints.replaceFirst(':id', id));
+
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteCategoryEndPoints.replaceFirst(':id', id), headers(),);
       return response;
     } catch (e) {
       throw e;
@@ -118,7 +130,8 @@ class CategoriesRepositories {
 
   Future <void> deleteSubcategory(String id)async{
     try {
-      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteSubcategoryEndPoints.replaceFirst(':id', id));
+
+      dynamic response = await apiservice.DeleteApiResponce(AppApis.deleteSubcategoryEndPoints.replaceFirst(':id', id), headers(),);
       return response;
     } catch (e) {
       throw e;

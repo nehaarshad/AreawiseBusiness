@@ -24,13 +24,16 @@ class _createAdsState extends ConsumerState<createAds> {
   @override
   void initState() {
     super.initState();
-    _viewModel = ref.read(createAdsViewModelProvider.notifier);
+    Future.microtask(() { // Runs after build completes
+      _viewModel = ref.read(createAdsViewModelProvider.notifier);
+    });
   }
 
   @override
   void dispose() {
     // Reset the state when the widget is disposed
     _viewModel.resetState();
+
     super.dispose();
   }
 

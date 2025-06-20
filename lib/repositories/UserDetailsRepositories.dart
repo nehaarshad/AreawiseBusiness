@@ -7,23 +7,31 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
 import '../models/UserDetailModel.dart';
 
 final userProvider = Provider<UserRepositories>((ref) {
-  return UserRepositories();
+  return UserRepositories(ref);
 });
 
 class UserRepositories {
-  UserRepositories();
-
+  Ref ref;
+  UserRepositories(this.ref);
+  Map<String, String> headers() {
+    final token = ref.read(sessionProvider)?.token;
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
   baseapiservice apiservice = networkapiservice();
 
   Future<List<UserDetailModel>> getAllUsers() async {
     try {
       List<UserDetailModel> userlist = [];
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.getAllUserEndPoints,
+        AppApis.getAllUserEndPoints,headers()
       );
       if (response is List) {
         return response
@@ -42,7 +50,7 @@ class UserRepositories {
   Future<UserDetailModel> getuserbyrole(String role) async {
     try {
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.SearchUsersByRoleEndPoints.replaceFirst(':role', role),
+        AppApis.SearchUsersByRoleEndPoints.replaceFirst(':role', role),headers()
       );
       return response;
     } catch (e) {
@@ -54,7 +62,7 @@ class UserRepositories {
     try {
       List<UserDetailModel> userlist = [];
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.SearchUserBynameEndPoints.replaceFirst(':username', username),
+        AppApis.SearchUserBynameEndPoints.replaceFirst(':username', username),headers()
       );
       if (response is List) {
         return response
@@ -74,7 +82,7 @@ class UserRepositories {
     try {
       UserDetailModel user;
       dynamic response = await apiservice.GetApiResponce(
-        AppApis.SearchUserByIdEndPoints.replaceFirst(':id', id),
+        AppApis.SearchUserByIdEndPoints.replaceFirst(':id', id),headers()
       );
       user = UserDetailModel.fromJson(response);
       return user;
@@ -92,7 +100,7 @@ class UserRepositories {
       dynamic response = await apiservice.SingleFileUploadApiWithMultiport(
         AppApis.AddUserEndPoints,
         data,
-        image,
+        image,headers()
       );
       return response;
     } catch (e) {
@@ -110,7 +118,7 @@ class UserRepositories {
       dynamic response = await apiservice.SingleFileUpdateApiWithMultiport(
         AppApis.UpdateUserEndPoints.replaceFirst(':id', id),
         data,
-        image,
+        image,headers()
       );
       return response;
     } catch (e) {
@@ -121,7 +129,7 @@ class UserRepositories {
   Future<dynamic> deleteUser(String id) async {
     try {
       dynamic response = await apiservice.DeleteApiResponce(
-        AppApis.DeleteUserEndPoints.replaceFirst(':id', id),
+        AppApis.DeleteUserEndPoints.replaceFirst(':id', id),headers()
       );
       return response;
     } catch (e) {

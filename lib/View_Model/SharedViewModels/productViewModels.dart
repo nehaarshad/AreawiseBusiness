@@ -30,16 +30,8 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
 
   Future<void> getAllProduct(String category) async {
     try {
+      state=AsyncValue.loading();
       List<ProductModel?> product = await ref.read(productProvider).getProduct(category);
-      state = AsyncValue.data(product.isEmpty ? [] : product);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
-    }
-  }
-
-  Future<void> getNewArrivalProduct(String category) async {
-    try {
-      List<ProductModel?> product = await ref.read(productProvider).getNewArrivalProduct(category);
       state = AsyncValue.data(product.isEmpty ? [] : product);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -48,6 +40,7 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
 
   Future<void> searchProduct(String subcategory) async {
     try {
+      state=AsyncValue.loading();
       List<ProductModel?> product = await ref.read(productProvider).searchProduct(subcategory);
       if (product.isEmpty) {
         state = const AsyncValue.data([]); // Explicit empty list
@@ -61,6 +54,7 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
 
   Future<void> deleteProduct(String id,String userId) async {
     try {
+      state=AsyncValue.loading();
       await ref.read(productProvider).deleteProduct(id);
       getUserProduct(userId);
     } catch (e) {

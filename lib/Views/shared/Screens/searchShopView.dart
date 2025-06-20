@@ -25,82 +25,106 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final shopState = ref.watch(allShopViewModelProvider);
-
     return Scaffold(
-      appBar: AppBar(
         backgroundColor: Appcolors.whiteColor,
-      ),
-      backgroundColor: Appcolors.whiteColor,
-
-      body: shopState.when(
-          loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
-          data: (shops) {
-            if (shops.isEmpty) {
-              return const Center(child: Text("No Shops Available"));
-            }
-            return ListView.builder(
-              itemCount: shops.length,
-              itemBuilder: (context, index) {
-                final shop = shops[index];
-                return Card(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        routesName.SellerShopDetailView,
-                        arguments: shop,
-                      );
+        body: ListView(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                    onPressed: () async {
+                      await ref.read(allShopViewModelProvider.notifier).getAllShops();
+                      Navigator.pop(context);
                     },
-                    child: ListTile(
-                      title: Text(shop?.shopname ?? 'No Name'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            shop?.category?.name ?? 'No Category',
-                            style:  TextStyle(fontSize: 12.sp),
-                          ),
-                        ],
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              final parameters={
-                                'shopid':shop!.id,
-                                'userid':widget.userid.toString(),
-                              };
+                    icon: Icon(Icons.arrow_back)
+                ),
+              ],
+            ),
+            Consumer(builder: (context, ref, child) {
+              final shopState = ref.watch(allShopViewModelProvider);
+              return shopState.when(
+                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+                  data: (shops) {
+                    if (shops.isEmpty) {
+                      return const Center(child: Text("No Shops Available"));
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true, // Add this to prevent scrolling issues
+                      physics: NeverScrollableScrollPhysics(), // Add this
+                      itemCount: shops.length,
+                      itemBuilder: (context, index) {
+                        final shop = shops[index];
+
+                        if (shop == null) {
+                          return SizedBox.shrink();
+                        }
+
+                        return Card(
+                          child: InkWell(
+                            onTap: () {
                               Navigator.pushNamed(
                                 context,
-                                routesName.sEditShop,
-                                arguments: parameters,
+                                routesName.SellerShopDetailView,
+                                arguments: shop,
                               );
                             },
-                            icon: Icon(Icons.edit, color: Appcolors.blueColor),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () async {
-                              await ref.read(sellerShopViewModelProvider(widget.userid.toString(),).notifier)
-                                  .deleteShop(shop!.id.toString());
+                            child: ListTile(
+                              title: Text(shop.shopname ?? 'No Name'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    shop.category?.name ?? 'No Category',
+                                    style: TextStyle(fontSize: 12.sp),
+                                  ),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
 
-                            },
+                                      if (shop.id != null) {
+                                        final parameters = {
+                                          'shopid': shop.id,
+                                          'userid': widget.userid.toString(),
+                                        };
+                                        Navigator.pushNamed(
+                                          context,
+                                          routesName.sEditShop,
+                                          arguments: parameters,
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () async {
+                                      // Safe null check
+                                      if (shop.id != null) {
+                                        await ref.read(sellerShopViewModelProvider(widget.userid.toString()).notifier)
+                                            .deleteShop(shop.id.toString());
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-          error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))),
-
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))
+              );
+            })
+          ],
+        )
     );
   }
 }

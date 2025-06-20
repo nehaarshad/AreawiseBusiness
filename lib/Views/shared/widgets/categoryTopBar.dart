@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
@@ -15,14 +16,14 @@ class CategoriesButton extends ConsumerWidget {
     // Use the shared provider to get and set the selected category
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
-    void onCategoryChange(String category) {
+    void onCategoryChange(String category) async {
       // Update the selectedCategory in the provider
       ref.read(selectedCategoryProvider.notifier).state = category;
 
       // Fetch products based on selected category
-      ref.read(featureProductViewModelProvider(id).notifier).getAllFeaturedProducts(category);
-      ref.read(sharedProductViewModelProvider.notifier).getAllProduct(category);
-      ref.read(sharedProductViewModelProvider.notifier).getNewArrivalProduct(category);
+     await ref.read(featureProductViewModelProvider(id).notifier).getAllFeaturedProducts(category);
+     await ref.read(sharedProductViewModelProvider.notifier).getAllProduct(category);
+     await ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct(category);
     }
 
     final categoriesAsync = ref.watch(GetallcategoriesProvider);
