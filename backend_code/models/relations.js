@@ -52,6 +52,9 @@ const relation = () => {
     subcategory.hasMany(Product, { foreignKey: {name: 'subcategoryId'}  ,allowNull:false });
     Product.belongsTo(subcategory, { foreignKey: {name: 'subcategoryId'}});
 
+    category.hasOne(image,{foreignKey:{name:'CategoryId',allowNull:false},constraints: false,scope: {imagetype: 'category'},});
+    image.belongsTo(category,{foreignKey:{name:"CategoryId"},constraints: false,scope: {imagetype: 'category'}});
+
     category.hasMany(Product, { foreignKey:{name: 'categoryId'} ,allowNull:false});
     Product.belongsTo(category, { foreignKey:{name: 'categoryId'} });
 

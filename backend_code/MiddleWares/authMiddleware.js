@@ -6,11 +6,9 @@ const auth = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      console.log("Received token:", token); // 👈 log
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded:", decoded); // 👈 log
-
+   
       req.user = await User.findByPk(decoded.id, {
         attributes: { exclude: ["password"] },
       });

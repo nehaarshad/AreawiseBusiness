@@ -102,7 +102,7 @@ const getCustomerOrders = async (req, res) => {
         if (!orders || orders.length === 0) {
             return res.status(404).json({ message: 'No orders found for this user' });
         }
-
+console.log(orders);
         res.status(200).json(orders);
     } catch (error) {
         console.log(error);
