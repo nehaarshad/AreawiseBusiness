@@ -66,7 +66,7 @@ class _UsersViewState extends ConsumerState<UserView> {
                         return Center(child: Text("No User available."));
                       }
                       return ListView.builder(
-                        shrinkWrap: true, // Important: allows ListView to size itself
+                        shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: users.length,
                         itemBuilder: (context, index) {

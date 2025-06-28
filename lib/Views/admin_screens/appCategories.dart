@@ -22,6 +22,13 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
   final TextEditingController _categoryController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(categoryViewModelProvider.notifier).getCategories();
+    });
+  }
+  @override
   void dispose() {
     _categoryController.dispose();
     super.dispose();
@@ -40,149 +47,124 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
         ),
         backgroundColor: Appcolors.whiteColor,
         actions: [ TextButton(onPressed: (){
-          AddCategoryDialog();
+          Navigator.pushNamed(context, routesName.addCategory);
         }, child: Padding(
           padding:  EdgeInsets.only(right: 5.0),
           child: Text("+ Add"),
         ))],
       ),
-      body: categoriesAsync.when(
-        loading: () => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: CircularProgressIndicator(color: Appcolors.blueColor),
-          ),
-        ),
-        data: (categories) => Categories(categories),
-        error: (error, stackTrace) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Icon(Icons.error_outline, color: Colors.red, size: 48.h),
-                SizedBox(height: 16.h),
-                Text('Error loading products: ${error.toString()}'),
-                SizedBox(height: 16.h),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(categoryViewModelProvider.notifier).getCategories();
-                  },
-                  child: Text('Retry'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-
-    );
-  }
-
-  Widget Categories(List<Category?> categories) {
-    if (categories.isEmpty) {
-      return const Center(
+      body: categoriesAsync.isLoading ? const Center(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Text("No Categories Yet!"),
+          child: CircularProgressIndicator(color: Appcolors.blueColor),
         ),
-      );
-    }
+      ) : (categoriesAsync.category != null)
+          ? Categories(categoriesAsync.category)
+          : SizedBox.shrink() // or some other fallback widget
 
-    return ListView.builder(
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final category = categories[index];
-        return InkWell(
-            onTap: () {},
-            child: Column(
-              children: [
-                ListTile(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      routesName.subcategories,
-                      arguments:category,
-                    );
-                  },
-                  title: Text("${category!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: (){
-                         DeleteDialogBox(category);
-                        },
-                        icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
-                      Icon(Icons.arrow_forward_ios_sharp, size: 18.h,color: Colors.grey,),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
+      // categoriesAsync.when(
+      //   loading: () => const Center(
+      //     child: Padding(
+      //       padding: EdgeInsets.all(20.0),
+      //       child: CircularProgressIndicator(color: Appcolors.blueColor),
+      //     ),
+      //   ),
+      //   data: (categories) => Categories(categories),
+      //   error: (error, stackTrace) => Center(
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(20.0),
+      //       child: Column(
+      //         children: [
+      //           Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+      //           SizedBox(height: 16.h),
+      //           Text('Error loading products: ${error.toString()}'),
+      //           SizedBox(height: 16.h),
+      //           ElevatedButton(
+      //             onPressed: () {
+      //               ref.read(categoryViewModelProvider.notifier).getCategories();
+      //             },
+      //             child: Text('Retry'),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
 
-      },
-    ); }
-
-  void AddCategoryDialog() {
-    _categoryController.clear();
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title:  Text(
-          'Add New Category',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.h,
-          ),
-        ),
-        content: TextField(
-          controller: _categoryController,
-          decoration: InputDecoration(
-            hintText: 'Enter category name',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.blue.shade600, width: 2.w),
-            ),
-            prefixIcon: const Icon(Icons.category),
-          ),
-          textCapitalization: TextCapitalization.words,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: Colors.grey.shade600),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_categoryController.text.trim().isNotEmpty) {
-              await   ref.read(categoryViewModelProvider.notifier)
-                    .addCategory(_categoryController.text.trim());
-                Navigator.pop(context);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.shade600,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            child: const Text('Add'),
-          ),
-        ],
-      ),
     );
   }
+
+  Widget Categories(List<Category?>? categories) {
+
+   if(categories == null){
+     return SizedBox.shrink();
+   }
+   else{
+     if (categories.isEmpty) {
+       return const Center(
+         child: Padding(
+           padding: EdgeInsets.all(20.0),
+           child: Text("No Categories Yet!"),
+         ),
+       );
+     }
+
+     return ListView.builder(
+       itemCount: categories.length,
+       itemBuilder: (context, index) {
+         final category = categories[index];
+         if (category == null) return SizedBox.shrink();
+         print(category.image?.imageUrl);
+         return InkWell(
+           onTap: () {},
+
+           child: Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Column(
+               children: [
+                 ListTile(
+                   onTap: () {
+                     Navigator.pushNamed(
+                       context,
+                       routesName.subcategories,
+                       arguments:category,
+                     );
+                   },
+
+                   leading: (category.image != null && category.image!.imageUrl!.isNotEmpty)
+                       ? Image.network(
+                     category.image!.imageUrl!,
+                     fit: BoxFit.cover,
+                     width: 50.w,
+                     height: 50.h,
+                     errorBuilder: (context, error, stackTrace) {
+                       return const Icon(Icons.error);
+                     },
+                   )
+                       : const Icon(Icons.image_not_supported),
+                   title: Text("${category.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
+                   trailing: Row(
+                     mainAxisSize: MainAxisSize.min,
+                     children: [
+                       IconButton(
+                         onPressed: (){
+                           DeleteDialogBox(category);
+                         },
+                         icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
+                       Icon(Icons.arrow_forward_ios_sharp, size: 18.h,color: Colors.grey,),
+                     ],
+                   ),
+                 ),
+               ],
+             ),
+           ),
+         );
+
+       },
+     );
+   }
+  }
+
 
   void DeleteDialogBox(Category category) {
     showDialog(

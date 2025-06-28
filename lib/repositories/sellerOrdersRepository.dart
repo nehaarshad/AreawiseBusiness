@@ -43,6 +43,7 @@ class sellerOrderRepository{
     List<orderModel> orders;
     try{
       dynamic response=await apiservice.GetApiResponce(AppApis.getCustomersOrdersEndPoints.replaceFirst(':id', id),headers());
+     print(response);
       if (response is List) {
         return response.map((order) => orderModel.fromJson(order as Map<String, dynamic>),).toList();
       }

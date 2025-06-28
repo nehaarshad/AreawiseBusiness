@@ -11,6 +11,7 @@ class networkapiservice extends baseapiservice {
   @override
   Future GetApiResponce(String url, Map<String, String> headers,) async {
     dynamic responseJson;
+    print(headers);
     try {
       final response = await http
           .get(Uri.parse(url), headers: headers,)
@@ -183,6 +184,7 @@ class networkapiservice extends baseapiservice {
 
       print("inMultiport headers ${request.headers}");
       //upload files of images
+      print(files);
       if (files != null) {
         final stream = http.ByteStream(files.openRead());
         final length = await files.length();
@@ -195,6 +197,7 @@ class networkapiservice extends baseapiservice {
           contentType: MediaType('image', 'jpeg'), // Set MIME type
         );
         request.files.add(multipartFile);
+        print("files send to api ${request.files}");
       }
       final streameresponse = await request.send().timeout(
         Duration(seconds: 10),

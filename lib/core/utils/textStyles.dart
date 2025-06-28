@@ -21,7 +21,7 @@ class AppTextStyles {
     fontSize: 10.sp,
   );
   static TextStyle msgTime = TextStyle(
-    fontSize: 5.sp,
+    fontSize: 8.sp,
     color: Colors.grey[600],
   );
 

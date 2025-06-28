@@ -15,11 +15,20 @@ class AllProducts extends ConsumerStatefulWidget {
 }
 
 class _ProductsViewState extends ConsumerState<AllProducts> {
-
   @override
   void initState() {
     super.initState();
-    ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
+      }
+    });
   }
 
   @override

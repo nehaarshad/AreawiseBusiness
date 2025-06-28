@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,11 +94,11 @@ class CategoriesRepositories {
     }
   }
 
-  Future<Category> addCategory(String name)async{
+  Future<Category> addCategory(String name, File? image,)async{
     try {
-      final data = jsonEncode({'name': name});
+      final data = {'name': name};
 
-      dynamic response = await apiservice.PostApiWithJson(AppApis.addCategoryEndPoints, data, headers(),);
+      dynamic response = await apiservice.SingleFileUploadApiWithMultiport(AppApis.addCategoryEndPoints, data,image, headers(),);
       return Category.fromJson(response);
     } catch (e) {
       throw e;

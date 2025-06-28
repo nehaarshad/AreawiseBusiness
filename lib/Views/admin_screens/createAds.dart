@@ -1,4 +1,4 @@
-import 'package:ecommercefrontend/View_Model/SellerViewModels/createAdViewModel.dart';
+import 'package:ecommercefrontend/View_Model/adminViewModels/createAdViewModel.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

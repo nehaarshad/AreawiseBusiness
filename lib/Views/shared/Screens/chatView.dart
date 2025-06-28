@@ -62,7 +62,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
 
     return Scaffold(
       appBar: AppBar(
-        
+        automaticallyImplyLeading: false,
+        backgroundColor: Appcolors.blueColor,
         title: InkWell(
           onTap:  () {
             Navigator.pushNamed(
@@ -82,7 +83,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                   child: Image.network(
                     widget.product!.images!.first.imageUrl!,
                     width: 40.w,
-                    height: 40.h,
+                    height: 35.h,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) =>
                         Container(
@@ -100,13 +101,13 @@ class _ChatViewState extends ConsumerState<ChatView> {
                   child: const Icon(Icons.shopping_bag),
                 ),
                 SizedBox(width: 15.w,),
-                Text(widget.product!.name!),
+                Text(widget.product!.name!,style: TextStyle(color: Appcolors.whiteColor),),
               ],
             )
         ),
 
       ),
-      backgroundColor: Colors.white60,
+
       body: Column(
         children: [
           Expanded(
@@ -153,7 +154,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Colors.grey[300],
+                        fillColor: Colors.grey[200],
                         contentPadding:  EdgeInsets.symmetric(
                           horizontal: 20.w,
                           vertical: 10.h,

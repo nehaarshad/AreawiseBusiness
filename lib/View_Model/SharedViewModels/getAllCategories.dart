@@ -19,6 +19,7 @@ class Getallcategories extends StateNotifier<AsyncValue<List<Category>>> {
   Future<void> getCategories() async {
     try {
       List<Category> categories = await ref.read(categoryProvider).getCategories();
+      print(categories);
       state = AsyncValue.data(categories);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

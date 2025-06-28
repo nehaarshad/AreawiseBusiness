@@ -16,20 +16,22 @@ class Orderplacemessageview extends StatelessWidget {
     return Scaffold(
       backgroundColor: Appcolors.whiteColor,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Order Placed Successfully!",style: TextStyle(
-              color: Appcolors.blackColor,fontSize: 25.sp,fontWeight: FontWeight.bold
-            ),),
-            Image.asset('assets/images/successImage.jpg',),
-            SizedBox(height: 80.h,),
-            CustomButton(text:"Continue..." ,onPressed: (){
-              Navigator.pushNamed(context, routesName.dashboard,arguments: user);
-            },),
-
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Order Placed Successfully!",style: TextStyle(
+                color: Appcolors.blackColor,fontSize: 25.sp,fontWeight: FontWeight.bold
+              ),),
+              Image.asset('assets/images/successImage.jpg',),
+              SizedBox(height: 80.h,),
+              CustomButton(text:"Continue..." ,onPressed: (){
+                Navigator.pushNamed(context, routesName.dashboard,arguments: user);
+              },),
+          
+            ],
+          ),
         ),
       ),
     );

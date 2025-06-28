@@ -43,6 +43,7 @@ class addUserViewModel extends StateNotifier<UserState> {
       ) async
   {
     try {
+      print("${state.image?.uri} user image");
       final response = await ref.read(userProvider).addUser(data, state.image);
       final newUser = UserDetailModel.fromJson(response);
       uploadimage=null;

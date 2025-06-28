@@ -19,7 +19,7 @@ class cartViewBottomWidget extends ConsumerStatefulWidget {
 class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
 
    int shippingPrice=0;
-   String discount='0.0';
+   int discount=0;
    String Offer='0.0';
   @override
   void initState() {
@@ -36,7 +36,10 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
         print('Loaded Attributes: ${attribute}');
         if (attribute != null) {
          shippingPrice=attribute.shippingPrice!;
-         discount=attribute.discount!;
+         String discountString = attribute.discount!;
+         double discountDouble = double.parse(discountString);
+          discount = (discountDouble * 100).toInt();
+
          Offer=attribute.totalBill!;
         }
       });
@@ -106,13 +109,13 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
           SizedBox(height: 8.h),
           total < (double.tryParse(Offer) ?? 5000.0 )
               ?
-          Center(child: Text("${discount} is Offer, if you spent RS.${Offer} ", style:  TextStyle(fontWeight: FontWeight.w300,color: Appcolors.blueColor)))
+          Center(child: Text("${discount}% is Offer, if you spent RS.${Offer} ", style:  TextStyle(fontWeight: FontWeight.w300,color: Appcolors.blueColor)))
               :
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Shipping:"),
-              Text("Rs.${shippingPrice.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
+              const Text("Discount:"),
+              Text("Rs.${discount}%", style: const TextStyle(fontWeight: FontWeight.w500)),
             ],
           ),
            Divider(height: 24.h),

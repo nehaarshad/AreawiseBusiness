@@ -19,8 +19,24 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
   @override
   void initState() {
     super.initState();
-    // Fetch all products when the widget is first created
-    ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
+
+    Future.microtask(() {
+      if (mounted ) {
+
+        ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
+      }
+    });
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
+      }
+    });
   }
 
   @override

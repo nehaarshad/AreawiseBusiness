@@ -28,11 +28,22 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
   @override
   void initState() {
     super.initState();
-    // Delay the provider update until after the build
-    Future.microtask(() => _loadChats());
+
+    Future.microtask(() => loadChats());
   }
 
-  void _loadChats() {
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+       loadChats();
+      }
+    });
+  }
+
+  void loadChats() {
     if (widget.isSeller) {
       ref.read(chatListProvider.notifier).fetchChatsAsSeller(widget.userId);
     } else {
@@ -44,7 +55,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
     setState(() {
       widget.isSeller = isSeller;
     });
-    _loadChats();
+    loadChats();
   }
 
   @override
@@ -86,7 +97,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               margin:  EdgeInsets.symmetric(vertical: 12.0.h,horizontal: 20.w),
                padding:  EdgeInsets.symmetric(vertical: 12.0.h),
                decoration: BoxDecoration(
-               color: !widget.isSeller ? Appcolors.blueColor : Colors.grey,
+               color: !widget.isSeller ? Appcolors.blueColor : Colors.grey[300],
                borderRadius: BorderRadius.circular(25.r),
                   ),
               constraints: BoxConstraints(
@@ -94,7 +105,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               ),
               child: Center(
                   child: Text('As Buyer',style: TextStyle(
-                    color: Appcolors.whiteColor,
+                    color:  !widget.isSeller ? Appcolors.whiteColor : Appcolors.blackColor,
                     fontWeight: !widget.isSeller ? FontWeight.bold : FontWeight.normal,),),
                 ),
 
@@ -107,7 +118,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               margin:  EdgeInsets.symmetric(vertical: 12.0.h,horizontal: 6.w),
               padding:  EdgeInsets.symmetric(vertical: 12.0.h),
               decoration: BoxDecoration(
-                color: widget.isSeller ? Appcolors.blueColor : Colors.grey,
+                color: widget.isSeller ? Appcolors.blueColor : Colors.grey[200],
                 borderRadius: BorderRadius.circular(25.r),
               ),
               constraints: BoxConstraints(
@@ -115,7 +126,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               ),
               child:Center(
                   child: Text('As Seller',style: TextStyle(
-                    color: Appcolors.whiteColor,
+                    color:   widget.isSeller ? Appcolors.whiteColor : Appcolors.blackColor,
                     fontWeight: widget.isSeller ? FontWeight.bold : FontWeight.normal,),),
                 ),
 

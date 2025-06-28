@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/admin_screens/addCategory.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
 import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
@@ -25,7 +26,7 @@ import '../../../Views/auth/screens/login_View.dart';
 import '../../../Views/auth/screens/signUp_View.dart';
 import '../../../Views/buyer_screens/deliveryAddress.dart';
 import '../../../Views/sellerscrens/UpdateShopView.dart';
-import '../../../Views/sellerscrens/createAds.dart';
+import '../../../Views/admin_screens/createAds.dart';
 import '../../../Views/shared/Screens/DashBoardView.dart';
 import '../../../Views/shared/Screens/ShopView.dart';
 import '../../../Views/admin_screens/UsersView.dart';
@@ -158,6 +159,11 @@ class Routes {
       case (routesName.categories):
         return MaterialPageRoute(
           builder: (BuildContext context) => AllCategories(),
+        );
+
+      case (routesName.addCategory):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addCategory(),
         );
 
       case (routesName.subcategories):

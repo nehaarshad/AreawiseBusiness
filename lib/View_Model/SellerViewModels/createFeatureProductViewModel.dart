@@ -9,7 +9,7 @@ import '../../models/featureModel.dart';
 import '../../repositories/featuredRepositories.dart';
 import '../SharedViewModels/AdViewModel.dart';
 import '../SharedViewModels/featuredProductViewModel.dart';
-import 'AdStates.dart';
+import '../adminViewModels/AdStates.dart';
 import 'featureStates.dart';
 
 final createfeatureProductViewModelProvider = StateNotifierProvider<CreateFeatureProductViewModel, createFeatureProductState>((ref) {

@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
@@ -24,14 +25,26 @@ class appHomeview extends ConsumerStatefulWidget {
 
 class _appHomeviewState extends ConsumerState<appHomeview> {
 
-  @override
+ @override
   void initState() {
     super.initState();
-    // Initial load with 'All' category
+    // Initial load with 'All' category - moved to didChangeDependencies to avoid provider issues
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Use addPostFrameCallback to ensure providers are initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final selectedCategory = ref.read(selectedCategoryProvider);
-      ref.read(featureProductViewModelProvider(widget.id.toString()).notifier).getAllFeaturedProducts(selectedCategory);
-      ref.read(sharedProductViewModelProvider.notifier).getAllProduct(selectedCategory);
+      if (mounted) {
+        final selectedCategory = ref.read(selectedCategoryProvider);
+        ref.read(featureProductViewModelProvider(widget.id.toString()).notifier)
+            .getAllFeaturedProducts(selectedCategory);
+        ref.read(sharedProductViewModelProvider.notifier)
+            .getAllProduct(selectedCategory);
+        ref.read(newArrivalViewModelProvider.notifier)
+            .getNewArrivalProduct(selectedCategory);
+      }
     });
   }
 
@@ -44,11 +57,12 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
           children: [
              SizedBox(height: 10.h),
              searchBar(id: widget.id,),
-            SizedBox(height: 10.h),
-             CategoriesButton(id: widget.id.toString(),),
-             SizedBox(height: 10.h),
+            SizedBox(height: 15.h),
             const getAdsView(),
-             SizedBox(height: 14.h),
+            Divider(),
+            SizedBox(height: 10.h),
+            CategoriesButton(id: widget.id.toString(),),
+             SizedBox(height: 10.h),
             // Featured Products
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
