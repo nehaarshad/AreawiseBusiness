@@ -77,7 +77,7 @@ app.use("/api",auth,cartRouter);
 app.use("/api",auth,orderRouter);
 app.use("/api",auth,wishListRoutes);
 app.use("/api",auth,adsRouter);
-app.use("/api",SellerOrderRouter);
+app.use("/api",auth,SellerOrderRouter);
 app.use("/api",auth,featuredRouter);
 app.use("/api",auth,chatRouter);
 app.use("/api",auth,reviewsRouter);
