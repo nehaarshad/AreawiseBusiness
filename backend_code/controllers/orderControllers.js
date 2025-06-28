@@ -271,7 +271,7 @@ const PlaceOrder = async (req, res) => {
 
     } catch (error) {
         console.error('PlaceOrder Error:', error);
-        res.status(500).json({
+        res.json({
             success: false,
             message: 'Failed to place order',
             error: error.message
@@ -285,8 +285,8 @@ const updateDeliveryOrderAttributes=async (req, res) => {
         const {totalBill,discount,shippingPrice}=req.body;
         console.log(req.body);
 
-         const update = await delivery.update(
-            { totalBill, discount, shippingPrice }, 
+         const [update] = await delivery.findOrCreate(
+        //    { totalBill, discount, shippingPrice }, 
             { 
                 where: {
                     id: 1

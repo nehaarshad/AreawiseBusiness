@@ -444,8 +444,7 @@ const updateproductArrivalDays = async (req, res) => {
 
         const { day } = req.body;
 
-        const update = await Day.update(
-            { day }, 
+        const [update] = await Day.findOrCreate(
             { 
                 where: {
                     id: 1
