@@ -2,6 +2,7 @@ import review from "../models/reviewModel.js";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import { parse } from "dotenv";
+import image from "../models/imagesModel.js";
 
 const addReview = async (req, res) => {
 
@@ -55,6 +56,11 @@ const getReviews = async (req, res) => {
                 },
                 {
                     model: User,
+                    include: {
+                                                model: image,
+                                                where: { imagetype: "user" },
+                                                required: false
+                                            }
                 }],
             });
             res.status(200).json(reviews);
