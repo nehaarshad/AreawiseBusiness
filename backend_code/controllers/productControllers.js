@@ -7,7 +7,7 @@ import subcategories from "../models/subCategoryModel.js";
 import reviews from "../models/reviewModel.js";
 import dotenv from "dotenv";
 import shop from "../models/shopmodel.js";
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import Day from "../models/dayModel.js";
 dotenv.config();
 
@@ -18,9 +18,11 @@ const addproduct = async (req, res) => {
     console.log(req.body)
     const images=req.files
     try {
-        const usershop = await Shop.findByPk(id);
+        const usershop = await Shop.findByPk(id,{where:{status:"Active"}
+
+        });
         if (!usershop) {
-            return res.status(400).json(" Shop not Found");
+            return res.status(400).json(" Shop is not Active Yet!");
         }
         const [findcategory]=await category.findOrCreate({where:{name:productcategory}});
         console.log(findcategory)//electronics

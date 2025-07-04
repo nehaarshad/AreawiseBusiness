@@ -24,6 +24,11 @@ const shop = sequelize.define('shops', {
         type: DataTypes.STRING, 
         allowNull: false 
     },
+    status:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        defaultValue:"Processing..."
+    },
     categoryId: {
         type: DataTypes.INTEGER,
         references: {

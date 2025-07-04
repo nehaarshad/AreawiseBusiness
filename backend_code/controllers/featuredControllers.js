@@ -103,16 +103,33 @@ const getAllFeaturedProducts=async(req,res)=>{
         else{
             const categoryID=await category.findOne({where:{name:Category}})
             featuredProduct=await featured.findAll({
-                where:{status:"Featured"}, 
+                where:{status:"Featured",}, 
                  order: [['createdAt', 'DESC']], 
-                include: {
+                  include: {
                         model: Product,
-                        where:{categoryId:categoryID.id},
-                        include:{
-                            model: image,
-                            where: { imagetype: "product" },
-                            required: false
-                        }
+                         where:{categoryId:categoryID.id},
+                          include:[
+            {
+                model:image,
+                where:{imagetype:"product"},
+                required:false //all products may not have image
+            },
+            {
+                model:shop,
+            },
+            {
+                model:category,
+            },
+            {
+                model:subcategories,
+            },
+            {
+                model:reviews,
+                include:[{
+                    model:User,
+                }]
+            }
+        ]
                     }
             })
         }

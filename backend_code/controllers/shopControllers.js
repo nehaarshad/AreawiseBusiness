@@ -32,6 +32,7 @@ const addshop = async (req, res) => {
             shopaddress, 
             sector, 
             city, 
+            status:'Processing...',
             categoryId:categoryid,
             userId: user.id
         });
@@ -209,6 +210,33 @@ const updateshop=async(req,res)=>{
     }
 }
 
+const updateShopStatus=async(req,res)=>{  
+    try {
+        const {id}=req.params;
+        const {status}=req.body;
+        const usershop = await shop.findByPk(id);
+            if (!usershop) {
+                return res.status(404).json({ error: 'Shop not found!' });
+            }
+            
+            const updatedshop = {
+                status: status || usershop.status,
+            };
+         
+
+          await usershop.update(updatedshop);
+        res.json({
+            success:true,
+            message:" shop updated Successfully",
+            shop: updatedshop
+        })
+      
+    } catch (error) {
+        console.log(error);
+        res.json({error:" shop  FAILED TO UPDATE!"})
+    }
+}
+
 const getshopId=async(req,res)=>{
     try {
         const {id}=req.params;
@@ -303,4 +331,4 @@ const deleteshopbyid=async(req,res)=>{
     }
 }
 
-export default {addshop,getallshops,getusershop,updateshop,getshopId,getshopcategory,deleteshopbyid,getShopByName};
+export default {addshop,getallshops,getusershop,updateshop,updateShopStatus,getshopId,getshopcategory,deleteshopbyid,getShopByName};
