@@ -108,6 +108,25 @@ class UserRepositories {
     }
   }
 
+  Future<dynamic> changePassword(
+      Map<String, dynamic> data,
+      String id,
+      ) async
+  {
+    try {
+      final body=jsonEncode(data);
+      dynamic response = await apiservice.UpdateApiWithJson(
+          AppApis.ChangePasswordEndPoints.replaceFirst(':id', id),
+          body,
+          headers()
+      );
+      print("in repo ${response['message']}");
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<Map<String, dynamic>> updateUser(
     Map<String, dynamic> data,
     String id,

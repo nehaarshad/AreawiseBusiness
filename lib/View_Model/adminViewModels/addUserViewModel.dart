@@ -23,7 +23,7 @@ class addUserViewModel extends StateNotifier<UserState> {
   File? uploadimage;
   bool loading = false;
 
-  Future<void> pickImages() async {
+  Future<void> pickImages(BuildContext context) async {
     final XFile? pickedimage = await pickimage.pickImage(
       source: ImageSource.gallery,
       imageQuality: 80,
@@ -31,7 +31,7 @@ class addUserViewModel extends StateNotifier<UserState> {
 
     if (pickedimage != null) {
       uploadimage = File(pickedimage.path);
-      Utils.toastMessage("Uploading...");
+      Utils.flushBarErrorMessage("Uploading...",context);
       state = state.copyWith(image: uploadimage);
     }
   }

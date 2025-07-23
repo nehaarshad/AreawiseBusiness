@@ -32,4 +32,15 @@ class shopsViewModel extends StateNotifier<AsyncValue<List<ShopModel?>>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+  Future<void> updateShopStatus(String id,String status) async {
+    try {
+      await ref.read(shopProvider).updateShopStatus(id,status);
+      getShops(); //Rerender Ui or refetch shops if shop deleted
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+
 }

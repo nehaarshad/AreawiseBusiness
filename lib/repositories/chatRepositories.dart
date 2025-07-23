@@ -109,7 +109,7 @@ class ChatRepository {
   Future<List<Message>> getChatMessages(String chatId) async {
     List<Message> msgs;
     try {
-
+      socketService.joinSpecificChat(int.tryParse(chatId)!);
       dynamic response = await apiservice.GetApiResponce(
         AppApis.getChatMessagesEndPoints.replaceFirst(':id', chatId),headers()
       );

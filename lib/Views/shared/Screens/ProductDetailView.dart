@@ -249,7 +249,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               ),
                             ],
                           ),
-                          RelatedProducts(userid: widget.userid,category: widget.product.category!.name,),
+                          RelatedProducts(userid: widget.userid,category: widget.product.category?.name,),
                             ],
                           ),
 

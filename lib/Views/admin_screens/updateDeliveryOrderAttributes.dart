@@ -18,9 +18,15 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
 
   void updateAttributes(attributesViewModel viewModel, BuildContext context) {
 
+    final discountText = viewModel.discount.text;
+    double? discount = double.tryParse(discountText);
+    if (discount != null) {
+      discount = discount / 100;  // Convert 25 to 0.25
+    }
+
       final data = {
         'shippingPrice': int.tryParse(viewModel.shippingPrice.text),
-        'discount': double.tryParse(viewModel.discount.text),
+        'discount': discount ?? 0.0,
         'totalBill': double.tryParse(viewModel.total.text)
       };
 
@@ -49,7 +55,7 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
         TextFormField(
           controller: model.discount,
           decoration: const InputDecoration(labelText: "Discount Offer",
-              hintText: "0.1 for 10%",
+
           ),
 
         ),

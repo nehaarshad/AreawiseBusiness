@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:ecommercefrontend/repositories/UserDetailsRepositories.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/utils.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +26,7 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
   late TextEditingController username;
   late TextEditingController email;
   late TextEditingController contactnumber;
-  late TextEditingController  password=TextEditingController();
-  late TextEditingController role;
+  late String role;
   late TextEditingController sector;
   late TextEditingController city;
   late TextEditingController address;
@@ -39,8 +40,7 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       username = TextEditingController(text: userdata.username);
       email = TextEditingController(text: userdata.email);
       contactnumber = TextEditingController(text: userdata.contactnumber.toString());
-      role = TextEditingController(text: userdata.role);
-      password.text='***********';
+      role =  userdata.role!;
       sector = TextEditingController(text: userdata.address?.sector ?? "");
       city = TextEditingController(text: userdata.address?.city ?? "");
       address = TextEditingController(text: userdata.address?.address ?? "");
@@ -55,7 +55,6 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
     username.dispose();
     email.dispose();
     contactnumber.dispose();
-    role.dispose();
     sector.dispose();
     city.dispose();
     address.dispose();
@@ -89,6 +88,25 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       await ref.read(UserProfileViewModelProvider(id).notifier).getuserdetail(id);
       await Future.delayed(Duration(seconds: 1));
       Navigator.pop(context);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> ChangePassword(
+      Map<String, dynamic> data,
+      BuildContext context,
+      ) async {
+    try {
+      final response = await ref.read(userProvider).changePassword(data, id);
+
+      print(response);
+      final message = response['message'] ?? 'Password change failed';
+      print("Message ${message}");
+      Utils.flushBarErrorMessage(message,context);
+      await ref.read(UserProfileViewModelProvider(id).notifier).getuserdetail(id);
+      await Future.delayed(Duration(seconds: 1));
+
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

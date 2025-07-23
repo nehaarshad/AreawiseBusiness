@@ -42,6 +42,7 @@ class routesName {
   //Common\Shared Screens Routes Names
   static const String splash = "splashScreen";
   static const String profile = "UserProfileView";
+  static const String changePassword = "changePasswordView";
   static const String editprofile = "EditProfileView";
   static const String productdetail = "ProductDetailView";
   static const String shopdetail = "ShopDetailView";

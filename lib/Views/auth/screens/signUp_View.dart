@@ -130,8 +130,9 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Center(child: Text('Sign Up',style: AppTextStyles.headline,)),
+        backgroundColor: Appcolors.whiteColor,
       ),
+      backgroundColor: Appcolors.whiteColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

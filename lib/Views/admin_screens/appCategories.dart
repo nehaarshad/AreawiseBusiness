@@ -113,7 +113,7 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
        itemCount: categories.length,
        itemBuilder: (context, index) {
          final category = categories[index];
-         if (category == null) return SizedBox.shrink();
+         if (category == null || category =="All") return SizedBox.shrink();
          print(category.image?.imageUrl);
          return InkWell(
            onTap: () {},

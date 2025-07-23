@@ -22,6 +22,28 @@ class MessageView extends StatelessWidget {
         children: [
           Align(
             alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+              child: Column(
+                children: [
+                  SizedBox(height: 20.h,),
+                  if (!isMe)
+
+                    Text(
+                      message.user?.username ?? 'me',
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: Appcolors.blueColor,
+                      ),
+                    ),
+
+                ],
+              )
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Align(
+            alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.75, // Max 75% of screen width
@@ -38,17 +60,21 @@ class MessageView extends StatelessWidget {
                 ),
               ),
               child: IntrinsicWidth(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      message.msg ?? '',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                      )
-                    ),
-                  ],
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 3.0.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+
+                      Text(
+                        message.msg ?? '',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                        )
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -57,12 +83,15 @@ class MessageView extends StatelessWidget {
           SizedBox(height: 2.h),
           Align(
             alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-            child: Text(
-                _formatTime(message.createdAt),
-                style: TextStyle(
-                  fontSize: 9.sp,
-                  color: Colors.grey[600],
-                )
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+              child: Text(
+                  _formatTime(message.createdAt),
+                  style: TextStyle(
+                    fontSize: 9.sp,
+                    color: Colors.grey[600],
+                  )
+              ),
             ),
           ),
         ],

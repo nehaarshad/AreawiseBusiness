@@ -146,7 +146,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Discount:'),
-                      Text('Rs.${order.discount} %'),
+                      Text('Rs.${order.discount! * 100} %'),
                     ],
                   ),
                 ),

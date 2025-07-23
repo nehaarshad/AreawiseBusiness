@@ -138,7 +138,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
     // If result is true, refresh only the featured products list
     if (result == true) {
     await  ref.read(featureProductViewModelProvider(widget.id).notifier)
-          .getAllFeaturedProducts('All');
+          .getFeaturedProducts('All');
     }
   }
 
@@ -279,33 +279,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                   },
                 );
               },
-              error: (err, stack) =>
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              Icons.error_outline, color: Colors.red, size: 48.h),
-                          SizedBox(height: 16.h),
-                          Text(
-                            "Error loading featured products: $err",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          SizedBox(height: 16.h),
-                          ElevatedButton(
-                            onPressed: ()async{
-                            await  ref.read(featureProductViewModelProvider(widget.id).notifier)
-                                  .getAllFeaturedProducts('All');
-                            },
-                            child: Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+              error: (err, stack) => Center(child: Text('Error: $err')),
             ),
           ),
         ],

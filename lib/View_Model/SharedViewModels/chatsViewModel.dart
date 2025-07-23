@@ -57,7 +57,7 @@ class ChatMessagesViewModel extends StateNotifier<AsyncValue<List<Message>>> {
     );
 
     if (state.hasValue) {
-      state = AsyncValue.data([...state.value!, tempMessage]);
+      state = AsyncValue.data(state.value!);
     }
 
     // Parse the IDs safely with null checks

@@ -132,6 +132,22 @@ class ShopRepositories {
     }
   }
 
+  Future<ShopModel> updateShopStatus(String id, String status,) async {
+    try {
+      final data = jsonEncode({'status': status});
+
+      dynamic response = await apiservice.UpdateApiWithJson(
+        AppApis.updateShopStatusEndPoints.replaceFirst(':id', id),
+        data,
+        headers(),
+      );
+      return ShopModel.fromJson(response);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
   Future<dynamic> deleteShop(String id) async
   {
     try {

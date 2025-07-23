@@ -56,8 +56,8 @@ class FeatureProductViewModel extends StateNotifier<AsyncValue<List<featureModel
     }
   }
 
-  // For dashboardView - gets featured products by category
-  Future<void> getAllFeaturedProducts(String category) async {
+  // For admin
+  Future<void> getFeaturedProducts(String category) async {
     if (_isDisposed) return;
     state = AsyncValue.loading();
 
@@ -66,6 +66,23 @@ class FeatureProductViewModel extends StateNotifier<AsyncValue<List<featureModel
       if (!_isDisposed) {
         state = AsyncValue.data(feature.isEmpty ? [] : feature);
       }
+    } catch (e) {
+      if (!_isDisposed) {
+        state = AsyncValue.error(e, StackTrace.current);
+      }
+    }
+  }
+
+  // For dashboardView - gets featured products by category
+  Future<void> getAllFeaturedProducts(String category) async {
+
+    state = AsyncValue.loading();
+
+    try {
+      List<featureModel?> feature = await ref.read(featureProvider).getAllFeaturedProducts(category);
+
+        state = AsyncValue.data(feature.isEmpty ? [] : feature);
+
     } catch (e) {
       if (!_isDisposed) {
         state = AsyncValue.error(e, StackTrace.current);

@@ -1,9 +1,12 @@
 
+import 'package:ecommercefrontend/models/auth_users.dart';
+
 class Message {
   int? id;
   int? chatId;
   int? senderId;
   String? msg;
+  UserModel? user;
   bool? status;
   String? createdAt;
   String? updatedAt;
@@ -13,6 +16,7 @@ class Message {
         this.chatId,
         this.senderId,
         this.msg,
+        this.user,
         this.status,
         this.createdAt,
         this.updatedAt});
@@ -21,6 +25,7 @@ class Message {
     id = json['id'];
     chatId = json['chatId'];
     senderId = json['senderId'];
+    user = json['user'] != null ? new UserModel.fromJson(json['user']) : null;
     msg = json['msg'];
     status = json['status'];
     createdAt = json['createdAt'];

@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,36 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Widget buildRoleDropdown(EditProfileViewModel model) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField<String>(
+          value: model.role,
+          decoration: InputDecoration(
+            labelText: "Role",
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please select a role";
+            }
+            return null;
+          },
+          onChanged: (value) {
+            setState(() {
+              model.role = value!;
+            });
+          },
+          items: const [
+            DropdownMenuItem(value: "Buyer", child: Text("Buyer")),
+            DropdownMenuItem(value: "Seller", child: Text("Seller")),
+            DropdownMenuItem(value: "Both", child: Text("Both")),
+          ],
+        ),
+      ],
+    );
   }
 
   Widget UserImage(UserDetailModel user, EditProfileViewModel model) {
@@ -75,16 +106,6 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           decoration: const InputDecoration(labelText: "Email"),
         ),
 
-        TextFormField(
-          controller: model.password,
-          decoration: const InputDecoration(labelText: "Password",
-            helperMaxLines: 2,
-            helperText:"For security reasons, your password is hidden."
-                " You can’t view it, but you can change it."
-          ),
-
-        ),
-
         SizedBox(height: 10.h,),
         TextFormField(
           controller: model.contactnumber,
@@ -92,10 +113,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           keyboardType: TextInputType.phone,
         ),
 
-        TextFormField(
-          controller: model.role,
-          decoration: const InputDecoration(labelText: "Role"),
-        ),
+        buildRoleDropdown(model),
 
         TextFormField(
           controller: model.sector,
@@ -120,12 +138,23 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
     EditProfileViewModel viewModel,
     BuildContext context,
   ) {
-    return ElevatedButton(
-      onPressed: state.isLoading ? null : () => updateData(viewModel, context),
-      child:
+    return InkWell(
+      onTap: state.isLoading ? null : () => updateData(viewModel, context),
+      child: Container(
+        height: 40.h,
+        margin: EdgeInsets.symmetric(horizontal: 25.w),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Appcolors.blueColor,
+          borderRadius: BorderRadius.circular(15.r),
+        ),
+        child: Center(
+          child:
           state.isLoading
-              ? const CircularProgressIndicator()
-              : const Text("Update"),
+              ? CircularProgressIndicator(color: Appcolors.whiteColor)
+              : Text("Update", style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+        ),
+      ),
     );
   }
 
@@ -135,7 +164,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
         'username': viewModel.username.text,
         'email': viewModel.email.text,
         'contactnumber': int.parse(viewModel.contactnumber.text),
-        'role': viewModel.role.text,
+        'role': viewModel.role,
         'sector': viewModel.sector.text,
         'city': viewModel.city.text,
         'address': viewModel.address.text,
@@ -162,7 +191,15 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Edit Profile')),
+      appBar: AppBar(
+
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.pushNamed(context, routesName.changePassword,arguments: widget.id.toString());
+
+            }, child: Text("Change Password",style: TextStyle(color: Appcolors.blueColor),))
+          ],
+      ),
       body: userState.when(
         loading:
             () => Center(
@@ -181,6 +218,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
                      SizedBox(height: 20.h),
                     formFields(editProfile),
                      SizedBox(height: 20.h),
+
                     UpdateButton(userState, editProfile, context),
                   ],
                 ),

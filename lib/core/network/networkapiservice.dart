@@ -56,12 +56,13 @@ class networkapiservice extends baseapiservice {
     dynamic responseJson;
     try {
       print("in header sent ${headers}");
+      print("url and data sent ${url} ${data}");
       Response response = await put(
         Uri.parse(url),
         body: data,
         headers: headers,
       ).timeout(Duration(seconds: 30));
-
+      print("res ${response.body}");
       responseJson = httpResponse(response);
     } on SocketException {
       throw fetchdataException("No Internet Connnection");

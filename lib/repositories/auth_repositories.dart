@@ -16,6 +16,7 @@ class AuthRepositories {
 
   Future<dynamic> loginapi(dynamic data) async {
     try {
+      print("Login Data: $data");
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.loginEndPoints,
         data,

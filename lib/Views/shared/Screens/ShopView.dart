@@ -20,8 +20,9 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(child: Text(" Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
+        // Center(child: Text(" Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
         searchShop(id:widget.id),
+        SizedBox(height: 8.h,),
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {
@@ -43,6 +44,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                       itemBuilder: (context, index) {
                         final shop = shops[index];
                         return Card(
+
                           elevation: 4,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
@@ -78,29 +80,31 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                                             ),
                                   ),
 
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(
-                                    horizontal: 12.0.w,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${shop?.shopname}",
-                                        style:  TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14.sp,
+                                Expanded(
+                                  child: Padding(
+                                    padding:  EdgeInsets.symmetric(
+                                      horizontal: 12.0.w,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${shop?.shopname}",
+                                          style:  TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14.sp,
+                                          ),
                                         ),
-                                      ),
-                                       SizedBox(height: 4.h),
-                                      Text(
-                                        "${shop?.category?.name}",
-                                        style:  TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                    ],
+
+                                        // Text(
+                                        //   "${shop?.category?.name}",
+                                        //   style:  TextStyle(
+                                        //     color: Colors.grey,
+                                        //     fontSize: 10.sp,
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

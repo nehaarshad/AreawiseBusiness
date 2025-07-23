@@ -1,5 +1,6 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
+import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,9 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: [
+
+      ],),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -111,11 +114,17 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
         margin: EdgeInsets.symmetric(horizontal: 22.w),
         child: ElevatedButton.icon(
           onPressed: () {
-            Navigator.pushNamed(
-              context,
-              routesName.sAddProduct,
-              arguments: widget.shop,
-            );
+            
+            if(widget.shop.status=='Active') {
+              Navigator.pushNamed(
+                context,
+                routesName.sAddProduct,
+                arguments: widget.shop,
+              );
+            }
+            else{
+              Utils.flushBarErrorMessage("Shop activation pending. Please wait for admin approval before adding products.",context);
+            }
           },
           icon: Icon(Icons.add, size: 18.h,color: Appcolors.whiteColor,),
           label: Text("Add Product"),

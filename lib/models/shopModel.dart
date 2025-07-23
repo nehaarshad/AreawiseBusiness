@@ -12,6 +12,7 @@ class ShopModel {
   String? city;
   int? categoryId;
   int? userId;
+  String? status;
   String? createdAt;
   String? updatedAt;
   List<ShopImages>? images;
@@ -24,6 +25,7 @@ class ShopModel {
         this.shopaddress,
         this.sector,
         this.city,
+        this.status,
         this.categoryId,
         this.userId,
         this.createdAt,
@@ -38,6 +40,7 @@ class ShopModel {
     String? shopaddress,
     String? sector,
     String? city,
+    String? status,
     int? categoryId,
     int? userId,
     String? createdAt,
@@ -52,6 +55,7 @@ class ShopModel {
       shopaddress: shopaddress ?? this.shopaddress,
       sector: sector ?? this.sector,
       city: city ?? this.city,
+      status:status ?? this.status,
       categoryId: categoryId ?? this.categoryId,
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
@@ -68,6 +72,7 @@ class ShopModel {
     shopaddress = json['shopaddress'];
     sector = json['sector'];
     city = json['city'];
+    status = json['status'];
     categoryId = json['categoryId'];
     userId = json['userId'];
     createdAt = json['createdAt'];
@@ -91,6 +96,7 @@ class ShopModel {
     data['shopaddress'] = this.shopaddress;
     data['sector'] = this.sector;
     data['city'] = this.city;
+    data['status'] = this.status;
     data['categoryId'] = this.categoryId;
     data['userId'] = this.userId;
     data['createdAt'] = this.createdAt;

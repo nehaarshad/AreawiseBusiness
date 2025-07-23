@@ -36,8 +36,10 @@ class _login_viewState extends ConsumerState<login_view> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Center(child: Text('Login',style: AppTextStyles.headline,)),
+        backgroundColor: Appcolors.whiteColor,
+
       ),
+      backgroundColor: Appcolors.whiteColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

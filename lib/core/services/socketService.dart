@@ -57,6 +57,17 @@ class SocketService {
     socket.connect();
   }
 
+ void joinSpecificChat( int chatId) {
+   print('Joining specific chats for user: $chatId (${chatId.runtimeType})');
+  this.socket.emit('joinChat', chatId);
+  }
+
+  void joinChat(String userId) {
+    print('Joining chats for user: $userId (${userId.runtimeType})');
+    socket.emit('userChats', userId);
+  }
+
+
   void joinChats(String userId) {
     print('Joining chats for user: $userId (${userId.runtimeType})');
     socket.emit('userChats', userId);

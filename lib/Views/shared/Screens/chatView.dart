@@ -161,7 +161,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                         ),
                       ),
                       textCapitalization: TextCapitalization.sentences,
-                      maxLines: 2,
+                      maxLines: 3,
                       minLines: 1,
                     ),
                   ),

@@ -93,11 +93,13 @@ class _AddUserViewState extends ConsumerState<addUser> {
     );
   }
 
-  Widget UserImage( addUserViewModel model) {
+  Widget UserImage( addUserViewModel model,BuildContext context) {
     return Column(
       children: [
         GestureDetector(
-          onTap: model.pickImages,
+          onTap: () async {
+            await model.pickImages(context);
+          },
           child: Stack(
             children: [
               CircleAvatar(
@@ -197,7 +199,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  UserImage(state),
+                  UserImage(state,context),
                   // Username field
                   TextFormField(
                     controller: _usernameController,

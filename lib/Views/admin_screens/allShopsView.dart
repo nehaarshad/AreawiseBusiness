@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../View_Model/SharedViewModels/allShopsViewModel.dart';
+import '../../View_Model/adminViewModels/ShopViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../models/shopModel.dart';
 import '../shared/widgets/searchShop.dart';
@@ -34,7 +35,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
       body: ListView(
         children:[ Consumer(
             builder: (context,ref, child){
-              final shopState = ref.watch(allShopViewModelProvider);
+              final shopState = ref.watch(shopViewModelProvider);
               return shopState.when(
 
                   loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
@@ -49,6 +50,9 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final shop = shops[index];
+                        if(shop==null){
+                          return SizedBox.shrink();
+                        }
                         return Card(
                           child: InkWell(
                             onTap: () {
@@ -58,44 +62,95 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                                 arguments: shop,
                               );
                             },
-                            child: ListTile(
-                              title: Text(shop?.shopname ?? 'No Name'),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    shop?.category?.name ?? 'No Category',
-                                    style:  TextStyle(fontSize: 12.sp),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text(shop?.shopname ?? 'No Name'),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        shop?.category?.name ?? 'No Category',
+                                        style:  TextStyle(fontSize: 12.sp),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      final parameters={
-                                        'shopid':shop!.id,
-                                        'userid':widget.id.toString(),
-                                      };
-                                      Navigator.pushNamed(
-                                        context,
-                                        routesName.sEditShop,
-                                        arguments: parameters,
-                                      );
-                                    },
-                                    icon: Icon(Icons.edit, color: Appcolors.blueColor),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete, color: Colors.red),
-                                    onPressed: () async {
-                                      await ref.read(sellerShopViewModelProvider(widget.id.toString(),).notifier)
-                                          .deleteShop(shop!.id.toString());
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          final parameters={
+                                            'shopid':shop!.id,
+                                            'userid':widget.id.toString(),
+                                          };
+                                          Navigator.pushNamed(
+                                            context,
+                                            routesName.sEditShop,
+                                            arguments: parameters,
+                                          );
+                                        },
+                                        icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () async {
+                                          await ref.read(shopViewModelProvider.notifier)
+                                              .deleteShop(shop!.id.toString());
 
-                                    },
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 20.w),
+                                      child: Container(
+                                        child: Text(
+                                         "Status: ${  shop?.status ?? "noStatus"}",
+                                          style: TextStyle(
+                                            color:  shop?.status == 'Active' ? Colors.green[800] : Colors.orange[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                          padding: EdgeInsets.only(right: 20.w),
+                                          child: TextButton(
+                                            onPressed: () async{
+                                              final status = shop.status == 'Active' ? 'Dismiss' : 'Active';
+                                              await ref.read(shopViewModelProvider.notifier).updateShopStatus(shop.id.toString(), status);
+
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: shop.status == 'Active'
+                                                  ? Colors.red[400]
+                                                  : Colors.green[400],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(40.0.r),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              shop.status == 'Active' ? "Dismiss" : "Activate",
+                                              style: TextStyle(
+                                                color: Appcolors.whiteColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.sp,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         );

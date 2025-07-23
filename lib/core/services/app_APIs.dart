@@ -1,6 +1,6 @@
 class AppApis {
-  static var baseurl = "http://192.168.133.179:5000/api";
-  static var socketURL = "http://192.168.133.179:5000";
+  static var baseurl = "http://10.75.81.179:5000/api";
+  static var socketURL = "http://10.75.81.179:5000";
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";
@@ -16,6 +16,7 @@ class AppApis {
   static var AddUserEndPoints = "$baseurl/adduser";
   static var UpdateUserEndPoints = "$baseurl/updateuser/:id";
   static var DeleteUserEndPoints = "$baseurl/deleteuser/:id";
+  static var ChangePasswordEndPoints = "$baseurl/changePassword/:id";
 
   //Address URLS
   static var AddUserAddressEndPoints = "$baseurl/addAddress/:id";
@@ -30,6 +31,7 @@ class AppApis {
   static var GetUserShopEndPoints = "$baseurl/getusershop/:id";
   static var FindShopEndPoints = "$baseurl/getshopById/:id";
   static var UpdateUserShopEndPoints = "$baseurl/updateshop/:id";
+  static var updateShopStatusEndPoints = "$baseurl/updateShopStatus/:id";
   static var DeleteUserShopEndPoints = "$baseurl/deleteusershop/:id";
   static var DeleteShopEndPoints = "$baseurl/deleteshopbyid/:id";
 
