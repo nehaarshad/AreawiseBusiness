@@ -110,80 +110,6 @@ const ViewCheckout = async (req, res) => {
       res.status(500).json({ message: error.message });
   }
 };
-  //checkout to create order->next passed cartid... to address view where order button have this controller
-
-//onPlaceOrderButtonClick
-// const PlaceOrder = async (req, res) => {
-//     try {
-//         const { cartId, sector, city, address } = req.body;
-
-//         console.log('cartId from request:', cartId);
-//         // Find the order with cart details
-//         const userOrder = await order.findOne({
-//             where: {
-//                 cartId
-//             },
-//             include: [{
-//                 model: cart,
-//                 include: [{
-//                     model: items,
-//                     include: [{
-//                         model: Product,
-//                         include: {
-//                             model: image,
-//                             where: { imagetype: "product" },
-//                             required: false
-//                         }
-//                     }]
-//                 }]
-//             }]
-//         });
-
-//         // Check if order exists
-//         if (!userOrder || !userOrder.cart) {
-//             return res.status(404).json({ message: 'Order not found or cart is missing' });
-//         }
-
-//         // Get userId from the cart
-//         const userId = userOrder.cart.userId;
-
-//         // Handle address
-//         let userAddress = await Address.findOne({ where: { userId } });
-        
-//         if (userAddress) {
-//             // Update existing address
-//             await userAddress.update({
-//                 address: address || userAddress.address,
-//                 city: city || userAddress.city,
-//                 sector: sector || userAddress.sector
-//             });
-//         } else {
-//             // Create new address
-//             userAddress = await Address.create({
-//                 sector,
-//                 city,
-//                 address,
-//                 userId
-//             });
-//         }
-
-//         // Update order with new address and status
-//         const updatedOrder = await userOrder.update({
-//             addressId: userAddress.id,
-//             status: 'send'
-//         });
-
-//         res.status(200).json(updatedOrder);
-
-//     } catch (error) {
-//         console.error('PlaceOrder Error:', error);
-//         res.status(500).json({
-//             success: false,
-//             message: 'Failed to place order',
-//             error: error.message
-//         });
-//     }
-// };
 
 const PlaceOrder = async (req, res) => {
     try {
@@ -283,19 +209,23 @@ const updateDeliveryOrderAttributes=async (req, res) => {
     try {
 
         const {totalBill,discount,shippingPrice}=req.body;
-        console.log(req.body);
+        console.log("in update orders",req.body);
 
-         const [update] = await delivery.findOrCreate(
-        //    { totalBill, discount, shippingPrice }, 
-            { 
-                where: {
-                    id: 1
+         let offers=await delivery.findByPk(1);
+        
+                if(!offers){
+                    offers=await delivery.create({shippingPrice,totalBill,discount}) 
                 }
-            }
-        );
+        
+                offers.totalBill = totalBill;
+                offers.shippingPrice = shippingPrice;
+                offers.discount = discount;
+                await offers.save()
+
+                console.log("updated offer",offers)
 
         res.status(200).json(
-           update
+           offers
         );
 
         

@@ -116,6 +116,9 @@ const getChatsAsSeller = async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     
+    if (buyerId === product.seller) {
+  return res.status(400).json({ message: 'Cannot create chat with yourself' });
+}
     // Check if chat already exists
     let Chats = await Chat.findOne({
       where: {

@@ -446,17 +446,19 @@ const updateproductArrivalDays = async (req, res) => {
 
         const { day } = req.body;
 
-        const [update] = await Day.findOrCreate(
-            { 
-                where: {
-                    id: 1
-                }
-            }
-        );
+        let days=await Day.findByPk(1);
+
+        if(!days){
+            days=await Day.create({day}) 
+        }
+
+        days.day = day;
+        await days.save()
+        
 
         res.status(200).json({ 
             message: "Product arrival days updated successfully",
-            updatedDays: update
+            updatedDays: days
         });
 
     } catch (error) {

@@ -66,7 +66,7 @@ const getuser=async(req,res)=>{
         },});
          console.log(user)
         if(!user){
-                return res.json({ error: `Users of ${username} not found` });
+                return res.staus(404).json({ error: `Users of ${username} not found` });
         }
        
         res.json(user);
@@ -142,6 +142,7 @@ const addUser = async (req, res) => {
         res.json({ error: "USER FAILED TO CREATE!" });
     }
 }
+
 const updateuser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -213,6 +214,39 @@ const updateuser = async (req, res) => {
     }
 };
 
+const changePassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { oldPassword, newPassword } = req.body;
+        console.log(req.params,req.body)
+        const user = await User.findByPk(id);
+        
+        if (!user) {
+            return res.json({ message: "User not Found" });
+        }
+
+        const checkpassword=await bcrypt.compare(oldPassword, user.password);
+        
+        if(!checkpassword){
+        console.log(  "Password not found ",oldPassword,checkpassword)
+            return res.json({ message: "Old password is incorrect" });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        
+        
+        await user.save();
+        
+        console.log(  "Password changed ",
+            user)
+        res.json({
+            message: "Password changed ",
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({ error: " FAILED TO change password!" });
+    }
+};
 
 const deleteuser=async(req,res)=>{
     try {
@@ -251,5 +285,5 @@ const deleteuser=async(req,res)=>{
     }
 };
 
-export default {getallusers,getusers,getuserbyid,getuser,addUser,updateuser,deleteuser};
+export default {getallusers,getusers,getuserbyid,getuser,addUser,updateuser,changePassword,deleteuser};
 

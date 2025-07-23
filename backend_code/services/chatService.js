@@ -26,6 +26,12 @@ const chatService = (io) => {
           console.error('Error joining chats:', error);
         }
       });
+
+
+         socket.on('joinChat', (chatId) => {
+      socket.join(`chat_${chatId}`);
+      console.log(`Socket ${socket.id} joined chat room: chat_${chatId}`);
+    });
       
       // Handle new messages  //on sent button
       socket.on('sendMessage', async (data) => {

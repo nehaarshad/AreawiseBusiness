@@ -40,16 +40,16 @@ const getsubcategoriesofcategory = async (req, res) => {
         
     })
         if(!findcategory){
-            res.json({ message: "No Category Found" });
+           return res.json({ message: "No Category Found" });
         }
         const subcategory = await subcategories.findAll({where:{categoryId:findcategory.id}});
         if(!subcategory){
-            res.json({ message: "No Subcategories" });
+           return res.json({ message: "No Subcategories" });
         }
-        res.json(subcategory);
+      return  res.json(subcategory);
     } catch (error) {
         console.log(error);
-        res.json({ error: "Failed to find Subcategories" });
+       return res.json({ error: "Failed to find Subcategories" });
     }
 };
 
@@ -108,9 +108,10 @@ const deletesubcategory = async (req, res) => {
         const { id } = req.params;
         const deletedSubcategory = await subcategories.destroy({ where: { id } });
         if (deletedSubcategory) {
-            res.json({ message: "Subcategory deleted successfully" });
+             console.log("Subcategory deleted successfully");
+           return res.json({ message: "Subcategory deleted successfully" });
         } else {
-            res.json({ message: "Subcategory not found" });
+           return res.json({ message: "Subcategory not found" });
         }
     } catch (error) {
         console.log(error);

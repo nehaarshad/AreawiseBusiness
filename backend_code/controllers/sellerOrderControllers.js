@@ -148,6 +148,9 @@ const updateOrderStatus = async (req, res) => {
             product.stock = product.stock - orderedQuantity;
             product.sold = product.sold + orderedQuantity;
             
+            if(product.stock < 0){
+                product.stock =0
+            }
             // Save the product changes
             await product.save();
         }

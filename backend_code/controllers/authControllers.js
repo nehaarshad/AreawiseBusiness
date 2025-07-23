@@ -12,7 +12,7 @@ const createNewUser = async (req, res) => {
             return res.json({message:"All fields are required to filled!"})
         }
        else{
-        const existingUser = await User.findOne({ where: { username } });
+        const existingUser = await User.findOne({ where: { username ,email} });
         if (existingUser) {
             return res.json({message: "User Already Exist" });
         }
@@ -42,10 +42,11 @@ const createNewUser = async (req, res) => {
 const forgetPassword = async (req, res) => {
     try {
         const { email ,password } = req.body;
-
+       console.log(req.body)
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+               console.error("Incorrect Email:");
+            return res.status(404).json({ message: "Incorrect Email" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.update({ password: hashedPassword }, { where: { email } });
@@ -60,7 +61,7 @@ const forgetPassword = async (req, res) => {
 const loginUser = async (req, res) => {
     try{
     const { username, password } = req.body;
-
+     console.log(req.body)
     if(!username ||!password ){
         return res.json("All fields are required to filled!")
     }
