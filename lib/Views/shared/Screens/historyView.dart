@@ -16,6 +16,19 @@ class OrdersHistoryView extends ConsumerStatefulWidget {
 }
 
 class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() => loadHistory());
+  }
+  void loadHistory() {
+
+      ref.read(orderHistoryViewModelProvider(widget.id.toString()).notifier).getCustomerOrdersHistory(widget.id.toString());
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final orderState = ref.watch(orderHistoryViewModelProvider(widget.id.toString()));

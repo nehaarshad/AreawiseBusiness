@@ -22,6 +22,7 @@ class UserProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
   Future<void> getuserdetail(String userId) async {
     try {
       UserDetailModel userdata = await ref.read(userProvider).getuserbyid(id);
+      print(userdata);
       state = AsyncValue.data(userdata);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);

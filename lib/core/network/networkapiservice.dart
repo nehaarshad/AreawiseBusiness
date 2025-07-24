@@ -16,7 +16,9 @@ class networkapiservice extends baseapiservice {
       final response = await http
           .get(Uri.parse(url), headers: headers,)
           .timeout(Duration(seconds: 10));
+      print(response.headers);
       responseJson = httpResponse(response);
+
     } on SocketException {
       throw fetchdataException("No Internet Connnection");
     }
