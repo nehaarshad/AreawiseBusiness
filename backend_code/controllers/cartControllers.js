@@ -2,13 +2,19 @@ import cart from '../models/CartModel.js'
 import items from '../models/cartItemModel.js'
 import Product from '../models/productModel.js';
 import image from "../models/imagesModel.js";
+import User from '../models/userModel.js';
 
    //on click of add to cart button
 const addToCart=async(req,res)=>{
   try {
     const { id } = req.params;
+    console.log(id)
     const { productId,quantity} = req.body;
-    console.log('Received productId:', productId);
+    console.log('Received productId: and quantity', productId,quantity);
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     const product=await Product.findByPk(productId,
       {
         include:{
@@ -30,6 +36,25 @@ const addToCart=async(req,res)=>{
       }
     });
     console.log('userCart:', userCart);
+   
+      // Check if product already exists in cart
+    const existingItem = await items.findOne({
+      where: {
+        cartId: userCart.id,
+        productId: productId
+      }
+    });
+
+    console.log('search cart item:', existingItem);
+    if (existingItem) {
+      // Update existing item
+      existingItem.quantity += quantity;
+      existingItem.price = product.price * existingItem.quantity;
+      await existingItem.save();
+      console.log('update cart item:', existingItem);
+      return res.json(existingItem);
+    }
+
     // quatity will modified when user click on + or - button only on view but send to checkout to calculate total amount
     const price=product.price*quantity;  //initialy the price the item is the price of product thar is added to cart
     const cartItem = await items.create({
@@ -38,6 +63,7 @@ const addToCart=async(req,res)=>{
               quantity,
               price
             });
+    console.log('new cart item:', cartItem);        
     res.status(201).json(cartItem);
   } catch (error) {
     console.log(error);

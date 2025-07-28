@@ -284,6 +284,9 @@ const getuserproducts = async (req, res) => {
                 model:category,
             },
             {
+                model:shop,
+            },
+            {
                 model:subcategories,
             },
             {
@@ -319,6 +322,9 @@ const getshopproducts = async (req, res) => {
                 model:image,
                 where:{imagetype:"product"},
                 required:false //all products may not have image
+            },
+            {
+                model:shop,
             },
             {
                 model:category,
