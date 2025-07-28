@@ -62,35 +62,6 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
           ? Categories(categoriesAsync.category)
           : SizedBox.shrink() // or some other fallback widget
 
-      // categoriesAsync.when(
-      //   loading: () => const Center(
-      //     child: Padding(
-      //       padding: EdgeInsets.all(20.0),
-      //       child: CircularProgressIndicator(color: Appcolors.blueColor),
-      //     ),
-      //   ),
-      //   data: (categories) => Categories(categories),
-      //   error: (error, stackTrace) => Center(
-      //     child: Padding(
-      //       padding: const EdgeInsets.all(20.0),
-      //       child: Column(
-      //         children: [
-      //           Icon(Icons.error_outline, color: Colors.red, size: 48.h),
-      //           SizedBox(height: 16.h),
-      //           Text('Error loading products: ${error.toString()}'),
-      //           SizedBox(height: 16.h),
-      //           ElevatedButton(
-      //             onPressed: () {
-      //               ref.read(categoryViewModelProvider.notifier).getCategories();
-      //             },
-      //             child: Text('Retry'),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
-
     );
   }
 
@@ -113,7 +84,7 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
        itemCount: categories.length,
        itemBuilder: (context, index) {
          final category = categories[index];
-         if (category == null || category =="All") return SizedBox.shrink();
+         if (category == null || category.name =="All") return SizedBox.shrink();
          print(category.image?.imageUrl);
          return InkWell(
            onTap: () {},
@@ -150,8 +121,8 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
                          onPressed: (){
                            DeleteDialogBox(category);
                          },
-                         icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
-                       Icon(Icons.arrow_forward_ios_sharp, size: 18.h,color: Colors.grey,),
+                         icon: Icon(Icons.delete, size: 20.h,color: Colors.red,),),
+                       Icon(Icons.arrow_forward_ios_sharp, size: 12.h,color: Colors.grey,),
                      ],
                    ),
                  ),

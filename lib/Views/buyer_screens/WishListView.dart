@@ -35,9 +35,7 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                   final item = list[index];
                   if (item?.product == null) return const SizedBox.shrink();
 
-                  return Card(
-                    margin: const EdgeInsets.only(top:8,bottom: 16),
-                    child: ListTile(
+                  return  ListTile(
 
                       onTap: () {
                         Navigator.pushNamed(
@@ -53,7 +51,7 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                             ? Image.network(
                           item!.product!.images!.first.imageUrl!,
                           fit: BoxFit.cover,
-                          width: 100.w,
+                          width: 80.w,
                           height: 100.h,
                           errorBuilder: (context, error, stackTrace) =>  Icon(
                             Icons.image_not_supported,
@@ -89,8 +87,8 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         },
                         icon: const Icon(Icons.delete, color: Colors.red),
                       ),
-                    ),
-                  );
+                    );
+
                 },
               );
             },

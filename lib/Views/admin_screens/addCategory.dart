@@ -18,11 +18,24 @@ class addCategory extends ConsumerStatefulWidget {
 
 class _addCategoryState extends ConsumerState<addCategory> {
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _viewModel.resetState();
+  //
+  //
+  // }
 
-
-  late final createAdsViewModel _viewModel;
+  late final categoryViewModel _viewModel;
 
   final TextEditingController name=TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() { // Runs after build completes
+      _viewModel = ref.read(categoryViewModelProvider.notifier);
+    });
+  }
 
   @override
   void dispose() {

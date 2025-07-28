@@ -11,10 +11,11 @@ import 'package:flutter/material.dart';
 import '../../View_Model/SellerViewModels/ProductStates.dart';
 import '../shared/widgets/ProductCateASubCategoryDropdownMenu.dart';
 import '../shared/widgets/ShopCategoryDropDownMenu.dart';
+import '../shared/widgets/shopsDropDown.dart';
 
 class addProductView extends ConsumerStatefulWidget {
-  ShopModel shop;
-  addProductView({required this.shop});
+  String userId;
+  addProductView({required this.userId});
 
   @override
   ConsumerState<addProductView> createState() => _addProductViewState();
@@ -22,6 +23,7 @@ class addProductView extends ConsumerStatefulWidget {
 
 class _addProductViewState extends ConsumerState<addProductView> {
 
+  late final AddProductViewModel _viewModel;
   final formkey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController subtitle = TextEditingController();
@@ -29,13 +31,42 @@ class _addProductViewState extends ConsumerState<addProductView> {
   final TextEditingController description = TextEditingController();
   final TextEditingController stock = TextEditingController();
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.resetState();
+    name.dispose();
+    subtitle.dispose();
+    description.dispose();
+    price.dispose();
+    stock.dispose();
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    String shopId=widget.shop.id.toString();
-    print("shopID: ${shopId} with type: ${shopId.runtimeType}");
-    final state = ref.watch(addProductProvider(shopId));
+    String userid=widget.userId.toString();
+    print("userid: ${userid} with type: ${userid.runtimeType}");
+    final state = ref.watch(addProductProvider(userid));
     return Scaffold(
-      appBar: AppBar(title: Text("Add Product")),
+      appBar: AppBar(
+          automaticallyImplyLeading:false,
+          backgroundColor: Appcolors.whiteColor,
+          actions: [  Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  ref.read(addProductProvider(userid).notifier).pickImages(context);
+                },
+                child: Text("Upload Images"),
+              ),
+            ],
+          ),],
+      ),
+      backgroundColor: Appcolors.whiteColor,
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(18.0),
@@ -80,7 +111,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                                   color: Colors.red,
                                 ),
                                 onPressed: () {
-                                  ref.read(addProductProvider(shopId).notifier).removeImage(index);
+                                  ref.read(addProductProvider(userid).notifier).removeImage(index);
                                 },
                               ),
                             ),
@@ -89,12 +120,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                       },
                     ),
                   ),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(addProductProvider(shopId).notifier).pickImages(context);
-                  },
-                  child: Text("Upload Images"),
-                ),
+
                 TextFormField(
                   controller: name,
                   decoration: InputDecoration(labelText: "Product Name"),
@@ -151,30 +177,76 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     return null;
                   },
                 ),
-                ProductCategoryDropdown(shopid: shopId),
-                ProductSubcategoryDropdown(shopId:shopId),
+                ProductCategoryDropdown(shopid: userid),
+                ProductSubcategoryDropdown(userId:userid),
+                ActiveUserShopDropdown(userid:userid),
                 SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: state.isLoading ? null : () async {
-                            if (formkey.currentState!.validate()) {
-                              await ref.read(addProductProvider(shopId).notifier,)
-                                  .addProduct(
-                                    name: name.text,
-                                    price: price.text,
-                                  subtitle:subtitle.text,
-                                    description: description.text,
-                                    stock: stock.text,
-                                    user:widget.shop.userId.toString(),
-                                    context: context,
-                                  );
-                            }
-                          },
-                  child: state.isLoading ? Center(
-                            child: CircularProgressIndicator(
-                              color: Appcolors.blueColor,
-                            ),
-                          ) : const Text('Add Product'),
+                InkWell(
+                  onTap:state.isLoading ? null : () async {
+                    if (formkey.currentState!.validate()) {
+                      await ref.read(addProductProvider(userid).notifier,)
+                          .addProduct(
+                        name: name.text,
+                        price: price.text,
+                        subtitle:subtitle.text,
+                        description: description.text,
+                        stock: stock.text,
+                        user:widget.userId.toString(),
+                        context: context,
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 40.h,
+                    margin: EdgeInsets.symmetric(horizontal: 25.w),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Appcolors.blueColor,
+                      borderRadius: BorderRadius.circular(15.r),
+
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Add Product",
+                        style: TextStyle(
+                          color: Appcolors.whiteColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+                SizedBox(height: 5.h),
+                InkWell(
+                  onTap:()async{
+                    await ref.read(addProductProvider(widget.userId.toString()).notifier).Cancel(widget.userId.toString(),context);
+                  },
+                  child: Container(
+                    height: 40.h,
+                    margin: EdgeInsets.symmetric(horizontal: 25.w),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Appcolors.whiteColor,
+                      borderRadius: BorderRadius.circular(15.r),
+                      border: Border.all(  // Use Border.all instead of boxShadow for borders
+                        color: Appcolors.blueColor,
+                        width: 1.0,  // Don't forget to specify border width
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: Appcolors.blueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+
               ],
             ),
           ),

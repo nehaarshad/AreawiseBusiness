@@ -27,16 +27,21 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
       backgroundColor: Appcolors.whiteColor,
       appBar: AppBar(
         title:  Text(
-          ' Subcategories',
-          style: AppTextStyles.headline
+          ' Subcategories of ${widget.category.name}',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14.h
+          )
         ),
+        actions: [
+          IconButton(onPressed:()=>  AddSubcategoryDialog(), icon:Padding(
+            padding:  EdgeInsets.only(right: 8.0.w),
+            child: Icon(Icons.add,color: Colors.blue, size: 20.h),
+          ) )
+        ],
         backgroundColor: Appcolors.whiteColor,
       ),
-      floatingActionButton: FloatingActionButton(onPressed: ()=>{
-          AddSubcategoryDialog()
-      },
-      child: Center(child: Icon(Icons.add))
-      ),
+
       body: subcategories.when(
         loading: () => const Center(
           child: Padding(
@@ -50,7 +55,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                Icon(Icons.error_outline, color: Colors.red, size: 45.h),
                 SizedBox(height: 16),
                 Text('Error loading SubCategories'),
                 SizedBox(height: 16),
@@ -85,17 +90,16 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
       itemBuilder: (context, index) {
         final subcategory = sub[index];
         return ListTile(
-                  title: Text("${subcategory!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
+          leading:  Text("${index+1}-",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18.sp),),
+
+          title: Text("${subcategory!.name}",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16.sp),),
+                  trailing:IconButton(
                         onPressed: (){
                           DeleteDialogBox(subcategory);
                         },
-                        icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
-                    ],
-                  ),
+                        icon: Icon(Icons.delete, size: 20.h,color: Colors.red,),),
+
+
                 );
       },
     ); }

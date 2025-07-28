@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
+import '../../../View_Model/SharedViewModels/searchedShopViewMode.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/routes/routes_names.dart';
 
@@ -21,30 +22,26 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(allShopViewModelProvider.notifier).searchShops(widget.search);
+      await ref.read(searchShopViewModelProvider.notifier).searchShops(widget.search);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Appcolors.whiteColor,
+          leading: IconButton(
+            onPressed: () async {
+              await ref.read(allShopViewModelProvider.notifier).getAllShops();
+              if (mounted) Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+        ),
         backgroundColor: Appcolors.whiteColor,
-        body: ListView(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                    onPressed: () async {
-                      await ref.read(allShopViewModelProvider.notifier).getAllShops();
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back)
-                ),
-              ],
-            ),
-            Consumer(builder: (context, ref, child) {
-              final shopState = ref.watch(allShopViewModelProvider);
+        body:Consumer(builder: (context, ref, child) {
+              final shopState = ref.watch(searchShopViewModelProvider);
               return shopState.when(
                   loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
                   data: (shops) {
@@ -62,8 +59,7 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
                           return SizedBox.shrink();
                         }
 
-                        return Card(
-                          child: InkWell(
+                        return InkWell(
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
@@ -115,16 +111,15 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
                                 ],
                               ),
                             ),
-                          ),
-                        );
+                          );
+
                       },
                     );
                   },
                   error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))
               );
             })
-          ],
-        )
+
     );
   }
 }

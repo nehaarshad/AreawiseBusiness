@@ -29,9 +29,10 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
          actions: [
-          searchShop(id:widget.id),
+          searchShop(id:widget.id,myShop: true,),
          ]
       ),
+      backgroundColor: Appcolors.whiteColor,
       body: ListView(
         children:[ Consumer(
             builder: (context,ref, child){
@@ -53,8 +54,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                         if(shop==null){
                           return SizedBox.shrink();
                         }
-                        return Card(
-                          child: InkWell(
+                        return  InkWell(
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
@@ -96,14 +96,14 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                                         icon: const Icon(Icons.delete, color: Colors.red),
                                         onPressed: () async {
                                           await ref.read(shopViewModelProvider.notifier)
-                                              .deleteShop(shop!.id.toString());
+                                              .deleteShop(shop.id.toString(),shop.userId.toString());
 
                                         },
                                       ),
                                     ],
                                   ),
                                 ),
-                                Divider(),
+                               // Divider(),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -126,7 +126,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                                           child: TextButton(
                                             onPressed: () async{
                                               final status = shop.status == 'Active' ? 'Dismiss' : 'Active';
-                                              await ref.read(shopViewModelProvider.notifier).updateShopStatus(shop.id.toString(), status);
+                                              await ref.read(shopViewModelProvider.notifier).updateShopStatus(shop.id.toString(),shop.userId.toString(), status);
 
                                             },
                                             style: ElevatedButton.styleFrom(
@@ -149,11 +149,12 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                                         ),
 
                                   ],
-                                )
+                                ),
+                                Divider()
                               ],
                             ),
-                          ),
-                        );
+                          );
+
                       },
                     );
                   },

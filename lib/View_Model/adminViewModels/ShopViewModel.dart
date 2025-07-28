@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/shopModel.dart';
 import '../../repositories/ShopRepositories.dart';
+import '../SellerViewModels/sellerShopViewModel.dart';
+import '../SharedViewModels/allShopsViewModel.dart';
+import '../SharedViewModels/getAllCategories.dart';
 
 //for admin to view and delete shops
 final shopViewModelProvider =
@@ -24,19 +27,27 @@ class shopsViewModel extends StateNotifier<AsyncValue<List<ShopModel?>>> {
     }
   }
 
-  Future<void> deleteShop(String id) async {
+  Future<void> deleteShop(String id,String userId) async {
     try {
       await ref.read(shopProvider).deleteShop(id);
       getShops(); //Rerender Ui or refetch shops if shop deleted
+      ref.invalidate(sellerShopViewModelProvider(userId.toString()));
+      ref.invalidate(allShopViewModelProvider);
+      await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
+      await ref.read(allShopViewModelProvider.notifier).getAllShops();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
 
-  Future<void> updateShopStatus(String id,String status) async {
+  Future<void> updateShopStatus(String id,String userId,String status) async {
     try {
       await ref.read(shopProvider).updateShopStatus(id,status);
-      getShops(); //Rerender Ui or refetch shops if shop deleted
+      getShops();
+      ref.invalidate(sellerShopViewModelProvider(userId.toString()));
+      ref.invalidate(allShopViewModelProvider);
+      await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
+      await ref.read(allShopViewModelProvider.notifier).getAllShops();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

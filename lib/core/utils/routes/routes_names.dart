@@ -26,6 +26,7 @@ class routesName {
   static const String cart = "CartView";
   static const String deliveryAddress = "deliveryAddress";
   static const String confirmOrder = "orderPlaceMessageView";
+  static const String findShop = "findShopView";
 
   //Seller Screens Routes Names
   static const String sHome = "sellerhomeview";

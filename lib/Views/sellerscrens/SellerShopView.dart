@@ -20,8 +20,10 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
     final shopState = ref.watch(sellerShopViewModelProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shop's",style: TextStyle(color: Appcolors.blueColor,fontSize: 25.sp,fontWeight: FontWeight.bold),),
+        backgroundColor: Appcolors.whiteColor,
+
       ),
+      backgroundColor: Appcolors.whiteColor,
       body: shopState.when(
         loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
         data: (shops) {
@@ -32,8 +34,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
             itemCount: shops.length,
             itemBuilder: (context, index) {
               final shop = shops[index];
-              return Card(
-                child: InkWell(
+              return  InkWell(
                   onTap: () {
                     Navigator.pushNamed(
                       context,
@@ -79,14 +80,14 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                       ],
                     ),
                   ),
-                ),
-              );
+                );
+
             },
           );
         },
         error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
         child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(
@@ -102,7 +103,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
               ),
             ),
             child:  Text(
-              "Add New Shop",
+              "Add Shop",
               style: TextStyle(
                 color: Appcolors.whiteColor,
                 fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,45 +72,61 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                     Utils.toastMessage("Product information is not available");
                   }
                 },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0.r),
-                  ),
-                  child: Container(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.h),
                     width: 170.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: product?.images != null && product!.images!.isNotEmpty
-                              ? Image.network(
-                            product!.images!.first.imageUrl!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
+                          child:Stack(
+                            children: [
+                              product?.images != null && product!.images!.isNotEmpty
+                                  ? Image.network(
+                                product!.images!.first.imageUrl!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              )
+                                  : const Icon(Icons.image_not_supported),
+                              Positioned(
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                          color: Appcolors.blueColor,
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(0),
+                                              bottomLeft: Radius.circular(20)
+                                          )
+                                      ),
+                                      child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),product:product!),
+
+                                    ),
+                                  )
+                              ),
+                            ],
                           )
-                              : const Icon(Icons.image_not_supported),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
                                   child: Text(
-                                    product?.name ?? "Unknown",
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    product.name ?? "Unknown",
+                                    style: const TextStyle(fontWeight: FontWeight.w400),
                                   ),
                                 ),
-                                WishlistButton( userId: widget.userid.toString(),product:product!),
-                              ],
-                            ),
+                                // WishlistButton( userId: widget.userid.toString(),product:product!),
+
                             Padding(
                               padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
                               child: Text(
-                                "Rs.${product?.price ?? 0}",
-                                style: const TextStyle(color: Colors.green),
+                                "Rs.${product.price ?? 0}",
+                                style:  TextStyle(color: Colors.green,fontSize: 13.h),
                               ),
                             ),
                           ],
@@ -117,7 +134,7 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                       ],
                     ),
                   ),
-                ),
+
               );
             },
           ),

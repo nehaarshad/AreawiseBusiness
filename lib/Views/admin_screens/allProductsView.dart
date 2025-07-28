@@ -67,13 +67,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                             if (product == null) {
                               return const SizedBox.shrink();
                             }
-                            return Card(
-                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: InkWell(
+                            return  InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
                                     context,
@@ -147,8 +141,8 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
             
                                   ],
                                 ),
-                              ),
-                            );
+                              );
+
                           },
                         );
                       },

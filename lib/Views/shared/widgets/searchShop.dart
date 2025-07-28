@@ -8,7 +8,8 @@ import '../../../core/utils/routes/routes_names.dart';
 
 class searchShop extends ConsumerStatefulWidget {
   int id;
-   searchShop({super.key,required this.id});
+  bool myShop;
+   searchShop({super.key,required this.id,required this.myShop});
 
   @override
   ConsumerState<searchShop> createState() => _searchShopState();
@@ -19,11 +20,23 @@ class _searchShopState extends ConsumerState<searchShop> {
 
   void _navigateToSearch(String search) {
     if (search.trim().isNotEmpty) {
+    if(widget.myShop){
       final parameters = {
         'id': widget.id,
         'search': search.trim(),
       };
       Navigator.pushNamed(context, routesName.searchShop, arguments: parameters);
+
+    }
+    else{
+      final parameters = {
+        'id': widget.id,
+        'search': search.trim(),
+      };
+      Navigator.pushNamed(context, routesName.findShop, arguments: parameters);
+
+
+    }
     }
   }
 

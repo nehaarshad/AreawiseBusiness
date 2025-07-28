@@ -36,6 +36,18 @@ class addUserViewModel extends StateNotifier<UserState> {
     }
   }
 
+  void resetState() {
+    loading=false;
+    state = UserState(isLoading: false,image: null); // Reset to initial state
+  }
+
+  Future<void> Cancel(BuildContext context) async{
+    uploadimage=null;
+    resetState();
+    await ref.read(UserViewModelProvider.notifier).getallusers();
+    await Future.delayed(Duration(seconds: 1));
+    Navigator.pop(context);
+  }
 
   Future<void> addUser(
       Map<String, dynamic> data,
@@ -47,6 +59,8 @@ class addUserViewModel extends StateNotifier<UserState> {
       final response = await ref.read(userProvider).addUser(data, state.image);
       final newUser = UserDetailModel.fromJson(response);
       uploadimage=null;
+      resetState();
+  //    state=state.copyWith(isLoading: false,image: null);
       Utils.toastMessage("User Added Successfully!");
       await ref.read(UserViewModelProvider.notifier).getallusers();
       await Future.delayed(Duration(seconds: 1));

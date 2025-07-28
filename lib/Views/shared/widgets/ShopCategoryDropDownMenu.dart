@@ -142,10 +142,11 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
               itemCount: SelectCategories.length,
               itemBuilder: (context, index) {
                 final category = SelectCategories[index];
-                return ListTile(
-                  title: Text(category.name!),
+                    return category.name == "All" ? SizedBox.shrink(): ListTile(
+                  title: Text(category.name!) ,
                   onTap: () => _onCategorySelected(category),
                 );
+
               },
             ),
           ),

@@ -1,8 +1,10 @@
+import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import '../../../core/utils/colors.dart';
 
 class shopProducts extends ConsumerStatefulWidget {
   String shopId;
@@ -58,44 +60,46 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
                     arguments: {'id': int.tryParse(widget.shopId), 'product': product},
                   );
                 },
-                child: Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0.r),
-                  ),
-                  child: Container(
-                    width: 170.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child:
-                          product?.images != null &&
-                              product!.images!.isNotEmpty
-                              ? Image.network(
-                            product.images!.first.imageUrl!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                              : const Icon(Icons.image_not_supported),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            product?.name ?? "Unknown",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.h,vertical: 8.h),
+                  width: 170.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child:product?.images != null && product!.images!.isNotEmpty
+                                  ? Image.network(
+                                product!.images!.first.imageUrl!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              )
+                                  : const Icon(Icons.image_not_supported),
+
+
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Padding(
+                            padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
+                            child: Text(
+                              product?.name ?? "Unknown",
+                              style: const TextStyle(fontWeight: FontWeight.w400),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                          child: Text(
-                            "\$${product?.price ?? 0}",
-                            style: const TextStyle(color: Colors.green),
+                          // WishlistButton( userId: widget.userid.toString(),product:product!),
+
+                          Padding(
+                            padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                            child: Text(
+                              "Rs.${product?.price ?? 0}",
+                              style:  TextStyle(color: Colors.green,fontSize: 13.h),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20.h),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               );

@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 class WishlistButton extends ConsumerWidget {
   final String userId;
   final ProductModel product;
+  final color;
 
-  const WishlistButton({Key? key, required this.userId, required this.product}) : super(key: key);
+  const WishlistButton({Key? key, required this.userId,required this.color, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +49,7 @@ class WishlistButton extends ConsumerWidget {
       icon: Icon(
         // Change icon based on whether product is in wishlist
         isInWishlist ? Icons.favorite : Icons.favorite_border_outlined,
-        color: isInWishlist ? Colors.red : Appcolors.blackColor,
+        color: isInWishlist ? Colors.red : color,
         size: 18.h,
       ),
     );

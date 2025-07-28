@@ -21,6 +21,7 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
    int shippingPrice=0;
    int discount=0;
    String Offer='0.0';
+
   @override
   void initState() {
     super.initState();
@@ -123,13 +124,23 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
                Text("Total:", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("Rs.${total.toStringAsFixed(2)}",
+              total < (double.tryParse(Offer) ?? 5000.0 )
+                  ?
+              Text("Rs.${(total + shippingPrice).toStringAsFixed(2)}",
+                  style:  TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp,
+                      color: Colors.blue
+                  )
+              ):
+              Text( "Rs.${(total-(total*discount/100)+shippingPrice).toStringAsFixed(2)}",
                   style:  TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
                       color: Colors.blue
                   )
               ),
+
             ],
           ),
            SizedBox(height: 16.h),
@@ -141,7 +152,7 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
                 if (kDebugMode) {
                   print('cart ID Sent: ${widget.cart.id}');
                 }
-                await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), total, context);
+                await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), total,Offer, context);
               } : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.blueColor,

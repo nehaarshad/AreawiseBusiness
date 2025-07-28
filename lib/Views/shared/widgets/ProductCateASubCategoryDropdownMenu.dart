@@ -131,8 +131,8 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
               itemCount: SelectCategories.length,
               itemBuilder: (context, index) {
                 final category = SelectCategories[index];
-                return ListTile(
-                  title: Text(category.name!),
+                return category.name == "All" ? SizedBox.shrink(): ListTile(
+                  title: Text(category.name!) ,
                   onTap: () => _onCategorySelected(category),
                 );
               },
@@ -153,8 +153,8 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
 
 //for subcategory selection
 class ProductSubcategoryDropdown extends ConsumerStatefulWidget {
-  final String shopId;
-  const ProductSubcategoryDropdown({required this.shopId, Key? key}) : super(key: key);
+  final String userId;
+  const ProductSubcategoryDropdown({required this.userId, Key? key}) : super(key: key);
 
   @override
   ConsumerState<ProductSubcategoryDropdown> createState() => _SubcategoryDropdownState();
@@ -188,7 +188,7 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
 
   void findSubcategories() {
     final input = subcategoryController.text.trim().toLowerCase();
-    final subcategories = ref.read(addProductProvider(widget.shopId)).subcategories;
+    final subcategories = ref.read(addProductProvider(widget.userId)).subcategories;
 
     if (input.isEmpty) {
       setState(() {
@@ -206,9 +206,9 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
       addnewSubCategory=recommendedSubcategories.isEmpty;
     });
     if (addnewSubCategory) {
-      ref.read(addProductProvider(widget.shopId).notifier).toggleCustomSubcategory(true);
+      ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(true);
       } else {
-      ref.read(addProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
+      ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(false);
 
     }
   }
@@ -220,15 +220,15 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
       addnewSubCategory=false;
       recommendedSubcategories = [];
     });
-    ref.read(addProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
-    ref.read(addProductProvider(widget.shopId).notifier).setSubcategory(subcategory);
+    ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(false);
+    ref.read(addProductProvider(widget.userId).notifier).setSubcategory(subcategory);
     subcategoryFocus.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final state = ref.watch(addProductProvider(widget.shopId));
+    final state = ref.watch(addProductProvider(widget.userId));
 
     // If no category is selected, show disabled field
     if (state.selectedCategory == null) {
@@ -258,13 +258,13 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
                   showSubcategoryDropdown = false;
                   recommendedSubcategories = [];
                 });
-                ref.read(addProductProvider(widget.shopId).notifier).setSubcategory(null);
+                ref.read(addProductProvider(widget.userId).notifier).setSubcategory(null);
               },
             )
                 : null,
           ),
           onChanged: (value) {
-            ref.read(addProductProvider(widget.shopId).notifier).setSubcategory(null);
+            ref.read(addProductProvider(widget.userId).notifier).setSubcategory(null);
             findSubcategories();
           },
           onTap: () {

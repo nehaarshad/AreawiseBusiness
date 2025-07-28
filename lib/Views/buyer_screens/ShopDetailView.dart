@@ -102,7 +102,7 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(height: 10.h,),
               shopProducts(shopId:  widget.shop.id.toString()),
             ],
           ),

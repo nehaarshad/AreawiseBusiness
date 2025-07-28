@@ -119,11 +119,11 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
               Navigator.pushNamed(
                 context,
                 routesName.sAddProduct,
-                arguments: widget.shop,
+                arguments: widget.shop.userId.toString(),
               );
             }
             else{
-              Utils.flushBarErrorMessage("Shop activation pending. Please wait for admin approval before adding products.",context);
+              Utils.flushBarErrorMessage("Shop is not Active. Please wait for admin approval before adding products.",context);
             }
           },
           icon: Icon(Icons.add, size: 18.h,color: Appcolors.whiteColor,),

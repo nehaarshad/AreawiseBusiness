@@ -65,7 +65,7 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
 
       print("Request Body (productId): ${data['productId']} with type: ${data['productId'].runtimeType}");
       print("Request Body (quantity): ${data['quantity']} with type: ${data['quantity'].runtimeType}");
-      print("(id): ${id} with type: ${id.runtimeType}");
+      print("(id): ${this.id} with type: ${this.id.runtimeType}");
 
       Cart items = await ref.read(cartProvider).addToCart(id, data);
       if (kDebugMode) {

@@ -36,7 +36,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
          actions: [
            Row(
              children: [
-               WishlistButton( userId: widget.userid.toString(),product:widget.product),
+               WishlistButton( color:Appcolors.blackColor,userId: widget.userid.toString(),product:widget.product),
                contactWithSellerButton(
                  userId: widget.userid.toString(),
                  productId: widget.product.id.toString(),

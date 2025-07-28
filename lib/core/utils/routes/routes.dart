@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
 import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
+import 'package:ecommercefrontend/Views/buyer_screens/findShopView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/changePasswordView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/historyView.dart';
@@ -115,9 +116,9 @@ class Routes {
         return MaterialPageRoute(builder: (BuildContext context) => addShopView(id: user));
 
       case (routesName.sAddProduct):
-        final shop = arg as ShopModel;
+        final userId = arg as String;
         return MaterialPageRoute(
-          builder: (BuildContext context) => addProductView(shop: shop),
+          builder: (BuildContext context) => addProductView(userId: userId),
         );
 
       case (routesName.sEditProduct):
@@ -188,6 +189,13 @@ class Routes {
         String search=arg as String;
         return MaterialPageRoute(
           builder: (BuildContext context) => searchUserView(search: search),
+        );
+
+      case (routesName.findShop):
+        final id = arg['id'] as int;
+        String search=arg['search'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => findShopView(search: search,userid: id,),
         );
 
       case (routesName.searchShop):

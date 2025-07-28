@@ -24,14 +24,14 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
   bool loading = false;
   
 
-  Future<void> checkOut(String id,double total,BuildContext context,) async {
+  Future<void> checkOut(String id,double total,String offer,BuildContext context,) async {
     try {
       final data={
         "total":total
       };
       orderModel order = await ref.read(orderProvider).getUserCheckout(id,data);
       state = AsyncValue.data(order);
-      CheckoutDialogView(context,order);
+      CheckoutDialogView(context,order,total,offer);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
@@ -48,7 +48,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
     }
   }
 
-  void CheckoutDialogView(BuildContext context, orderModel order) {
+  void CheckoutDialogView(BuildContext context, orderModel order,double total,String offer) {
     showDialog(
       context: context,
       builder: (context) {
@@ -135,11 +135,15 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Delivery:'),
+                      const Text('Shipping Price:'),
                       Text('Rs.${order.shippingPrice}'),
                     ],
                   ),
                 ),
+                total < (double.tryParse(offer) ?? 5000.0 )
+                    ?
+                SizedBox.shrink()
+                    :
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(

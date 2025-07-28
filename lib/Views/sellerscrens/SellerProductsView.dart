@@ -47,9 +47,24 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
-                    "My Products",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                        "My Products",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)
+                    ),
+                    TextButton(onPressed: (){
+                      Navigator.pushNamed(
+                        context,
+                        routesName.sAddProduct,
+                        arguments: widget.id.toString(),
+                      );
+                    }, child: Text("Add Product",style: TextStyle(
+                      color: Appcolors.blueColor
+                    ),)
+                    ),
+                  ],
                 ),
               ),
               Consumer(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
+import '../../../core/utils/colors.dart';
 import '../../../core/utils/utils.dart';
 
 
@@ -74,51 +75,66 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
                       },
                     );
                 },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0.r),
-                  ),
-                  child: Container(
-                    width: 170.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: featuredProduct?.product?.images != null && featuredProduct!.product!.images!.isNotEmpty
-                              ? Image.network(
-                            featuredProduct.product!.images!.first.imageUrl!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                              : const Icon(Icons.image_not_supported),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    featuredProduct?.product?.name ?? "Unknown",
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                WishlistButton( userId: widget.userid.toString(),product:featuredProduct!.product!),
-                              ],
-                            ),
-                            Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                              child: Text(
-                                "Rs.${featuredProduct.product?.price ?? 0}",
-                                style: const TextStyle(color: Colors.green),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.h),
+                  width: 170.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child:Stack(
+                            children: [
+                              product?.images != null && product!.images!.isNotEmpty
+                                  ? Image.network(
+                                product!.images!.first.imageUrl!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              )
+                                  : const Icon(Icons.image_not_supported),
+                              Positioned(
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                          color: Appcolors.blueColor,
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(0),
+                                              bottomLeft: Radius.circular(20)
+                                          )
+                                      ),
+                                      child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),product:product!),
+
+                                    ),
+                                  )
                               ),
+                            ],
+                          )
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Padding(
+                            padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
+                            child: Text(
+                              product.name ?? "Unknown",
+                              style: const TextStyle(fontWeight: FontWeight.w400),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          // WishlistButton( userId: widget.userid.toString(),product:product!),
+
+                          Padding(
+                            padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                            child: Text(
+                              "Rs.${product.price ?? 0}",
+                              style:  TextStyle(color: Colors.green,fontSize: 13.h),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               );

@@ -21,6 +21,7 @@ class addUser extends ConsumerStatefulWidget {
 
 class _AddUserViewState extends ConsumerState<addUser> {
 
+  late final addUserViewModel _viewModel;
   ValueNotifier<bool> pswrd = ValueNotifier<bool>(true);
   ValueNotifier<bool> cpswrd = ValueNotifier<bool>(true);
   final formkey = GlobalKey<FormState>();
@@ -44,10 +45,18 @@ class _AddUserViewState extends ConsumerState<addUser> {
 
   String? _selectedRole;
 
-  // Dispose method
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() { // Runs after build completes
+      _viewModel = ref.read(addUserViewModelProvider.notifier);
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
+    _viewModel.resetState();
     _usernameController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -59,6 +68,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
     password.dispose();
     confirmPassword.dispose();
     contactNumber.dispose();
+
   }
 
   Widget buildRoleDropdown() {
@@ -188,7 +198,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
 
 
     return Scaffold(
-      appBar: AppBar(title: Text("Add User",style: AppTextStyles.headline,)),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+          title: Center(child: Text("Add User",style: AppTextStyles.headline,))),
       body:SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -385,6 +397,42 @@ class _AddUserViewState extends ConsumerState<addUser> {
                         onPressed: addUser,
                         isLoading: loading.isLoading,
                       );
+                    },
+                  ),
+                  SizedBox(height: 8.h,),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final loading = ref.watch(addUserViewModelProvider);
+                      return  InkWell(
+                        onTap:()async{
+                       await ref.read(addUserViewModelProvider.notifier).Cancel(context);
+                      },
+                        child: Container(
+                          height: 40.h,
+                          margin: EdgeInsets.symmetric(horizontal: 25.w),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Appcolors.whiteColor,
+                            borderRadius: BorderRadius.circular(15.r),
+                            border: Border.all(  // Use Border.all instead of boxShadow for borders
+                              color: Appcolors.blueColor,
+                              width: 1.0,  // Don't forget to specify border width
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: Appcolors.blueColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+
+
                     },
                   ),
                 ],

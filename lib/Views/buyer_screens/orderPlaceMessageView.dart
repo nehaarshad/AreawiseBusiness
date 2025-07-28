@@ -27,7 +27,11 @@ class Orderplacemessageview extends StatelessWidget {
               Image.asset('assets/images/successImage.jpg',),
               SizedBox(height: 80.h,),
               CustomButton(text:"Continue..." ,onPressed: (){
-                Navigator.pushNamed(context, routesName.dashboard,arguments: user);
+                if(user.role=="Admin"){
+                  Navigator.pushNamed(context, routesName.aHome, arguments: user);
+                }
+                else
+                {Navigator.pushNamed(context, routesName.dashboard,arguments: user);}
               },),
           
             ],

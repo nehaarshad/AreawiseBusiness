@@ -69,7 +69,7 @@ class ShopRepositories {
   }
 
   //Seller may have one or more shops
-  Future<List<ShopModel?>> getUserShop(String id) async {
+  Future<List<ShopModel>> getUserShop(String id) async {
     List<ShopModel> shoplist = [];
     try {
       dynamic response = await apiservice.GetApiResponce(

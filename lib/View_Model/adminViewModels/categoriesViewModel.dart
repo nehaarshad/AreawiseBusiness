@@ -27,6 +27,12 @@ class categoryViewModel extends StateNotifier<CategoryState> {
   }
   File? uploadimage;
   bool loading = false;
+
+  void resetState() {
+    loading=false;
+    state = CategoryState(isLoading: false,image: null); // Reset to initial state
+  }
+
   Future<void> pickImages(BuildContext context) async {
     try {
       final XFile? pickedFiles = await pickimage.pickImage(
@@ -71,11 +77,15 @@ class categoryViewModel extends StateNotifier<CategoryState> {
   Future<void> addCategory(String name,BuildContext context) async {
     try {
       print("${state.image?.uri} category image");
+
       await ref.read(categoryProvider).addCategory(name, state.image);
+      state = state.copyWith(isLoading: false);
       ref.invalidate(GetallcategoriesProvider);
       await ref.read(GetallcategoriesProvider.notifier).getCategories();
       getCategories();
-      state = state.copyWith(isLoading: false,image:null);
+      uploadimage=null;
+
+
       Utils.toastMessage("Added Successfully!");
       Navigator.pop(context);
     } catch (e) {

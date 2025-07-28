@@ -1,45 +1,58 @@
-import 'package:ecommercefrontend/Views/shared/widgets/searchShop.dart';
-import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
+import '../../../View_Model/SharedViewModels/searchedShopViewMode.dart';
+import '../../../core/utils/colors.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import '../../admin_screens/Widgets/searchUser.dart';
 
-class ShopsView extends ConsumerStatefulWidget {
-  int id;
-   ShopsView({super.key,required this.id});
+class findShopView extends ConsumerStatefulWidget {
+  final String search;
+  final int userid;
+  findShopView({super.key,required this.search,required this.userid});
 
   @override
-  ConsumerState<ShopsView> createState() => _ShopsViewState();
+  ConsumerState<findShopView> createState() => _findShopViewState();
 }
 
-class _ShopsViewState extends ConsumerState<ShopsView> {
+class _findShopViewState extends ConsumerState<findShopView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(searchShopViewModelProvider.notifier).searchShops(widget.search);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-
-      children: [
-        // Center(child: Text(" Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
-        searchShop(id:widget.id,myShop: false,),
-        SizedBox(height: 8.h,),
-        Expanded(
-          child: Consumer(
-              builder: (context, ref, child) {
-                final shopState = ref.watch(allShopViewModelProvider);
-                return shopState.when(
-                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
-                  data: (shops) {
-                    if (shops.isEmpty) {
-                      return Center(child: Text("No shops available."));
-                    }
-                    return Column(
-                      children: [
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Appcolors.whiteColor,
+          leading: IconButton(
+            onPressed: () async {
+              await ref.read(allShopViewModelProvider.notifier).getAllShops();
+              if (mounted) Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+        ),
+        backgroundColor: Appcolors.whiteColor,
+        body:Consumer(builder: (context, ref, child) {
+          final shopState = ref.watch(searchShopViewModelProvider);
+          return shopState.when(
+              loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+              data: (shops) {
+                if (shops.isEmpty) {
+                  return Center(child: Text("No shops available."));
+                }
+                return Column(
+                  children: [
                     Expanded(
                       child: GridView.builder(
                         padding: const EdgeInsets.all(8.0),
-                      itemCount: shops.length,
+                        itemCount: shops.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2, // Number of columns in the grid
                           crossAxisSpacing: 4, // Horizontal spacing between grid items
@@ -82,7 +95,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                                       style: TextStyle(fontWeight: FontWeight.w500,fontSize: 10.h),
                                     ),
                                   ),
-                               ],
+                                ],
                               ),
                             ),
                           );
@@ -90,16 +103,13 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                         },
                       ),
                     )
-                      ],
-                    );
-                  },
-                  error: (err, stack) => Center(child: Text('Error: $err')),
+                  ],
                 );
               },
-            ),
-        ),
-      ],
-    );
+              error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))
+          );
+        })
 
+    );
   }
 }

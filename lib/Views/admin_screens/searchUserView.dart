@@ -28,6 +28,7 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
     return Scaffold(
       backgroundColor: Appcolors.whiteColor,
       appBar: AppBar(
+        backgroundColor: Appcolors.whiteColor,
         leading: IconButton(
           onPressed: () async {
             await ref.read(UserViewModelProvider.notifier).getallusers();
@@ -55,99 +56,63 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
                   final user = users[index];
                   if (user == null) return const SizedBox();
 
-                  return Card(
-                    color: Appcolors.whiteColor,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          children: [
-                          ListTile(
+                  return  InkWell(
+                    onTap: () {},
+                    child: Column(
+                      children: [
+                        ListTile(
                           onTap: () {
-                    final parameters = {
-                    'id': user.id,
-                    'role': user.role
-                    };
-                    Navigator.pushNamed(
-                    context,
-                    routesName.profile,
-                    arguments: parameters,
-                    );
-                    },
-                      leading: Image.network(
-                        user.image?.imageUrl?.isNotEmpty == true
-                            ? user.image!.imageUrl!
-                            : "https://via.placeholder.com/56",
-                        width: 56.w,
-                        height: 60.h,
-                        fit: BoxFit.cover,
-                      ),
-                      title: Text(
-                        user.username ?? 'No username',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                      subtitle: Text(
-                        user.role ?? 'No role',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await ref
-                                  .read(UserViewModelProvider.notifier)
-                                  .deleteusers(user.id.toString());
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              size: 25.h,
-                              color: Colors.red,
-                            ),
+                            final parameters={
+                              'id':user.id,
+                              'role':user.role
+                            };
+                            Navigator.pushNamed(
+                              context,
+                              routesName.profile,
+                              arguments:parameters,
+                            );
+                          },
+                          leading: Image.network(
+                            user!.image?.imageUrl?.isEmpty == false
+                                ? user.image!.imageUrl!
+                                : "https://th.bing.com/th/id/R.8e2c571ff125b3531705198a15d3103c?rik=gzhbzBpXBa%2bxMA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-big-image-png-2240.png&ehk=VeWsrun%2fvDy5QDv2Z6Xm8XnIMXyeaz2fhR3AgxlvxAc%3d&risl=&pid=ImgRaw&r=0",
+                            width: 56.w,
+                            height: 60.h,
+                            fit: BoxFit.cover,
                           ),
-                          Icon(
-                            Icons.arrow_forward_ios_sharp,
-                            size: 14.h,
-                            color: Colors.grey,
+                          title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
+                          subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14.sp)),
+                          trailing: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              user.role=="Admin"
+                                  ?
+                              SizedBox.shrink()
+                                  :
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    routesName.sShop,
+                                    arguments: user.id,//send userId
+                                  ); },
+                                icon: Icon(Icons.store, size: 20.h,color: Colors.blue,),),
+                              IconButton(
+                                onPressed: () async{
+                                  await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString());
+                                },
+                                icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
+                              Icon(Icons.arrow_forward_ios_sharp, size: 8.h,color: Colors.grey,),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+
+                        Divider()
+                      ],
                     ),
-                    const Divider(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            routesName.sShop,
-                            arguments: user.id,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Appcolors.blueColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40.0.r),
-                          )),
-                          child: Text(
-                            "User Shops",
-                            style: TextStyle(
-                              color: Appcolors.whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.sp,
-                            ),
-                          ),
-                        ),
-                      )
-                                          ],
-                    ),
-                  ),
                   );
+
                 },
               );
             },

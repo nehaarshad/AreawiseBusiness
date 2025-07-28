@@ -37,8 +37,9 @@ class _CartviewState extends ConsumerState<Cartview> {
     final state = ref.watch(cartViewModelProvider(widget.id.toString())); //get user cart
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Appcolors.whiteColor,
         automaticallyImplyLeading: false,
-        title: Text("CartView",style: AppTextStyles.headline,),
+        title: Text("Cart",style: AppTextStyles.headline,),
         actions: [
           state.when(
             loading: () => const SizedBox.shrink(),
@@ -96,136 +97,151 @@ class _CartviewState extends ConsumerState<Cartview> {
           if (kDebugMode) {
           print("Image URL: ${item.product?.images?.first.imageUrl}");
           }
-          return Card(
-            color: Appcolors.whiteColor,
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Padding(
+          return  Padding(
           padding: const EdgeInsets.all(12),
-          child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          ClipRRect(
-          borderRadius: BorderRadius.circular(8.r),
-          child:
-          (item.product!.images?.isNotEmpty == true &&
-          item.product!.images!.first.imageUrl?.isNotEmpty == true)
-          ? Image.network(
-          item.product!.images!.first.imageUrl!,
-          fit: BoxFit.cover,
-          width: 100.w,
-          height: 100.h,
-          errorBuilder: (context, error, stackTrace) {
-          return  SizedBox(
-          width: 100.w,
-          height: 100.h,
-          child: Icon(
-          Icons.image_not_supported,
-          size: 50.h,
-          color: Colors.grey,
-          ),
-          );
-          },
-          )
-              :  SizedBox(
-          width: 100.w,
-          height: 100.h,
-          child: Icon(
-          Icons.image_not_supported,
-          size: 50.h,
-          color: Colors.grey,
-          ),
-          ),
-          ),
-           SizedBox(width: 16.w),
-          Expanded(
           child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Text(
-          "${item.product!.name}",
-          style:  TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.bold,
+            children: [
+              Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child:
+              (item.product!.images?.isNotEmpty == true &&
+              item.product!.images!.first.imageUrl?.isNotEmpty == true)
+              ? Image.network(
+              item.product!.images!.first.imageUrl!,
+              fit: BoxFit.cover,
+              width: 60.w,
+              height: 50.h,
+              errorBuilder: (context, error, stackTrace) {
+              return  SizedBox(
+              width: 60.w,
+              height: 50.h,
+              child: Icon(
+              Icons.image_not_supported,
+              size: 50.h,
+              color: Colors.grey,
+              ),
+              );
+              },
+              )
+                  :  SizedBox(
+              width: 100.w,
+              height: 100.h,
+              child: Icon(
+              Icons.image_not_supported,
+              size: 50.h,
+              color: Colors.grey,
+              ),
+              ),
+              ),
+               SizedBox(width: 16.w),
+              Expanded(
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Row(
+                children: [
+                  Text(
+                  "${item.product!.name}",
+                  style:  TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      ref.read(cartViewModelProvider(widget.id.toString(),).notifier,).deleteCartItem(item.id.toString(),widget.id.toString());
+                    },
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                  'Rs.${item.product!.price}',
+                  style:  TextStyle(
+                  fontSize: 14.sp,
+
+                  ),
+                  ),
+
+                  Row(
+
+                    children: [
+
+                      IconButton(
+                        onPressed:
+                        (item.quantity != null &&
+                            item.quantity! > 1)
+                            ? () {
+                          int newQuantity =
+                              item.quantity! -
+                                  1; // Decrease quantity
+                          if (kDebugMode) {
+                            print("Decrement to: $newQuantity");
+                          }
+                          ref
+                              .read(
+                            cartViewModelProvider(
+                              widget.id.toString(),
+                            ).notifier,
+                          )
+                              .updateCartItem(
+                            widget.id.toString(),
+                            item.id!.toString(),
+                            newQuantity,
+                          );
+                        }
+                            : null, // Disable button if quantity is 1
+                        icon: const Icon(Icons.remove_circle_outline),
+                      ),
+                      Text('${item.quantity!}', style:  TextStyle(fontSize: 16.sp),),
+                      IconButton(
+                        onPressed:
+                        (item.quantity != null &&
+                            item.product!.stock != null &&
+                            item.quantity! <
+                                item
+                                    .product!
+                                    .stock!) // Correct condition
+                            ? () {
+                          int newQuantity =
+                              item.quantity! +
+                                  1; // Increase quantity
+                          if (kDebugMode) {
+                            print("Increment to: $newQuantity");
+                          }
+                          ref.read(cartViewModelProvider(widget.id.toString(),).notifier,)
+                              .updateCartItem(widget.id.toString(), item.id!.toString(), newQuantity,);
+                        }
+                            : null, // Disable if max stock is reached
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              ],
+              ),
+              ),
+
+              ],
+              ),
+              Divider()
+            ],
           ),
-          ),
-           SizedBox(height: 8.h),
-          Text(
-          '\$${item.product!.price}',
-          style:  TextStyle(
-          fontSize: 16.sp,
-          color: Colors.blue,
-          ),
-          ),
-           SizedBox(height: 8.h),
-          Row(
-          children: [
-          IconButton(
-          onPressed:
-          (item.quantity != null &&
-          item.quantity! > 1)
-          ? () {
-          int newQuantity =
-          item.quantity! -
-          1; // Decrease quantity
-          if (kDebugMode) {
-          print("Decrement to: $newQuantity");
-          }
-          ref
-              .read(
-          cartViewModelProvider(
-          widget.id.toString(),
-          ).notifier,
-          )
-              .updateCartItem(
-          widget.id.toString(),
-          item.id!.toString(),
-          newQuantity,
           );
-          }
-              : null, // Disable button if quantity is 1
-          icon: const Icon(Icons.remove_circle_outline),
-          ),
-          Text('${item.quantity!}', style:  TextStyle(fontSize: 16.sp),),
-          IconButton(
-          onPressed:
-          (item.quantity != null &&
-          item.product!.stock != null &&
-          item.quantity! <
-          item
-              .product!
-              .stock!) // Correct condition
-          ? () {
-          int newQuantity =
-          item.quantity! +
-          1; // Increase quantity
-          if (kDebugMode) {
-          print("Increment to: $newQuantity");
-          }
-          ref.read(cartViewModelProvider(widget.id.toString(),).notifier,)
-              .updateCartItem(widget.id.toString(), item.id!.toString(), newQuantity,);
-          }
-              : null, // Disable if max stock is reached
-          icon: const Icon(Icons.add_circle_outline),
-          ),
-          const Spacer(),
-          IconButton(
-          onPressed: () {
-          ref.read(cartViewModelProvider(widget.id.toString(),).notifier,).deleteCartItem(item.id.toString(),widget.id.toString());
-          },
-          icon: const Icon(
-          Icons.delete_outline,
-          color: Colors.red,
-          ),
-          ),
-          ],
-          ),
-          ],
-          ),
-          ),
-          ],
-          ),
-          ),
-          );
+
           },
           ),
 

@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
+import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/utils.dart';
+import '../../repositories/ShopRepositories.dart';
 import '../../repositories/product_repositories.dart';
 import '../SharedViewModels/getAllCategories.dart';
 import '../SharedViewModels/productViewModels.dart';
@@ -18,11 +20,18 @@ final addProductProvider = StateNotifierProvider.family<AddProductViewModel, Pro
 
 class AddProductViewModel extends StateNotifier<ProductState> {
   final Ref ref;
-  final String shopId;
+  final String id;
   final ImagePicker pickImage = ImagePicker();
 
-  AddProductViewModel(this.ref, this.shopId) : super(ProductState()) {
+  AddProductViewModel(this.ref, this.id) : super(ProductState()) {
     getCategories();
+    getUserShops();
+  }
+
+  void resetState() {
+    state = ProductState(isLoading: false,images: []); // Reset to initial state
+    getCategories();
+    getUserShops();
   }
 
   Future<void> getCategories() async {
@@ -33,6 +42,18 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     } catch (e) {
       state = state.copyWith(isLoading: false);
       print('Error loading categories: $e');
+    }
+  }
+
+  Future<void> getUserShops() async {
+    try {
+      state = state.copyWith(isLoading: true);
+      final shops = await ref.read(shopProvider).getUserShop(id);
+
+      state = state.copyWith(shops: shops, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+      print('Error loading userShops: $e');
     }
   }
 
@@ -88,6 +109,12 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     }
   }
 
+  void setShop(ShopModel? shop) {
+    state = state.copyWith(
+      selectedShop: shop,
+    );
+  }
+
   void setSubcategory(Subcategory? subcategory) {
     state = state.copyWith(selectedSubcategory: subcategory);
   }
@@ -97,6 +124,13 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       isCustomCategory: value,
       selectedCategory: value ? null : state.selectedCategory,
       customCategoryName: value ? null : state.customCategoryName,
+    );
+  }
+
+  void toggleCustomShop(bool value) {
+    state = state.copyWith(
+      isCustomShop: value,
+      selectedShop: value ? null : state.selectedShop,
     );
   }
 
@@ -127,7 +161,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
   }) async {
     try {
 
-      print("Shop ID: $shopId");
+      print("User ID: $id");
       // Validate images
       if (state.images.isEmpty || state.images.length > 7) {
         throw Exception('Please select 1 to 7 images');
@@ -140,7 +174,13 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       if (parsedPrice == null || parsedStock == null) {
         throw Exception('Price and stock must be valid numbers');
       }
+      //fetch shopId
 
+      final shopId = state.isCustomShop ? null : state.selectedShop?.id.toString();
+       if(shopId == null){
+         Utils.flushBarErrorMessage("Select your Active Shop", context);
+         return;
+       }
       // Validate category and subcategory
       final categoryName = state.isCustomCategory ? null : state.selectedCategory?.name;
       final subcategoryName = state.isCustomSubcategory ? null : state.selectedSubcategory?.name;
@@ -188,8 +228,8 @@ class AddProductViewModel extends StateNotifier<ProductState> {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors
       }
-      // Update state and show success message
-      state = state.copyWith(isLoading: false);
+     resetState();
+      state = state.copyWith(isLoading: false,images: null);
       Utils.toastMessage("Added Successfully!");
       Navigator.pop(context);
     } catch (e) {
@@ -202,4 +242,11 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       );
     }
   }
+
+  Future<void> Cancel(String userId,BuildContext context) async{
+    resetState();
+    await Future.delayed(Duration(milliseconds: 500));
+    Navigator.pop(context);
+  }
+
 }

@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/utils.dart';
 import '../SharedViewModels/getAllCategories.dart';
+import '../adminViewModels/ShopViewModel.dart';
 import 'sellerShopViewModel.dart';
 
 final addShopProvider = StateNotifierProvider.family<AddShopViewModel, ShopState, String>((ref, id,) {
@@ -77,6 +78,26 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     );
   }
 
+  void resetState() {
+    state = ShopState(isLoading: false,images: [],selectedCategory: null); // Reset to initial state
+    getCategories();
+  }
+
+
+  Future<void> Cancel(String userId,BuildContext context) async{
+    resetState();
+    ref.invalidate(sellerShopViewModelProvider(userId.toString()));
+    ref.invalidate(allShopViewModelProvider);
+    ref.invalidate(GetallcategoriesProvider);
+    // 2. Explicitly call getShops to ensure data refresh
+    await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
+    await ref.read(allShopViewModelProvider.notifier).getAllShops();
+    await ref.read(GetallcategoriesProvider.notifier);
+    resetState();
+    await Future.delayed(Duration(milliseconds: 500));
+    Navigator.pop(context);
+  }
+
 
   Future<void> addShop({
     required String shopname,
@@ -116,7 +137,8 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       final response = await ref.read(shopProvider).addShop(data, shopId, state.images.whereType<File>().toList());
       final addshop = ShopModel.fromJson(response);
       print(addshop);
-      state = state.copyWith(isLoading: false);
+      resetState();
+      state = state.copyWith(selectedCategory: null);
       // Force reload the shops list - two important steps:
       // 1. Invalidate the provider
       ref.invalidate(sellerShopViewModelProvider(userId.toString()));
@@ -125,6 +147,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       // 2. Explicitly call getShops to ensure data refresh
       await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
       await ref.read(allShopViewModelProvider.notifier).getAllShops();
+      await ref.read(shopViewModelProvider.notifier).getShops();
       await ref.read(GetallcategoriesProvider.notifier);
       await Future.delayed(Duration(milliseconds: 500));
       Navigator.pop(context);

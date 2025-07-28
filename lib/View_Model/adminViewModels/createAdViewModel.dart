@@ -20,7 +20,7 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
 
 
   void resetState() {
-    state = CreateAdState(isLoading: false); // Reset to initial state
+    state = CreateAdState(isLoading: false,adImage: null); // Reset to initial state
   }
 
   Future<void> pickImages(BuildContext context) async {
@@ -67,7 +67,7 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors
       }
-      state = state.copyWith(isLoading: false);
+      state = state.copyWith(isLoading: false,adImage: null,expirationDateTime: null);
 
       Utils.toastMessage("AD Created Successfully!");
       Navigator.pop(context);
