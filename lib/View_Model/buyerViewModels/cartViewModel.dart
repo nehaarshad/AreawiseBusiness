@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/models/cartModel.dart';
 import 'package:ecommercefrontend/repositories/cartRepositories.dart';
 import 'package:flutter/foundation.dart';
@@ -72,9 +73,11 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
         print(items);
       }
       await getUserCart(id);
+      Utils.toastMessage("Added Successfully!");
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
+      Utils.toastMessage("Failed!");
     }
   }
 

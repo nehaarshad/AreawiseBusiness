@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ecommercefrontend/View_Model/adminViewModels/allProductsViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -225,9 +226,12 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       try {
         // Invalidate the provider to refresh the product list
         ref.invalidate(sharedProductViewModelProvider);
+        ref.invalidate(ProductManagementViewModelProvider);
         await ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
         await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
         await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
+        await ref.read(ProductManagementViewModelProvider.notifier).getShopProduct(shopId);
+        await ref.read(ProductManagementViewModelProvider.notifier).getAllProduct('All');
         await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(user);
       } catch (innerError) {
         print("Error refreshing product lists: $innerError");

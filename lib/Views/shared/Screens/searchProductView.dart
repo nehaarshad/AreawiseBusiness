@@ -89,7 +89,11 @@ class _searchViewState extends ConsumerState<searchView> {
                             Navigator.pushNamed(
                               context,
                               routesName.productdetail,
-                              arguments: {'id': widget.userid, 'product': product},
+                              arguments:  {
+                                'id': widget.userid,
+                                'productId':product.id,
+                                'product': product
+                              },
                             );
                           },
                           child: Container(
@@ -121,7 +125,7 @@ class _searchViewState extends ConsumerState<searchView> {
                                                         bottomLeft: Radius.circular(20)
                                                     )
                                                 ),
-                                                child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),product:product!),
+                                                child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),productId: product.id!),
 
                                               ),
                                             )

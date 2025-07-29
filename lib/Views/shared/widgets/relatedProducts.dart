@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/colors.dart';
+import '../../../core/utils/utils.dart';
 
 class RelatedProducts extends ConsumerStatefulWidget {
   final int userid;
@@ -63,61 +65,112 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
         }
 
         return SizedBox(
-          height: 200.h, // Fixed height to prevent unbounded height
+          height: 200.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: relatedProducts.length,
+            itemCount: products.length,
             itemBuilder: (context, index) {
-              final product = relatedProducts[index];
-              if (product == null) return const SizedBox.shrink();
-
+              final product = products[index];
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    routesName.productdetail,
-                    arguments: {'id': widget.userid, 'product': product},
-                  );
+                  if (product != null) {
+                    Navigator.pushNamed(
+                      context,
+                      routesName.productdetail,
+                      arguments:  {
+                        'id': widget.userid,
+                        'productId':product.id,
+                        'product': product
+                      },
+                    );
+                  } else {
+                    Utils.toastMessage("Product information is not available");
+                  }
                 },
-                child: Card(
-                  elevation: 4,
-                  color: Appcolors.whiteColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0.r),
-                  ),
-                  child: Container(
-                    width: 170.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: product.images != null && product.images!.isNotEmpty
-                              ? Image.network(
-                            product.images!.first.imageUrl!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                              : const Icon(Icons.image_not_supported),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 8.w),
+                  width: 170.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Image Container with fixed aspect ratio
+                      AspectRatio(
+                        aspectRatio: 1, // Square aspect ratio (1:1)
+                        child: Stack(
+                          children: [
+                            // Image with proper sizing
+                            if (product?.images != null && product!.images!.isNotEmpty)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.network(
+                                  product.images!.first.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Container(
+                                        color: Colors.grey[200],
+                                        child: const Icon(Icons.image_not_supported),
+                                      ),
+                                ),
+                              )
+                            else
+                              Container(
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: Icon(Icons.image_not_supported),
+                                ),
+                              ),
+
+                            // Wishlist Button
+                            Positioned(
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                        color: Appcolors.blueColor,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(0),
+                                            bottomLeft: Radius.circular(20)
+                                        )
+                                    ),
+                                    child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),productId:product!.id!),
+
+                                  ),
+                                )
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            product.name ?? "Unknown",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                      ),
+
+                      // Product Info
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.h, left: 4.w),
+                        child: Text(
+                          product?.name ?? "Unknown",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14.sp,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.only(left: 4.w, top: 4.h),
+                        child: Text(
+                          "Rs.${product?.price ?? 0}",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                          child: Text(
-                            "\$${product.price ?? 0}",
-                            style: const TextStyle(color: Colors.green),
-                          ),
-                        ),
-                         SizedBox(height: 8.h),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               );

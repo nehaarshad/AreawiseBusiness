@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/colors.dart';
+import '../../../core/utils/utils.dart';
 
 
 class AllProducts extends ConsumerStatefulWidget {
@@ -34,107 +35,141 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final productState = ref.watch(sharedProductViewModelProvider);
 
-   return
-       Consumer(builder: (context,ref,child){
-         final productState = ref.watch(sharedProductViewModelProvider);
-         return  productState.when(
-           loading: () => const Center(child: CircularProgressIndicator()),
-           data: (products) {
-             if (products.isEmpty) {
-               return const Center(child: Text("No Products available."));
-             }
-             return SizedBox(
-               height: 320.h,
-               child: GridView.builder(
-                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                   crossAxisCount: 2, // Number of columns in the grid
-                   crossAxisSpacing: 4, // Horizontal spacing between grid items
-                   mainAxisSpacing: 15, // Adjust based on the desired item dimensions
-                 ),
-                 itemCount: products.length,
-                 physics:ScrollPhysics(),
-                 itemBuilder: (context, index) {
-                   final product = products[index];
-                   return GestureDetector(
-                     onTap: () {
-                       Navigator.pushNamed(
-                         context,
-                         routesName.productdetail,
-                         arguments: {'id': widget.userid, 'product': product},
-                       );
-                     },
-                     child: Container(
-                       margin: EdgeInsets.symmetric(horizontal: 5.h),
-                       width: 170.w,
-                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           Expanded(
-                               child:Stack(
-                                 children: [
-                                   product?.images != null && product!.images!.isNotEmpty
-                                       ? Image.network(
-                                     product!.images!.first.imageUrl!,
-                                     fit: BoxFit.cover,
-                                     width: double.infinity,
-                                   )
-                                       : const Icon(Icons.image_not_supported),
-                                   Positioned(
-                                       child: Align(
-                                         alignment: Alignment.topRight,
-                                         child: Container(
-                                           height: 35,
-                                           width: 35,
-                                           decoration: BoxDecoration(
-                                               color: Appcolors.blueColor,
-                                               borderRadius: BorderRadius.only(
-                                                   topRight: Radius.circular(0),
-                                                   bottomLeft: Radius.circular(20)
-                                               )
-                                           ),
-                                           child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),product:product!),
+        return productState.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          data: (products) {
+            if (products.isEmpty) {
+              return const Center(child: Text("No Products available."));
+            }
+            return SizedBox(
+              height: 200.h,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 2.w,
+                  mainAxisSpacing: 15.h,
+                  childAspectRatio: 0.75, // Adjusted to prevent overflow
+                ),
+                itemCount: products.length,
+                physics: const ScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 4.w), // Added padding instead of individual margins
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  if (product == null) return const SizedBox.shrink();
 
-                                         ),
-                                       )
-                                   ),
-                                 ],
-                               )
-                           ),
-                           Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        routesName.productdetail,
+                        arguments:  {
+                          'id': widget.userid,
+                          'productId':product.id,
+                          'product': product
+                        },
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.w), // Reduced margin
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min, // Prevent column from expanding
+                        children: [
+                          // Image Section
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: Stack(
+                              children: [
+                                // Product Image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: product.images?.isNotEmpty ?? false
+                                      ? Image.network(
+                                    product.images!.first.imageUrl!,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    errorBuilder: (_, __, ___) =>
+                                        Container(
+                                          color: Colors.grey[200],
+                                          child: const Icon(Icons.image_not_supported),
+                                        ),
+                                  )
+                                      : Container(
+                                    color: Colors.grey[200],
+                                    child: const Center(
+                                      child: Icon(Icons.image_not_supported),
+                                    ),
+                                  ),
+                                ),
 
-                               Padding(
-                                 padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
-                                 child: Text(
-                                   product.name ?? "Unknown",
-                                   style: const TextStyle(fontWeight: FontWeight.w400),
-                                 ),
-                               ),
-                               // WishlistButton( userId: widget.userid.toString(),product:product!),
+                                // Wishlist Button
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Container(
+                                    height: 30.h,
+                                    width: 35.w,
+                                    decoration: BoxDecoration(
+                                      color: Appcolors.blueColor,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20.r),
+                                      ),
+                                    ),
+                                    child: WishlistButton(
+                                      color: Appcolors.whiteColor,
+                                      userId: widget.userid.toString(),
+                                      productId: product.id!,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
 
-                               Padding(
-                                 padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                                 child: Text(
-                                   "Rs.${product.price ?? 0}",
-                                   style:  TextStyle(color: Colors.green,fontSize: 13.h),
-                                 ),
-                               ),
-                             ],
-                           ),
-                         ],
-                       ),
-                     ),
-                   );
-                 },
-               ),
-             );
-           },
-           error: (err, stack) => Center(child: Text('Error: $err')),
-         );
-       });
+                          // Product Info
+                          Padding(
+                            padding: EdgeInsets.only(top: 4.h, left: 4.w, right: 4.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  product.name ?? "Unknown",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 2.h),
+                                Text(
+                                  "Rs.${product.price ?? 0}",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+          error: (err, stack) => Center(child: Text('Error: ${err.toString()}')),
+        );
+      },
+    );
   }
+
+
 }
-
-

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/AdViewModel.dart';
+import '../../../View_Model/adminViewModels/AdViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/colors.dart';
 

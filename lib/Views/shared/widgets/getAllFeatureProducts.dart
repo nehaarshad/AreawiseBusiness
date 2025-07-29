@@ -51,7 +51,7 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
           return SizedBox(child: const Center(child: Text("No Featured Products available.")));
         }
         return SizedBox(
-          height: 180.h,
+          height: 200.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -69,49 +69,70 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
                     Navigator.pushNamed(
                       context,
                       routesName.productdetail,
-                      arguments: {
+                      arguments:  {
                         'id': widget.userid,
+                        'productId':product.id,
                         'product': product
                       },
                     );
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.h),
+                  margin: EdgeInsets.symmetric(horizontal: 8.h),
                   width: 170.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                          child:Stack(
-                            children: [
-                              product?.images != null && product!.images!.isNotEmpty
-                                  ? Image.network(
-                                product!.images!.first.imageUrl!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              )
-                                  : const Icon(Icons.image_not_supported),
-                              Positioned(
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      height: 35,
-                                      width: 35,
-                                      decoration: BoxDecoration(
-                                          color: Appcolors.blueColor,
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(0),
-                                              bottomLeft: Radius.circular(20)
-                                          )
-                                      ),
-                                      child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),product:product!),
+                     AspectRatio(
+                       aspectRatio: 1,
+                       child: Stack(
+                         children: [
+                           // Image with proper sizing
+                           if (product?.images != null && product!.images!.isNotEmpty)
+                             ClipRRect(
+                               borderRadius: BorderRadius.circular(8.r),
+                               child: Image.network(
+                                 product.images!.first.imageUrl!,
+                                 fit: BoxFit.cover,
+                                 width: double.infinity,
+                                 height: double.infinity,
+                                 errorBuilder: (context, error, stackTrace) =>
+                                     Container(
+                                       color: Colors.grey[200],
+                                       child: const Icon(Icons.image_not_supported),
+                                     ),
+                               ),
+                             )
+                           else
+                             Container(
+                               color: Colors.grey[200],
+                               child: const Center(
+                                 child: Icon(Icons.image_not_supported),
+                               ),
+                             ),
 
-                                    ),
-                                  )
-                              ),
-                            ],
-                          )
-                      ),
+                           // Wishlist Button
+                           Positioned(
+                               child: Align(
+                                 alignment: Alignment.topRight,
+                                 child: Container(
+                                   height: 35,
+                                   width: 35,
+                                   decoration: BoxDecoration(
+                                       color: Appcolors.blueColor,
+                                       borderRadius: BorderRadius.only(
+                                           topRight: Radius.circular(0),
+                                           bottomLeft: Radius.circular(20)
+                                       )
+                                   ),
+                                   child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),productId:product.id!),
+
+                                 ),
+                               )
+                           ),
+                         ],
+                       ),
+                     ),
+
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

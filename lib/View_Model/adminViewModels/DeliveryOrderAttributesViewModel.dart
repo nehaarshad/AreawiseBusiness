@@ -32,12 +32,24 @@ class attributesViewModel extends StateNotifier<AsyncValue<DeliveryOrderAttribut
   void initValues() async {
     try {
       DeliveryOrderAttributes attributes  = await ref.read(attributesProvider).getAttributes();
+
+      double? discountValue = double.tryParse(attributes.discount ?? '0');
+
+      if (discountValue != null) {
+        // Multiply by 100 and round to avoid decimal issues
+        int percentage = (discountValue * 100).round();
+        discount.text = percentage.toString();
+      }
+      else {
+        discount.text = '0'; // Default value if parsing fails
+      }
+      shippingPrice.text = attributes.shippingPrice!.toString();
+      total.text = attributes.totalBill.toString();
       NewArrivalDuration days = await ref.read(productProvider).getArrivalDuration();
       print(days);
-      shippingPrice.text = attributes.shippingPrice!.toString();
-      discount.text =  attributes.discount.toString();
-      total.text = attributes.totalBill.toString();
+
       duration.text = days.day.toString();
+      print("Discount conversion ${discount.text}");
       state = AsyncValue.data(attributes);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

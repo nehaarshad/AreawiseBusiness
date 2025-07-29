@@ -70,8 +70,9 @@ class _ChatViewState extends ConsumerState<ChatView> {
               context,
               routesName.productdetail,
               arguments: {
-                'id': int.tryParse(widget.product!.seller!.toString()),
-                'product': widget.product
+                'id': int.tryParse(widget.userId),
+                'product': widget.product,
+                  'productId':widget.product!.id
               },
             );
           },

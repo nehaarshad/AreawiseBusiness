@@ -1,5 +1,6 @@
 //reviews,chat,order,products,profile
 
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,9 +14,8 @@ class SellerBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 4.w),
-      child: BottomNavigationBar(
+    return  BottomNavigationBar(
+        backgroundColor: Appcolors.whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: onItemTapped,
@@ -26,7 +26,7 @@ class SellerBottomNavigation extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.request_page), label: 'Orders'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-      ),
-    );
+      );
+
   }
 }

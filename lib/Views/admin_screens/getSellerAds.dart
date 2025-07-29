@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/AdViewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/colors.dart';
+import '../../View_Model/adminViewModels/AdViewModel.dart';
+import '../../core/utils/routes/routes_names.dart';
+import '../../core/utils/colors.dart';
 
 class UserAdsView extends ConsumerStatefulWidget {
   final String sellerId;
@@ -18,7 +18,7 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(AdsViewModelProvider.notifier).getUserAds(widget.sellerId);
+      ref.read(AdsViewModelProvider.notifier).getAllAds();
     });
   }
 

@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../View_Model/SharedViewModels/getProductDetailsViewModel.dart';
+import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/DashBoardProductsView.dart';
 import '../widgets/contactWithSellerButton.dart';
@@ -17,29 +19,41 @@ import '../widgets/wishListButton.dart';
 
 class productDetailView extends ConsumerStatefulWidget {
   int userid;
-  ProductModel product;
+  ProductModel? product;
+  int productId;
 
-  productDetailView({required this.userid, required this.product});
+  productDetailView({required this.userid,required this.product, required this.productId});
 
   @override
   ConsumerState<productDetailView> createState() => _productDetailViewState();
 }
 
 class _productDetailViewState extends ConsumerState<productDetailView> {
+  @override
+  void initState() {
+    super.initState();
+    print("UserId passes ${widget.userid}");
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Add this to ensure fresh data
+      ref.invalidate(ProductDetailsViewModelProvider(widget.productId.toString()));
+      await ref.read(ProductDetailsViewModelProvider(widget.productId.toString()).notifier).getProductDetails(widget.productId.toString());
+    });
+  }
 
   int Qty=1;
 
   @override
   Widget build(BuildContext context) {
+    final productState = ref.watch(ProductDetailsViewModelProvider(widget.productId.toString()));
     return Scaffold(
       appBar: AppBar(
          actions: [
            Row(
              children: [
-               WishlistButton( color:Appcolors.blackColor,userId: widget.userid.toString(),product:widget.product),
+               WishlistButton( color:Appcolors.blackColor,userId: widget.userid.toString(),productId:widget.productId),
                contactWithSellerButton(
                  userId: widget.userid.toString(),
-                 productId: widget.product.id.toString(),
+                 productId: widget.productId.toString(),
                  product: widget.product,
                ),
              ],
@@ -48,24 +62,41 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              ImageSlider(images: widget.product.images ?? [], height: 350.h),
+        child: productState.when(
+          loading: () => const Center(
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: CircularProgressIndicator(color: Appcolors.blueColor),
+            ),
+          ),
+          data: (product) {
+            if (product == null) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text("No Product Available"),
+                ),
+              );
+            }
+            return SingleChildScrollView(
 
-              SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(10, 15, 10, 100),
-                  child:Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ImageSlider(images: product.images ?? [], height: 350.h),
+
+                  SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 15, 10, 100),
+                      child:Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Icon(Icons.store,color: Colors.grey,),
-                              Text('${widget.product.shop?.shopname!}',style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15.sp
+                              Text('${product.shop?.shopname!}',style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15.sp
                               ),)
                             ],
                           ),
@@ -73,12 +104,12 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("${widget.product.name}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: Colors.black,),),
+                              Text("${product.name}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: Colors.black,),),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text("Rs.",style: TextStyle(color: Colors.black,fontSize: 20.sp,fontWeight: FontWeight.w400),),
-                                  Text("${widget.product.price}",
+                                  Text("${product.price}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w900,
                                       fontSize: 20.sp,
@@ -90,24 +121,24 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                             ],
                           ),
                           SizedBox(height: 3.h),
-                          Text("${widget.product.subtitle}",style: TextStyle(
+                          Text("${product.subtitle}",style: TextStyle(
                             fontWeight: FontWeight.normal,fontSize: 15.sp, color: Colors.black87,),),
                           SizedBox(height: 10.h),
                           Row(
-                                children: [
-                                  Text("Sold: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-                                  Text(
-                                    "${widget.product.sold}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15.sp,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  Text(" (${widget.product.stock} available)",style: TextStyle(color: Colors.red,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-
-                                ],
+                            children: [
+                              Text("Sold: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              Text(
+                                "${product.sold}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.sp,
+                                  color: Colors.black87,
+                                ),
                               ),
+                              Text(" (${product.stock} available)",style: TextStyle(color: Colors.red,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+
+                            ],
+                          ),
                           SizedBox(height: 10.h),
                           Row(
                             children: [
@@ -129,9 +160,9 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                       iconSize: 20.h,
                                       onPressed: (Qty > 1)
                                           ? () {
-                                       setState(() {
-                                         Qty = Qty - 1;
-                                       });
+                                        setState(() {
+                                          Qty = Qty - 1;
+                                        });
                                         if (kDebugMode) {
                                           print("Decrement to: $Qty in product View");
                                         }
@@ -147,7 +178,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                       padding: EdgeInsets.zero,
                                       constraints: BoxConstraints(),
                                       iconSize: 20.h,
-                                      onPressed: (widget.product.stock != null && Qty < widget.product.stock!)
+                                      onPressed: (product.stock != null && Qty < product.stock!)
                                           ? () {
                                         setState(() {
                                           Qty = Qty + 1;
@@ -173,7 +204,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                 children: [
                                   Text("Category: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                   Text(
-                                    "${widget.product.subcategory?.name}",
+                                    "${product.subcategory?.name}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 15.sp,
@@ -198,7 +229,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                       color: Colors.white,
                                       size: 18.h,
                                     ),
-                                    Text('${widget.product.ratings}',style: TextStyle(color: Colors.white,fontSize: 15.sp)),
+                                    Text('${product.ratings}',style: TextStyle(color: Colors.white,fontSize: 15.sp)),
                                   ],
                                 ),
                               ),
@@ -217,7 +248,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: widget.product.description,
+                                  text: product.description,
                                   style: TextStyle(
                                     color: Colors.black87,
                                     fontSize: 15.sp,
@@ -229,12 +260,12 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          ProductReviews(productId: widget.product.id!,userId: widget.userid,),
+                          ProductReviews(productId: product.id!,userId: widget.userid,),
                           SizedBox(height: 10.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                               Padding(
+                              Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.h,),
                                 child: Text(
                                   "Related Products",
@@ -244,22 +275,39 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               Row(
                                 children: [
                                   const Text("See All", style: TextStyle(color: Colors.grey)),
-                                   Icon(Icons.arrow_forward_ios_sharp, size: 10.h),
+                                  Icon(Icons.arrow_forward_ios_sharp, size: 10.h),
                                 ],
                               ),
                             ],
                           ),
-                          RelatedProducts(userid: widget.userid,category: widget.product.category?.name,),
-                            ],
-                          ),
+                          RelatedProducts(userid: widget.userid,category: product.category?.name,),
+                        ],
+                      ),
 
 
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            );
+          },
+          error: (error, stackTrace) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.red, size: 48.h),
+                  SizedBox(height: 16.h),
+                  Text('Error loading product Details: ${error.toString()}'),
+                  SizedBox(height: 16.h),
+                ],
+              ),
+            ),
           ),
-        ),
+        )
+
       ),
+
     bottomNavigationBar: Padding(
     padding: const EdgeInsets.all(12.0),
     child: SizedBox(
@@ -268,8 +316,8 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
     child: ElevatedButton.icon(
     onPressed: () async {
     await ref.read(cartViewModelProvider(widget.userid.toString()).notifier)
-        .addToCart(widget.userid.toString(), widget.product.id!,Qty);
-    Utils.toastMessage("Added Successfully!");
+        .addToCart(widget.userid.toString(), widget.productId!,Qty);
+
     },
     style: ElevatedButton.styleFrom(
     backgroundColor: Appcolors.blueColor,

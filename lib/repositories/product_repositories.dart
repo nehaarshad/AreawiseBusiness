@@ -62,6 +62,20 @@ class ProductRepositories {
       }
     }
 
+  Future<ProductModel> getProductByID(String id) async {
+    ProductModel product;
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+          AppApis.GetProductByIDEndPoints.replaceFirst(':id', id),
+          headers());
+     print("Get Product By id in repository ${response}");
+      product = ProductModel.fromJson(response);
+      return product;
+    } catch (e) {
+      throw e;
+    }
+  }
+
     Future<List<ProductModel>> getNewArrivalProduct(String Category) async {
       List<ProductModel> productlist = [];
       try {

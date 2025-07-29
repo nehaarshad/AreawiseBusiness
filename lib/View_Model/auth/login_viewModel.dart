@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:ecommercefrontend/View_Model/auth/sessionmanagementViewModel.dart';
 import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
@@ -22,6 +24,7 @@ class LoginViewModel extends StateNotifier<bool> {
       dynamic response = await ref.read(authprovider).loginapi(data);
       UserDetailModel user= UserDetailModel.fromJson(response);
       await ref.read(sessionProvider.notifier).saveuser(user);
+      developer.log("Logged in user:${user}");
       if (user.role == 'Admin') {
         Navigator.pushNamed(context, routesName.aHome, arguments: user);
         Utils.flushBarErrorMessage("Login Successfully as Admin", context);
@@ -36,6 +39,8 @@ class LoginViewModel extends StateNotifier<bool> {
         Utils.flushBarErrorMessage("Login Successfully", context);
       }
     } catch (error) {
+      print(error);
+      developer.log("Logged in user:${error}");
       Utils.flushBarErrorMessage("Incorrect Usename or Password", context);
     } finally {
       state = false;

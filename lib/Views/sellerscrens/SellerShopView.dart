@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
+import '../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 
 class SellerShopsView extends ConsumerStatefulWidget {
@@ -15,6 +16,7 @@ class SellerShopsView extends ConsumerStatefulWidget {
 }
 
 class _ShopsViewState extends ConsumerState<SellerShopsView> {
+
   @override
   Widget build(BuildContext context) {
     final shopState = ref.watch(sellerShopViewModelProvider(widget.id.toString()));
@@ -36,10 +38,15 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
               final shop = shops[index];
               return  InkWell(
                   onTap: () {
+                   final userId = ref.read(sessionProvider)?.id;
+                    final parameters={
+                      'shop':shop,
+                      'id':userId
+                    };
                     Navigator.pushNamed(
                       context,
                       routesName.SellerShopDetailView,
-                      arguments: shop,
+                      arguments: parameters,
                     );
                   },
                   child: ListTile(

@@ -47,6 +47,7 @@ class AttributeRepositories {
       dynamic response = await apiservice.GetApiResponce(
         AppApis.getOrderAttributesEndPoints,headers()
       );
+      print(DeliveryOrderAttributes.fromJson(response));
       return DeliveryOrderAttributes.fromJson(response);
     } catch (e) {
       throw e;

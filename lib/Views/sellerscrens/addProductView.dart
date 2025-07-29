@@ -158,7 +158,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                   controller: description,
                   decoration: InputDecoration(labelText: "Description"),
                   maxLines: 3,
-                  maxLength: 150,
+                  maxLength: 500,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter a description";

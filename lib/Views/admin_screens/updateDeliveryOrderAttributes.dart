@@ -45,6 +45,7 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
   }
 
   Widget formFields(attributesViewModel model) {
+    print(model.discount);
     return Column(
       children: [
         TextFormField(

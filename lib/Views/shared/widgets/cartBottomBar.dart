@@ -110,7 +110,7 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
           SizedBox(height: 8.h),
           total < (double.tryParse(Offer) ?? 5000.0 )
               ?
-          Center(child: Text("${discount}% is Offer, if you spent RS.${Offer} ", style:  TextStyle(fontWeight: FontWeight.w300,color: Appcolors.blueColor)))
+          Center(child: Text("${discount}% Discount is Offer, if you spent RS.${Offer} ", style:  TextStyle(fontWeight: FontWeight.w300,color: Appcolors.blueColor)))
               :
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

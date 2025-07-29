@@ -11,7 +11,7 @@ import '../../../models/auth_users.dart';
 import '../widgets/drawerList.dart';
 import '../widgets/logout_button.dart';
 import '../widgets/profileImageWidget.dart';
-import 'ShopView.dart';
+import '../../buyer_screens/ShopView.dart';
 import '../../buyer_screens/CartView.dart';
 import '../../buyer_screens/WishListView.dart';
 import '../../sellerscrens/OrdersView.dart';

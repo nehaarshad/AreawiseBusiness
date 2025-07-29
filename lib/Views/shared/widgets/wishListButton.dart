@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 
 class WishlistButton extends ConsumerWidget {
   final String userId;
-  final ProductModel product;
+  final int productId;
   final color;
 
-  const WishlistButton({Key? key, required this.userId,required this.color, required this.product}) : super(key: key);
+  const WishlistButton({Key? key, required this.userId,required this.color, required this.productId}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +24,7 @@ class WishlistButton extends ConsumerWidget {
     wishlistState.whenData((wishlistItems) {
       // Check if the product exists in the wishlist
       isInWishlist = wishlistItems.any((item) =>
-      item?.productId == product.id || item?.product?.id == product.id
+      item?.productId == productId || item?.product?.id == productId
       );
     });
 
@@ -33,12 +33,12 @@ class WishlistButton extends ConsumerWidget {
         if (isInWishlist) {
           // If product is already in wishlist, remove it
           await ref.read(wishListViewModelProvider(userId).notifier)
-              .deleteItemFromWishList(userId.toString(), product.id!);
+              .deleteItemFromWishList(userId.toString(), productId!);
           Utils.toastMessage("Removed from wishlist!");
         } else {
           // If product is not in wishlist, add it
           await ref.read(wishListViewModelProvider(userId).notifier)
-              .addToWishList(userId, product.id!);
+              .addToWishList(userId, productId!);
           Utils.toastMessage("Added to wishlist!");
         }
 

@@ -78,7 +78,11 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                           Navigator.pushNamed(
                             context,
                             routesName.productdetail,
-                            arguments: {'id': int.tryParse(widget.sellerId), 'product': product},
+                            arguments: {
+                              'id': int.tryParse(widget.sellerId),
+                              'productId':product.id,
+                              'product': product
+                            },
                           );
                         },
                         child: Column(

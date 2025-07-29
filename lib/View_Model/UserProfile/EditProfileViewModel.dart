@@ -9,6 +9,9 @@ import '../../core/utils/utils.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 
+import '../adminViewModels/UserViewModel.dart';
+import '../adminViewModels/searchUserViewModel.dart';
+import '../auth/sessionmanagementViewModel.dart';
 import 'UserProfileViewModel.dart';
 
 final editProfileViewModelProvider = StateNotifierProvider.family<EditProfileViewModel, AsyncValue<UserDetailModel?>, String>((ref, id) {
@@ -22,10 +25,12 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
     initValues(id);
   }
 
+
   final key = GlobalKey<FormState>();
   late TextEditingController username;
   late TextEditingController email;
   late TextEditingController contactnumber;
+  late String currentRole;
   late String role;
   late TextEditingController sector;
   late TextEditingController city;
@@ -36,6 +41,8 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
 
   void initValues(String id) async {
     try {
+      final StoredUserRole = ref.read(sessionProvider)?.role;
+      currentRole=StoredUserRole!;
       UserDetailModel userdata = await ref.read(userProvider).getuserbyid(id);
       username = TextEditingController(text: userdata.username);
       email = TextEditingController(text: userdata.email);
@@ -86,6 +93,9 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       state = AsyncValue.data(updatedUser);
       Utils.toastMessage("User Updated Successfully!");
       await ref.read(UserProfileViewModelProvider(id).notifier).getuserdetail(id);
+      await ref.read(UserViewModelProvider.notifier).getallusers();
+      await ref.read(searchUserViewModelProvider.notifier).searchuser(data['username'].substring(0, 2));
+
       await Future.delayed(Duration(seconds: 1));
       Navigator.pop(context);
     } catch (e) {
@@ -105,6 +115,9 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       print("Message ${message}");
       Utils.flushBarErrorMessage(message,context);
       await ref.read(UserProfileViewModelProvider(id).notifier).getuserdetail(id);
+      await ref.read(UserViewModelProvider.notifier).getallusers();
+      await ref.read(searchUserViewModelProvider.notifier).searchuser(data['username'].substring(0, 2));
+
       await Future.delayed(Duration(seconds: 1));
 
     } catch (e) {

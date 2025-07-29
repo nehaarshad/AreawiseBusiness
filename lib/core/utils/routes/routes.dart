@@ -20,7 +20,7 @@ import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
 import '../../../Views/sellerscrens/sellerShopDetailView.dart';
 import '../../../Views/shared/Screens/chatsListView.dart';
 import '../../../Views/shared/Screens/forgetPasswordView.dart';
-import '../../../Views/shared/Screens/searchShopView.dart';
+import '../../../Views/admin_screens/searchShopView.dart';
 import '../../../Views/shared/widgets/getAllProductView.dart';
 import '../../../Views/admin_screens/adminhomeview.dart';
 import '../../../Views/auth/screens/login_View.dart';
@@ -29,7 +29,7 @@ import '../../../Views/buyer_screens/deliveryAddress.dart';
 import '../../../Views/sellerscrens/UpdateShopView.dart';
 import '../../../Views/admin_screens/createAds.dart';
 import '../../../Views/shared/Screens/DashBoardView.dart';
-import '../../../Views/shared/Screens/ShopView.dart';
+import '../../../Views/buyer_screens/ShopView.dart';
 import '../../../Views/admin_screens/UsersView.dart';
 import '../../../Views/sellerscrens/SellerShopView.dart';
 import '../../../Views/sellerscrens/addProductView.dart';
@@ -41,7 +41,7 @@ import '../../../Views/buyer_screens/ShopDetailView.dart';
 import '../../../Views/shared/Screens/UserProfileView.dart';
 import '../../../Views/sellerscrens/orderDetailView.dart';
 import '../../../Views/shared/Screens/splashScreen.dart';
-import '../../../Views/shared/widgets/getSellerAds.dart';
+import '../../../Views/admin_screens/getSellerAds.dart';
 import '../../../models/ProductModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../models/auth_users.dart';
@@ -142,23 +142,27 @@ class Routes {
 
       case (routesName.productdetail):
         final id = arg['id'] as int;
+        final productId = arg['productId'] as int;
         final product = arg['product'] as ProductModel;
         return MaterialPageRoute(
           builder:
               (BuildContext context) =>
-                  productDetailView(userid: id, product: product),
+                  productDetailView(userid: id, product: product,productId: productId,),
         );
 
       case (routesName.shopdetail):
-        final shop = arg as ShopModel;
+        final shop = arg['shop'] as ShopModel;
+        final id = arg['id'] as String;
+
         return MaterialPageRoute(
-          builder: (BuildContext context) => ShopDetailView(shop: shop),
+          builder: (BuildContext context) => ShopDetailView(shop: shop,id: id,),
         );
 
       case (routesName.SellerShopDetailView):
-        final shop = arg as ShopModel;
+        final shop = arg['shop'] as ShopModel;
+        final id = arg['id'] as int;
         return MaterialPageRoute(
-          builder: (BuildContext context) => SellerShopDetailView(shop: shop),
+          builder: (BuildContext context) => SellerShopDetailView(shop: shop,userId: id,),
         );
 
       case (routesName.categories):

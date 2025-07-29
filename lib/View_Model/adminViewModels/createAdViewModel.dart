@@ -4,7 +4,7 @@ import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/repositories/adRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../SharedViewModels/AdViewModel.dart';
+import 'AdViewModel.dart';
 import 'AdStates.dart';
 
 final createAdsViewModelProvider = StateNotifierProvider<createAdsViewModel, CreateAdState>((ref,) {
@@ -61,7 +61,6 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
       try {
         // Invalidate the provider to refresh the product list
         ref.invalidate(AdsViewModelProvider);
-        await ref.read(AdsViewModelProvider.notifier).getUserAds(sellerId);
         await ref.read(AdsViewModelProvider.notifier).getAllAds();
       } catch (innerError) {
         print("Error refreshing product lists: $innerError");
@@ -69,7 +68,7 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
       }
       state = state.copyWith(isLoading: false,adImage: null,expirationDateTime: null);
 
-      Utils.toastMessage("AD Created Successfully!");
+      Utils.flushBarErrorMessage("AD Created Successfully!",context);
       Navigator.pop(context);
 
     } catch (e) {

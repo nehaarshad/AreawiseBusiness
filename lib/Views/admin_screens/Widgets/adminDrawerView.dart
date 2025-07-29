@@ -145,7 +145,7 @@ class AdminDrawerListItems extends ConsumerWidget {
     final success = await userpreferences.logout();
 
     if (success) {
-      Utils.flushBarErrorMessage("LogOut Completed!", context);
+     // Utils.flushBarErrorMessage("LogOut Completed!", context);
       await Future.delayed(Duration(seconds: 1));
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -153,7 +153,7 @@ class AdminDrawerListItems extends ConsumerWidget {
             (route) => false,
       );
     } else {
-      Utils.flushBarErrorMessage("LogOut Not Completed!", context);
+      Utils.flushBarErrorMessage("LogOut Failed!", context);
     }
   }
 }

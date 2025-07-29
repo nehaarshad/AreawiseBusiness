@@ -11,9 +11,7 @@ class BuyerBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 4.w),
-      child: BottomNavigationBar(
+    return  BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: onItemTapped,
@@ -24,7 +22,7 @@ class BuyerBottomNavigationBar extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-      ),
-    );
+      );
+
   }
 }

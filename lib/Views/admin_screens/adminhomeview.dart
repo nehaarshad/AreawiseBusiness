@@ -5,7 +5,7 @@ import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../shared/Screens/ShopView.dart';
+import '../buyer_screens/ShopView.dart';
 import '../shared/Screens/appHomeView.dart';
 import '../shared/widgets/getAllProductView.dart';
 import 'FeaturedProductRequestView.dart';

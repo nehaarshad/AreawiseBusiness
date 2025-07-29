@@ -3,12 +3,11 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
-import '../../admin_screens/Widgets/searchUser.dart';
+import '../../View_Model/adminViewModels/ShopViewModel.dart';
+import '../../core/utils/routes/routes_names.dart';
 
 class ShopsView extends ConsumerStatefulWidget {
-  int id;
+  int id;//userId
    ShopsView({super.key,required this.id});
 
   @override
@@ -22,12 +21,12 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
 
       children: [
         // Center(child: Text(" Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
-        searchShop(id:widget.id,myShop: false,),
+        searchShop(id:widget.id,myShop: false),
         SizedBox(height: 8.h,),
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {
-                final shopState = ref.watch(allShopViewModelProvider);
+                final shopState = ref.watch(shopViewModelProvider);
                 return shopState.when(
                   loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
                   data: (shops) {
@@ -49,10 +48,14 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                           final shop = shops[index];
                           return GestureDetector(
                             onTap: (){
+                              final parameters={
+                                'shop':shop,
+                                'id':widget.id.toString()
+                              };
                               Navigator.pushNamed(
                                 context,
                                 routesName.shopdetail,
-                                arguments: shop,
+                                arguments: parameters,
                               );
                             },
                             child: Container(

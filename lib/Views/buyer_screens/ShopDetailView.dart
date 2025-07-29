@@ -10,7 +10,8 @@ import '../shared/widgets/shopProducts.dart';
 
 class ShopDetailView extends ConsumerStatefulWidget {
   ShopModel shop;
-  ShopDetailView({required this.shop});
+  String id;
+  ShopDetailView({required this.shop,required this.id});
 
   @override
   ConsumerState<ShopDetailView> createState() => _ShopDetailViewState();
@@ -103,7 +104,7 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                 ),
               ),
               SizedBox(height: 10.h,),
-              shopProducts(shopId:  widget.shop.id.toString()),
+              shopProducts(shopId:  widget.shop.id.toString(),id:widget.id),
             ],
           ),
         ),

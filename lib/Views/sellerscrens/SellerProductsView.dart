@@ -5,7 +5,6 @@ import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
-import '../shared/widgets/getSellerAds.dart';
 import '../shared/widgets/getUserProducts.dart';
 import 'getSellerFeatureProducts.dart';
 
@@ -19,11 +18,24 @@ class Sellerproductsview extends ConsumerStatefulWidget {
 
 class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
 
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Add this to ensure fresh data
+      ref.invalidate(sharedProductViewModelProvider);
       await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.id.toString());
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
+      ref.invalidate(sharedProductViewModelProvider);
+      await ref.read(sharedProductViewModelProvider.notifier).getUserProduct(widget.id.toString());
+      return true;
     });
   }
 
@@ -105,7 +117,11 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
                                 Navigator.pushNamed(
                                   context,
                                   routesName.productdetail,
-                                  arguments: {'id': widget.id, 'product': product},
+                                  arguments:  {
+                                    'id': widget.id,
+                                    'productId':product.id,
+                                    'product': product
+                                  },
                                 );
                               },
                               child: Column(

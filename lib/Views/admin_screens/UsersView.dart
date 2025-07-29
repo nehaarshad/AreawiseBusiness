@@ -117,7 +117,7 @@ class _UsersViewState extends ConsumerState<UserView> {
                                             icon: Icon(Icons.store, size: 20.h,color: Colors.blue,),),
                                           IconButton(
                                               onPressed: () async{
-                                                       await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString());
+                                                       await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString(),context);
                                               },
                                               icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
                                           Icon(Icons.arrow_forward_ios_sharp, size: 8.h,color: Colors.grey,),

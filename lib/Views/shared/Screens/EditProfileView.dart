@@ -22,12 +22,12 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
     super.dispose();
   }
 
-  Widget buildRoleDropdown(EditProfileViewModel model) {
+  Widget buildRoleDropdown(EditProfileViewModel model, String currentUserRole) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButtonFormField<String>(
-          value: model.role,
+          value: model.role, // Ensure this matches one of the available items
           decoration: InputDecoration(
             labelText: "Role",
           ),
@@ -42,16 +42,17 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
               model.role = value!;
             });
           },
-          items: const [
+          items: [
+            if (currentUserRole == "Admin") // Only show "Admin" if current user is admin
+              DropdownMenuItem(value: "Admin", child: Text("Admin")),
             DropdownMenuItem(value: "Buyer", child: Text("Buyer")),
             DropdownMenuItem(value: "Seller", child: Text("Seller")),
             DropdownMenuItem(value: "Both", child: Text("Both")),
-          ],
+          ].where((item) => item != null).toList(),
         ),
       ],
     );
   }
-
   Widget UserImage(UserDetailModel user, EditProfileViewModel model) {
     return Column(
       children: [
@@ -113,7 +114,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           keyboardType: TextInputType.phone,
         ),
 
-        buildRoleDropdown(model),
+        buildRoleDropdown(model,model.currentRole),
 
         TextFormField(
           controller: model.sector,

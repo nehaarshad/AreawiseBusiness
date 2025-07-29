@@ -104,8 +104,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
               ],
             ),
             AllFeaturedProducts(userid: widget.id),
-            SizedBox(height: 10.h),
-
             //All Products
            Row(
              mainAxisAlignment: MainAxisAlignment.start,

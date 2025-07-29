@@ -1,9 +1,11 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
+import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/UserViewModel.dart';
+import '../../View_Model/adminViewModels/searchUserViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 
 class searchUserView extends ConsumerStatefulWidget {
@@ -19,9 +21,20 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(UserViewModelProvider.notifier).searchuser(widget.search);
+      await ref.read(searchUserViewModelProvider.notifier).searchuser(widget.search);
     });
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
+      ref.invalidate(searchUserViewModelProvider);
+      await ref.read(searchUserViewModelProvider.notifier).searchuser(widget.search);
+      return true;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +52,7 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
       ),
       body: Consumer(
         builder: (context, ref, child) {
-          final userState = ref.watch(UserViewModelProvider);
+          final userState = ref.watch(searchUserViewModelProvider);
           return userState.when(
             loading: () => const Center(
               child: CircularProgressIndicator(color: Appcolors.blueColor),
@@ -100,7 +113,9 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
                                 icon: Icon(Icons.store, size: 20.h,color: Colors.blue,),),
                               IconButton(
                                 onPressed: () async{
-                                  await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString());
+                                  await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString(),context);
+                                  Utils.flushBarErrorMessage("Deleted", context);
+                                  await ref.read(searchUserViewModelProvider.notifier).searchuser(widget.search);
                                 },
                                 icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
                               Icon(Icons.arrow_forward_ios_sharp, size: 8.h,color: Colors.grey,),

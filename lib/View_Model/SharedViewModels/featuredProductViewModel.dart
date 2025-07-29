@@ -103,6 +103,7 @@ class FeatureProductViewModel extends StateNotifier<AsyncValue<List<featureModel
         if (currentRoute == routesName.activefeature) {
           // We're on the Featured Products screen
           await getAllFeaturedProducts('All');
+          await getFeaturedProducts('All');
         } else {
           // We're on the Requests screen
           await getAllRequestedFeatured();

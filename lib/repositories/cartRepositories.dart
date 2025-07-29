@@ -33,6 +33,7 @@ class CartRepositories {
         body,
           headers(),
       );
+      print("addToCart repository: ${response}");
       if (response is Map<String, dynamic>) {
         return Cart.fromJson(response);
       }

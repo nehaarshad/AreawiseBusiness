@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/sellerShopViewModel.dart';
+import 'package:ecommercefrontend/View_Model/SharedViewModels/searchedShopViewMode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:ecommercefrontend/core/utils/utils.dart';
@@ -11,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../models/categoryModel.dart';
 import '../../repositories/categoriesRepository.dart';
-import '../SharedViewModels/allShopsViewModel.dart';
+import '../adminViewModels/ShopViewModel.dart';
 
 final updateShopProvider = StateNotifierProvider.family<UpdateShopViewModel, AsyncValue<ShopModel?>, String>((ref, id) {
   return UpdateShopViewModel(ref, id);
@@ -167,13 +168,11 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       print('Data send: ${data}');
       final imageFiles = images.map((img) => img.file!).toList();
 
-      final response = await ref.read(shopProvider).updateShop(data, id, imageFiles);
-
-      final updatedShop = ShopModel.fromJson(response);
+      await ref.read(shopProvider).updateShop(data, id, imageFiles);
       ref.invalidate(sellerShopViewModelProvider(userid.toString()));
       await ref.read(sellerShopViewModelProvider(userid.toString()).notifier).getShops(userid.toString());
-      ref.invalidate(allShopViewModelProvider);
-      await ref.read(allShopViewModelProvider.notifier).getAllShops();
+      await ref.read(searchShopViewModelProvider.notifier).searchShops(shopname.substring(0, 2));
+      await ref.read(shopViewModelProvider.notifier).getShops();///update admin and buyer shopList
    //   state = AsyncValue.data(updatedShop);
       Navigator.pop(context);
     } catch (e) {

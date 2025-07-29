@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/colors.dart';
+import '../../../core/utils/utils.dart';
 
 class shopProducts extends ConsumerStatefulWidget {
   String shopId;
-  shopProducts({required this.shopId});
+  String id;//userId
+  shopProducts({required this.shopId,required this.id});
 
   @override
   ConsumerState<shopProducts> createState() => _ProductsViewState();
@@ -19,9 +21,23 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
   @override
   void initState() {
     super.initState();
-    // Fetch all products when the widget is first created
-    ref.read(sharedProductViewModelProvider.notifier).getShopProduct(widget.shopId);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Add this to ensure fresh data
+      ref.invalidate(sharedProductViewModelProvider);
+      await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(widget.shopId);
+    });
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
+      ref.invalidate(sharedProductViewModelProvider);
+      await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(widget.shopId);
+      return true;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,50 +70,102 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
               final product = products[index];
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    routesName.productdetail,
-                    arguments: {'id': int.tryParse(widget.shopId), 'product': product},
-                  );
+                  if (product != null) {
+                    Navigator.pushNamed(
+                      context,
+                      routesName.productdetail,
+                      arguments: {
+                        'id': int.tryParse(widget.id),
+                        'productId':product.id,
+                        'product': product
+                      },
+                    );
+                  } else {
+                    Utils.toastMessage("Product information is not available");
+                  }
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.h,vertical: 8.h),
+                  margin: EdgeInsets.symmetric(horizontal: 8.w),
                   width: 170.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                          child:product?.images != null && product!.images!.isNotEmpty
-                                  ? Image.network(
-                                product!.images!.first.imageUrl!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
+                      // Image Container with fixed aspect ratio
+                      AspectRatio(
+                        aspectRatio: 1, // Square aspect ratio (1:1)
+                        child: Stack(
+                          children: [
+                            // Image with proper sizing
+                            if (product?.images != null && product!.images!.isNotEmpty)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.network(
+                                  product.images!.first.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Container(
+                                        color: Colors.grey[200],
+                                        child: const Icon(Icons.image_not_supported),
+                                      ),
+                                ),
                               )
-                                  : const Icon(Icons.image_not_supported),
+                            else
+                              Container(
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: Icon(Icons.image_not_supported),
+                                ),
+                              ),
 
+                            // Wishlist Button
+                            Positioned(
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                        color: Appcolors.blueColor,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(0),
+                                            bottomLeft: Radius.circular(20)
+                                        )
+                                    ),
+                                    child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.id.toString(),productId:product!.id!),
 
+                                  ),
+                                )
+                            ),
+                          ],
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
 
-                          Padding(
-                            padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
-                            child: Text(
-                              product?.name ?? "Unknown",
-                              style: const TextStyle(fontWeight: FontWeight.w400),
-                            ),
+                      // Product Info
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.h, left: 4.w),
+                        child: Text(
+                          product?.name ?? "Unknown",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14.sp,
                           ),
-                          // WishlistButton( userId: widget.userid.toString(),product:product!),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
 
-                          Padding(
-                            padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                            child: Text(
-                              "Rs.${product?.price ?? 0}",
-                              style:  TextStyle(color: Colors.green,fontSize: 13.h),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 4.w, top: 4.h),
+                        child: Text(
+                          "Rs.${product?.price ?? 0}",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -106,6 +174,7 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
             },
           ),
         );
+
       },
       error: (err, stack) => Center(child: Text('Error: $err')),
     );

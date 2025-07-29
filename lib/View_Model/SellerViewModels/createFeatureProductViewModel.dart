@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../models/featureModel.dart';
 import '../../repositories/featuredRepositories.dart';
-import '../SharedViewModels/AdViewModel.dart';
+import '../adminViewModels/AdViewModel.dart';
 import '../SharedViewModels/featuredProductViewModel.dart';
 import '../adminViewModels/AdStates.dart';
 import 'featureStates.dart';

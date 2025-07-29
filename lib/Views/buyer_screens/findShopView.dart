@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SellerViewModels/sellerShopViewModel.dart';
-import '../../../View_Model/SharedViewModels/allShopsViewModel.dart';
-import '../../../View_Model/SharedViewModels/searchedShopViewMode.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import '../../View_Model/SharedViewModels/searchedShopViewMode.dart';
+import '../../View_Model/adminViewModels/ShopViewModel.dart';
 
 class findShopView extends ConsumerStatefulWidget {
   final String search;
@@ -16,6 +15,8 @@ class findShopView extends ConsumerStatefulWidget {
   ConsumerState<findShopView> createState() => _findShopViewState();
 }
 
+
+//Buyer searchShop View..cant update or deleteShop
 class _findShopViewState extends ConsumerState<findShopView> {
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _findShopViewState extends ConsumerState<findShopView> {
           backgroundColor: Appcolors.whiteColor,
           leading: IconButton(
             onPressed: () async {
-              await ref.read(allShopViewModelProvider.notifier).getAllShops();
+              await ref.read(shopViewModelProvider.notifier).getShops();
               if (mounted) Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back),
@@ -62,10 +63,14 @@ class _findShopViewState extends ConsumerState<findShopView> {
                           final shop = shops[index];
                           return GestureDetector(
                             onTap: (){
+                              final parameters={
+                                'shop':shop,
+                                'id':widget.userid
+                              };
                               Navigator.pushNamed(
                                 context,
                                 routesName.shopdetail,
-                                arguments: shop,
+                                arguments: parameters,
                               );
                             },
                             child: Container(

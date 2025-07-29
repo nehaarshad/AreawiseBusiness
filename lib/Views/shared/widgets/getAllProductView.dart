@@ -44,10 +44,17 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
+                  if(product==null){
+                    return SizedBox.shrink();
+                  }
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, routesName.productdetail,
-                      arguments: {'id': widget.userid, 'product': product},);
+                      arguments:  {
+                        'id': widget.userid,
+                        'productId':product.id,
+                        'product': product
+                      },);
                     },
                     child: Card(
                       elevation: 4,

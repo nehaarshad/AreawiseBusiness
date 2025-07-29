@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/View_Model/adminViewModels/allProductsViewModel.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,13 +23,25 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
+      // Add this to ensure fresh data
+      ref.invalidate(ProductManagementViewModelProvider);
+      await ref.read(ProductManagementViewModelProvider.notifier).getAllProduct('All');
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
+      ref.invalidate(ProductManagementViewModelProvider);
+      await ref.read(ProductManagementViewModelProvider.notifier).getAllProduct('All');
+      return true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final productState = ref.watch(sharedProductViewModelProvider);
+    final productState = ref.watch(ProductManagementViewModelProvider);
 
     return Scaffold(
 
@@ -72,7 +85,11 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                   Navigator.pushNamed(
                                     context,
                                     routesName.productdetail,
-                                    arguments: {'id': widget.id, 'product': product},
+                                    arguments: {
+                                      'id': widget.id,
+                                      'productId':product.id,
+                                      'product': product
+                                    },
                                   );
                                 },
                                 child: Column(
@@ -126,8 +143,11 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                                 icon: Icon(Icons.delete, color: Colors.red),
                                                 onPressed: () async {
                                                   if (product.id != null) {
+                                                    await ref.read(ProductManagementViewModelProvider.notifier)
+                                                        .deleteProduct(product.id.toString(), widget.id.toString());
                                                     await ref.read(sharedProductViewModelProvider.notifier)
                                                         .deleteProduct(product.id.toString(), widget.id.toString());
+                                                    await ref.read(ProductManagementViewModelProvider.notifier).getAllProduct('All');
                                                     await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
                                                   }
                                                 },

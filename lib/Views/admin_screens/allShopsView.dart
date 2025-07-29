@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
-import '../../View_Model/SharedViewModels/allShopsViewModel.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../models/shopModel.dart';
@@ -20,6 +18,12 @@ class allShopsView extends ConsumerStatefulWidget {
 }
 
 class _AllShopsViewState extends ConsumerState<allShopsView> {
+
+  @override
+  void initState() {
+    super.initState();
+    print("UserId in admin allShopView ${widget.id}");
+  }
 
   List<ShopModel?> ShopList=[];
   @override
@@ -56,10 +60,14 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                         }
                         return  InkWell(
                             onTap: () {
+                              final parameters={
+                                'shop':shop,
+                                'id':widget.id
+                              };
                               Navigator.pushNamed(
                                 context,
                                 routesName.SellerShopDetailView,
-                                arguments: shop,
+                                arguments: parameters,
                               );
                             },
                             child: Column(

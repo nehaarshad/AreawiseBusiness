@@ -11,16 +11,6 @@ class AdsViewModel extends StateNotifier<AsyncValue<List<adsModel?>>> {
   final Ref ref;
   AdsViewModel(this.ref) : super(AsyncValue.loading());
 
-  ///for sellers
-  Future<void> getUserAds(String id) async {
-    try {
-      List<adsModel?> ads = await ref.read(adProvider).getUserAds(id);
-      state = AsyncValue.data(ads.isEmpty ? [] : ads);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
-    }
-  }
-
   ///for dashboardView
   Future<void> getAllAds() async {
     try {
@@ -35,7 +25,6 @@ class AdsViewModel extends StateNotifier<AsyncValue<List<adsModel?>>> {
   Future<void> deleteAds(String id,String userId) async {
     try {
       await ref.read(adProvider).deleteAd(id);
-      await getUserAds(userId);
       Utils.toastMessage("Ad Removed!");
       await getAllAds();
     } catch (e) {

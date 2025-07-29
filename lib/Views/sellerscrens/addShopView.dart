@@ -182,7 +182,9 @@ class _addShopViewState extends ConsumerState<addShopView> {
 
                     ),
                     child: Center(
-                      child: Text(
+                      child:state.isLoading
+                          ? CircularProgressIndicator(color: Appcolors.whiteColor,)
+                          : Text(
                         "Add Shop",
                         style: TextStyle(
                           color: Appcolors.whiteColor,

@@ -33,7 +33,8 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                 itemCount: list.length,
                 itemBuilder: (context, index) {
                   final item = list[index];
-                  if (item?.product == null) return const SizedBox.shrink();
+                  if (item == null) return const SizedBox.shrink();
+                  if (item.product == null) return const SizedBox.shrink();
 
                   return  ListTile(
 
@@ -41,15 +42,19 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         Navigator.pushNamed(
                           context,
                           routesName.productdetail,
-                          arguments:{'id': widget.id, 'product': item?.product} ,
+                          arguments: {
+                            'id': widget.id,
+                            'productId':item.product?.id,
+                            'product': item.product
+                          } ,
                         );
                       },
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
-                        child: (item?.product?.images?.isNotEmpty == true &&
-                            item?.product?.images?.first.imageUrl?.isNotEmpty == true)
+                        child: (item.product?.images?.isNotEmpty == true &&
+                            item.product?.images?.first.imageUrl?.isNotEmpty == true)
                             ? Image.network(
-                          item!.product!.images!.first.imageUrl!,
+                          item.product!.images!.first.imageUrl!,
                           fit: BoxFit.cover,
                           width: 80.w,
                           height: 100.h,
@@ -66,14 +71,14 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         ),
                       ),
                       title: Text(
-                        "${item?.product?.name}",
+                        "${item.product?.name}",
                         style:  TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       subtitle: Text(
-                        '\$${item?.product?.price}',
+                        '\Rs.${item.product?.price}',
                         style:  TextStyle(
                           fontSize: 16.sp,
                           color: Colors.blue,
@@ -83,7 +88,7 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         onPressed: () async {
                           await ref
                               .read(wishListViewModelProvider(widget.id.toString()).notifier)
-                              .deleteItemFromWishList(widget.id.toString(), item!.productId!);
+                              .deleteItemFromWishList(widget.id.toString(), item.productId!);
                         },
                         icon: const Icon(Icons.delete, color: Colors.red),
                       ),
