@@ -97,7 +97,7 @@ class _UsersViewState extends ConsumerState<UserView> {
                                         height: 60.h,
                                         fit: BoxFit.cover,
                                       ),
-                                      title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
+                                      title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16.sp),),
                                       subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14.sp)),
                                       trailing: Row(
                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,

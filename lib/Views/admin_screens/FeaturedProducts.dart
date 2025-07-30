@@ -53,7 +53,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
         return StatefulBuilder(
             builder: (stateContext, setDialogState) {
               return AlertDialog(
-                title: const Text("Update Expiration Time"),
+                title: const Text("Set Expiration Time"),
                 content: Form(
                   key: key,
                   child: Column(
@@ -230,11 +230,13 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                                 },
                               )
                                   : const Icon(Icons.image_not_supported),
-                              title: Text(
-                                "${featuredProduct.product?.name ??
-                                    'Unknown Product'}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                              title:  Text(
+                                featuredProduct.product?.name ?? "Unknown",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,

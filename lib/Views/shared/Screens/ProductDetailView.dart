@@ -92,37 +92,64 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            children: [
-                              Icon(Icons.store,color: Colors.grey,),
-                              Text('${product.shop?.shopname!}',style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15.sp
-                              ),)
-                            ],
-                          ),
-                          Divider(thickness: 0.4.h,),
-                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("${product.name}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: Colors.black,),),
                               Row(
+                                children: [
+                                  Icon(Icons.store,color: Colors.grey,),
+                                  Text('${product.shop?.shopname!}',style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.sp
+                                  ),),
+
+                                ],
+                              ),
+                             Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text("Rs.",style: TextStyle(color: Colors.black,fontSize: 20.sp,fontWeight: FontWeight.w400),),
+                                  Text("Rs.",style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.w400),),
                                   Text("${product.price}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w900,
-                                      fontSize: 20.sp,
+                                      fontSize: 18.sp,
                                       color: Appcolors.blueColor,
                                     ),
                                   ),
                                 ],
-                              ),
+                              )
                             ],
                           ),
+                          Divider(thickness: 0.4.h,),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: product.name,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           SizedBox(height: 3.h),
-                          Text("${product.subtitle}",style: TextStyle(
-                            fontWeight: FontWeight.normal,fontSize: 15.sp, color: Colors.black87,),),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: product.subtitle,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 15.sp,
+                                    wordSpacing: 5,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           SizedBox(height: 10.h),
                           Row(
                             children: [

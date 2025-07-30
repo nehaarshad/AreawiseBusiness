@@ -79,9 +79,13 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                product?.name ?? "Unknown",
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              child:  Text(
+                                product.name ?? "Unknown",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Text("\$${product?.price ?? 0}", style: const TextStyle(color: Colors.green)),

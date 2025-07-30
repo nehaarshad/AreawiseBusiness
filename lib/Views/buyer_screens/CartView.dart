@@ -144,12 +144,16 @@ class _CartviewState extends ConsumerState<Cartview> {
               children: [
               Row(
                 children: [
-                  Text(
-                  "${item.product!.name}",
-                  style:  TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  ),
+                  SizedBox(
+                    child: Text(
+                      item.product?.name ?? "Unknown",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.sp
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    width: 150.w,
                   ),
                   const Spacer(),
                   IconButton(

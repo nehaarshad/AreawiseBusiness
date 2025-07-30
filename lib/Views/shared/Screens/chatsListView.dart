@@ -169,7 +169,9 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
         ),
         title: Text(chat.product!.name! ,style: TextStyle(
           fontSize: 18.sp,
-        ),),
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,),
         subtitle: chat.messages != null && chat.messages!.isNotEmpty
             ? Text(
           chat.messages!.last.msg!,

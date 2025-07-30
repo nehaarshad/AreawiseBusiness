@@ -117,7 +117,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                                       ),
                                       title: Text(
                                         product.name ?? 'No Name',
-                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontWeight: FontWeight.w500),
                                       ),
                                       subtitle: Text(
                                         product.category?.name ?? 'No Category',

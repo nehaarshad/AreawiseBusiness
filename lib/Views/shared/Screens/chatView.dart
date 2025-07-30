@@ -102,8 +102,18 @@ class _ChatViewState extends ConsumerState<ChatView> {
                   child: const Icon(Icons.shopping_bag),
                 ),
                 SizedBox(width: 15.w,),
-                Text(widget.product!.name!,style: TextStyle(color: Appcolors.whiteColor),),
-              ],
+                SizedBox(
+                  width: 200.w,
+                  child: Text(
+                    widget.product?.name ?? "Unknown",
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Appcolors.whiteColor
+                    ),
+                    // maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),],
             )
         ),
 

@@ -139,9 +139,13 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
 
                           Padding(
                             padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
-                            child: Text(
+                            child:  Text(
                               product.name ?? "Unknown",
-                              style: const TextStyle(fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           // WishlistButton( userId: widget.userid.toString(),product:product!),

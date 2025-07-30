@@ -65,7 +65,7 @@ class _findShopViewState extends ConsumerState<findShopView> {
                             onTap: (){
                               final parameters={
                                 'shop':shop,
-                                'id':widget.userid
+                                'id':widget.userid.toString()
                               };
                               Navigator.pushNamed(
                                 context,
@@ -95,9 +95,14 @@ class _findShopViewState extends ConsumerState<findShopView> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      "${shop?.shopname}",
-                                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 10.h),
+                                    child: SizedBox(
+                                      child: Text(
+                                        "${shop?.shopname}",
+                                        style: TextStyle(fontWeight: FontWeight.w500,fontSize: 10.h),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      width: 90.w,
                                     ),
                                   ),
                                 ],

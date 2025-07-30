@@ -80,9 +80,14 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      "${shop?.shopname}",
-                                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 10.h),
+                                    child: SizedBox(
+                                      child: Text(
+                                        "${shop?.shopname}",
+                                        style: TextStyle(fontWeight: FontWeight.w500,fontSize: 10.h),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      width: 90.w,
                                     ),
                                   ),
                                ],

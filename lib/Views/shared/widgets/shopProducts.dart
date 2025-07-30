@@ -133,7 +133,7 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
                                             bottomLeft: Radius.circular(20)
                                         )
                                     ),
-                                    child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.id.toString(),productId:product!.id!),
+                                    child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.id,productId:int.tryParse(product!.id!.toString())!),
 
                                   ),
                                 )

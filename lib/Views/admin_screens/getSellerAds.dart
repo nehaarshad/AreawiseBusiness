@@ -42,13 +42,11 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
                   }
 
                   return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
                     itemCount: ads.length,
                     itemBuilder: (context, index) {
                       final ad = ads[index];
                       return Card(
-                        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        margin:  EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
                         elevation: 2,
                         child: Stack(
                           children: [

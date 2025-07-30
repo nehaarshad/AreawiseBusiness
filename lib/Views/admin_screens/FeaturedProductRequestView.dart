@@ -205,8 +205,12 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                           )
                               : const Icon(Icons.image_not_supported),
                           title: Text(
-                            "${featuredProduct.product?.name ?? 'Unknown Product'}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            featuredProduct.product?.name ?? "Unknown",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           subtitle: Text(
                             "${featuredProduct.status ?? 'Unknown'}",

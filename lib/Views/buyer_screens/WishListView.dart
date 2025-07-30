@@ -74,7 +74,7 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         "${item.product?.name}",
                         style:  TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       subtitle: Text(
