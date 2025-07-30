@@ -33,16 +33,7 @@ class attributesViewModel extends StateNotifier<AsyncValue<DeliveryOrderAttribut
     try {
       DeliveryOrderAttributes attributes  = await ref.read(attributesProvider).getAttributes();
 
-      double? discountValue = double.tryParse(attributes.discount ?? '0');
-
-      if (discountValue != null) {
-        // Multiply by 100 and round to avoid decimal issues
-        int percentage = (discountValue * 100).round();
-        discount.text = percentage.toString();
-      }
-      else {
-        discount.text = '0'; // Default value if parsing fails
-      }
+      discount.text = attributes.discount.toString().split('.')[1];
       shippingPrice.text = attributes.shippingPrice!.toString();
       total.text = attributes.totalBill.toString();
       NewArrivalDuration days = await ref.read(productProvider).getArrivalDuration();

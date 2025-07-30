@@ -66,10 +66,10 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors
       }
-      state = state.copyWith(isLoading: false,adImage: null,expirationDateTime: null);
-
       Utils.flushBarErrorMessage("AD Created Successfully!",context);
-      Navigator.pop(context);
+
+      resetState();
+
 
     } catch (e) {
       state = state.copyWith(isLoading: false);

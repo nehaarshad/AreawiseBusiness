@@ -17,11 +17,10 @@ class logoutbutton extends ConsumerWidget {
       onTap: () async {
         final success = await userpreferences.logout();
         if (success) {
-          Utils.flushBarErrorMessage("LogOut Completed!", context);
           await Future.delayed(Duration(seconds: 1));
           Navigator.pushNamed(context, routesName.login);
         } else {
-          Utils.flushBarErrorMessage("LogOut Not Completed!", context);
+          Utils.toastMessage("Failed!");
         }
       },
       child:Text("Logout ",style: TextStyle(color: Appcolors.blueColor,fontWeight: FontWeight.w500),),

@@ -28,12 +28,11 @@ class signupviewmodel extends StateNotifier<bool> {
         // await Future.delayed(Duration(seconds: 2));
         if (user.role == 'Admin') {
           Navigator.pushNamed(context, routesName.aHome, arguments: user);
-          Utils.flushBarErrorMessage("Signup Successfully as Admin", context);
         }
         else {
 
           Navigator.pushNamed(context, routesName.dashboard, arguments: user);
-          Utils.flushBarErrorMessage("Signup Successfully", context);
+          Utils.flushBarErrorMessage("Registration Completed", context);
         }
       }
       else {

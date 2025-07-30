@@ -55,7 +55,7 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
 
         TextFormField(
           controller: model.discount,
-          decoration: const InputDecoration(labelText: "Discount Offer",
+          decoration: const InputDecoration(labelText: "Discount %",
 
           ),
 

@@ -29,13 +29,6 @@ class _createAdsState extends ConsumerState<createAds> {
     });
   }
 
-  @override
-  void dispose() {
-    // Reset the state when the widget is disposed
-    _viewModel.resetState();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

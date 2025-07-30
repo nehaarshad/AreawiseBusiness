@@ -27,16 +27,10 @@ class LoginViewModel extends StateNotifier<bool> {
       developer.log("Logged in user:${user}");
       if (user.role == 'Admin') {
         Navigator.pushNamed(context, routesName.aHome, arguments: user);
-        Utils.flushBarErrorMessage("Login Successfully as Admin", context);
       }
-      // else if(user.role == 'buyer') {
-      //   Navigator.pushNamed(context, routesName.bHome,arguments: user);
-      //   Utils.flushBarErrorMessage("Login Successfully as Buyer", context);
-      // }
       else {
 
         Navigator.pushNamed(context, routesName.dashboard, arguments: user);
-        Utils.flushBarErrorMessage("Login Successfully", context);
       }
     } catch (error) {
       print(error);
