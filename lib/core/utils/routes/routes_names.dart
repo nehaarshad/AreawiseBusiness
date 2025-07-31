@@ -19,6 +19,7 @@ class routesName {
   static const String subcategories = "appSubcategories";
   static const String searchUser = "searchUserView";
   static const String addCategory = "addCategory";
+  static const String manageProduct = "ManageSearchProducts";
 
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";

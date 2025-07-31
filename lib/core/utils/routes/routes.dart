@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/admin_screens/ManageSearchProducts.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addCategory.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
 import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
@@ -148,6 +149,14 @@ class Routes {
           builder:
               (BuildContext context) =>
                   productDetailView(userid: id, product: product,productId: productId,),
+        );
+
+      case (routesName.manageProduct):
+        final search = arg['search'] as String;
+        final id = arg['id'] as int;
+
+        return MaterialPageRoute(
+          builder: (BuildContext context) => ManageSearchedProductsview(search: search,id: id,),
         );
 
       case (routesName.shopdetail):

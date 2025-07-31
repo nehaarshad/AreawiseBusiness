@@ -7,7 +7,8 @@ import '../../../core/utils/routes/routes_names.dart';
 
 class searchBar extends ConsumerStatefulWidget {
   final int id;
-  const searchBar({super.key, required this.id});
+  final bool isAdmin;
+  const searchBar({super.key, required this.id,required this.isAdmin});
 
   @override
   ConsumerState<searchBar> createState() => _SearchBarState();
@@ -18,11 +19,23 @@ class _SearchBarState extends ConsumerState<searchBar> {
 
   void _navigateToSearch(String search) {
     if (search.trim().isNotEmpty) {
-      final parameters = {
-        'id': widget.id,
-        'search': search.trim(),
-      };
-      Navigator.pushNamed(context, routesName.search, arguments: parameters);
+      if(widget.isAdmin){
+        final parameters = {
+          'id': widget.id,
+          'search': search.trim(),
+        };
+        Navigator.pushNamed(context, routesName.manageProduct, arguments: parameters);
+
+      }
+      else{
+        final parameters = {
+          'id': widget.id,
+          'search': search.trim(),
+        };
+        Navigator.pushNamed(context, routesName.search, arguments: parameters);
+
+
+      }
     }
   }
 

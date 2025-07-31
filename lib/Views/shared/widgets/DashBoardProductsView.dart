@@ -46,7 +46,7 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
               return const Center(child: Text("No Products available."));
             }
             return SizedBox(
-              height: 200.h,
+              height: 480.h,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

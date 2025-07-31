@@ -56,7 +56,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
         child: Column(
           children: [
              SizedBox(height: 10.h),
-             searchBar(id: widget.id,),
+             searchBar(id: widget.id,isAdmin: false,),
             SizedBox(height: 15.h),
             const getAdsView(),
             Divider(),

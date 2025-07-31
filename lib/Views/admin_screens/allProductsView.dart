@@ -51,7 +51,7 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h,),
-                searchBar(id: widget.id,),
+                searchBar(id: widget.id,isAdmin: true,),
                 SizedBox(height: 10.h,),
                 Consumer(
                   builder: (context, ref, child) {

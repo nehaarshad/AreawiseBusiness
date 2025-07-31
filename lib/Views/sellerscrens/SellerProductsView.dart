@@ -6,6 +6,7 @@ import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
 import '../shared/widgets/getUserProducts.dart';
+import '../shared/widgets/searchBar.dart';
 import 'getSellerFeatureProducts.dart';
 
 class Sellerproductsview extends ConsumerStatefulWidget {
@@ -57,6 +58,7 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              searchBar(id: widget.id,isAdmin: true,),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
