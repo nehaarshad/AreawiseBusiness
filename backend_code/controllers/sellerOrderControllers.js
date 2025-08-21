@@ -6,6 +6,8 @@ import image from "../models/imagesModel.js";
 import Address from "../models/addressmodel.js";
 import User from "../models/userModel.js";
 import order from "../models/orderModel.js";
+import sendNotificationToUser from "../utils/sendNotification.js";
+import { or } from "sequelize";
 
 const getSellerOrders = async (req, res) => { 
     try {
@@ -128,13 +130,20 @@ const updateOrderStatus = async (req, res) => {
 
          const orderDetails = await order.findOne({ 
                 where: { id: id },
-                include: [{
-                    model: cart,
-                    include: [{
+                include: [
+                    
+                    {
+                        model: cart,
+                        include: [
+                            {
+                        model: User, 
+                    },
+                    {
                         model: items,
                         where: { productId: productId }
                     }]
-                }]
+                }
+            ]
             });
         
         // If status is being updated to "Approved", update product stock and sold count
@@ -167,6 +176,13 @@ const updateOrderStatus = async (req, res) => {
         await orderDetails.Cart.CartItems[0].update({ status: status });
         sellerOrder.status = status;
         await sellerOrder.save();
+
+          const buyerId = orderDetails.Cart.UserId; 
+             const notificationMessage = `Your ordered product Item #"${orderDetails.Cart.CartItems[0].id}" status has been updated to "${status}" `;
+    
+             if (req.io && req.userSockets) {
+             await sendNotificationToUser(req.io, req.userSockets, buyerId, notificationMessage);
+             }
         
         res.json(sellerOrder);
     } catch (error) {

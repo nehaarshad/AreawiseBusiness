@@ -1,12 +1,23 @@
 import { Op } from 'sequelize';
 import Chat from '../models/chatModel.js';
 import Message from '../models/msgModel.js';
+import Notification from '../models/notifications.js';
 import User from '../models/userModel.js';
+import Product from '../models/productModel.js';
 
 const chatService = (io) => {
+
+   const userSockets = new Map(); 
+
     io.on('connection', (socket) => {
       console.log(`User connected: ${socket.id}`);
     
+         // Register user socket for notifications
+    socket.on('registerUser', (userId) => {
+      userSockets.set(userId.toString(), socket.id);
+      console.log(`User ${userId} registered with socket ${socket.id}`);
+    });
+
       socket.on('userChats', async (userId) => {
         try {
           const chats = await Chat.findAll({
@@ -37,15 +48,20 @@ const chatService = (io) => {
       socket.on('sendMessage', async (data) => {
         try {
           const { chatId, senderId, msg } = data;
-           // Check if chat already exists
-              // const [chatId] = await Chat.findOrCreate({
-              //   where: {
-              //     buyerId,
-              //     sellerId: product.seller,
-              //     productId:id
-              //   }
-              // });
+           
+              const chat = await Chat.findByPk(chatId,{
+                where: {
+                  buyerId,
+                  sellerId: product.seller,
+                  productId:id
+                },
+                include:{
+                  model:Product
+                }
+              });
 
+              const buyerId=chat.buyerId;
+              const sellerId=chat.sellerId;
           const newMessage = await Message.create({
             chatId,
             senderId, //might be buyer or seller
@@ -68,6 +84,17 @@ const chatService = (io) => {
           
           // Emit to all participants in the chat
           io.to(`chat_${chatId}`).emit('receiveMessage', fullMessage);
+          let receiverID; 
+          if(buyerId== senderId){ //if buyer send new message, seller receive notification
+               receiverID = sellerId;
+          }
+          else{
+            receiverID=buyerId;
+          }
+          const NotificationMessage = `New message in chat #"${chat.Product.name}"`;
+              if (req.io && req.userSockets) {
+                  await sendNotificationToUser(req.io, req.userSockets, receiverID, NotificationMessage);
+                 }
           console.log(`Message sent in chat ${chatId}`);
         } catch (error) {
           console.error('Error sending message:', error);
@@ -104,10 +131,37 @@ const chatService = (io) => {
       }
     });
 
-      socket.on('disconnect', () => {
-        console.log(`User disconnected: ${socket.id}`);
-      });
+
+    socket.on('markNotificationAsRead', async (data) => {
+      try {
+        const { id, userId } = data;
+
+        await Notification.update(
+          { read: true },
+          { where: { id, userId } }
+        );
+
+        console.log(`Notification ${id} marked as read for user ${userId}`);
+      } catch (error) {
+        console.error('Error marking notification as read:', error);
+      }
     });
-  };
+
+        socket.on('disconnect', () => {
+      // Remove user from socket map on disconnect
+      for (const [userId, socketId] of userSockets.entries()) {
+        if (socketId === socket.id) {
+          userSockets.delete(userId);
+          console.log(`User ${userId} removed from socket map`);
+          break;
+        }
+      }
+      
+      console.log(`User disconnected: ${socket.id}`);
+    });
+  });
+
+  return { userSockets };
+};
 
   export default chatService;

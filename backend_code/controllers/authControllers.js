@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/userModel.js"
 import generateToken from "../utils/generateToken.js";
 import TokenBlacklist from "../models/tokenblacklist.js"
+import sendNotificationToUser from "../utils/sendNotification.js";
 
 const createNewUser = async (req, res) => {
 
@@ -29,6 +30,11 @@ const createNewUser = async (req, res) => {
             role: newuser.role, 
             token: generateToken(newuser.id) 
         });
+             const sellerId = newuser.id; 
+                     const NotificationMessage = `Welcome ${newuser.username} to BizAroundU🚀. Buy, sell, and chat with sellers directly. Start exploring now!`;
+                      if (req.io && req.userSockets) {
+                         await sendNotificationToUser(req.io, req.userSockets, sellerId, NotificationMessage);
+                         }
         }
        }
 

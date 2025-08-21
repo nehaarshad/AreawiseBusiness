@@ -31,6 +31,15 @@ const order = sequelize.define('Orders', {
          type: DataTypes.STRING, //on pending,send,approved,completed
          allowNull: false,
     },
+    paymentMethod: {
+        type: DataTypes.ENUM('cash', 'jazzcash', 'easypaisa', 'bankAccount'),
+        allowNull: true, // Can be null initially
+    },
+    paymentStatus: {
+        type: DataTypes.ENUM('cashOnDelivery', 'paid'),
+        allowNull: false,
+        defaultValue: 'cashOnDelivery'
+    }
  },
  {
     timestamps:true

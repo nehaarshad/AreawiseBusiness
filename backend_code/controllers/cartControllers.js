@@ -3,6 +3,7 @@ import items from '../models/cartItemModel.js'
 import Product from '../models/productModel.js';
 import image from "../models/imagesModel.js";
 import User from '../models/userModel.js';
+import sale from '../models/saleModel.js';
 
    //on click of add to cart button
 const addToCart=async(req,res)=>{
@@ -17,11 +18,18 @@ const addToCart=async(req,res)=>{
     }
     const product=await Product.findByPk(productId,
       {
-        include:{
+        include:[{
             model:image,
             where:{imagetype:"product"},
             required:false //all products may not have image
         },
+        {
+          model:sale
+        },
+        {
+          model:shop
+        }
+      ]
     });
     //to find product
     if(!product){

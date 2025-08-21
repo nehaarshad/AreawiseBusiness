@@ -14,6 +14,7 @@ import Ads from "./adsModel.js";
 import featured from "./featuredModel.js";
 import Chat from "./chatModel.js";
 import Message from "./msgModel.js";
+import sale from "./salesModel.js";
 import review from "./reviewModel.js";
 
 
@@ -30,6 +31,9 @@ const relation = () => {
 
     User.hasMany(Product, { foreignKey: {name: 'seller', allowNull: false } });
     Product.belongsTo(User, { foreignKey: 'seller' });
+
+    User.hasMany(sale, { foreignKey: {name: 'userId', allowNull: false } });
+    sale.belongsTo(User, { foreignKey: 'userId' });
 
     //shop relations.........
     shop.hasMany(Product, { foreignKey: {name: 'shopid', allowNull: false } });
@@ -54,6 +58,10 @@ const relation = () => {
 
     category.hasOne(image,{foreignKey:{name:'CategoryId',allowNull:false},constraints: false,scope: {imagetype: 'category'},});
     image.belongsTo(category,{foreignKey:{name:"CategoryId"},constraints: false,scope: {imagetype: 'category'}});
+
+    Product.hasOne(sale,{foreignKey:{name:'productId',allowNull:false}});
+    sale.belongsTo(Product,{foreignKey:{name:"productId"}});
+
 
     category.hasMany(Product, { foreignKey:{name: 'categoryId'} ,allowNull:false});
     Product.belongsTo(category, { foreignKey:{name: 'categoryId'} });

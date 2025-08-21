@@ -2,6 +2,7 @@ import Address from "../models/addressmodel.js";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import shop from "../models/shopmodel.js";
+import Notification from "../models/notifications.js";
 import image from "../models/imagesModel.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
@@ -285,5 +286,22 @@ const deleteuser=async(req,res)=>{
     }
 };
 
-export default {getallusers,getusers,getuserbyid,getuser,addUser,updateuser,changePassword,deleteuser};
+const getUserNotification=async (req, res) => {
+    try {
+        const { id } = req.params;
+        const notifications = await Notification.findAll({ where: { userId: id },
+         order: [['createdAt', 'DESC']],  }
+            
+        );
+        console.log("User notifications:", notifications);
+        res.json(notifications );
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to retrieve notifications" });
+    }
+};
+
+
+
+export default {getallusers,getusers,getuserbyid,getuser,addUser,updateuser,changePassword,deleteuser,getUserNotification};
 

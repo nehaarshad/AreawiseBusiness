@@ -1,6 +1,7 @@
 import Ads from '../models/adsModel.js';
 import cron from 'node-cron';
 import featured from '../models/featuredModel.js';
+import sale from '../models/salesModel.js';
 import { Op } from 'sequelize';
 
 const scheduler=()=>{
@@ -10,12 +11,23 @@ cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth
         
       console.log("scheduler is in running state");
       const currentDate = new Date();
+
+      //for advertisements
       const expiredAds = await Ads.findAll({
         where: {
           expire_at: { [Op.lt]: currentDate },  //check set date is less than current date
           is_active: true
         }
       });
+
+       //for onSale Products
+      const onSale = await sale.findAll({
+        where: {
+          expire_at: { [Op.lt]: currentDate },  //check set date is less than current date
+        }
+      });
+
+      //for featureProducts
       const expiredFeaturedProduct = await featured.findAll({
         where: {
           expire_at: { [Op.lt]: currentDate },  //check set date is less than current date
@@ -24,14 +36,18 @@ cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth
       });
 
       for (const ad of expiredAds) {
-        ad.is_active = false;
-        await ad.save();
-        console.log(`Ad ${ad.id} deactivated due to expiration`);
+        await ad.destroy();
+        console.log(`Ad ${ad.id} deleted due to expiration`);
+      }
+
+      for (const sale of onSale) {
+        await sale.destroy();
+        console.log(`Ad ${sale.id} deleted due to expiration`);
       }
 
       for (const feature of expiredFeaturedProduct) {
        await feature.destroy(); //delete the expired featured product from the database
-        console.log(`feature ${feature.id} deactivated due to expiration`);
+        console.log(`feature ${feature.id} deleted due to expiration`);
       }
       
       console.log("scheduler is in off state");

@@ -3,6 +3,7 @@ import Message from '../models/msgModel.js';
 import User from '../models/userModel.js';
 import image from '../models/imagesModel.js';
 import Product from '../models/productModel.js';
+import sendNotificationToUser from '../utils/sendNotification.js';
 import { Op } from 'sequelize';
 
 // Get all chats for a user (separated by buyer/seller roles)
@@ -180,6 +181,12 @@ const getChatsAsSeller = async (req, res) => {
         ]
       });
     }
+
+      const sellerId = product.seller; 
+                     const NotificationMessage = `New chat on product #"${product.id}"`;
+                      if (req.io && req.userSockets) {
+                         await sendNotificationToUser(req.io, req.userSockets, sellerId, NotificationMessage);
+                         }
     res.status(201).json(Chats);
   } catch (error) {
     console.error(error);

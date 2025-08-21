@@ -1,13 +1,14 @@
 import review from "../models/reviewModel.js";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
-import { parse } from "dotenv";
+import sendNotificationToUser from "../utils/sendNotification.js";
 import image from "../models/imagesModel.js";
 
 const addReview = async (req, res) => {
 
     const {id}=req.params; // Extract user ID from request parameters
     const { productId, rating, comment } = req.body;
+    console.log(req.body)
     const userId=parseInt(id); // Parse user ID to integer
     try {
 
@@ -19,8 +20,15 @@ const addReview = async (req, res) => {
             
         });
 
+        const product=await Product.findOne({where:{id:productId}});
+
          const allReviews = await review.findAll({
-            where: { productId }
+            where: { productId },
+            include: [
+                {
+                    model: Product,
+                }
+            ]
         });
 
         const totalRating = allReviews.reduce((acc, curr) => acc + curr.rating, 0); //average number of product reviews
@@ -36,6 +44,13 @@ const addReview = async (req, res) => {
         }
         
     );
+
+             const sellerId = product.seller;
+             const notificationMessage = `New comment added on your product ${product.name}`;
+
+             if (req.io && req.userSockets) {
+             await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+             }
 
         res.status(201).json(reviews);
     } catch (error) {

@@ -23,6 +23,15 @@ const Product = sequelize.define('products', {
         type: DataTypes.INTEGER, 
         allowNull: false 
     },
+    condition: { 
+        type: DataTypes.STRING, //New or Used
+        allowNull: false 
+    },
+    onSale: { 
+        type: DataTypes.BOOLEAN, 
+        allowNull: false, 
+        defaultValue:false
+    },
     description: { 
         type: DataTypes.STRING, 
         allowNull: false 

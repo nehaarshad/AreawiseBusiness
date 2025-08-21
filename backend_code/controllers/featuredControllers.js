@@ -6,7 +6,7 @@ import category from "../models/categoryModel.js";
 import subcategories from "../models/subCategoryModel.js";
 import reviews from "../models/reviewModel.js";
 import shop from "../models/shopmodel.js";
-
+import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
 
 // seller request for feature product...
@@ -21,7 +21,6 @@ const createProductFeatured=async(req,res)=>{
         console.log(error);
     }
 }   
-
 
 //for seller...
 const getUserFeaturedProducts=async(req,res)=>{
@@ -194,7 +193,8 @@ const updateFeaturedProducts=async(req,res)=>{
                         model: image,
                         where: { imagetype: "product" },
                         required: false
-                    }
+                    },
+                
                 }
     })
 
@@ -202,6 +202,13 @@ const updateFeaturedProducts=async(req,res)=>{
     requestedFeaturedProduct.expire_at=expire_at; //if featured then expire date
     requestedFeaturedProduct.save(); //save the status and expire date in the database
     
+    
+         const sellerId = requestedFeaturedProduct.Product.seller; 
+                 const NotificationMessage = `Your request to feature product #"${requestedFeaturedProduct.Product.id}" is ${status}.`;
+                  if (req.io && req.userSockets) {
+                     await sendNotificationToUser(req.io, req.userSockets, sellerId, NotificationMessage);
+                     }
+
         res.status(201).json(requestedFeaturedProduct);
     } catch (error) {
         console.log(error);

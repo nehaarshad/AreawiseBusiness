@@ -18,6 +18,7 @@ import SellerOrderRouter from "./backend_code/Routes/sellerOrderRoutes.js";
 import chatRouter from "./backend_code/Routes/chatRoutes.js";
 import adsRouter from "./backend_code/Routes/adsRoutes.js"
 import path from "path";
+import salesRouter from "./backend_code/Routes/onSaleRoutes.js";
 import scheduler from "./backend_code/services/scheduler.js";
 import featuredRouter from "./backend_code/Routes/featuredRoutes.js"
 import { fileURLToPath } from "url";
@@ -29,7 +30,6 @@ import reviewsRouter from "./backend_code/Routes/reviewsRoutes.js";
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const app=express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -40,12 +40,19 @@ const io = new Server(server, {
   transports: ['websocket']
 });
 
-chatService(io); // Initialize chat service with socket.io instance
-
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended:true}))
 app.use(cors());
 app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_code/uploads")));
+
+const { userSockets } = chatService(io); 
+app.use((req, res, next) => { //middleware to makeNotifications
+  req.io = io;
+  req.userSockets = userSockets;
+  next();
+});
+
+
 
 modelsSyncs.modelsSync()
 .then(()=>{
@@ -77,13 +84,10 @@ app.use("/api",auth,cartRouter);
 app.use("/api",auth,orderRouter);
 app.use("/api",auth,wishListRoutes);
 app.use("/api",auth,adsRouter);
+app.use("/api",auth,salesRouter);
 app.use("/api",auth,SellerOrderRouter);
 app.use("/api",auth,featuredRouter);
 app.use("/api",auth,chatRouter);
 app.use("/api",auth,reviewsRouter);
 
 scheduler();
-
-app.get("/",(req,res)=>{
-    res.send("<h1> E-Commerce F-17 </h1>")
-})

@@ -11,6 +11,10 @@ const cart=sequelize.define('Cart',{
     type:DataTypes.INTEGER,  //to create cart of specif user ->when user click on add to cart ->user id passed as params and product id send as req.body
      allowNull:false,
    },
+   total:{
+    type:DataTypes.INTEGER, 
+    allowNull:false,
+   },
    status:{
     type:DataTypes.STRING,  
        allowNull:false,

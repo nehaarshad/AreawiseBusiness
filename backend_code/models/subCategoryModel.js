@@ -11,7 +11,6 @@ const subcategories=sequelize.define('subcategories',{
    name:{
     type:DataTypes.STRING,
      allowNull:false,
-     unique:true
    },
    categoryId:{
     type:DataTypes.INTEGER,

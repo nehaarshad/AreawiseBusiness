@@ -4,13 +4,14 @@ import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import dotenv from "dotenv" 
+import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
 dotenv.config();
 
 const addshop = async (req, res) => {
     try {
         const { id } = req.params;
-        const { shopname, shopaddress, sector, city, name } = req.body;
+        const { shopname, shopaddress,deliveryPrice, sector, city, name } = req.body;
         const images=req.files
         // Find user
         const user = await User.findByPk(id);
@@ -21,10 +22,6 @@ const addshop = async (req, res) => {
             const [findCategory] = await category.findOrCreate({ where: { name } });
             console.log(findCategory);
             let categoryid;
-            // if (!findCategory) {
-            //     const newCategory = await category.create({ name });
-            //     categoryid = newCategory.id;
-            // }
             categoryid = findCategory.id;
         // Create shop
         const newshop = await shop.create({
@@ -33,6 +30,7 @@ const addshop = async (req, res) => {
             sector, 
             city, 
             status:'Processing...',
+            deliveryPrice,
             categoryId:categoryid,
             userId: user.id
         });
@@ -45,7 +43,13 @@ const addshop = async (req, res) => {
     
                 await image.bulkCreate(imageRecords);
             }
-           
+           const sellerId = id; 
+           const notificationMessage = `Your new shop "${newshop.shopname || 'Shop'}" has been created.`;
+
+           if (req.io && req.userSockets) {
+               await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+           }
+
         res.status(201).json({
             success:true,
             message:"Shop Added Successfully!"
@@ -152,10 +156,11 @@ const getShopByName=async(req,res)=>{
 const updateshop=async(req,res)=>{  
     try {
         const {id}=req.params;
-        const {shopname, shopaddress, sector, city, name}=req.body;
+        const {shopname, shopaddress,deliveryPrice, sector, city, name}=req.body;
         const images=req.files;
         const usershop = await shop.findByPk(id,{
-            include:[{
+            include:[
+                {
             model:image,
             where:{imagetype:"shop"},
             required:false 
@@ -173,12 +178,12 @@ const updateshop=async(req,res)=>{
                 shopaddress: shopaddress || usershop.shopaddress,
                 sector: sector || usershop.sector,
                 city: city || usershop.city,
+                deliveryPrice:deliveryPrice||usershop.deliveryPrice,
                 categoryId:findcategory.id
             };
             const entity = 'shop';
             const entityid = id;
-         //   const host = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://192.168.216.179:5000';
-            if (images) {
+             if (images) {
                 // Remove existing shop images
                 await image.destroy({
                     where: { 
@@ -198,6 +203,14 @@ const updateshop=async(req,res)=>{
             }
 
           await usershop.update(updatedshop);
+
+           const sellerId = usershop.userId; 
+           const notificationMessage = `Your shop has been updated.`;
+
+           if (req.io && req.userSockets) {
+               await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+           }
+
         res.json({
             success:true,
             message:" shop updated Successfully",
@@ -214,17 +227,32 @@ const updateShopStatus=async(req,res)=>{
     try {
         const {id}=req.params;
         const {status}=req.body;
-        const usershop = await shop.findByPk(id);
+        const usershop = await shop.findByPk(id,{
+          include: [{
+            model: User,
+          }]
+          });
             if (!usershop) {
                 return res.status(404).json({ error: 'Shop not found!' });
             }
+
+            const oldStatus = usershop.status;
             
             const updatedshop = {
                 status: status || usershop.status,
             };
-         
 
-          await usershop.update(updatedshop);
+             await usershop.update(updatedshop);
+
+            // Send notification to the shop owner (seller)
+             const sellerId = usershop.userId; 
+             const notificationMessage = `Your shop ${usershop.shopname} status has been updated to "${status}" by admin`;
+    
+             if (req.io && req.userSockets) {
+             await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+             }
+
+         
         res.json({
             success:true,
             message:" shop updated Successfully",
@@ -305,25 +333,23 @@ const deleteshopbyid=async(req,res)=>{
           if(!shops){
             return res.json({error:"shop not Exit"});
           } 
+           const sellerId = shops.userId; 
           const shopid=shops.id;
             const products=await Product.destroy({where:{shopid}});
             if(products>0){
                 console.log(`${products} Products of this shop deleted`)
             }
-            // if(products.length>0){
-            //     for(let i=0;i<products.length;i++){
-            //         await products[i].destroy();
-            //     }
-            // }
-            // else{
-            //     console.log("No products of this shop")
-            // }
            const images=await image.destroy({where:{imagetype: 'shop',ShopId:id}}) ;
            if(images>0){
             console.log(`${images} Images of this shop deleted`)
         }
 
          await shops.destroy();
+           const notificationMessage = `Your shop has been deleted.`;
+
+           if (req.io && req.userSockets) {
+               await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+           }
          res.json({message:"shop Deleted Successfully"});
     } catch (error) {
         console.log(error);

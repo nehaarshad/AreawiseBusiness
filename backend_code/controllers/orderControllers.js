@@ -6,6 +6,7 @@ import Address from '../models/addressmodel.js'
 import image from "../models/imagesModel.js";
 import SellerOrder from '../models/sellerOrderModel.js'
 import delivery from '../models/deliveryOrderAttributes.js'
+import sendNotificationToUser from '../utils/sendNotification.js';
 
 
 //onCheckoutButtonClick
@@ -186,13 +187,25 @@ const PlaceOrder = async (req, res) => {
                 orderId: updatedOrder.id,//1
                 orderProductId: product.id,//1 or 2 or 4
                 status: 'Requested'
-            });//seller and order id are same but product id is different
+            });
+
+                 const notificationMessage = `The new request for product #${product.id} in Order #${updatedOrder.id}.`;
+                   if (req.io && req.userSockets) {
+                     await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+                     }
            await item.update({ status: 'Requested' });
         });
 
         await cartExists.update({
             status:'Ordered'
         })
+
+              const buyerId = userId; 
+                 const buyerNotificationMessage = `Your Order #"${updatedOrder.id}" has been placed successfully.`;
+                  if (req.io && req.userSockets) {
+                     await sendNotificationToUser(req.io, req.userSockets, buyerId, buyerNotificationMessage);
+                     }
+
         res.status(200).json(updatedOrder);
 
     } catch (error) {
