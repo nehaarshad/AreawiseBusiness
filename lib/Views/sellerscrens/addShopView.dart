@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../core/utils/utils.dart';
-import '../shared/widgets/ShopCategoryDropDownMenu.dart';
+import 'widgets/ShopCategoryDropDownMenu.dart';
 import '../../core/utils/colors.dart';
 
 class addShopView extends ConsumerStatefulWidget {
@@ -23,6 +23,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
   final TextEditingController shopname = TextEditingController();
   final TextEditingController shopaddress = TextEditingController();
   final TextEditingController sector = TextEditingController();
+  final TextEditingController delivery = TextEditingController();
   final TextEditingController city = TextEditingController();
 
 
@@ -34,6 +35,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
     sector.dispose();
     shopaddress.dispose();
     city.dispose();
+    delivery.dispose();
 
   }
   @override
@@ -41,7 +43,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
     final state = ref.watch(addShopProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
           automaticallyImplyLeading:false,
         actions: [ Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -57,7 +59,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
           ],
         ),],
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(18.0),
@@ -130,6 +132,20 @@ class _addShopViewState extends ConsumerState<addShopView> {
                   },
                 ),
                 TextFormField(
+                  controller: delivery,
+                  decoration: InputDecoration(labelText: "Delivery charges"),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter delivery charges";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Please enter a valid number';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
                   controller: sector,
                   decoration: InputDecoration(labelText: "Sector"),
                   validator: (value) {
@@ -167,6 +183,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
                           shopaddress: shopaddress.text.trim(),
                           sector: sector.text.trim(),
                           city: city.text.trim(),
+                          deliveryPrice:delivery.text.trim(),
                           userId:widget.id,
                           context: context
                       );
@@ -177,17 +194,17 @@ class _addShopViewState extends ConsumerState<addShopView> {
                     margin: EdgeInsets.symmetric(horizontal: 25.w),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Appcolors.blueColor,
+                      color: Appcolors.baseColor,
                       borderRadius: BorderRadius.circular(15.r),
 
                     ),
                     child: Center(
                       child:state.isLoading
-                          ? CircularProgressIndicator(color: Appcolors.whiteColor,)
+                          ? CircularProgressIndicator(color: Appcolors.whiteSmoke,)
                           : Text(
                         "Add Shop",
                         style: TextStyle(
-                          color: Appcolors.whiteColor,
+                          color: Appcolors.whiteSmoke,
                           fontWeight: FontWeight.bold,
                           fontSize: 15.sp,
                         ),
@@ -196,37 +213,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
                   ),
                 ),
                 SizedBox(height: 5.h),
-                // ElevatedButton(
-                //   onPressed:
-                //       state.isLoading
-                //           ? null
-                //           : () async {
-                //             if (formkey.currentState!.validate()) {
-                //               await ref
-                //                   .read(
-                //                     addShopProvider(
-                //                       widget.id.toString(),
-                //                     ).notifier,
-                //                   )
-                //                   .addShop(
-                //                     shopname: shopname.text.trim(),
-                //                     shopaddress: shopaddress.text.trim(),
-                //                     sector: sector.text.trim(),
-                //                     city: city.text.trim(),
-                //                 userId:widget.id,
-                //                 context: context
-                //                   );
-                //             }
-                //           },
-                //   child:
-                //       state.isLoading
-                //           ? Center(
-                //             child: CircularProgressIndicator(
-                //               color: Appcolors.blueColor,
-                //             ),
-                //           )
-                //           : const Text('Add Shop'),
-                // ),
+
                 InkWell(
     onTap:()async{
     await ref.read(addShopProvider(widget.id.toString()).notifier).Cancel(widget.id.toString(),context);
@@ -236,10 +223,10 @@ class _addShopViewState extends ConsumerState<addShopView> {
     margin: EdgeInsets.symmetric(horizontal: 25.w),
     width: double.infinity,
     decoration: BoxDecoration(
-    color: Appcolors.whiteColor,
+    color: Appcolors.whiteSmoke,
     borderRadius: BorderRadius.circular(15.r),
     border: Border.all(  // Use Border.all instead of boxShadow for borders
-    color: Appcolors.blueColor,
+    color: Appcolors.baseColor,
     width: 1.0,  // Don't forget to specify border width
     ),
     ),
@@ -247,7 +234,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
     child: Text(
     "Cancel",
     style: TextStyle(
-    color: Appcolors.blueColor,
+    color: Appcolors.baseColor,
     fontWeight: FontWeight.bold,
     fontSize: 15.sp,
     ),

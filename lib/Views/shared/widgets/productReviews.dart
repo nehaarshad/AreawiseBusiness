@@ -63,7 +63,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
                         icon: Icon(
                           Icons.star,
                           color: _selectedRating > index
-                              ? Colors.blue
+                              ? Appcolors.baseColor
                               : Colors.grey,
                           size: 25.h,
                         ),
@@ -126,7 +126,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
                     );
                   }
                 },
-                child: Text('Post',style: TextStyle(color: Appcolors.blueColor,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+                child: Text('Post',style: TextStyle(color: Appcolors.baseColor,fontSize: 18.sp,fontWeight: FontWeight.bold),),
               ),
             ],
           );
@@ -155,7 +155,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
             ),
             TextButton(
                 onPressed: _showReviewDialog,
-                child: Text("Add Review",style: TextStyle(color: Appcolors.blueColor,fontSize: 13.sp),))
+                child: Text("Add Review",style: TextStyle(color: Appcolors.baseColor,fontSize: 13.sp),))
 
           ],
         ),

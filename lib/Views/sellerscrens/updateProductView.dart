@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/updateProductViewModel.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/widgets/productCondition.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/ProductDetailView.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
@@ -12,8 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../models/ProductModel.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
-import '../shared/widgets/ProductCateASubCategoryDropdownMenu.dart';
-import '../shared/widgets/ShopCategoryDropDownMenu.dart';
+import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
+import 'widgets/ShopCategoryDropDownMenu.dart';
 
 class updateProductView extends ConsumerStatefulWidget {
   ProductModel product;
@@ -24,6 +25,9 @@ class updateProductView extends ConsumerStatefulWidget {
 }
 
 class _updateProductViewState extends ConsumerState<updateProductView> {
+
+  ProductCondition condition = ProductCondition.New;
+
   final formkey = GlobalKey<FormState>();
   late TextEditingController name = TextEditingController();
   final TextEditingController subtitle = TextEditingController();
@@ -52,6 +56,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
               price.text = product.price.toString();
               description.text = product.description!;
               stock.text = product.stock.toString();
+              condition=ProductCondition.fromString(product.condition.toString());
             }
           });
       ref
@@ -194,6 +199,33 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                         return null;
                       },
                     ),
+                    Row(
+                      children: [
+                        Text('Product Condition', style: TextStyle(fontWeight: FontWeight.w400)),
+                        SizedBox(width: 30.w,),
+                        Radio(
+                          value: ProductCondition.New,
+                          groupValue: condition,
+                          onChanged: ( value) {
+                            setState(() {
+                              condition = value!;
+                            });
+                          },
+                        ),
+                        Text('New'),
+                        SizedBox(width: 15),
+                        Radio(
+                          value: ProductCondition.Used,
+                          groupValue: condition,
+                          onChanged: ( value) {
+                            setState(() {
+                              condition = value!;
+                            });
+                          },
+                        ),
+                        Text('Used'),
+                      ],
+                    ),
                     updateProductCategoryDropdown(
                       shopid: widget.product.id.toString(),
                     ),
@@ -222,6 +254,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                                         subtitle: subtitle.text,
                                         description: description.text,
                                         stock: int.parse(stock.text),
+                                    condition:condition.value,
                                         shopId: widget.product.shopid.toString(),
                                         user: widget.product.seller.toString(),
                                         context: context,
@@ -232,7 +265,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                           state.isLoading
                               ? Center(
                                 child: CircularProgressIndicator(
-                                  color: Appcolors.blueColor,
+                                  color: Appcolors.baseColor,
                                 ),
                               )
                               : const Text('Update Product'),

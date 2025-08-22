@@ -54,7 +54,7 @@ class _SearchBarState extends ConsumerState<searchBar> {
         hintText: "Search Products",
         leading: const Icon(
           Icons.search,
-          color: Appcolors.blueColor,
+          color: Appcolors.baseColor,
         ),
 
         onSubmitted: (value) {

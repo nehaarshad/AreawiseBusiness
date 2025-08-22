@@ -412,10 +412,10 @@ class _AddUserViewState extends ConsumerState<addUser> {
                           margin: EdgeInsets.symmetric(horizontal: 25.w),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: Appcolors.whiteColor,
+                            color: Appcolors.whiteSmoke,
                             borderRadius: BorderRadius.circular(15.r),
                             border: Border.all(  // Use Border.all instead of boxShadow for borders
-                              color: Appcolors.blueColor,
+                              color: Appcolors.baseColor,
                               width: 1.0,  // Don't forget to specify border width
                             ),
                           ),
@@ -423,7 +423,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
                             child: Text(
                               "Cancel",
                               style: TextStyle(
-                                color: Appcolors.blueColor,
+                                color: Appcolors.baseColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15.sp,
                               ),

@@ -105,7 +105,7 @@ class _createAdsState extends ConsumerState<createAds> {
                     children: [
                       Text(ad.expirationDateTime != null ? "${ad.expirationDateTime!.day}/${ad.expirationDateTime!.month}/${ad.expirationDateTime!.year} at ${ad.expirationDateTime!.hour}:${ad.expirationDateTime!.minute.toString().padLeft(2, '0')}"
                             : "Select Date and Time"),
-                      Icon(Icons.calendar_today, color: Colors.blue),
+                      Icon(Icons.calendar_today, color: Appcolors.baseColor),
                     ],
                   ),
                 ),
@@ -117,10 +117,10 @@ class _createAdsState extends ConsumerState<createAds> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Appcolors.baseColor,
                 ),
-                child: ad.isLoading ? CircularProgressIndicator(color: Appcolors.whiteColor, )
-                    : Text("Create Ad", style: TextStyle(fontSize: 16.sp,color: Appcolors.whiteColor, fontWeight: FontWeight.bold)),
+                child: ad.isLoading ? CircularProgressIndicator(color: Appcolors.whiteSmoke, )
+                    : Text("Create Ad", style: TextStyle(fontSize: 16.sp,color: Appcolors.whiteSmoke, fontWeight: FontWeight.bold)),
               ),
             ],
           ),

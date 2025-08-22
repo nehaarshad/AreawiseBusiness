@@ -37,7 +37,7 @@ class _searchShopState extends ConsumerState<searchUser> {
         hintText: "Search ",
         leading: const Icon(
           Icons.search,
-          color: Appcolors.blueColor,
+          color: Appcolors.baseColor,
         ),
 
         onSubmitted: (value) {

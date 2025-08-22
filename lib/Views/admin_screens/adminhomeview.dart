@@ -62,11 +62,10 @@ class _adminhomeviewState extends ConsumerState<adminhomeview> {
           automaticallyImplyLeading: false,
           title: Padding(
             padding: const EdgeInsets.all(11),
-            child:Text("Areawise Business", style: TextStyle(color:Appcolors.blueColor,fontWeight: FontWeight.bold, fontSize: 18.sp),),
+            child:Text("Areawise Business", style: TextStyle(color:Appcolors.baseColor,fontWeight: FontWeight.bold, fontSize: 18.sp),),
 
           ),
         ),
-        backgroundColor: Appcolors.whiteColor,
       drawer: AdminDrawerListItems(user: widget.user,id:widget.user.id!,),
         body: SafeArea(child: adminViews[index],),
         bottomNavigationBar:adminBottomNavigationBar(selectedIndex: index, onItemTapped: onTap),

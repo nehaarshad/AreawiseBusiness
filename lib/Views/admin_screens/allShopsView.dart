@@ -36,14 +36,14 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
           searchShop(id:widget.id,myShop: true,),
          ]
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: ListView(
         children:[ Consumer(
             builder: (context,ref, child){
               final shopState = ref.watch(shopViewModelProvider);
               return shopState.when(
 
-                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
                   data: (shops) {
                     ShopList=shops;
                     if (shops.isEmpty) {
@@ -98,7 +98,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                                             arguments: parameters,
                                           );
                                         },
-                                        icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                        icon: Icon(Icons.edit, color: Appcolors.baseColor),
                                       ),
                                       IconButton(
                                         icon: const Icon(Icons.delete, color: Colors.red),
@@ -148,7 +148,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                                             child: Text(
                                               shop.status == 'Active' ? "Dismiss" : "Activate",
                                               style: TextStyle(
-                                                color: Appcolors.whiteColor,
+                                                color: Appcolors.whiteSmoke,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15.sp,
                                               ),

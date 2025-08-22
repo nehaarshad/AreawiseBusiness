@@ -101,6 +101,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     required String shopaddress,
     required String sector,
     required String city,
+    required String deliveryPrice,
     required int userId,
     required BuildContext context
   }) async
@@ -110,6 +111,8 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       if (state.images.isEmpty || state.images.length > 4) {
         throw Exception('Please select 1 to 4 images');
       }
+
+      final parsedPrice = int.tryParse(deliveryPrice);
 
       final categoryName =
           state.isCustomCategory
@@ -128,12 +131,16 @@ class AddShopViewModel extends StateNotifier<ShopState> {
         'shopaddress': shopaddress,
         'sector': sector,
         'city': city,
+        'deliveryPrice':parsedPrice,
         'name': categoryName.trim(),
       };
         print('data ${data}');
       final response = await ref.read(shopProvider).addShop(data, shopId, state.images.whereType<File>().toList());
+print(response);
+      Utils.flushBarErrorMessage(response.toString(),context);
       final addshop = ShopModel.fromJson(response);
       print(addshop);
+
       ref.invalidate(sellerShopViewModelProvider(userId.toString()));
       ref.invalidate(GetallcategoriesProvider);
       await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());///update seller shop list

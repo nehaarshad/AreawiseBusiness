@@ -36,10 +36,10 @@ class _login_viewState extends ConsumerState<login_view> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
 
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -141,7 +141,7 @@ class _login_viewState extends ConsumerState<login_view> {
                         child: Text(
                           "SignUp",
                           style: TextStyle(
-                            color: Appcolors.blueColor,
+                            color: Appcolors.baseColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -54,7 +54,7 @@ class _addCategoryState extends ConsumerState<addCategory> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Category"),
-       backgroundColor: Appcolors.whiteColor,
+       backgroundColor: Appcolors.whiteSmoke,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -112,8 +112,8 @@ class _addCategoryState extends ConsumerState<addCategory> {
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   backgroundColor: Colors.blue,
                 ),
-                child: category.isLoading ? CircularProgressIndicator(color: Appcolors.whiteColor, )
-                    : Text("Submit", style: TextStyle(fontSize: 16.sp,color: Appcolors.whiteColor, fontWeight: FontWeight.bold)),
+                child: category.isLoading ? CircularProgressIndicator(color: Appcolors.whiteSmoke, )
+                    : Text("Submit", style: TextStyle(fontSize: 16.sp,color: Appcolors.whiteSmoke, fontWeight: FontWeight.bold)),
               ),
             ],
           ),

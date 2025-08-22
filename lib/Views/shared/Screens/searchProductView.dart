@@ -31,7 +31,7 @@ class _searchViewState extends ConsumerState<searchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: SafeArea(
         child: Padding(
           padding:  EdgeInsets.only(top: 18.0.h,left: 8.w,right: 8.w,bottom: 5.h),
@@ -115,13 +115,13 @@ class _searchViewState extends ConsumerState<searchView> {
                                           height: 30.h,
                                           width: 35.w,
                                           decoration: BoxDecoration(
-                                            color: Appcolors.blueColor,
+                                            color: Appcolors.baseColor,
                                             borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(20.r),
                                             ),
                                           ),
                                           child: WishlistButton(
-                                            color: Appcolors.whiteColor,
+                                            color: Appcolors.whiteSmoke,
                                             userId: widget.userid.toString(),
                                             productId: product.id!,
                                           ),

@@ -66,7 +66,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
           loading: () => const Center(
             child: Padding(
               padding: EdgeInsets.all(20.0),
-              child: CircularProgressIndicator(color: Appcolors.blueColor),
+              child: CircularProgressIndicator(color: Appcolors.baseColor),
             ),
           ),
           data: (product) {
@@ -92,9 +92,6 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
                                 children: [
                                   Icon(Icons.store,color: Colors.grey,),
                                   Text('${product.shop?.shopname!}',style: TextStyle(
@@ -104,21 +101,6 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
 
                                 ],
                               ),
-                             Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text("Rs.",style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.w400),),
-                                  Text("${product.price}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 18.sp,
-                                      color: Appcolors.blueColor,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
                           Divider(thickness: 0.4.h,),
                           RichText(
                             text: TextSpan(
@@ -149,6 +131,60 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                 ),
                               ],
                             ),
+                          ),
+                          SizedBox(height: 10.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                    children: [
+                                      Text("Price (Rs.): ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                                      product.onSale! ?  Row(
+                                          children: [
+                                            Text(
+                                              "${product.price ?? 0}",
+                                              style: TextStyle(
+                                                color: Colors.grey, // Different color for strikethrough
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w500,
+                                                decoration: TextDecoration.lineThrough,
+                                                decorationColor: Colors.grey, // Match text color
+                                              ),
+                                            ),
+                                            SizedBox(width: 3.w),
+                                            Text(
+                                              "${product.saleOffer?.price ?? 0}",
+                                              style: TextStyle(
+                                                  color: Appcolors.baseColor,
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w600
+                                              ),
+                                            ),
+                                            Icon(Icons.discount_outlined,color: Appcolors.whiteSmoke,size: 12.h,),
+                                          ],
+                                        )
+                                       :  Row(
+                                          children: [
+                                            Text(
+                                              "${product.price ?? 0}",
+                                              style: TextStyle(
+                                                  color: Appcolors.baseColor,
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w600
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                    ],
+                                  ),
+                              Row(
+                                children: [
+                                  Icon(Icons.discount_outlined,color: Appcolors.baseColor,size: 14.h,),
+                                  Text("${product.saleOffer!.discount}% off",style: TextStyle(fontSize:15.sp,color: Appcolors.baseColor),),
+                                ],
+                              ),
+                            ],
                           ),
                           SizedBox(height: 10.h),
                           Row(
@@ -241,11 +277,11 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                 ],
                               ),
                               Container(
-                                width: 60.w,
-                                height: 30.h,
+                                width: 55.w,
+                                height: 25.h,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.r),
-                                  color: Colors.deepOrange,
+                                  color: Appcolors.baseColor,
                                 ),
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -254,9 +290,10 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                     Icon(
                                       Icons.star,
                                       color: Colors.white,
-                                      size: 18.h,
+                                      size: 15.h,
                                     ),
-                                    Text('${product.ratings}',style: TextStyle(color: Colors.white,fontSize: 15.sp)),
+                                    SizedBox(width: 3.w,),
+                                    Text('${product.ratings}',style: TextStyle(color: Colors.white,fontSize: 14.sp)),
                                   ],
                                 ),
                               ),
@@ -347,7 +384,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
 
     },
     style: ElevatedButton.styleFrom(
-    backgroundColor: Appcolors.blueColor,
+    backgroundColor: Appcolors.baseColor,
     shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(30.r),
     ),

@@ -41,7 +41,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
       "expire_at": expireAt.toIso8601String() // Convert DateTime to ISO string
     };
 
-    await ref.read(createfeatureProductViewModelProvider.notifier)
+    await ref.read(createfeatureProductViewModelProvider(widget.id).notifier)
         .updateFeatureProduct(featureId, userId, data, context);
   }
 
@@ -67,7 +67,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                             setDialogState(() {
                               selectedDate = dateTime; // Update selectedDate in dialog state
                             });
-                            await ref.read(createfeatureProductViewModelProvider.notifier)
+                            await ref.read(createfeatureProductViewModelProvider(widget.id).notifier)
                                 .selectExpirationDateTime(dateTime);
                           }
                         },
@@ -112,7 +112,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                             );
                           }
                         },
-                        child: const Text("Feature", style: TextStyle(color: Appcolors.blueColor)),
+                        child: const Text("Feature", style: TextStyle(color: Appcolors.baseColor)),
                       ),
                     ],
                   ),
@@ -138,7 +138,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         title:  Text("Requests to Feature Products", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500)),
         actions: [
           IconButton(
@@ -150,7 +150,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
           ),
         ],
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: Column(
         children: [
           Expanded(
@@ -286,7 +286,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Appcolors.blueColor,
+            backgroundColor: Appcolors.baseColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40.0.r),
             ),
@@ -295,7 +295,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
           child:  Text(
             "Featured Products",
             style: TextStyle(
-              color: Appcolors.whiteColor,
+              color: Appcolors.whiteSmoke,
               fontWeight: FontWeight.bold,
               fontSize: 15.sp,
             ),

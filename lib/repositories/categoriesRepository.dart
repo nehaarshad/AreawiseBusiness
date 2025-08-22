@@ -21,6 +21,7 @@ class CategoriesRepositories {
 
   Map<String, String> headers() {
     final token = ref.read(sessionProvider)?.token;
+    print("incategory token $token");
     return {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',

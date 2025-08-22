@@ -51,12 +51,12 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 2.w,
-                  mainAxisSpacing: 15.h,
-                  childAspectRatio: 0.75, // Adjusted to prevent overflow
+                  mainAxisSpacing: 18.h,
+                  childAspectRatio: 0.70,
                 ),
                 itemCount: products.length,
                 physics: const ScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 4.w), // Added padding instead of individual margins
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
                 itemBuilder: (context, index) {
                   final product = products[index];
                   if (product == null) return const SizedBox.shrink();
@@ -74,7 +74,11 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
                       );
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4.w), // Reduced margin
+                      decoration: BoxDecoration(
+                        color: Colors.white
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 4.w),
+                      width: 170.w,// Reduced margin
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min, // Prevent column from expanding
@@ -115,13 +119,13 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
                                     height: 30.h,
                                     width: 35.w,
                                     decoration: BoxDecoration(
-                                      color: Appcolors.blueColor,
+                                      color: Appcolors.baseColor,
                                       borderRadius: BorderRadius.only(
                                         bottomLeft: Radius.circular(20.r),
                                       ),
                                     ),
                                     child: WishlistButton(
-                                      color: Appcolors.whiteColor,
+                                      color: Appcolors.whiteSmoke,
                                       userId: widget.userid.toString(),
                                       productId: product.id!,
                                     ),
@@ -147,11 +151,100 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 2.h),
-                                Text(
-                                  "Rs.${product.price ?? 0}",
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 14.sp,
+                                product.onSale! ? Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Rs.",
+                                        style: TextStyle(
+                                            color: Appcolors.baseColorLight30,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                      Text(
+                                        "${product.price ?? 0}",
+                                        style: TextStyle(
+                                          color: Colors.grey, // Different color for strikethrough
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w400,
+                                          decoration: TextDecoration.lineThrough,
+                                          decorationColor: Colors.grey, // Match text color
+                                        ),
+                                      ),
+                                      SizedBox(width: 3.w), // Slightly more spacing
+
+                                      Text(
+                                        "${product.saleOffer?.price ?? 0}", // Use ?. instead of !.
+                                        style: TextStyle(
+                                            color: Appcolors.baseColorLight30,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ) : Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Rs.",
+                                        style: TextStyle(
+                                            color: Appcolors.baseColorLight30,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                      Text(
+                                        "${product.price ?? 0}",
+                                        style: TextStyle(
+                                            color: Appcolors.baseColorLight30,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 10.0.w,),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+
+                                        children: [
+                                          Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
+                                          SizedBox(width: 3.w,),
+                                          Text(
+                                            "${product.shop!.deliveryPrice ?? 0}",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+
+                                        children: [
+                                          Text(
+                                            "${product.ratings ?? 0}",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                          ),
+
+                                          SizedBox(width: 3.w,),
+                                          Icon(Icons.star,color: Appcolors.baseColorLight30,size: 15.h,),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

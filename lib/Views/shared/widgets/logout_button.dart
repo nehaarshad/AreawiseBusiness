@@ -23,7 +23,7 @@ class logoutbutton extends ConsumerWidget {
           Utils.toastMessage("Failed!");
         }
       },
-      child:Text("Logout ",style: TextStyle(color: Appcolors.blueColor,fontWeight: FontWeight.w500),),
+      child:Text("Logout ",style: TextStyle(color: Appcolors.baseColor,fontWeight: FontWeight.w500),),
 
     );
   }

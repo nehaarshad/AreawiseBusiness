@@ -18,10 +18,10 @@ class subCategoryViewModel extends StateNotifier<AsyncValue<List<Subcategory?>>>
   final Ref ref;
   String name;
   subCategoryViewModel(this.ref,this.name) : super(AsyncValue.loading()) {
-    getSubcategories();
+    getSubcategories(name);
   }
 
-  Future<void> getSubcategories() async {
+  Future<void> getSubcategories(String name) async {
     try {
       List<Subcategory> subcategories = await ref.read(categoryProvider).FindSubCategories(name);
       state = AsyncValue.data(subcategories);
@@ -34,7 +34,7 @@ class subCategoryViewModel extends StateNotifier<AsyncValue<List<Subcategory?>>>
   Future<void> deleteSubcategory(String id) async {
     try {
       await ref.read(categoryProvider).deleteSubcategory(id);
-      getSubcategories();
+      getSubcategories(this.name);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -43,7 +43,7 @@ class subCategoryViewModel extends StateNotifier<AsyncValue<List<Subcategory?>>>
   Future<void> addSubcategory(String name,int id) async {
     try {
       await ref.read(categoryProvider).addSubcategory(name, id);
-      getSubcategories();
+      getSubcategories(this.name);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

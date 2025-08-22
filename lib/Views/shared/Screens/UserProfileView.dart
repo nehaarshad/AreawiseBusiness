@@ -14,26 +14,13 @@ import '../widgets/profileImageWidget.dart';
 
 class profileDetailView extends ConsumerStatefulWidget {
   int id;
-  String role;
-  profileDetailView({required this.id,required this.role});
+  profileDetailView({required this.id});
 
   @override
   ConsumerState<profileDetailView> createState() => _profileDetailViewState();
 }
 
 class _profileDetailViewState extends ConsumerState<profileDetailView> {
-
-  late String setRole;
-  String  userRole(UserDetailModel user){
-    if(user.role=='Admin'){
-      setRole=user.role!;
-
-    }
-    else{
-      setRole=widget.role;
-    }
-    return setRole;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +30,11 @@ class _profileDetailViewState extends ConsumerState<profileDetailView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-backgroundColor: Appcolors.whiteColor,
+backgroundColor: Appcolors.whiteSmoke,
         actions: [
           Row(
             children: [
-              Text("Edit",style: TextStyle(fontSize: 18.sp,color: Appcolors.blueColor),),
+              Text("Edit",style: TextStyle(fontSize: 18.sp,color: Appcolors.baseColor),),
               IconButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -56,17 +43,16 @@ backgroundColor: Appcolors.whiteColor,
                       arguments: widget.id,
                     );
                   },
-                  icon: Icon(Icons.edit,color: Appcolors.blueColor,size: 20.h,)),
+                  icon: Icon(Icons.edit,color: Appcolors.baseColor,size: 20.h,)),
             ],
           )
         ],
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: userdetail.when(
         loading: () => Center(
               child: CircularProgressIndicator(color: Appcolors.blackColor),),
         data: (user) {
-          setRole=userRole(user!);
           if (user == null) return const Center(child: Text("User not found"));
           return SingleChildScrollView(
             child: Column(
@@ -79,7 +65,7 @@ backgroundColor: Appcolors.whiteColor,
                       children: [
                         ProfileImageWidget(user: user, height: 150.h, width: 200.w),
                         SizedBox(height: 20.h),
-                        userInfo(user: user,role: setRole,),
+                        userInfo(user: user,),
                         SizedBox(height: 10.h),
                         Divider(),
                         SizedBox(height: 10.h),
@@ -115,7 +101,7 @@ backgroundColor: Appcolors.whiteColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                           child: Center(
-                            child: Text("Delete", style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+                            child: Text("Delete", style: TextStyle(color: Appcolors.whiteSmoke,fontWeight: FontWeight.bold,fontSize: 15.sp)),
                           ),
                         ),
                       ),
@@ -134,8 +120,7 @@ backgroundColor: Appcolors.whiteColor,
 
 class userInfo extends StatelessWidget {
   final UserDetailModel user;
-   final String role;
-   userInfo({required this.user,required this.role});
+   userInfo({required this.user,});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +129,7 @@ class userInfo extends StatelessWidget {
       children: [
         infoWidget(heading: "Username", value: user.username!),
         infoWidget(heading: "Username", value: user.email!),
-        infoWidget(heading: "Role", value: role),
+        infoWidget(heading: "Role", value: user.role!),
         infoWidget(
           heading: "Contact",
           value: user.contactnumber?.toString() ?? 'No number',

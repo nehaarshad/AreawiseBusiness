@@ -118,7 +118,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                     child: ElevatedButton(
                       onPressed: () => updateStatus("Approved"),
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                      child: const Text("Approve",style: TextStyle(color: Appcolors.whiteColor),),
+                      child: const Text("Approve",style: TextStyle(color: Appcolors.whiteSmoke),),
                     ),
                   ),
                    SizedBox(width: 16.w),
@@ -126,7 +126,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                     child: ElevatedButton(
                       onPressed: () => updateStatus("Rejected"),
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Text("Reject",style: TextStyle(color: Appcolors.whiteColor),),
+                      child: const Text("Reject",style: TextStyle(color: Appcolors.whiteSmoke),),
                     ),
                   ),
                 ],
@@ -135,19 +135,19 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
               ElevatedButton(
                 onPressed: () => updateStatus("Dispatched"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                child: const Text("Dispatched",style: TextStyle(color: Appcolors.whiteColor),),
+                child: const Text("Dispatched",style: TextStyle(color: Appcolors.whiteSmoke),),
               ),
             if (currentOrderRequest.status == "Dispatched")
               ElevatedButton(
                 onPressed: () => updateStatus("Delivered"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                child: const Text("Delivered",style: TextStyle(color: Appcolors.whiteColor),),
+                child: const Text("Delivered",style: TextStyle(color: Appcolors.whiteSmoke),),
               ),
             if (currentOrderRequest.status == "Delivered")
               ElevatedButton(
                 onPressed: () => updateStatus("Completed"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: const Text("Mark as Completed",style: TextStyle(color: Appcolors.whiteColor),),
+                child: const Text("Mark as Completed",style: TextStyle(color: Appcolors.whiteSmoke),),
               ),
           ],
         ),

@@ -39,7 +39,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
       "expire_at": expireAt.toIso8601String() // Convert DateTime to ISO string
     };
 
-    await ref.read(createfeatureProductViewModelProvider.notifier)
+    await ref.read(createfeatureProductViewModelProvider(widget.id).notifier)
         .updateFeatureProduct(featureId, userId, data, context);
   }
 
@@ -70,7 +70,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                                   dateTime; // Update selectedDate in dialog state
                             });
                             await ref.read(
-                                createfeatureProductViewModelProvider.notifier)
+                                createfeatureProductViewModelProvider(widget.id).notifier)
                                 .selectExpirationDateTime(dateTime);
                           }
                         },
@@ -91,7 +91,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                                   .hour}:${selectedDate!.minute.toString()
                                   .padLeft(2, '0')}"
                                   : "Select Date and Time"),
-                              Icon(Icons.calendar_today, color: Colors.blue),
+                              Icon(Icons.calendar_today, color: Appcolors.baseColor),
                             ],
                           ),
                         ),
@@ -124,7 +124,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                           }
                         },
                         child: const Text("Update", style: TextStyle(
-                            color: Appcolors.blueColor)),
+                            color: Appcolors.baseColor)),
                       ),
                     ],
                   ),
@@ -152,7 +152,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
         title: const Text("Featured Products"),
         actions: [
           TextButton(
-            child: const Text("Back",style: TextStyle(color:Colors.blue),),
+            child: const Text("Back",style: TextStyle(color:Appcolors.baseColor),),
             onPressed: ()async{
               await  ref.read(featureProductViewModelProvider(widget.id).notifier)
                   .getAllRequestedFeatured();
@@ -162,7 +162,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
           ),
         ],
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: Column(
         children: [
           Expanded(
@@ -243,7 +243,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                                 children: [
                                   IconButton(
                                     icon: const Icon(
-                                      Icons.edit, color: Colors.blue,),
+                                      Icons.edit, color: Appcolors.baseColor,),
                                     onPressed: () async {
                                       if (featuredProduct.id != null &&
                                           featuredProduct.userID != null) {
@@ -261,7 +261,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Expires: ", style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Appcolors.baseColor,
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w500)),
                               Text(

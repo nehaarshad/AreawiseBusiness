@@ -37,7 +37,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         title: const Text("Orders History"),
         elevation: 2,
         actions: [

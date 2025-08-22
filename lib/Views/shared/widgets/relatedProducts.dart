@@ -130,13 +130,13 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
                                     height: 35,
                                     width: 35,
                                     decoration: BoxDecoration(
-                                        color: Appcolors.blueColor,
+                                        color: Appcolors.baseColor,
                                         borderRadius: BorderRadius.only(
                                             topRight: Radius.circular(0),
                                             bottomLeft: Radius.circular(20)
                                         )
                                     ),
-                                    child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),productId:product!.id!),
+                                    child:  WishlistButton(color: Appcolors.whiteSmoke, userId: widget.userid.toString(),productId:product!.id!),
 
                                   ),
                                 )

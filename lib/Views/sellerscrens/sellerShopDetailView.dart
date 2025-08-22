@@ -128,10 +128,10 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
               Utils.flushBarErrorMessage("Shop is not Active. Please wait for admin approval before adding products.",context);
             }
           },
-          icon: Icon(Icons.add, size: 18.h,color: Appcolors.whiteColor,),
+          icon: Icon(Icons.add, size: 18.h,color: Appcolors.whiteSmoke,),
           label: Text("Add Product"),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Appcolors.blueColor,
+            backgroundColor: Appcolors.baseColor,
             foregroundColor: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             shape: RoundedRectangleBorder(

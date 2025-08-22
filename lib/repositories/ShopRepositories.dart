@@ -32,7 +32,7 @@ class ShopRepositories {
     };
   }
   //Add Shop of Seller by giving its ID
-  Future<Map<String, dynamic>> addShop(
+  Future<dynamic> addShop(
     Map<String, dynamic> data,
     String id,
     List<File>? images,
@@ -44,6 +44,7 @@ class ShopRepositories {
         data,
         images,headers()
       );
+      print(response);
       return response;
     } catch (e) {
       throw e;

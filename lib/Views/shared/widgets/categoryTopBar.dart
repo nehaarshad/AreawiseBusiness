@@ -1,4 +1,4 @@
-import 'package:ecommercefrontend/models/categoryModel.dart';
+import 'package:ecommercefrontend/View_Model/SharedViewModels/getOnSaleProducts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,15 +7,6 @@ import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
-
-import 'package:ecommercefrontend/models/categoryModel.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
-import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
-import '../../../View_Model/SharedViewModels/getAllCategories.dart';
-import '../../../View_Model/SharedViewModels/productViewModels.dart';
 
 class CategoriesButton extends ConsumerWidget {
   final String id;
@@ -36,11 +27,12 @@ class CategoriesButton extends ConsumerWidget {
               .getAllFeaturedProducts(category),
           ref.read(sharedProductViewModelProvider.notifier)
               .getAllProduct(category),
+          ref.read(onSaleViewModelProvider.notifier)
+              .getonSaleProduct(category),
           ref.read(newArrivalViewModelProvider.notifier)
               .getNewArrivalProduct(category),
         ]);
       } catch (e) {
-        // Handle errors gracefully
         print('Error fetching products: $e');
       }
     }

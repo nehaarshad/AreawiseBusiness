@@ -39,9 +39,9 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       appBar: AppBar(
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         leading: IconButton(
           onPressed: () async {
             await ref.read(UserViewModelProvider.notifier).getallusers();
@@ -55,7 +55,7 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
           final userState = ref.watch(searchUserViewModelProvider);
           return userState.when(
             loading: () => const Center(
-              child: CircularProgressIndicator(color: Appcolors.blueColor),
+              child: CircularProgressIndicator(color: Appcolors.baseColor),
             ),
             data: (users) {
               if (users.isEmpty) {

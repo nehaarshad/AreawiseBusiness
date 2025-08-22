@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/services/socketService.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/utils.dart';
 import '../../models/UserDetailModel.dart';
@@ -34,6 +35,7 @@ class signupviewmodel extends StateNotifier<bool> {
           Navigator.pushNamed(context, routesName.dashboard, arguments: user);
           Utils.flushBarErrorMessage("Registration Completed", context);
         }
+        ref.read(socketServiceProvider);
       }
       else {
         Utils.flushBarErrorMessage("Signup Failed", context);

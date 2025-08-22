@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -73,14 +74,14 @@ class _ExpandedReviewsWidgetState extends State<ExpandedReviewsWidget> {
                           ? 'Show Less'
                           : 'Show All Reviews (${widget.comments.length})',
                       style: const TextStyle(
-                        color: Colors.blue,
+                        color: Appcolors.baseColorLight30,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                      SizedBox(width: 4.w),
                     Icon(
                       _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                      color: Colors.blue,
+                      color: Appcolors.baseColorLight30,
                     ),
                   ],
                 ),

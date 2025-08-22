@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.d
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../../models/categoryModel.dart';
 
@@ -121,31 +122,39 @@ class _ActiveUserShopState extends ConsumerState<ActiveUserShopDropdown> {
         ),
 
         if (showDropdown && ActiveShopList.isNotEmpty)
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
+          SingleChildScrollView(
+            child: Container(
+              height: 200.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Scrollbar(
+                thumbVisibility: true, // Always show scrollbar
+                thickness: 6.0, // Scrollbar thickness
+                radius: Radius.circular(3),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: ActiveShopList.length,
+                  itemBuilder: (context, index) {
+                    final shop = ActiveShopList[index];
+                    if(shop.status != "Active"){
+                      return SizedBox.shrink();
+                    }
+                    return ListTile(
+                      title: Text(shop.shopname!),
+                      onTap: () => _onShopSelected(shop),
+                    );
+                  },
                 ),
-              ],
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: ActiveShopList.length,
-              itemBuilder: (context, index) {
-                final shop = ActiveShopList[index];
-                if(shop.status != "Active"){
-                  return SizedBox.shrink();
-                }
-                return ListTile(
-                  title: Text(shop.shopname!),
-                  onTap: () => _onShopSelected(shop),
-                );
-              },
+              ),
             ),
           ),
 

@@ -25,7 +25,7 @@ class ReviewItem extends ConsumerWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      color: Appcolors.whiteColor,
+      color: Appcolors.whiteSmoke,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(12.0),

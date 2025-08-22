@@ -39,13 +39,13 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
     final categoriesAsync = ref.watch(categoryViewModelProvider);
 
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       appBar: AppBar(
         title:  Text(
           ' Categories',
           style: AppTextStyles.headline
         ),
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         actions: [ TextButton(onPressed: (){
           Navigator.pushNamed(context, routesName.addCategory);
         }, child: Padding(
@@ -56,11 +56,11 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
       body: categoriesAsync.isLoading ? const Center(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: CircularProgressIndicator(color: Appcolors.blueColor),
+          child: CircularProgressIndicator(color: Appcolors.baseColor),
         ),
       ) : (categoriesAsync.category != null)
           ? Categories(categoriesAsync.category)
-          : SizedBox.shrink() // or some other fallback widget
+          : SizedBox.shrink()
 
     );
   }

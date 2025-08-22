@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ecommercefrontend/models/reviewsModel.dart';
+import 'package:ecommercefrontend/models/salesModel.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
 
 import 'SubCategoryModel.dart';
@@ -11,6 +12,8 @@ class ProductModel {
   String? name;
   String? subtitle;
   int? price;
+  String? condition;
+  bool? onSale;
   String? description;
   int? stock;
   int? sold;
@@ -24,6 +27,7 @@ class ProductModel {
   List<ProductImages>? images;
   ShopModel? shop;
   Category? category;
+  SaleOffer? saleOffer;
   Subcategory? subcategory;
   List<Reviews>? reviews;
 
@@ -34,7 +38,10 @@ class ProductModel {
         this.price,
         this.description,
         this.stock,
+        this.condition,
+        this.onSale,
         this.sold,
+        this.saleOffer,
         this.ratings,
         this.seller,
         this.shopid,
@@ -53,12 +60,15 @@ class ProductModel {
     String? name,
     String? subtitle,
     int? price,
+    String? condition,
+    bool? onSale,
     String? description,
     int? stock,
     int? sold,
     int? ratings,
     int? seller,
     int? shopid,
+    SaleOffer? sale,
     int? categoryId,
     int? subcategoryId,
     String? createdAt,
@@ -75,8 +85,11 @@ class ProductModel {
       subtitle: subtitle ?? this.subtitle,
       price: price ?? this.price,
       description: description ?? this.description,
+      condition: condition ?? this.condition,
+      onSale: onSale ?? this.onSale,
       stock: stock ?? this.stock,
       sold: sold ?? this.sold,
+      saleOffer:sale?? this.saleOffer,
       ratings: ratings ?? this.ratings,
       seller: seller ?? this.seller,
       shopid: shopid ?? this.shopid,
@@ -97,6 +110,8 @@ class ProductModel {
     name = json['name'];
     subtitle = json['subtitle'];
     price = json['price'];
+    onSale = json['onSale'];
+    condition = json['condition'];
     description = json['description'];
     stock = json['stock'];
     sold = json['sold'];
@@ -114,6 +129,9 @@ class ProductModel {
       });
     }
     shop = json['shop'] != null ? new ShopModel.fromJson(json['shop']) : null;
+    saleOffer = json['saleOffer'] != null
+        ? new SaleOffer.fromJson(json['saleOffer'])
+        : null;
     category = json['category'] != null
         ? new Category.fromJson(json['category'])
         : null;
@@ -134,6 +152,8 @@ class ProductModel {
     data['name'] = this.name;
     data['subtitle'] = this.subtitle;
     data['price'] = this.price;
+    data['onSale'] = this.onSale;
+    data['condition'] = this.condition;
     data['description'] = this.description;
     data['stock'] = this.stock;
     data['sold'] = this.sold;
@@ -155,6 +175,9 @@ class ProductModel {
     }
     if (this.subcategory != null) {
       data['subcategory'] = this.subcategory!.toJson();
+    }
+    if (this.saleOffer != null) {
+      data['saleOffer'] = this.saleOffer!.toJson();
     }
     if (this.reviews != null) {
       data['reviews'] = this.reviews!.map((v) => v.toJson()).toList();

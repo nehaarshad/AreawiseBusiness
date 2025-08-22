@@ -185,6 +185,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     required int stock,
     required String shopId,
     required String user,
+    required String condition,
     required BuildContext context,
   }) async {
     try {
@@ -210,6 +211,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
         'subtitle':subtitle,
         'description': description,
         'stock': stock,
+        'condition':condition,
         'categories': categoryName ,
         'subcategory': subcategoryName ,
       };

@@ -63,7 +63,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Appcolors.blueColor,
+        backgroundColor: Appcolors.baseColor,
         title: InkWell(
           onTap:  () {
             Navigator.pushNamed(
@@ -108,7 +108,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     widget.product?.name ?? "Unknown",
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      color: Appcolors.whiteColor
+                      color: Appcolors.whiteSmoke
                     ),
                     // maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -180,7 +180,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                   Container(
                     padding: const EdgeInsets.all(11),
                     decoration: BoxDecoration(
-                      color: Appcolors.blueColor,
+                      color: Appcolors.baseColor,
                       borderRadius: BorderRadius.circular(10.r)
                     ),
                     child: InkWell(
@@ -192,7 +192,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                           _messageController.clear();
                         }
                       },
-                      child:  Icon(Icons.send, color: Appcolors.whiteColor,),
+                      child:  Icon(Icons.send, color: Appcolors.whiteSmoke,),
                     ),
                   )
 

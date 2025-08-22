@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/utils.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
-import '../shared/widgets/ShopCategoryDropDownMenu.dart';
+import 'widgets/ShopCategoryDropDownMenu.dart';
 import '../../core/utils/colors.dart';
 
 class updateShopView extends ConsumerStatefulWidget {
@@ -24,6 +24,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
   late TextEditingController shopaddress = TextEditingController();
   late TextEditingController sector = TextEditingController();
   late TextEditingController city = TextEditingController();
+  late TextEditingController delivery = TextEditingController();
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
               shopaddress.text = shop.shopaddress ?? '';
               sector.text = shop.sector ?? '';
               city.text = shop.city ?? '';
+              delivery.text=shop.deliveryPrice.toString() ?? '';
             }
           });
       ref.read(updateShopProvider(widget.id.toString()).notifier).getCategories();
@@ -50,6 +52,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
     shopname.dispose();
     sector.dispose();
     city.dispose();
+    delivery.dispose();
     super.dispose();
   }
 
@@ -139,6 +142,17 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                       },
                     ),
                     TextFormField(
+                      controller: delivery,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: "Delivery charges"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter delivery charges";
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
                       controller: sector,
                       decoration: InputDecoration(labelText: "Sector"),
                       validator: (value) {
@@ -166,10 +180,10 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                                   print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",); // Debugging line
 
                                   await ref.read(updateShopProvider(widget.id.toString(),).notifier,)
-                                      .updateShop(shopname: shopname.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:shop!.userId.toString(), context: context,);
+                                      .updateShop(shopname: shopname.text,price:delivery.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:shop!.userId.toString(), context: context,);
                                 }
                               },
-                      child: state.isLoading ? Center(child: CircularProgressIndicator(color: Appcolors.blueColor,),)
+                      child: state.isLoading ? Center(child: CircularProgressIndicator(color: Appcolors.baseColor,),)
                               : const Text('Update Shop'),
                     ),
                   ],

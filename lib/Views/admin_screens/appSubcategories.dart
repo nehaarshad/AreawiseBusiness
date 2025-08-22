@@ -24,7 +24,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
     final subcategories = ref.watch(subCategoryViewModelProvider(widget.category.name!));
 
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       appBar: AppBar(
         title:  Text(
           ' Subcategories of ${widget.category.name}',
@@ -39,14 +39,14 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
             child: Icon(Icons.add,color: Colors.blue, size: 20.h),
           ) )
         ],
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
       ),
 
       body: subcategories.when(
         loading: () => const Center(
           child: Padding(
             padding: EdgeInsets.all(20.0),
-            child: CircularProgressIndicator(color: Appcolors.blueColor),
+            child: CircularProgressIndicator(color: Appcolors.baseColor),
           ),
         ),
         data: (categories) => Subcategories(categories),

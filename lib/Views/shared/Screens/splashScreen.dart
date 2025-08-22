@@ -21,7 +21,7 @@ class _splashViewState extends ConsumerState<splashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: Center(
         child: Image.asset('assets/images/splashImage.jpg',width: 900.w,height: 5000.h,),
       ),

@@ -33,7 +33,7 @@ class MessageView extends StatelessWidget {
                       message.user?.username ?? 'me',
                       style: TextStyle(
                         fontSize: 10.sp,
-                        color: Appcolors.blueColor,
+                        color: Appcolors.baseColor,
                       ),
                     ),
 

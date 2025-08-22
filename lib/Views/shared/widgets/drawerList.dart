@@ -23,6 +23,28 @@ class DrawerListItems extends ConsumerWidget {
         children: [
           drawerHeader(context),
           drawerItems(
+            icon: Icons.person_outlined,
+            title: 'My Profile',
+            onTap: (){
+              Navigator.pushNamed(
+                context,
+                routesName.profile,
+                arguments:id,
+              );
+            },
+          ),
+          drawerItems(
+            icon: Icons.business_center_outlined,
+            title: 'Business Account',
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.account,
+                arguments: id,
+              );
+            },
+          ),
+          drawerItems(
             icon: Icons.chat,
             title: 'Chats',
             onTap: () {
@@ -45,6 +67,13 @@ class DrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
+            icon: Icons.favorite_border_outlined,
+            title: 'Wishlist',
+            onTap: (){
+              Navigator.pushNamed(context, routesName.favorite,arguments:id);
+            },
+          ),
+          drawerItems(
               icon: Icons.logout,
               title: 'Logout',
               onTap:(){
@@ -59,26 +88,23 @@ class DrawerListItems extends ConsumerWidget {
   Widget drawerHeader(BuildContext context){
     return DrawerHeader(
         decoration: BoxDecoration(
-            color: Appcolors.blueColor
+            color: Appcolors.baseColor
         ),
         child: SingleChildScrollView(
           child: GestureDetector(
             onTap: (){
-              final parameters={
-                'id':user.id,
-                'role':user.role
-              };
+
               Navigator.pushNamed(
                 context,
                 routesName.profile,
-                arguments:parameters,
+                arguments:user.id,
               );
             },
             child: Column(
               children: [
                 ProfileImageWidget(user: user, height: 70.h, width: 100.w),
                 Text(user.username!,style: TextStyle(
-                  color: Appcolors.whiteColor,
+                  color: Appcolors.whiteSmoke,
                   fontSize: 15.sp,
                 ),)
               ],
@@ -102,7 +128,6 @@ class DrawerListItems extends ConsumerWidget {
     final success = await userpreferences.logout();
 
     if (success) {
-      Utils.flushBarErrorMessage("LogOut Completed!", context);
       await Future.delayed(Duration(seconds: 1));
       Navigator.pushNamedAndRemoveUntil(
         context,

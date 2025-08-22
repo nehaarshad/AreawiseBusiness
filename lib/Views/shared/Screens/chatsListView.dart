@@ -97,7 +97,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               margin:  EdgeInsets.symmetric(vertical: 12.0.h,horizontal: 20.w),
                padding:  EdgeInsets.symmetric(vertical: 12.0.h),
                decoration: BoxDecoration(
-               color: !widget.isSeller ? Appcolors.blueColor : Colors.grey[300],
+               color: !widget.isSeller ? Appcolors.baseColor : Colors.grey[300],
                borderRadius: BorderRadius.circular(25.r),
                   ),
               constraints: BoxConstraints(
@@ -105,7 +105,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               ),
               child: Center(
                   child: Text('As Buyer',style: TextStyle(
-                    color:  !widget.isSeller ? Appcolors.whiteColor : Appcolors.blackColor,
+                    color:  !widget.isSeller ? Appcolors.whiteSmoke : Appcolors.blackColor,
                     fontWeight: !widget.isSeller ? FontWeight.bold : FontWeight.normal,),),
                 ),
 
@@ -118,7 +118,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               margin:  EdgeInsets.symmetric(vertical: 12.0.h,horizontal: 6.w),
               padding:  EdgeInsets.symmetric(vertical: 12.0.h),
               decoration: BoxDecoration(
-                color: widget.isSeller ? Appcolors.blueColor : Colors.grey[200],
+                color: widget.isSeller ? Appcolors.baseColor : Colors.grey[200],
                 borderRadius: BorderRadius.circular(25.r),
               ),
               constraints: BoxConstraints(
@@ -126,7 +126,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               ),
               child:Center(
                   child: Text('As Seller',style: TextStyle(
-                    color:   widget.isSeller ? Appcolors.whiteColor : Appcolors.blackColor,
+                    color:   widget.isSeller ? Appcolors.whiteSmoke : Appcolors.blackColor,
                     fontWeight: widget.isSeller ? FontWeight.bold : FontWeight.normal,),),
                 ),
 

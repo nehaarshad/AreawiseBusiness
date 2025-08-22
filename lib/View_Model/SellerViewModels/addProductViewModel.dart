@@ -157,9 +157,11 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     required String description,
     required String stock,
     required String user,
+    required String condition,
     required BuildContext context,
   }) async {
     try {
+
 
       print("User ID: $id");
       // Validate images
@@ -200,6 +202,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
         'subtitle':subtitle,
         'description': description,
         'stock': parsedStock,
+        'condition':condition,
         'productcategory': categoryName.trim(),
         'productsubcategory': subcategoryName.trim(),
       };

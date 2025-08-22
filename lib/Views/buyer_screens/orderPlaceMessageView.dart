@@ -14,7 +14,7 @@ class Orderplacemessageview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: Center(
         child: SingleChildScrollView(
           child: Column(

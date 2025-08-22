@@ -102,7 +102,7 @@ class AdminDrawerListItems extends ConsumerWidget {
     return DrawerHeader(
       
         decoration: BoxDecoration(
-            color: Appcolors.blueColor
+            color: Appcolors.baseColor
         ),
         child: SingleChildScrollView(
           child: GestureDetector(
@@ -121,7 +121,7 @@ class AdminDrawerListItems extends ConsumerWidget {
               children: [
                 ProfileImageWidget(user: user, height: 70.h, width: 100.w),
                 Text(user.username!,style: TextStyle(
-                  color: Appcolors.whiteColor,
+                  color: Appcolors.whiteSmoke,
                   fontSize: 15.sp,
                 ),)
               ],

@@ -139,6 +139,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     required String shopaddress,
     required String sector,
     required String city,
+    required String price,
     required String userid,
     required BuildContext context,
   }) async {
@@ -154,7 +155,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
 
       }
 
-
+      final parsedPrice = int.tryParse(price);
       state = const AsyncValue.loading();
 
       final data = {
@@ -162,6 +163,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
         'shopaddress': shopaddress,
         'sector': sector,
         'city': city,
+        'deliveryPrice':parsedPrice,
         'name': categoryName
       };
 

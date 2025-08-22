@@ -42,7 +42,7 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Appcolors.whiteColor,
+          backgroundColor: Appcolors.whiteSmoke,
           leading: IconButton(
             onPressed: () async {
               await ref.read(shopViewModelProvider.notifier).getShops();
@@ -51,11 +51,11 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
             icon: const Icon(Icons.arrow_back),
           ),
         ),
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         body:Consumer(builder: (context, ref, child) {
               final shopState = ref.watch(searchShopViewModelProvider);
               return shopState.when(
-                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
                   data: (shops) {
 
                     if (shops.isEmpty) {
@@ -110,7 +110,7 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
                                           arguments: parameters,
                                         );
                                       },
-                                      icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                      icon: Icon(Icons.edit, color: Appcolors.baseColor),
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.delete, color: Colors.red),
@@ -164,7 +164,7 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
                                       child: Text(
                                         shop.status == 'Active' ? "Dismiss" : "Activate",
                                         style: TextStyle(
-                                          color: Appcolors.whiteColor,
+                                          color: Appcolors.whiteSmoke,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15.sp,
                                         ),

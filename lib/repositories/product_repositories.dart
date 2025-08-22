@@ -94,7 +94,62 @@ class ProductRepositories {
       }
     }
 
-    Future<dynamic> updateArrivalDuration(Map<String, dynamic> data) async {
+  Future<List<ProductModel>> getOnSaleProducts(String Category) async {
+    List<ProductModel> productlist = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+          AppApis.getOnSaleProductsEndPoints.replaceFirst(
+              ':Category', Category), headers());
+      if (response is List) {
+        return response.map((products) =>
+            ProductModel.fromJson(products as Map<String, dynamic>),)
+            .toList();
+      }
+      productlist = [ProductModel.fromJson(response)];
+      return productlist;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<ProductModel>> getUserOnSaleProducts(String id) async {
+    List<ProductModel> productlist = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+          AppApis.getUserOnSaleProductsEndPoints.replaceFirst(
+              ':id', id), headers());
+      if (response is List) {
+        return response.map((products) =>
+            ProductModel.fromJson(products as Map<String, dynamic>),)
+            .toList();
+      }
+      productlist = [ProductModel.fromJson(response)];
+      return productlist;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<ProductModel?>> getProductsBySubcategory(String subcategory) async {
+    List<ProductModel> productlist = [];
+    try {
+      dynamic response = await apiservice.GetApiResponce(
+          AppApis.GetProductBySubcategoryEndPoints.replaceFirst(
+              ':subcategory', subcategory), headers());
+
+      if (response is List) {
+        return response.map((products) =>
+            ProductModel.fromJson(products as Map<String, dynamic>),)
+            .toList();
+      }
+      productlist = [ProductModel.fromJson(response)];
+      return productlist;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<dynamic> updateArrivalDuration(Map<String, dynamic> data) async {
       try {
         final jsonData = jsonEncode(data);
         dynamic response = await apiservice.UpdateApiWithJson(

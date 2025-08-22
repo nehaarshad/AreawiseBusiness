@@ -204,7 +204,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Appcolors.blueColor,
+                    backgroundColor: Appcolors.baseColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40.0),
                     ),
@@ -212,7 +212,7 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
                   child: const Text(
                     "Proceed",
                     style: TextStyle(
-                      color: Appcolors.whiteColor,
+                      color: Appcolors.whiteSmoke,
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
@@ -247,5 +247,6 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<orderModel?>>{
     }
   }
 
+  
 
 }

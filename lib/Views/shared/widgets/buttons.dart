@@ -24,14 +24,14 @@ class CustomButton extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 25.w),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Appcolors.blueColor,
+          color: Appcolors.baseColor,
           borderRadius: BorderRadius.circular(15.r),
         ),
         child: Center(
           child:
               isLoading
-                  ? CircularProgressIndicator(color: Appcolors.whiteColor)
-                  : Text(text, style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+                  ? CircularProgressIndicator(color: Appcolors.whiteSmoke)
+                  : Text(text, style: TextStyle(color: Appcolors.whiteSmoke,fontWeight: FontWeight.bold,fontSize: 15.sp)),
         ),
       ),
     );

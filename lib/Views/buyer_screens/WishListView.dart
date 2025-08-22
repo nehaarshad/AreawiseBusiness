@@ -24,7 +24,7 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
           title:  Text("WishList",style: AppTextStyles.headline,)),
       body: state.when(
             loading: () => const Center(
-                child: CircularProgressIndicator(color: Appcolors.blueColor)),
+                child: CircularProgressIndicator(color: Appcolors.baseColor)),
             data: (list) {
               if (list.isEmpty) {
                 return const Center(child: Text("No Favourite Items available."));

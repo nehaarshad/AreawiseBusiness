@@ -22,12 +22,13 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
     final shopState = ref.watch(sellerShopViewModelProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Appcolors.whiteColor,
+        automaticallyImplyLeading: false,
+        backgroundColor: Appcolors.whiteSmoke,
 
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: shopState.when(
-        loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+        loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
         data: (shops) {
           if (shops.isEmpty) {
             return const Center(child: Text("No Shops Available"));
@@ -75,7 +76,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                               arguments: parameters,
                             );
                           },
-                          icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                          icon: Icon(Icons.edit, color: Appcolors.baseColor),
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
@@ -104,7 +105,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Appcolors.blueColor,
+              backgroundColor: Appcolors.baseColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40.0),
               ),
@@ -112,7 +113,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
             child:  Text(
               "Add Shop",
               style: TextStyle(
-                color: Appcolors.whiteColor,
+                color: Appcolors.whiteSmoke,
                 fontWeight: FontWeight.bold,
                 fontSize: 15.sp,
               ),

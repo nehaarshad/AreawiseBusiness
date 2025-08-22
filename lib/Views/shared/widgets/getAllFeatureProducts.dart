@@ -78,7 +78,7 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 8.h),
-                  width: 170.w,
+                  width: 168.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -118,13 +118,13 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
                                    height: 35,
                                    width: 35,
                                    decoration: BoxDecoration(
-                                       color: Appcolors.blueColor,
+                                       color: Appcolors.baseColor,
                                        borderRadius: BorderRadius.only(
                                            topRight: Radius.circular(0),
                                            bottomLeft: Radius.circular(20)
                                        )
                                    ),
-                                   child:  WishlistButton(color: Appcolors.whiteColor, userId: widget.userid.toString(),productId:product.id!),
+                                   child:  WishlistButton(color: Appcolors.whiteSmoke, userId: widget.userid.toString(),productId:product.id!),
 
                                  ),
                                )
@@ -150,11 +150,100 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
                           ),
                           // WishlistButton( userId: widget.userid.toString(),product:product!),
 
+                          product.onSale! ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Rs.",
+                                  style: TextStyle(
+                                      color: Appcolors.baseColorLight30,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                                Text(
+                                  "${product.price ?? 0}",
+                                  style: TextStyle(
+                                    color: Colors.grey, // Different color for strikethrough
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: Colors.grey, // Match text color
+                                  ),
+                                ),
+                                SizedBox(width: 3.w), // Slightly more spacing
+
+                                Text(
+                                  "${product.saleOffer?.price ?? 0}", // Use ?. instead of !.
+                                  style: TextStyle(
+                                      color: Appcolors.baseColorLight30,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ) : Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Rs.",
+                                  style: TextStyle(
+                                      color: Appcolors.baseColorLight30,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                                Text(
+                                  "${product.price ?? 0}",
+                                  style: TextStyle(
+                                      color: Appcolors.baseColorLight30,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Padding(
-                            padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                            child: Text(
-                              "Rs.${product.price ?? 0}",
-                              style:  TextStyle(color: Colors.green,fontSize: 13.h),
+                            padding:  EdgeInsets.symmetric(horizontal: 10.0.w,),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+
+                                  children: [
+                                    Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
+                                    SizedBox(width: 3.w,),
+                                    Text(
+                                      "${product.shop!.deliveryPrice ?? 0}",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+
+                                  children: [
+                                    Text(
+                                      "${product.ratings ?? 0}",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+
+                                    SizedBox(width: 3.w,),
+                                    Icon(Icons.star,color: Appcolors.baseColorLight30,size: 15.h,),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],

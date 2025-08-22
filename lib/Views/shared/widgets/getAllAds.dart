@@ -72,57 +72,60 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
   @override
   Widget build(BuildContext context) {
     final adsState = ref.watch(AdsViewModelProvider);
-    return Container(
-      height: 200.h,
-      child: adsState.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: Appcolors.blueColor),
-        ),
-        data: (ads) {
-          if (ads.isEmpty) {
-            return Center(
-              child: Center(child: Text("No Ads",style: TextStyle(fontWeight: FontWeight.bold,color: Appcolors.blueColor),)),
-            );
-          }
-          return Stack(
-            children: [
-              PageView.builder(
-                controller: page,
-                itemCount: ads.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  final ad = ads[index];
-                  return ClipRRect(
-                        borderRadius: BorderRadius.circular(10.r),
-                    child: Container(
-                      height: 240.h,
-                      width: double.infinity, // Ensure it takes the full width
-                      child: ad?.image != null && ad?.image!.imageUrl != null
-                          ? Image.network(
-                        ad!.image!.imageUrl!,
-                        fit: BoxFit.fill,
-                        width: double.infinity,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(child: Icon(Icons.error));
-                        },
-                      )
-                          : Container(
-                        color: Colors.grey[300],
-                        child:  Center(child: Icon(Icons.image_not_supported, size: 50.h)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+      child: Container(
+        height: 170.h,
+        child: adsState.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(color: Appcolors.baseColor),
+          ),
+          data: (ads) {
+            if (ads.isEmpty) {
+              return Center(
+                child: Center(child: Text("No Ads",style: TextStyle(fontWeight: FontWeight.bold,color: Appcolors.baseColor),)),
+              );
+            }
+            return Stack(
+              children: [
+                PageView.builder(
+                  controller: page,
+                  itemCount: ads.length,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    final ad = ads[index];
+                    return ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                      child: Container(
+                        height: 240.h,
+                        width: double.infinity, // Ensure it takes the full width
+                        child: ad?.image != null && ad?.image!.imageUrl != null
+                            ? Image.network(
+                          ad!.image!.imageUrl!,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Center(child: Icon(Icons.error));
+                          },
+                        )
+                            : Container(
+                          color: Colors.grey[300],
+                          child:  Center(child: Icon(Icons.image_not_supported, size: 50.h)),
+                        ),
                       ),
-                    ),
-                      );
-                },
-              ),
-            ],
-          );
-        },
-        error: (error, stackTrace) => Center(
-          child: Text('Error: ${error.toString()}'),
+                        );
+                  },
+                ),
+              ],
+            );
+          },
+          error: (error, stackTrace) => Center(
+            child: Text('Error: ${error.toString()}'),
+          ),
         ),
       ),
     );

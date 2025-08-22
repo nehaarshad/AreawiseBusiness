@@ -5,7 +5,7 @@ import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
-import '../shared/widgets/getUserProducts.dart';
+import 'getUserProducts.dart';
 import '../shared/widgets/searchBar.dart';
 import 'getSellerFeatureProducts.dart';
 
@@ -47,10 +47,7 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          TextButton(onPressed: (){
-            Navigator.pushNamed(context, routesName.featuredProducts,arguments: widget.id.toString());
-          },
-              child: Text("Feature Products"))
+
         ],
       ),
       body: SafeArea(
@@ -68,16 +65,37 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
                         "My Products",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)
                     ),
-                    TextButton(onPressed: (){
-                      Navigator.pushNamed(
-                        context,
-                        routesName.sAddProduct,
-                        arguments: widget.id.toString(),
-                      );
-                    }, child: Text("Add Product",style: TextStyle(
-                      color: Appcolors.blueColor
-                    ),)
-                    ),
+                    InkWell(
+                      onTap:()async{
+                        Navigator.pushNamed(
+                          context,
+                          routesName.sAddProduct,
+                          arguments: widget.id.toString(),
+                        );
+                        },
+                      child: Container(
+                        height: 25.h,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                          color: Appcolors.whiteSmoke,
+                          borderRadius: BorderRadius.circular(15.r),
+                          border: Border.all(  // Use Border.all instead of boxShadow for borders
+                            color: Appcolors.baseColor,
+                            width: 1.0,  // Don't forget to specify border width
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Add Product",
+                            style: TextStyle(
+                              color: Appcolors.baseColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -87,7 +105,7 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
                     loading: () => const Center(
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
-                        child: CircularProgressIndicator(color: Appcolors.blueColor),
+                        child: CircularProgressIndicator(color: Appcolors.baseColor),
                       ),
                     ),
                     data: (products) {
@@ -174,7 +192,7 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
                                                   arguments: product,
                                                 );
                                               },
-                                              icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                              icon: Icon(Icons.edit, color: Appcolors.baseColor),
                                               tooltip: "Edit Product",
                                             ),
                                             IconButton(
@@ -191,13 +209,13 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
                                         ),
                                         ElevatedButton.icon(
                                           onPressed: () async {
-                                            await ref.read(createfeatureProductViewModelProvider.notifier)
+                                            await ref.read(createfeatureProductViewModelProvider(widget.id.toString()).notifier)
                                                 .createFeatureProduct(widget.id.toString(),product.id!,context);
                                           },
                                           icon: Icon(Icons.star, size: 16.h),
                                           label: Text("Request to Feature"),
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Appcolors.blueColor,
+                                            backgroundColor: Appcolors.baseColor,
                                             foregroundColor: Colors.white,
                                           ),
                                         ),

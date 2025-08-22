@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ecommercefrontend/models/auth_users.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
@@ -10,6 +11,7 @@ import 'package:riverpod/riverpod.dart';
 import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
 import '../models/UserDetailModel.dart';
+import '../models/notificationModel.dart';
 
 final userProvider = Provider<UserRepositories>((ref) {
   return UserRepositories(ref);
@@ -86,6 +88,28 @@ class UserRepositories {
       );
       user = UserDetailModel.fromJson(response);
       return user;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<NotificationModel>> getUserNotifications(String id) async {
+    try {
+      List<NotificationModel> notifications=[];
+      dynamic response = await apiservice.GetApiResponce(
+          AppApis.getUserNotificationEndPoints.replaceFirst(':id', id),headers()
+      );
+      print("Notifications ${response}");
+      if (response is List) {
+        return response.map((notify) =>
+            NotificationModel.fromJson(notify as Map<String, dynamic>),)
+            .toList();
+      }
+      if (response == null) {
+        return [];
+      }
+      notifications = [NotificationModel.fromJson(response)];
+      return notifications;
     } catch (e) {
       throw e;
     }

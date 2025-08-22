@@ -30,7 +30,7 @@ class _findShopViewState extends ConsumerState<findShopView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Appcolors.whiteColor,
+          backgroundColor: Appcolors.whiteSmoke,
           leading: IconButton(
             onPressed: () async {
               await ref.read(shopViewModelProvider.notifier).getShops();
@@ -39,11 +39,11 @@ class _findShopViewState extends ConsumerState<findShopView> {
             icon: const Icon(Icons.arrow_back),
           ),
         ),
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         body:Consumer(builder: (context, ref, child) {
           final shopState = ref.watch(searchShopViewModelProvider);
           return shopState.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+              loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
               data: (shops) {
                 if (shops.isEmpty) {
                   return Center(child: Text("No shops available."));

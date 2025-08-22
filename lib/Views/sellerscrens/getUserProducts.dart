@@ -3,10 +3,10 @@ import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
-import '../../../View_Model/SharedViewModels/productViewModels.dart';
-import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/colors.dart';
+import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
+import '../../View_Model/SharedViewModels/productViewModels.dart';
+import '../../core/utils/routes/routes_names.dart';
+import '../../core/utils/colors.dart';
 
 class getSellerProductView extends ConsumerStatefulWidget {
   final String sellerId;
@@ -46,7 +46,7 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
               loading: () => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: CircularProgressIndicator(color: Appcolors.blueColor),
+                  child: CircularProgressIndicator(color: Appcolors.baseColor),
                 ),
               ),
               data: (products) {
@@ -133,7 +133,7 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                                             arguments: product,
                                           );
                                         },
-                                        icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                        icon: Icon(Icons.edit, color: Appcolors.baseColor),
                                         tooltip: "Edit Product",
                                       ),
                                       IconButton(
@@ -150,13 +150,13 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
                                   ),
                                   ElevatedButton.icon(
                                     onPressed: () async {
-                                      await ref.read(createfeatureProductViewModelProvider.notifier)
+                                      await ref.read(createfeatureProductViewModelProvider(widget.sellerId).notifier)
                                           .createFeatureProduct(widget.sellerId,product.id!,context);
                                     },
                                     icon: Icon(Icons.star, size: 16.h),
                                     label: Text("Request to Feature"),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Appcolors.blueColor,
+                                      backgroundColor: Appcolors.baseColor,
                                       foregroundColor: Colors.white,
                                     ),
                                   ),

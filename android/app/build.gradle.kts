@@ -4,7 +4,6 @@ import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -20,6 +19,7 @@ android {
     ndkVersion = "28.0.13004108"
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -37,6 +37,7 @@ android {
         }
         versionCode = flutter.versionCode.toInt()
         versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     signingConfigs {
@@ -49,6 +50,8 @@ android {
             storeFile = file(keystoreProperties.getProperty("storeFile"))
             storePassword = keystoreProperties.getProperty("storePassword")
         }
+        // Remove the debug signing config creation - it's created automatically
+        // getByName("debug") will use the default debug config
     }
 
     buildTypes {
@@ -61,6 +64,7 @@ android {
             )
         }
         getByName("debug") {
+            // This will automatically use the default debug signing config
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -68,4 +72,10 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22")
+    implementation("androidx.multidex:multidex:2.0.1")
 }

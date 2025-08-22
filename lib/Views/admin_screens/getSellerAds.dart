@@ -27,15 +27,15 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
     final adsState = ref.watch(AdsViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Active Ads",style: TextStyle(color:Appcolors.blueColor,fontWeight: FontWeight.bold,fontSize: 20.sp),),
+        title: Text("Active Ads",style: TextStyle(color:Appcolors.baseColor,fontWeight: FontWeight.bold,fontSize: 20.sp),),
 
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Consumer(builder: (context, ref, child) {
               return adsState.when(
-                loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.blueColor)),
+                loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
                 data: (ads) {
                   if (ads.isEmpty) {
                     return Center(child: Text("No Active Ads Available"));

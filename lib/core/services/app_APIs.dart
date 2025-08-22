@@ -1,12 +1,18 @@
 class AppApis {
-  static var baseurl = "http://161.35.22.15:5000/api";
-  static var socketURL = "http://161.35.22.15:5000";
+  static var baseurl = "http://10.236.31.179:5000/api";
+  static var socketURL = "http://10.236.31.179:5000";
+
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";
   static var logoutEndPoints = "$baseurl/logout";
   static var forgetPasswordEndPoints = "$baseurl/forgetpassword";
 
+  //Account Urls
+  static var createSellerPayementAccountEndPoints = "$baseurl/createAccount";
+  static var getSellerPayementAccountEndPoints = "$baseurl/getAccounts/:id";
+  static var deleteSellerPayementAccountEndPoints = "$baseurl/deleteAccount/:id";
+  static var confirmSellersPayementEndPoints = "$baseurl/confirmSellersPayement";
 
   //USER PROFILE URLS
   static var getAllUserEndPoints = "$baseurl/getallusers";
@@ -16,6 +22,7 @@ class AppApis {
   static var AddUserEndPoints = "$baseurl/adduser";
   static var UpdateUserEndPoints = "$baseurl/updateuser/:id";
   static var DeleteUserEndPoints = "$baseurl/deleteuser/:id";
+  static var getUserNotificationEndPoints = "$baseurl/getUserNotification/:id";
   static var ChangePasswordEndPoints = "$baseurl/changePassword/:id";
 
   //Address URLS
@@ -36,10 +43,16 @@ class AppApis {
   static var DeleteShopEndPoints = "$baseurl/deleteshopbyid/:id";
 
 
+  //onSale URLs
+  static var updateOnSaleProductEndPoints = "$baseurl/updateOnSaleProduct/:id";
+  static var addOnSaleEndPoints = "$baseurl/addOnSale/:id";
+  static var deleteOnSaleEndPoints = "$baseurl/deleteOnSale/:id";
+
   //Category URLs
   static var getCategoriesEndPoints = "$baseurl/getCategories";
   static var getAllsubcategoriesEndPoints = "$baseurl/getallsubcategories";
   static var getSubcategoriesOfCategoryEndPoints = "$baseurl/getsubcategoriesofcategory/:categories";
+
 
   //Reviews URLs
   static var getReviewEndPoints = "$baseurl/getReviews/:id";
@@ -50,13 +63,15 @@ class AppApis {
   //PRODUCTS URLS  (Seller Perform Operation on their Products + All Products Home Page URL)
 
   static var getNewArrivalDaysEndPoints = "$baseurl/getproductArrivalDays";
+  static var getOnSaleProductsEndPoints = "$baseurl/getProductsOnSale/:Category";
+  static var getUserOnSaleProductsEndPoints = "$baseurl/getUserSaleProducts/:id";
   static var setNewArrivalDaysEndPoints = "$baseurl/updateproductArrivalDays";
   static var AddProductEndPoints = "$baseurl/addproduct/:id";
   static var GetProductsEndPoints = "$baseurl/getallproducts/:Category";
   static var GetProductByIDEndPoints = "$baseurl/getproducts/:id";
   static var GetUserProductsEndPoints = "$baseurl/getuserproducts/:id";
   static var GetShopProductsEndPoints = "$baseurl/getshopproducts/:id";
-  static var GetProductByCategoryEndPoints = "$baseurl/getProductByCategory";
+  static var GetProductBySubcategoryEndPoints = "$baseurl/getProductBySubcategory/:subcategory";
   static var getProductByNameEndPoints = "$baseurl/getProductByName/:name";
   static var getNewArrivalProductsEndPoints = "$baseurl/getNewArrivalproducts/:Category";
   static var UpdateProductEndPoints = "$baseurl/updateproduct/:id";

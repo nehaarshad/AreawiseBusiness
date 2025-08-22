@@ -15,7 +15,7 @@ class SellerBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: onItemTapped,

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/cartModel.dart';
-import '../shared/widgets/cartBottomBar.dart';
+import 'widgets/cartBottomBar.dart';
 import '../../core/utils/colors.dart';
 
 class Cartview extends ConsumerStatefulWidget {
@@ -37,7 +37,7 @@ class _CartviewState extends ConsumerState<Cartview> {
     final state = ref.watch(cartViewModelProvider(widget.id.toString())); //get user cart
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
         automaticallyImplyLeading: false,
         title: Text("Cart",style: AppTextStyles.headline,),
         actions: [
@@ -60,10 +60,10 @@ class _CartviewState extends ConsumerState<Cartview> {
           ),
         ],
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: state.when(
         loading: () => const Center(
-      child: CircularProgressIndicator(color: Appcolors.blueColor),
+      child: CircularProgressIndicator(color: Appcolors.baseColor),
     ),
     data: (cart) {
     if (kDebugMode) {

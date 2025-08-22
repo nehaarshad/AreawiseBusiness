@@ -6,9 +6,19 @@ import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/findShopView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/OrdersView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/SellerProductsView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/addToSaleView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/onSaleProducts.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/AccountView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/categoryView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/changePasswordView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/exploreProductsView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/historyView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/notificationView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/searchProductView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/subcategoriesProductView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/toSearchProduct.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
@@ -89,10 +99,13 @@ class Routes {
         String id = arg as String;
         return MaterialPageRoute(builder: (BuildContext context) =>  Changepasswordview(id: id),);
 
+      case (routesName.notification):
+        String id = arg as String;
+        return MaterialPageRoute(builder: (BuildContext context) =>  NotificationView(id: id),);
+
       case (routesName.profile):
-        int id = arg['id'] as int;
-        String role = arg['role'] as String;
-        return MaterialPageRoute(builder: (BuildContext context) =>  profileDetailView(id: id,role: role,),);
+        int id = arg as int;
+        return MaterialPageRoute(builder: (BuildContext context) =>  profileDetailView(id: id),);
 
 
       case (routesName.ashop):
@@ -225,9 +238,20 @@ class Routes {
         );
 
       case (routesName.featuredProducts):
-        final id = arg as String;
+        final id = arg as int;
         return MaterialPageRoute(
           builder: (BuildContext context) => UserFeaturedProducts(sellerId: id,),
+        );
+      case (routesName.addToSale):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => createNewSaleView(userid: id,),
+        );
+
+      case (routesName.onSale):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Onsaleproducts(userId: id,),
         );
 
       case (routesName.addUser):
@@ -264,6 +288,12 @@ class Routes {
           builder: (BuildContext context) => Wishlistview(id: id,),
         );
 
+      case (routesName.categoryView):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => CategoriesView(userid: id),
+        );
+
       case (routesName.cart):
         final id = arg as int;
         return MaterialPageRoute(
@@ -288,12 +318,43 @@ class Routes {
           builder: (BuildContext context) => ChatsListView(userId: id),
         );
 
-      // case (routesName.chatView):
-      //   final chatId = arg['chatId'] as String;
-      //   final userId = arg['userId'] as String;
-      //   // return MaterialPageRoute(
-      //   //  // builder: (BuildContext context) => ChatView(chatId: chatId,userId:userId),
-      //   // );
+      case (routesName.subcategoriesProductView):
+        final id = arg['id'] as int;
+        final name = arg['name'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Subcategoriesproductview(userid: id,name: name,),
+        );
+
+      case (routesName.toSearchProduct):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Tosearchproduct(userid: id),
+        );
+
+      case (routesName.sProducts):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Sellerproductsview(id: id),
+        );
+
+      case (routesName.OrderRequests):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => OrdersView(sellerId: id),
+        );
+
+      case (routesName.account):
+        final id = arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => AccountView(userid: id),
+        );
+
+      case (routesName.explore):
+        final id = arg['id'] as int;
+        final category = arg['category'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Exploreproductsview(userId:id,category:category),
+        );
 
       default:
         return MaterialPageRoute(

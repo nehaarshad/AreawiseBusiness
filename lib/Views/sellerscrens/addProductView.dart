@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/widgets/productCondition.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,9 +10,9 @@ import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../View_Model/SellerViewModels/ProductStates.dart';
-import '../shared/widgets/ProductCateASubCategoryDropdownMenu.dart';
-import '../shared/widgets/ShopCategoryDropDownMenu.dart';
-import '../shared/widgets/shopsDropDown.dart';
+import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
+import 'widgets/ShopCategoryDropDownMenu.dart';
+import 'widgets/shopsDropDown.dart';
 
 class addProductView extends ConsumerStatefulWidget {
   String userId;
@@ -22,6 +23,9 @@ class addProductView extends ConsumerStatefulWidget {
 }
 
 class _addProductViewState extends ConsumerState<addProductView> {
+
+  ProductCondition condition = ProductCondition.New;
+
 
   late final AddProductViewModel _viewModel;
   final formkey = GlobalKey<FormState>();
@@ -47,12 +51,13 @@ class _addProductViewState extends ConsumerState<addProductView> {
   @override
   Widget build(BuildContext context) {
     String userid=widget.userId.toString();
+
     print("userid: ${userid} with type: ${userid.runtimeType}");
     final state = ref.watch(addProductProvider(userid));
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading:false,
-          backgroundColor: Appcolors.whiteColor,
+          backgroundColor: Appcolors.whiteSmoke,
           actions: [  Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -65,7 +70,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
             ],
           ),],
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
 
       body: SingleChildScrollView(
         child: Padding(
@@ -177,6 +182,33 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     return null;
                   },
                 ),
+                Row(
+                  children: [
+                    Text('Product Condition', style: TextStyle(fontWeight: FontWeight.w400)),
+                    SizedBox(width: 30.w,),
+                    Radio(
+                      value: ProductCondition.New,
+                      groupValue: condition,
+                      onChanged: ( value) {
+                        setState(() {
+                          condition = value!;
+                        });
+                      },
+                    ),
+                    Text('New'),
+                    SizedBox(width: 15),
+                    Radio(
+                      value: ProductCondition.Used,
+                      groupValue: condition,
+                      onChanged: ( value) {
+                        setState(() {
+                          condition = value!;
+                        });
+                      },
+                    ),
+                    Text('Used'),
+                  ],
+                ),
                 ProductCategoryDropdown(shopid: userid),
                 ProductSubcategoryDropdown(userId:userid),
                 ActiveUserShopDropdown(userid:userid),
@@ -184,6 +216,9 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 InkWell(
                   onTap:state.isLoading ? null : () async {
                     if (formkey.currentState!.validate()) {
+                      condition==ProductCondition.New ?'New':"Used";
+                      print(condition.value);
+                      String conditionValue = condition.value;
                       await ref.read(addProductProvider(userid).notifier,)
                           .addProduct(
                         name: name.text,
@@ -192,6 +227,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                         description: description.text,
                         stock: stock.text,
                         user:widget.userId.toString(),
+                        condition:condition.value,
                         context: context,
                       );
                     }
@@ -201,7 +237,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     margin: EdgeInsets.symmetric(horizontal: 25.w),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Appcolors.blueColor,
+                      color: Appcolors.baseColor,
                       borderRadius: BorderRadius.circular(15.r),
 
                     ),
@@ -209,7 +245,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                       child: Text(
                         "Add Product",
                         style: TextStyle(
-                          color: Appcolors.whiteColor,
+                          color: Appcolors.whiteSmoke,
                           fontWeight: FontWeight.bold,
                           fontSize: 15.sp,
                         ),
@@ -227,10 +263,10 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     margin: EdgeInsets.symmetric(horizontal: 25.w),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Appcolors.whiteColor,
+                      color: Appcolors.whiteSmoke,
                       borderRadius: BorderRadius.circular(15.r),
                       border: Border.all(  // Use Border.all instead of boxShadow for borders
-                        color: Appcolors.blueColor,
+                        color: Appcolors.baseColor,
                         width: 1.0,  // Don't forget to specify border width
                       ),
                     ),
@@ -238,7 +274,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                       child: Text(
                         "Cancel",
                         style: TextStyle(
-                          color: Appcolors.blueColor,
+                          color: Appcolors.baseColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15.sp,
                         ),

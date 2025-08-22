@@ -17,6 +17,7 @@ class networkapiservice extends baseapiservice {
           .get(Uri.parse(url), headers: headers,)
           .timeout(Duration(seconds: 10));
       print(response.headers);
+      print("subcategoryproducts ${response.body}");
       responseJson = httpResponse(response);
 
     } on SocketException {

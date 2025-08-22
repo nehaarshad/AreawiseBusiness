@@ -9,6 +9,8 @@ import 'package:ecommercefrontend/core/utils/utils.dart';
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/services/socketService.dart';
+
 final loginProvider = StateNotifierProvider<LoginViewModel, bool>((ref) {
   return LoginViewModel(ref);
 });
@@ -32,6 +34,7 @@ class LoginViewModel extends StateNotifier<bool> {
 
         Navigator.pushNamed(context, routesName.dashboard, arguments: user);
       }
+      ref.read(socketServiceProvider);
     } catch (error) {
       print(error);
       developer.log("Logged in user:${error}");

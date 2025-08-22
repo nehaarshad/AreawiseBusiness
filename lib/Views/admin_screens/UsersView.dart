@@ -38,7 +38,7 @@ class _UsersViewState extends ConsumerState<UserView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: ListView(
         children: [
           SizedBox(height: 8.h,),
@@ -61,7 +61,7 @@ class _UsersViewState extends ConsumerState<UserView> {
                     return userState.when(
                       loading:
                           () => const Center(
-                            child: CircularProgressIndicator(color: Appcolors.blueColor),
+                            child: CircularProgressIndicator(color: Appcolors.baseColor),
                           ),
                       data: (users) {
                         if (users.isEmpty) {

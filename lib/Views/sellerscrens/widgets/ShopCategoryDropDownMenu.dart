@@ -125,29 +125,42 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
         ),
 
         if (showDropdown && SelectCategories.isNotEmpty)
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 200.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: SelectCategories.length,
-              itemBuilder: (context, index) {
-                final category = SelectCategories[index];
-                    return category.name == "All" ? SizedBox.shrink(): ListTile(
-                  title: Text(category.name!) ,
-                  onTap: () => _onCategorySelected(category),
-                );
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  thickness: 6.0,
+                  radius: Radius.circular(3),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
 
-              },
+                    itemCount: SelectCategories.length,
+                    itemBuilder: (context, index) {
+                      final category = SelectCategories[index];
+                          return category.name == "All" ? SizedBox.shrink(): ListTile(
+                        title: Text(category.name!) ,
+                        onTap: () => _onCategorySelected(category),
+                      );
+
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
 
@@ -286,28 +299,36 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
         ),
 
         if (showDropdown && SelectCategories.isNotEmpty)
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
+          SingleChildScrollView(
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Scrollbar(
+                thumbVisibility: true, // Always show scrollbar
+                thickness: 6.0, // Scrollbar thickness
+                radius: Radius.circular(3),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: SelectCategories.length,
+                  itemBuilder: (context, index) {
+                    final category = SelectCategories[index];
+                    return ListTile(
+                      title: Text(category.name!),
+                      onTap: () => _onCategorySelected(category),
+                    );
+                  },
                 ),
-              ],
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: SelectCategories.length,
-              itemBuilder: (context, index) {
-                final category = SelectCategories[index];
-                return ListTile(
-                  title: Text(category.name!),
-                  onTap: () => _onCategorySelected(category),
-                );
-              },
+              ),
             ),
           ),
 

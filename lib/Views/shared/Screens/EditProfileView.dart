@@ -146,14 +146,14 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
         margin: EdgeInsets.symmetric(horizontal: 25.w),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Appcolors.blueColor,
+          color: Appcolors.baseColor,
           borderRadius: BorderRadius.circular(15.r),
         ),
         child: Center(
           child:
           state.isLoading
-              ? CircularProgressIndicator(color: Appcolors.whiteColor)
-              : Text("Update", style: TextStyle(color: Appcolors.whiteColor,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+              ? CircularProgressIndicator(color: Appcolors.whiteSmoke)
+              : Text("Update", style: TextStyle(color: Appcolors.whiteSmoke,fontWeight: FontWeight.bold,fontSize: 15.sp)),
         ),
       ),
     );
@@ -198,7 +198,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
             TextButton(onPressed: (){
               Navigator.pushNamed(context, routesName.changePassword,arguments: widget.id.toString());
 
-            }, child: Text("Change Password",style: TextStyle(color: Appcolors.blueColor),))
+            }, child: Text("Change Password",style: TextStyle(color: Appcolors.baseColor),))
           ],
       ),
       body: userState.when(

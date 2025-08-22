@@ -98,9 +98,9 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
     return Scaffold(
       appBar: AppBar(
          title: Text("Settings",style: AppTextStyles.headline,),
-        backgroundColor: Appcolors.whiteColor,
+        backgroundColor: Appcolors.whiteSmoke,
       ),
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.all(15.0),

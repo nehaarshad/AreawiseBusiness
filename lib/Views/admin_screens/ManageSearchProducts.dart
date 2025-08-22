@@ -62,7 +62,7 @@ class _ManageSearchedProductsviewState extends ConsumerState<ManageSearchedProdu
                       loading: () => const Center(
                         child: Padding(
                           padding: EdgeInsets.all(20.0),
-                          child: CircularProgressIndicator(color: Appcolors.blueColor),
+                          child: CircularProgressIndicator(color: Appcolors.baseColor),
                         ),
                       ),
                       data: (products) {
@@ -139,7 +139,7 @@ class _ManageSearchedProductsviewState extends ConsumerState<ManageSearchedProdu
                                                   arguments: product,
                                                 );
                                               },
-                                              icon: Icon(Icons.edit, color: Appcolors.blueColor),
+                                              icon: Icon(Icons.edit, color: Appcolors.baseColor),
                                               tooltip: "Edit Product",
                                             ),
                                             IconButton(

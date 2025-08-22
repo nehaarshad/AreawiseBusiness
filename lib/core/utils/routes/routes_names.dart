@@ -31,7 +31,11 @@ class routesName {
 
   //Seller Screens Routes Names
   static const String sHome = "sellerhomeview";
+  static const String addToSale = "addToSaleView";
+  static const String onSale = "onSaleProducts";
   static const String sShop = "SellerShopView";
+  static const String sProducts = "SellerProductsView";
+  static const String OrderRequests = "OrdersView";
   static const String SellerShopDetailView = "SellerShopDetailView";
   static const String sAddProduct = "addProductView";
   static const String sAddShop = "addShopView";
@@ -43,6 +47,7 @@ class routesName {
 
   //Common\Shared Screens Routes Names
   static const String splash = "splashScreen";
+  static const String notification = "notificationView";
   static const String profile = "UserProfileView";
   static const String changePassword = "changePasswordView";
   static const String editprofile = "EditProfileView";
@@ -54,6 +59,11 @@ class routesName {
   static const String history = "historyView";
   static const String search = "searchProductView";
   static const String searchShop = "searchShopView";
+  static const String explore = "exploreProductsView";
+  static const String categoryView = "categoryView";
+  static const String toSearchProduct = "toSearchProduct";
+  static const String account = "AccountView";
+  static const String subcategoriesProductView = "subcategoriesProductView";
 
 
 }

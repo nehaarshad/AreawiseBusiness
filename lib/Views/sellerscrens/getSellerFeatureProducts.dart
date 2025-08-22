@@ -7,7 +7,7 @@ import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../core/utils/colors.dart';
 
 class UserFeaturedProducts extends ConsumerStatefulWidget {
-  final String sellerId;
+  final int sellerId;
 
   const UserFeaturedProducts({
     Key? key,
@@ -25,8 +25,8 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
     // Use Future.microtask to avoid calling setState during build
     Future.microtask(() {
       if (mounted) {
-        ref.read(featureProductViewModelProvider(widget.sellerId).notifier)
-            .getUserFeaturedProducts(widget.sellerId); // Changed from loadUserFeaturedProducts to getUserFeaturedProducts
+        ref.read(featureProductViewModelProvider(widget.sellerId.toString()).notifier)
+            .getUserFeaturedProducts(widget.sellerId.toString()); // Changed from loadUserFeaturedProducts to getUserFeaturedProducts
       }
     });
   }
@@ -71,7 +71,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                   );
 
                   // Delete the product
-                  await ref.read(featureProductViewModelProvider(widget.sellerId).notifier)
+                  await ref.read(featureProductViewModelProvider(widget.sellerId.toString()).notifier)
                       .deleteFeatureProduct(featureId, widget.sellerId.toString(), context);
 
                   // Check if still mounted before showing success message
@@ -84,7 +84,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                     );
 
                     // Refresh the list
-                    ref.refresh(featureProductViewModelProvider(widget.sellerId));
+                    ref.refresh(featureProductViewModelProvider(widget.sellerId.toString()));
                   }
                 } catch (e) {
                   // Check if still mounted before showing error
@@ -111,10 +111,10 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
 
   @override
   Widget build(BuildContext context) {
-    final featuredProductsState = ref.watch(featureProductViewModelProvider(widget.sellerId));
+    final featuredProductsState = ref.watch(featureProductViewModelProvider(widget.sellerId.toString()));
 
     return Scaffold(
-      backgroundColor: Appcolors.whiteColor,
+      backgroundColor: Appcolors.whiteSmoke,
       appBar: AppBar(
         title: Text(
             "My Featured Products",
@@ -128,7 +128,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
               loading: () => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: CircularProgressIndicator(color: Appcolors.blueColor),
+                  child: CircularProgressIndicator(color: Appcolors.baseColor),
                 ),
               ),
               data: (featuredProducts) {
@@ -264,9 +264,9 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                       ElevatedButton(
                         onPressed: () {
                           if (mounted) {
-                            ref.refresh(featureProductViewModelProvider(widget.sellerId));
-                            ref.read(featureProductViewModelProvider(widget.sellerId).notifier)
-                                .getUserFeaturedProducts(widget.sellerId); // Changed this line as well
+                            ref.refresh(featureProductViewModelProvider(widget.sellerId.toString()));
+                            ref.read(featureProductViewModelProvider(widget.sellerId.toString()).notifier)
+                                .getUserFeaturedProducts(widget.sellerId.toString()); // Changed this line as well
                           }
                         },
                         child: Text('Retry'),
