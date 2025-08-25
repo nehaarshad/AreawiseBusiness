@@ -44,7 +44,9 @@ const addproduct = async (req, res) => {
             subcategoryId:findsubcategory.id});
         const entityid = product.id;
             if (images && images.length > 0) {
+                console.log(images);
                 const imageRecords = images.map(file => ({
+                    
                     imagetype:'product',
                     ProductId:entityid,
                     imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
@@ -54,7 +56,7 @@ const addproduct = async (req, res) => {
             }
 
             const sellerId = usershop.userId; 
-            const notificationMessage = `New product added to your shop #"${usershop.shopname}"`;
+            const notificationMessage = `New product added to your shop "${usershop.shopname}"`;
             if (req.io && req.userSockets) {
              await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
              }
@@ -659,7 +661,7 @@ const updateproduct = async (req, res) => {
         }
         await product.update(updatedproduct);
         const sellerId = product.seller; 
-         const notificationMessage = `Your product #"${product.id}" has been updated.`;
+         const notificationMessage = `Your product "${product.name}" has been updated.`;
           if (req.io && req.userSockets) {
              await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
              }

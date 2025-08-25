@@ -11,6 +11,10 @@ const items=sequelize.define('CartItems',{
     type:DataTypes.INTEGER,
      allowNull:false,
    },
+  sellerId:{  //seller id of the product that is added to cart
+    type:DataTypes.INTEGER,
+     allowNull:false,
+   },
    productId:{    //which product to be added
     type:DataTypes.INTEGER,
      allowNull:false,
@@ -23,6 +27,11 @@ const items=sequelize.define('CartItems',{
    price:{  //product.price * quatity
     type:DataTypes.INTEGER,
      allowNull:false,
+   },
+   shippingPrice:{  
+    type:DataTypes.INTEGER,
+     allowNull:false,
+     defaultValue: 0,
    },
    status:{
     type:DataTypes.STRING, //order item is approved or rejectedd etc...

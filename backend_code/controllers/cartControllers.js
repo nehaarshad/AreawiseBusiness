@@ -3,7 +3,8 @@ import items from '../models/cartItemModel.js'
 import Product from '../models/productModel.js';
 import image from "../models/imagesModel.js";
 import User from '../models/userModel.js';
-import sale from '../models/saleModel.js';
+import sale from '../models/salesModel.js';
+import shop from '../models/shopmodel.js';
 
    //on click of add to cart button
 const addToCart=async(req,res)=>{
@@ -35,6 +36,20 @@ const addToCart=async(req,res)=>{
     if(!product){
       return res.status(404).json({ message: 'Product not found' });
     }
+
+    console.log('Product found:', product);
+    let productPrice;
+    console.log('Product is Onsale:', product.onSale);
+    if(product.onSale){
+      productPrice = product.saleOffer.price;
+    }
+    else{
+    productPrice = product.price;
+    }
+    console.log('Product Price:', productPrice);
+    productPrice = productPrice + product.shop.deliveryPrice;
+
+    console.log('Product Price after adding deliveryCharges:', productPrice);
     console.log('params:', id, productId);
     //to find user cart
     const [userCart]=await cart.findOrCreate({
@@ -57,18 +72,23 @@ const addToCart=async(req,res)=>{
     if (existingItem) {
       // Update existing item
       existingItem.quantity += quantity;
-      existingItem.price = product.price * existingItem.quantity;
+      existingItem.price = productPrice * existingItem.quantity;
       await existingItem.save();
       console.log('update cart item:', existingItem);
       return res.json(existingItem);
     }
 
-    // quatity will modified when user click on + or - button only on view but send to checkout to calculate total amount
-    const price=product.price*quantity;  //initialy the price the item is the price of product thar is added to cart
+    const price=productPrice*quantity;
+    const status ="pending"
+    const sellerId= product.seller;
+    const shippingPrice= product.shop.deliveryPrice;
     const cartItem = await items.create({
               cartId: userCart.id,
               productId,
               quantity,
+              status,
+              sellerId,
+              shippingPrice,
               price
             });
     console.log('new cart item:', cartItem);        
@@ -95,11 +115,18 @@ const getCart =async (req, res) => {
           include: [
             {
               model: Product,
-                include:{
+                include:[{
                     model:image,
                     where:{imagetype:"product"},
                     required:false //all products may not have image
                 },
+                {
+                  model:sale
+                },
+                {
+                  model:shop
+                }
+              ],
           }], // Include product details
           },]
       })
@@ -138,19 +165,38 @@ const updateCartItem = async(req, res) => {
       const cartItem = await items.findByPk(id,{
         include: [
           { model: Product, 
-            include:{
+            include:[{
               model:image,
               where:{imagetype:"product"},
               required:false //all products may not have image
           },
+          {
+            model:sale
+          },
+          {
+            model:shop
+          }
+        ],
           }]
       });
       if (!cartItem) {
         return res.status(404).json({ message: 'Cart item not found' });
       }
 
+      console.log("item",cartItem);
       cartItem.quantity = quantity;
-      cartItem.price = cartItem.product.price * quantity;
+       let productPrice;
+    console.log('Product is Onsale:', cartItem.product.onSale);
+    if(cartItem.product.onSale){
+      productPrice = cartItem.product.saleOffer.price;
+    }
+    else{
+    productPrice = cartItem.product.price;
+    }
+    console.log('Product Price:', productPrice);
+    productPrice = productPrice + cartItem.product.shop.deliveryPrice;
+      cartItem.price = productPrice * quantity;
+      console.log('Updated cart item:', cartItem.quantity, cartItem.price);
       await cartItem.save();
       res.json(cartItem);
     } catch (error) {

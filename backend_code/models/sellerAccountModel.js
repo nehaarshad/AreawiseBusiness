@@ -1,4 +1,4 @@
-import sequelize from "../config/db_config";
+import sequelize from "../config/db_config.js";
 import { DataTypes } from "sequelize";
 
 const SellerPaymentAccount = sequelize.define('sellerPaymentAccounts', {
@@ -16,7 +16,7 @@ const SellerPaymentAccount = sequelize.define('sellerPaymentAccounts', {
         allowNull: false,
     },
     accountNumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
     },
     bankName: {

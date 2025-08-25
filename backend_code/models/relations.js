@@ -14,8 +14,9 @@ import Ads from "./adsModel.js";
 import featured from "./featuredModel.js";
 import Chat from "./chatModel.js";
 import Message from "./msgModel.js";
-import sale from "./salesModel.js";
 import review from "./reviewModel.js";
+import sale from "./salesModel.js";
+import SellerPaymentAccount from "./sellerAccountModel.js";
 
 
 const relation = () => {
@@ -25,6 +26,9 @@ const relation = () => {
 
     User.hasMany(shop, { foreignKey: {name: 'userId', allowNull: false } });
     shop.belongsTo(User, { foreignKey: 'userId' });
+
+    SellerPaymentAccount.belongsTo(User, { foreignKey: 'sellerId' });
+    User.hasMany(SellerPaymentAccount, { foreignKey: 'sellerId' });
 
     User.hasOne(image,{foreignKey:{name:'UserId',allowNull:false},constraints: false,scope: {imagetype: 'user'},});
     image.belongsTo(User,{foreignKey:{name:"UserId"},constraints: false,scope: {imagetype: 'user'}});
@@ -49,7 +53,9 @@ const relation = () => {
     Product.hasMany(image,{foreignKey:{name:'ProductId',allowNull:false},constraints: false,scope: {imagetype: 'product'},});
     image.belongsTo(Product,{foreignKey:{name:'ProductId'},constraints: false,scope: {imagetype: 'product'}});
 
-    
+    sale.belongsTo(Product,{foreignKey:{name:"productId"}});
+    Product.hasOne(sale,{foreignKey:{name:"productId"}});
+
     category.hasMany(subcategory, { foreignKey:{name: 'categoryId'} ,allowNull:false });
     subcategory.belongsTo(category, { foreignKey: {name: 'categoryId'} });
 

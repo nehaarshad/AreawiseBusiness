@@ -59,9 +59,6 @@ const chatService = (io) => {
                   model:Product
                 }
               });
-
-              const buyerId=chat.buyerId;
-              const sellerId=chat.sellerId;
           const newMessage = await Message.create({
             chatId,
             senderId, //might be buyer or seller
@@ -84,17 +81,6 @@ const chatService = (io) => {
           
           // Emit to all participants in the chat
           io.to(`chat_${chatId}`).emit('receiveMessage', fullMessage);
-          let receiverID; 
-          if(buyerId== senderId){ //if buyer send new message, seller receive notification
-               receiverID = sellerId;
-          }
-          else{
-            receiverID=buyerId;
-          }
-          const NotificationMessage = `New message in chat #"${chat.Product.name}"`;
-              if (req.io && req.userSockets) {
-                  await sendNotificationToUser(req.io, req.userSockets, receiverID, NotificationMessage);
-                 }
           console.log(`Message sent in chat ${chatId}`);
         } catch (error) {
           console.error('Error sending message:', error);

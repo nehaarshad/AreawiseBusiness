@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
+import SellerPaymentAccount from "../models/sellerAccountModel.js";
 import dotenv from "dotenv" 
 import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
@@ -16,8 +17,15 @@ const addshop = async (req, res) => {
         // Find user
         const user = await User.findByPk(id);
         if (!user) {
-            return res.status(404).json("User not found!");
+            return res.status(404).json("Try Later!");
         }
+        // Find userAccount
+        const userAccount = await SellerPaymentAccount.findOne({ where: { sellerId:id } });
+        if (!userAccount) {
+             console.log("User account not found!");
+         return res.json( "A payment account is required to receive online transactions. Please add one to continue." );
+        }
+
         //category of shop
             const [findCategory] = await category.findOrCreate({ where: { name } });
             console.log(findCategory);

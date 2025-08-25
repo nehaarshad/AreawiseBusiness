@@ -26,11 +26,7 @@ const image = sequelize.define('Image', {
     sellerId: { 
         type: DataTypes.INTEGER, 
         allowNull: true, 
-    }, 
-    customerId: { 
-        type: DataTypes.INTEGER, 
-        allowNull: true, 
-    }, 
+    },  
     ShopId: { 
         type: DataTypes.INTEGER, 
         allowNull: true, 

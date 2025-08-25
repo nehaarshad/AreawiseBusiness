@@ -182,11 +182,6 @@ const getChatsAsSeller = async (req, res) => {
       });
     }
 
-      const sellerId = product.seller; 
-                     const NotificationMessage = `New chat on product #"${product.id}"`;
-                      if (req.io && req.userSockets) {
-                         await sendNotificationToUser(req.io, req.userSockets, sellerId, NotificationMessage);
-                         }
     res.status(201).json(Chats);
   } catch (error) {
     console.error(error);

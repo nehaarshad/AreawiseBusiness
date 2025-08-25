@@ -7,14 +7,16 @@ import image from "../models/imagesModel.js";
 import SellerOrder from '../models/sellerOrderModel.js'
 import delivery from '../models/deliveryOrderAttributes.js'
 import sendNotificationToUser from '../utils/sendNotification.js';
+import SellerPaymentAccount from "../models/sellerAccountModel.js";
+import shop from '../models/shopmodel.js'
 
 
 //onCheckoutButtonClick
 const ViewCheckout = async (req, res) => {
   try {
       const { id } = req.params;  // id of cart to be checked out
-       let { total} = req.body; // userId from the request body 
-      // Fetch the cart with its associated CartItems, Product, and image
+      let { shippingPrice } = req.body;    //sum of deliveryChargesOfCartItems
+
       const userCart = await cart.findByPk(id, {
           include: [
               {
@@ -23,11 +25,15 @@ const ViewCheckout = async (req, res) => {
                   include: [
                       {
                           model: Product,
-                          include: {
+                          include: [{
                               model: image,
                               where: { imagetype: "product" },
                               required: false
+                          },
+                          {
+                            model:shop
                           }
+                        ]
                       }
                   ]
               }
@@ -52,33 +58,34 @@ const ViewCheckout = async (req, res) => {
     //   }
 
 
-        const attributes=await delivery.findByPk(1);
+    const subtotal = userCart.CartItems.reduce((acc, item) => acc + item.price, 0);
+    const attributes = await delivery.findByPk(1);
     let discountOffer = 0; // 0% discount
-    if(total>=attributes.totalBill){
+    if(subtotal>=attributes.totalBill){
         discountOffer = attributes.discount; // 10% discount
-          total = total - (total * discountOffer) + attributes.shippingPrice;
+          userCart.total = subtotal - (subtotal * discountOffer) ;
           discountOffer = discountOffer * 100;
     }
           else{
-          total = total + attributes.shippingPrice;
+          userCart.total = subtotal ;
           }
 
       console.log('User Cart:', JSON.stringify(userCart, null, 2));
 
       // Create the order
-      const newOrder = await order.create({
-          cartId: userCart.id,
-          addressId: 1,  // by default address id is 1 randomly but can be set when user places order
-          total: total,
-          discount: attributes.discount,
-          shippingPrice: attributes.shippingPrice,
-          status: 'InComplete' // Initial status of the order
+      const [newOrder] = await order.findOrCreate({
+          where: {
+              cartId: userCart.id,
+              addressId: 0,  // by default address id is 0 randomly but can be set when user places order
+              total: userCart.total,
+              discount: discountOffer,
+              status: 'InComplete' // Initial status of the order
+          }
       });
 
-      // Update the cart status to 'Ordered'
-   //   await userCart.update({ status: 'Ordered' });
 
-      // Fetch the newly created order with its associated cart, CartItems, Product, and image
+      console.log('New Order Created:', [newOrder]);
+         // Fetch the newly created order with its associated cart, CartItems, Product, and image
       const ordered = await order.findByPk(newOrder.id, {
           include: [
               {
@@ -91,11 +98,14 @@ const ViewCheckout = async (req, res) => {
                           include: [
                               {
                                   model: Product,
-                                  include: {
+                                  include: [{
                                       model: image,
                                       where: { imagetype: "product" },
                                       required: false
-                                  }
+                                  },
+                                {
+                                    model:shop
+                                }]
                               }
                           ]
                       }
@@ -104,8 +114,48 @@ const ViewCheckout = async (req, res) => {
           ]
       });
 
-      // Return the order details to the client
-      res.status(201).json(ordered);
+
+      // Group seller items to create its payments 
+        const sellerGroups = {}; //{1:[p1,p2],2:[p3]}
+
+        for (const item of ordered.Cart.CartItems) {
+            const sellerId = item.sellerId;
+            if (!sellerGroups[sellerId]) { //key->sellerID
+                sellerGroups[sellerId] = []; //value->seller items array in the order
+            }
+            sellerGroups[sellerId].push(item); // push item object to access its shop or data 
+        }
+
+        const payments = [];
+
+        // Create payment record for each seller
+        for (const [sellerId, items] of Object.entries(sellerGroups)) {
+            const sellerAmount = items.reduce((total, item) => {
+                return total + item.price;
+            }, 0);
+
+            // Get seller's payment account info
+            const sellerAccount = await SellerPaymentAccount.findAll({
+                where: { sellerId }
+            });
+
+            console.log('Seller Account Info:', sellerAccount);
+                  if (!sellerGroups[sellerId]) { //key->sellerID
+                sellerGroups[sellerId] = []; //value->seller items array in the order
+            }
+            payments.push({
+               sellerId: sellerId,
+               amount: sellerAmount,
+               accounts: sellerAccount,
+               orderId: newOrder.id,
+               items: items.map(item => item) // For reference
+    });
+        }
+
+        console.log('Payments Info:', payments);
+
+      // Return the sellerAccounts for online payment
+      res.json( payments );
   } catch (error) {
     console.error('ViewCheckout Error:', error);
       res.status(500).json({ message: error.message });
@@ -114,7 +164,7 @@ const ViewCheckout = async (req, res) => {
 
 const PlaceOrder = async (req, res) => {
     try {
-        const { cartId, sector, city, address } = req.body;
+        const { cartId, sector, city, address,paymentMethod,paymentStatus } = req.body;
 
         console.log('cartId from request:', cartId);
         // Check if cart exists
@@ -174,7 +224,9 @@ const PlaceOrder = async (req, res) => {
         // Update order with new address and status
         const updatedOrder = await userOrder.update({
             addressId: userAddress.id,
-            status: 'send'
+            status: 'send',
+            paymentMethod: paymentMethod,
+            paymentStatus: paymentStatus
         });
          
         //map on items of cart and then from their productid get seller id and then create seller order
