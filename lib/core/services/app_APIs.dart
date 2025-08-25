@@ -92,7 +92,8 @@ class AppApis {
   static var viewCheckOutEndPoints = "$baseurl/ViewCheckout/:id";
   static var placeOrderEndPoints = "$baseurl/PlaceOrder";
   static var deleteCartofUserEndPoints = "$baseurl/deleteCart/:id";
-
+  static var uploadTransactionSlipEndPoints = "$baseurl/uploadTransactionSlip";
+  static var getTransactionSlipEndPoints = "$baseurl/getTransactionSlip";
 
   //WishList APIS
   static var GetWishListofUserEndPoints = "$baseurl/GetWishList/:id";

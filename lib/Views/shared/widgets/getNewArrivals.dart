@@ -50,7 +50,7 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
           return const Center(child: Text("No New Products available."));
         }
         return SizedBox(
-          height: 200.h,
+          height: 220.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -73,9 +73,7 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                   }
                 },
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
+
                   margin: EdgeInsets.symmetric(horizontal: 8.w),
                   width: 168.w,
                   child: Column(
@@ -133,6 +131,14 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                         ),
                       ),
 
+                      if(product.onSale!)
+                        Row(
+                          children: [
+                            Icon(Icons.discount_outlined,color: Appcolors.baseColor,size: 14.h,),
+                            SizedBox(width: 4.w,),
+                            Text("onSale",style: TextStyle(fontWeight: FontWeight.w500,fontSize:14.sp,color: Appcolors.baseColor),),
+                          ],
+                        ),
                       // Product Info
                       Padding(
                         padding: EdgeInsets.only(top: 8.h, left: 4.w),
@@ -147,9 +153,10 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                         ),
                       ),
 
-                      product.onSale! ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-                        child: Row(
+                      product.onSale! ?
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                        child:  Row(
                           children: [
                             Text(
                               "Rs.",
@@ -181,7 +188,9 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                             ),
                           ],
                         ),
-                      ) : Padding(
+                      )
+                          :
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0.w),
                         child: Row(
                           children: [
@@ -206,46 +215,25 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
                       ),
                       Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 10.0.w,),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child:   Row(
+
                           children: [
-                            Row(
-
-                              children: [
-                                Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
-                                SizedBox(width: 3.w,),
-                                Text(
-                                  "${product.shop!.deliveryPrice ?? 0}",
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-
-                              children: [
-                                Text(
-                                  "${product.ratings ?? 0}",
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-
-                                SizedBox(width: 3.w,),
-                                Icon(Icons.star,color: Appcolors.baseColorLight30,size: 15.h,),
-                              ],
+                            Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
+                            SizedBox(width: 3.w,),
+                            Text(
+                              "${product.shop!.deliveryPrice ?? 0}",
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                ),
+                )
               );
             },
           ),

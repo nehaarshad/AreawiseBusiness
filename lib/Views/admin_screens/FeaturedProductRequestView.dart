@@ -138,7 +138,6 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Appcolors.whiteSmoke,
         title:  Text("Requests to Feature Products", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500)),
         actions: [
           IconButton(
@@ -150,7 +149,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
           ),
         ],
       ),
-      backgroundColor: Appcolors.whiteSmoke,
+
       body: Column(
         children: [
           Expanded(

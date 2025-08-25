@@ -60,7 +60,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
            ),
          ],
       ),
-      backgroundColor: Colors.white,
+
       body: SafeArea(
         child: productState.when(
           loading: () => const Center(
@@ -139,7 +139,8 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               Row(
                                     children: [
                                       Text("Price (Rs.): ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-                                      product.onSale! ?  Row(
+                                      product.onSale ?? false ?
+                                      Row(
                                           children: [
                                             Text(
                                               "${product.price ?? 0}",
@@ -163,7 +164,8 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                             Icon(Icons.discount_outlined,color: Appcolors.whiteSmoke,size: 12.h,),
                                           ],
                                         )
-                                       :  Row(
+                                       :
+                                      Row(
                                           children: [
                                             Text(
                                               "${product.price ?? 0}",
@@ -178,10 +180,11 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
 
                                     ],
                                   ),
+                              if(product.onSale ?? false)
                               Row(
                                 children: [
                                   Icon(Icons.discount_outlined,color: Appcolors.baseColor,size: 14.h,),
-                                  Text("${product.saleOffer!.discount}% off",style: TextStyle(fontSize:15.sp,color: Appcolors.baseColor),),
+                                  Text("${product.saleOffer?.discount}% off",style: TextStyle(fontSize:15.sp,color: Appcolors.baseColor),),
                                 ],
                               ),
                             ],

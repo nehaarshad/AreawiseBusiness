@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar_route.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:another_flushbar/flushbar.dart';
@@ -12,7 +13,7 @@ class Utils {
   static toastMessage(String msg) {
     Fluttertoast.showToast(
       msg: msg,
-      backgroundColor: Colors.blue[400],
+      backgroundColor: Appcolors.baseColorLight30,
       textColor: Colors.white,
     );
   }
@@ -22,7 +23,7 @@ class Utils {
       context: context,
       flushbar: Flushbar(
         message: msg,
-        backgroundColor: Colors.blue.shade400,
+        backgroundColor: Appcolors.baseColorLight30,
         duration: Duration(seconds: 2),
         forwardAnimationCurve: Curves.decelerate,
         reverseAnimationCurve: Curves.easeInOut,

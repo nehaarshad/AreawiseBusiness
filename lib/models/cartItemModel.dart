@@ -4,6 +4,8 @@ class CartItems {
   int? id;
   int? cartId;
   int? productId;
+  int? sellerId;
+  int? shippingPrice;
   int? quantity;
   int? price;
   String? status;
@@ -17,6 +19,8 @@ class CartItems {
     this.productId,
     this.quantity,
     this.price,
+    this.sellerId,
+    this.shippingPrice,
     this.status,
     this.createdAt,
     this.updatedAt,
@@ -27,6 +31,8 @@ class CartItems {
     id = json['id'];
     cartId = json['cartId'];
     productId = json['productId'];
+    shippingPrice = json['shippingPrice'];
+    sellerId = json['sellerId'];
     quantity = json['quantity'];
     price = json['price'];
     status=json['status'];
@@ -44,6 +50,8 @@ class CartItems {
     data['cartId'] = this.cartId;
     data['productId'] = this.productId;
     data['quantity'] = this.quantity;
+    data['shippingPrice']=this.shippingPrice;
+    data['sellerId']=this.sellerId;
     data['price'] = this.price;
     data['status'] = this.status;
     data['createdAt'] = this.createdAt;

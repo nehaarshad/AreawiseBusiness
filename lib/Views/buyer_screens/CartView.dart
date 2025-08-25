@@ -170,12 +170,24 @@ class _CartviewState extends ConsumerState<Cartview> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                  'Rs.${item.product!.price}',
-                  style:  TextStyle(
-                  fontSize: 14.sp,
+                  Row(
+                    children: [
+                      Text(
+                        'unitPrice: ',
+                        style:  TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500
 
-                  ),
+                        ),
+                      ),
+                      Text(
+                      '${item.product!.price}',
+                      style:  TextStyle(
+                      fontSize: 14.sp,
+
+                      ),
+                      ),
+                    ],
                   ),
 
                   Row(
@@ -234,7 +246,57 @@ class _CartviewState extends ConsumerState<Cartview> {
                   ),
                 ],
               ),
+                if(item.product?.onSale ?? false)
+                  Row(
+                    children: [
+                      Text(
+                        'onSale Price: ',
+                        style:  TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500
 
+                        ),
+                      ),
+                      Text(
+                        '${item.product?.saleOffer?.price}',
+                        style:  TextStyle(
+                          fontSize: 14.sp,
+
+                        ),
+                      ),
+                    ],
+                  ),
+                Row(
+                  children: [
+                  Icon(Icons.delivery_dining_sharp,color: Colors.grey,),
+                    Text(
+                      '${item.product?.shop?.deliveryPrice}',
+                      style:  TextStyle(
+                        fontSize: 14.sp,
+
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Total:',
+                      style:  TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        color: Appcolors.baseColorLight30
+                      ),
+                    ),
+                    Text(
+                      '${item.price}',
+                      style:  TextStyle(
+                        fontSize: 14.sp,
+
+                      ),
+                    ),
+                  ],
+                ),
               ],
               ),
               ),

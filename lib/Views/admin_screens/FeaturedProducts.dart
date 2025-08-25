@@ -162,7 +162,7 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
           ),
         ],
       ),
-      backgroundColor: Appcolors.whiteSmoke,
+
       body: Column(
         children: [
           Expanded(

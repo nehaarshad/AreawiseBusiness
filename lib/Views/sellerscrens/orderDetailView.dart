@@ -122,6 +122,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                     ),
                   ),
                    SizedBox(width: 16.w),
+                  if(widget.orderRequest.order?.paymentStatus != "paid")
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => updateStatus("Rejected"),

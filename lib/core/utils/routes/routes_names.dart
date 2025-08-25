@@ -28,6 +28,7 @@ class routesName {
   static const String deliveryAddress = "deliveryAddress";
   static const String confirmOrder = "orderPlaceMessageView";
   static const String findShop = "findShopView";
+  static const String makePayment = "makeOnlinePaymentView";
 
   //Seller Screens Routes Names
   static const String sHome = "sellerhomeview";
@@ -42,8 +43,11 @@ class routesName {
   static const String sEditProduct = "updateProductView";
   static const String sEditShop = "UpdateShopView";
   static const String orderDetails = "orderDetailView";
+  static const String transactionSlip = "viewReceipt";
   static const String featuredProducts = "getSellerFeatureProducts";
   static const String createAds = "createAds";
+  static const String sellerAccounts = "AccountsView";
+  static const String addAccount = "addAccountView";
 
   //Common\Shared Screens Routes Names
   static const String splash = "splashScreen";

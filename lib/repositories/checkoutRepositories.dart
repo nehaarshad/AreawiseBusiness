@@ -7,6 +7,7 @@ import '../core/network/baseapiservice.dart';
 import '../core/network/networkapiservice.dart';
 import '../core/services/app_APIs.dart';
 import '../models/cartModel.dart';
+import '../models/paymentModel.dart';
 
 final orderProvider = Provider<OrderRepositories>((ref) {
   return OrderRepositories(ref);
@@ -25,13 +26,20 @@ class OrderRepositories {
       'Authorization': 'Bearer $token',
     };
   }
-  Future<orderModel> getUserCheckout(String id,Map<String,dynamic> data) async {
+  Future<List<paymentModel>> getUserCheckout(String id,Map<String,dynamic> data) async {
     try {
+      List<paymentModel> paymentlist = [];
       final body=jsonEncode(data);
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.viewCheckOutEndPoints.replaceFirst(':id', id),body,headers()
       );
-      return orderModel.fromJson(response);
+      if (response is List) {
+        return response.map((products) =>
+            paymentModel.fromJson(products as Map<String, dynamic>),)
+            .toList();
+      }
+      paymentlist = [paymentModel.fromJson(response)];
+      return response;
     } catch (e) {
       throw e;
     }

@@ -77,9 +77,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                   );
                 },
                 child: Container(
-                    decoration: BoxDecoration(
-                      color: Appcolors.whiteSmoke
-                    ),
+
                     margin: EdgeInsets.symmetric(horizontal: 8.h),
                     width: 170.w,
                     child: Column(

@@ -24,7 +24,7 @@ class AdminDrawerListItems extends ConsumerWidget {
           drawerHeader(context),
           drawerItems(
             icon: Icons.ad_units_outlined,
-            title: "Ad",
+            title: "Advertisements",
             onTap: () {
               Navigator.pushNamed(
                 context,

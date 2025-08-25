@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/adminViewModels/DeliveryOrderAttributesViewModel.dart';
 import '../../../View_Model/buyerViewModels/OrderViewModel.dart';
+import '../../../core/utils/routes/routes_names.dart';
 import '../../../models/cartModel.dart';
 import '../../../core/utils/colors.dart';
 
@@ -18,7 +19,6 @@ class cartViewBottomWidget extends ConsumerStatefulWidget {
 
 class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
 
-   int shippingPrice=0;
    int discount=0;
    String Offer='0.0';
 
@@ -36,7 +36,6 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
                 .value;
         print('Loaded Attributes: ${attribute}');
         if (attribute != null) {
-         shippingPrice=attribute.shippingPrice!;
          String discountString = attribute.discount!;
          double discountDouble = double.parse(discountString);
           discount = (discountDouble * 100).toInt();
@@ -51,8 +50,8 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
     double subtotal = 0;
     if (cart.cartItems != null) {
       for (var item in cart.cartItems!) {
-        if (item.product != null && item.quantity != null) {
-          subtotal += (item.product!.price!) * item.quantity!;
+        if (item != null && item.price != null) {
+          subtotal += item.price!;
         }
       }
     }
@@ -100,14 +99,7 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
             ],
           ),
            SizedBox(height: 8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Shipping:"),
-              Text("Rs.${shippingPrice.toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.w500)),
-            ],
-          ),
-          SizedBox(height: 8.h),
+
           total < (double.tryParse(Offer) ?? 5000.0 )
               ?
           Center(child: Text("${discount}% Discount is Offer, if you spent RS.${Offer} ", style:  TextStyle(fontWeight: FontWeight.w300,color: Appcolors.baseColor)))
@@ -126,18 +118,18 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
                Text("Total:", style: TextStyle(fontWeight: FontWeight.bold)),
               total < (double.tryParse(Offer) ?? 5000.0 )
                   ?
-              Text("Rs.${(total + shippingPrice).toStringAsFixed(2)}",
+              Text("Rs.${(total ).toStringAsFixed(2)}",
                   style:  TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
-                      color: Colors.blue
+                      color: Appcolors.baseColor
                   )
               ):
-              Text( "Rs.${(total-(total*discount/100)+shippingPrice).toStringAsFixed(2)}",
+              Text( "Rs.${(total-(total*discount/100))}",
                   style:  TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
-                      color: Colors.blue
+                      color: Appcolors.baseColor
                   )
               ),
 
@@ -152,7 +144,17 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
                 if (kDebugMode) {
                   print('cart ID Sent: ${widget.cart.id}');
                 }
-                await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), total,Offer, context);
+              final cartid=  await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), total,Offer, context);
+                final parameters = {
+                  'CartId': cartid,
+                  'userid': widget.cart.userId.toString(),
+                };
+                print("parameters ${parameters}");
+                Navigator.pushNamed(
+                    context,
+                    routesName.deliveryAddress,
+                    arguments: parameters
+                );
               } : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.baseColor,

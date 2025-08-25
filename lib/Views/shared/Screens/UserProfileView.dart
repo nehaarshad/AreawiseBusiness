@@ -58,7 +58,7 @@ backgroundColor: Appcolors.whiteSmoke,
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 28.0.w,right: 28.w,top: 28.h,bottom: 20.h),
+                  padding: EdgeInsets.only(left: 28.0.w,right: 28.w,top: 28.h,bottom: 5.h),
 
                   child: Center(
                     child: Column(
@@ -70,44 +70,54 @@ backgroundColor: Appcolors.whiteSmoke,
                         Divider(),
                         SizedBox(height: 10.h),
                         addressInfo(address: user.address),
-                        SizedBox(height: 60.h),
+                        SizedBox(height: 40.h),
 
 
                       ],
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 12.0.w,right: 12.w,top: 0.h,bottom: 0.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        softWrap: true,
-                        'Do you want to delete account forever?',
-                        style: TextStyle(color: Colors.grey.shade700),
-                      ),
-                      InkWell(
-                        onTap: ()async{
-                          await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString(),context);
+                 Padding(
+                   padding:  EdgeInsets.symmetric(vertical: 18.0),
+                   child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          softWrap: true,
+                          'Delete this account?',
+                          style: TextStyle(color: Appcolors.baseColor,fontWeight: FontWeight.bold,fontSize: 20.sp),
+                        ),
+                        Text(
+                          softWrap: true,
+                          'Are you sure you want to delete this account ?',
+                          style: TextStyle(color: Appcolors.baseColorLight30),
+                        ),
+                        SizedBox(height: 18.h,),
+                        InkWell(
+                          onTap: ()async{
+                            await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString(),context);
 
-                        },
-                        child: Container(
-                          height: 35.h,
-                          //    margin: EdgeInsets.symmetric(horizontal: 90.w),
-                          width: 75.w,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Center(
-                            child: Text("Delete", style: TextStyle(color: Appcolors.whiteSmoke,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+                          },
+                          child: Container(
+                            height: 35.h,
+                            width: 180.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.r),
+                              border: Border.all(
+                                color: Appcolors.baseColor,
+                                width: 2.w
+                              )
+                            ),
+
+                            child: Center(
+                              child: Text("Yes, delete account", style: TextStyle(color: Appcolors.baseColor,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                      ],
+                    ),
+                 ),
+
               ],
             ),
           );

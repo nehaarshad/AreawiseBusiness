@@ -13,6 +13,11 @@ final List<Map<String, dynamic>> accountWidgets = [
     'route': routesName.sProducts,
   },
   {
+    'title': 'My Payment Account',
+    'icon': Icons.account_balance_wallet,
+    'route':routesName.sellerAccounts,
+  },
+  {
     'title': 'Order Requests',
     'icon': Icons.receipt_long,
     'route':routesName.OrderRequests,

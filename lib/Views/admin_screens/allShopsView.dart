@@ -36,7 +36,6 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
           searchShop(id:widget.id,myShop: true,),
          ]
       ),
-      backgroundColor: Appcolors.whiteSmoke,
       body: ListView(
         children:[ Consumer(
             builder: (context,ref, child){

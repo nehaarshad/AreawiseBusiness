@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,10 +72,11 @@ class _ImageSliderState extends ConsumerState<ImageSlider> {
                 height: 8.h,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+
                   color:
                       _currentIndex == index
-                          ? Colors.blue
-                          : Colors.grey.withOpacity(0.5),
+                          ? Appcolors.baseColor
+                          : Appcolors.baseColorLight30,
                 ),
               ),
             ),

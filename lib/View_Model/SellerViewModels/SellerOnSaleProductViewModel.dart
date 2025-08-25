@@ -4,7 +4,6 @@ import 'package:ecommercefrontend/repositories/product_repositories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../SharedViewModels/getOnSaleProducts.dart';
 
 //for seller to get and delete its onSaleProducts

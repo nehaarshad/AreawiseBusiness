@@ -51,7 +51,7 @@ class MessageView extends StatelessWidget {
               margin:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
               padding:  EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
               decoration: BoxDecoration(
-                color: isMe ? Colors.blue[100] : Colors.grey[200],
+                color: isMe ? Appcolors.baseColorLight30 : Colors.grey[200],
                 borderRadius: BorderRadius.only(
                   topRight: isMe ?  Radius.circular(0.r) :  Radius.circular(12.r),
                   topLeft: isMe ?  Radius.circular(12.r) :  Radius.circular(0.r),
@@ -71,6 +71,7 @@ class MessageView extends StatelessWidget {
                         message.msg ?? '',
                         style: TextStyle(
                           fontSize: 14.sp,
+                         color:  isMe ? Appcolors.baseWhite : Appcolors.blackColor,
                         )
                       ),
                     ],

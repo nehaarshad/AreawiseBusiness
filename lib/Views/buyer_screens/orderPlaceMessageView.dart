@@ -24,7 +24,7 @@ class Orderplacemessageview extends StatelessWidget {
               Text("Order Placed Successfully!",style: TextStyle(
                 color: Appcolors.blackColor,fontSize: 25.sp,fontWeight: FontWeight.bold
               ),),
-              Image.asset('assets/images/successImage.jpg',),
+              Image.asset('assets/images/placeOrder.png',),
               SizedBox(height: 80.h,),
               CustomButton(text:"Continue..." ,onPressed: (){
                 if(user.role=="Admin"){

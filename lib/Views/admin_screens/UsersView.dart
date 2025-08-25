@@ -38,7 +38,6 @@ class _UsersViewState extends ConsumerState<UserView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolors.whiteSmoke,
       body: ListView(
         children: [
           SizedBox(height: 8.h,),
@@ -86,7 +85,7 @@ class _UsersViewState extends ConsumerState<UserView> {
                                         Navigator.pushNamed(
                                           context,
                                           routesName.profile,
-                                          arguments:parameters,
+                                          arguments:user.id,
                                         );
                                       },
                                       leading: Image.network(
@@ -114,12 +113,12 @@ class _UsersViewState extends ConsumerState<UserView> {
                                                 routesName.sShop,
                                                 arguments: user.id,//send userId
                                               ); },
-                                            icon: Icon(Icons.store, size: 20.h,color: Colors.blue,),),
+                                            icon: Icon(Icons.store, size: 20.h,color: Appcolors.baseColorLight30,),),
                                           IconButton(
                                               onPressed: () async{
                                                        await ref.read(UserViewModelProvider.notifier).deleteusers(user.id.toString(),context);
                                               },
-                                              icon: Icon(Icons.delete, size: 25.h,color: Colors.red,),),
+                                              icon: Icon(Icons.delete, size: 20.h,color: Colors.red,),),
                                           Icon(Icons.arrow_forward_ios_sharp, size: 8.h,color: Colors.grey,),
                                         ],
                                       ),

@@ -1,6 +1,4 @@
-import 'package:ecommercefrontend/Views/shared/widgets/searchBar.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,13 +6,11 @@ import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
-import '../../../View_Model/UserProfile/UserProfileViewModel.dart';
 import '../widgets/DashBoardProductsView.dart';
 import '../widgets/categoryTopBar.dart';
 import '../widgets/getAllAds.dart';
 import '../widgets/getAllFeatureProducts.dart';
 import '../widgets/getNewArrivals.dart';
-import '../widgets/logout_button.dart';
 import '../widgets/onSaleItems.dart';
 
 class appHomeview extends ConsumerStatefulWidget {
@@ -36,7 +32,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Use addPostFrameCallback to ensure providers are initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         final selectedCategory = ref.read(selectedCategoryProvider);

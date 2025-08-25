@@ -5,11 +5,15 @@ import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/findShopView.dart';
+import 'package:ecommercefrontend/Views/buyer_screens/makeOnlinePaymentView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/AccountsView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/OrdersView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/SellerProductsView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/addAccountView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/addToSaleView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/onSaleProducts.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/viewReceipt.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/AccountView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/categoryView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/changePasswordView.dart';
@@ -21,6 +25,7 @@ import 'package:ecommercefrontend/Views/shared/Screens/subcategoriesProductView.
 import 'package:ecommercefrontend/Views/shared/Screens/toSearchProduct.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
+import 'package:ecommercefrontend/models/paymentModel.dart';
 import 'package:flutter/material.dart';
 import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
 import '../../../Views/admin_screens/FeaturedProducts.dart';
@@ -154,6 +159,13 @@ class Routes {
           builder: (BuildContext context) => deliveryAddress(userid: userid,cartId: CartId),
         );
 
+      case (routesName.transactionSlip):
+        int orderId = arg['orderId'] as int;
+        int sellerId = arg['sellerId'] as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => OnlinePaymentReciptView(orderId: orderId,sellerId: sellerId),
+        );
+
       case (routesName.productdetail):
         final id = arg['id'] as int;
         final productId = arg['productId'] as int;
@@ -231,10 +243,30 @@ class Routes {
           builder: (BuildContext context) => searchShopView(search: search,userid: id,),
         );
 
+      case (routesName.makePayment):
+        final orderId = arg['orderId'] as int;
+        final sellerId=arg['sellerId'] as int;
+        final shop=arg['shop'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => makeOnlinePaymentView(orderId: orderId,sellerId:sellerId,shop: shop,),
+        );
+
       case (routesName.history):
         String id=arg as String;
         return MaterialPageRoute(
           builder: (BuildContext context) => OrdersHistoryView(id: id,),
+        );
+
+      case (routesName.sellerAccounts):
+        int id=arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => SellerAccountsView(userid: id,),
+        );
+
+      case (routesName.addAccount):
+        int id=arg as int;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addSellerAccount(userid: id,),
         );
 
       case (routesName.featuredProducts):
@@ -247,6 +279,7 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => createNewSaleView(userid: id,),
         );
+
 
       case (routesName.onSale):
         final id = arg as int;

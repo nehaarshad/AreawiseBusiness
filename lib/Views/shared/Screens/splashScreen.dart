@@ -23,7 +23,7 @@ class _splashViewState extends ConsumerState<splashView> {
     return Scaffold(
       backgroundColor: Appcolors.whiteSmoke,
       body: Center(
-        child: Image.asset('assets/images/splashImage.jpg',width: 900.w,height: 5000.h,),
+        child: Image.asset('assets/images/logo.png',width: 900.w,height: 5000.h,),
       ),
     );
   }

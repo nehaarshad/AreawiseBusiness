@@ -84,6 +84,21 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                         "Order Date: ${orderedDate(order.createdAt)}",
                         style:  TextStyle(fontSize: 12.sp),
                       ),
+                      Text(
+                        "Payment Status: ${orderRequest.order?.paymentStatus}",
+                        style:  TextStyle(fontSize: 12.sp),
+                      ),
+                      if(orderRequest.order?.paymentStatus == "paid")
+                      TextButton(
+                          onPressed: (){
+
+                            final parameters={
+                              'orderId':orderRequest.orderId,
+                              'sellerId':orderRequest.sellerId
+                            };
+                            Navigator.pushNamed(context, routesName.transactionSlip,arguments: parameters);
+                          },
+                          child: Text("viewReceipt"))
                     ],
                   ),
                   children: [

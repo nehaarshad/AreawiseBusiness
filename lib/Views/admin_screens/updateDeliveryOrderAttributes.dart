@@ -84,9 +84,30 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
       BuildContext context,
       ) {
     return Center(
-      child: ElevatedButton(
-        onPressed: (){ updateAttributes(viewModel, context);},
-        child: const Text("Save"),
+      child:InkWell(
+        onTap: (){ updateAttributes(viewModel, context);},
+        child: Container(
+          height: 25.h,
+          width: 150.w,
+          decoration: BoxDecoration(
+            color: Appcolors.whiteSmoke,
+            borderRadius: BorderRadius.circular(15.r),
+            border: Border.all(  // Use Border.all instead of boxShadow for borders
+              color: Appcolors.baseColor,
+              width: 1.0,  // Don't forget to specify border width
+            ),
+          ),
+          child: Center(
+            child: Text(
+              "Save changes",
+              style: TextStyle(
+                color: Appcolors.baseColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

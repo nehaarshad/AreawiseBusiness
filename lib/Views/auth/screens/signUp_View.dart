@@ -129,185 +129,217 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
     }
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Appcolors.whiteSmoke,
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back,color: Appcolors.whiteSmoke,size: 20.h,)),
+        backgroundColor: Appcolors.baseColor,
+        actions: [
+      Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13 ),
+      child:Text("SignUp",style: TextStyle(color: Appcolors.whiteSmoke,fontSize: 25.sp,fontWeight: FontWeight.bold),)
       ),
-      backgroundColor: Appcolors.whiteSmoke,
+        ],
+      ),
+      backgroundColor: Appcolors.baseColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding:  EdgeInsets.symmetric(vertical: 50.h, horizontal: 20.w),
-            child: Form(
-              key: formkey,
+          physics: NeverScrollableScrollPhysics(),
+            child: Padding(
+            padding:  EdgeInsets.symmetric(vertical: 70.h, ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Appcolors.whiteSmoke,
+                borderRadius: BorderRadius.circular(15.r),
+                border: Border.all(  // Use Border.all instead of boxShadow for borders
+                  color: Appcolors.baseColor,
+                  width: 1.0,  // Don't forget to specify border width
+                ),
+              ),
+              child: Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 22.0.w,vertical: 35.h),
+                child: Form(
+                  key: formkey,
 
-              child: Column(
-                spacing: 10.h,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Username field
-                  TextFormField(
-                    controller: _usernameController,
-                    focusNode: username,
-                    decoration: InputDecoration(
-                      hintText: "Username",
-                      prefixIcon: Icon(Icons.person_outline),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter username";
-                      }
-                      return null;
-                    },
-                    onFieldSubmitted: (value) {
-                      Utils.focusarea(context, username, email);
-                    },
-                  ),
+                  child: Column(
+                    spacing: 8.h,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Welcome to BizAroundU.",style: TextStyle(fontWeight: FontWeight.bold,color: Appcolors.baseColor,fontSize: 18.sp),),
+                          Text("Buy, sell, and chat with sellers. Start exploring now!",style: TextStyle(fontWeight: FontWeight.w400,color: Appcolors.baseColorLight30,fontSize: 13.sp),),
+                        ],
+                      ),
 
-                  // Email field
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode: email,
-                    decoration: InputDecoration(
-                      hintText: "Email",
-                      prefixIcon: Icon(Icons.email_outlined),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter email";
-                      }
-                      return null;
-                    },
-                    onFieldSubmitted: (value) {
-                      Utils.focusarea(context, email, contactNumber);
-                    },
-                  ),
-
-                  // Contact Number field
-                  TextFormField(
-                    controller: _contactNumberController,
-                    keyboardType: TextInputType.number,
-                    focusNode: contactNumber,
-                    decoration: InputDecoration(
-                      hintText: "Contact Number",
-                      prefixIcon: Icon(Icons.phone),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter number";
-                      }
-                      return null;
-                    },
-                    onFieldSubmitted: (value) {
-                      Utils.focusarea(context, contactNumber, password);
-                    },
-                  ),
-
-                  // Password field
-                  ValueListenableBuilder(
-                    valueListenable: pswrd,
-                    builder: (context, value, child) {
-                      return TextFormField(
-                        controller: _passwordController,
-                        obscureText: pswrd.value,
-                        obscuringCharacter: "*",
-                        focusNode: password,
+                      SizedBox(height: 8.h,),
+                      // Username field
+                      TextFormField(
+                        controller: _usernameController,
+                        focusNode: username,
                         decoration: InputDecoration(
-                          hintText: "Password",
-                          prefixIcon: Icon(Icons.lock_outline),
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              pswrd.value = !pswrd.value;
-                            },
-                            child: Icon(
-                              pswrd.value
-                                  ? Icons.visibility_off_outlined
-                                  : Icons.visibility_outlined,
-                            ),
-                          ),
+                          hintText: "Username",
+                          prefixIcon: Icon(Icons.person_outline),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter password";
+                            return "Please enter username";
                           }
                           return null;
                         },
                         onFieldSubmitted: (value) {
-                          Utils.focusarea(context, password, confirmPassword);
+                          Utils.focusarea(context, username, email);
                         },
-                      );
-                    },
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: cpswrd,
-                    builder: (context, value, child) {
-                      return TextFormField(
-                        controller: _confirmPasswordController,
-                        obscureText: cpswrd.value,
-                        obscuringCharacter: "*",
-                        focusNode: confirmPassword,
+                      ),
+
+                      // Email field
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        focusNode: email,
                         decoration: InputDecoration(
-                          hintText: "Confirm Password",
-                          prefixIcon: Icon(Icons.lock_outline),
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              cpswrd.value = !cpswrd.value;
-                            },
-                            child: Icon(
-                              cpswrd.value
-                                  ? Icons.visibility_off_outlined
-                                  : Icons.visibility_outlined,
-                            ),
-                          ),
+                          hintText: "Email",
+                          prefixIcon: Icon(Icons.email_outlined),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Confirm Password field is missing";
+                            return "Please enter email";
                           }
                           return null;
                         },
-                      );
-                    },
-                  ),
-                  buildRoleDropdown(),
-                  SizedBox(height: 50.h),
-                  // SignUp button
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final loading = ref.watch(signupProvider);
-                      return CustomButton(
-                        text: "Sign Up",
-                        onPressed: handleSignUp,
-                        isLoading: loading,
-                      );
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-                  Padding(
-                    padding:  EdgeInsets.symmetric(
-                      vertical: 2.h,
-                      horizontal: 15.w,
-                    ),
-                    child: Row(
-                      children: [
-                        Text("Already have an Account?"),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, routesName.login);
-                          },
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Appcolors.baseColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        onFieldSubmitted: (value) {
+                          Utils.focusarea(context, email, contactNumber);
+                        },
+                      ),
+
+                      // Contact Number field
+                      TextFormField(
+                        controller: _contactNumberController,
+                        keyboardType: TextInputType.number,
+                        focusNode: contactNumber,
+                        decoration: InputDecoration(
+                          hintText: "Contact Number",
+                          prefixIcon: Icon(Icons.phone),
                         ),
-                      ],
-                    ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter number";
+                          }
+                          return null;
+                        },
+                        onFieldSubmitted: (value) {
+                          Utils.focusarea(context, contactNumber, password);
+                        },
+                      ),
+
+                      // Password field
+                      ValueListenableBuilder(
+                        valueListenable: pswrd,
+                        builder: (context, value, child) {
+                          return TextFormField(
+                            controller: _passwordController,
+                            obscureText: pswrd.value,
+                            obscuringCharacter: "*",
+                            focusNode: password,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              prefixIcon: Icon(Icons.lock_outline),
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  pswrd.value = !pswrd.value;
+                                },
+                                child: Icon(
+                                  pswrd.value
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter password";
+                              }
+                              return null;
+                            },
+                            onFieldSubmitted: (value) {
+                              Utils.focusarea(context, password, confirmPassword);
+                            },
+                          );
+                        },
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: cpswrd,
+                        builder: (context, value, child) {
+                          return TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: cpswrd.value,
+                            obscuringCharacter: "*",
+                            focusNode: confirmPassword,
+                            decoration: InputDecoration(
+                              hintText: "Confirm Password",
+                              prefixIcon: Icon(Icons.lock_outline),
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  cpswrd.value = !cpswrd.value;
+                                },
+                                child: Icon(
+                                  cpswrd.value
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Confirm Password field is missing";
+                              }
+                              return null;
+                            },
+                          );
+                        },
+                      ),
+                      buildRoleDropdown(),
+                      SizedBox(height: 30.h),
+                      // SignUp button
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final loading = ref.watch(signupProvider);
+                          return CustomButton(
+                            text: "Sign Up",
+                            onPressed: handleSignUp,
+                            isLoading: loading,
+                          );
+                        },
+                      ),
+                      SizedBox(height: 5.h),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(
+                          vertical: 2.h,
+                          horizontal: 15.w,
+                        ),
+                        child: Row(
+                          children: [
+                            Text("Already have an Account? ",style: TextStyle(fontSize: 15.sp),),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, routesName.login);
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                  color: Appcolors.baseColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.sp
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
