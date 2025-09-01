@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/View_Model/SharedViewModels/getOnSaleProducts.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -98,7 +99,7 @@ print(categoriesAsync.value?.length);
             },
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
         error: (e, _) => Text('Error: $e'),
       ),
     );

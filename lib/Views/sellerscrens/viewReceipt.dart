@@ -21,15 +21,25 @@ class _OnlinePaymentReciptViewState extends ConsumerState<OnlinePaymentReciptVie
 
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        ref.read(TranscriptsViewModelProvider.notifier).getTranscript(
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await ref.read(TranscriptsViewModelProvider.notifier).getTranscript(
             widget.sellerId, widget.orderId);
-      } });
+       });
+
   }
 
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(TranscriptsViewModelProvider.notifier).getTranscript(
+          widget.sellerId, widget.orderId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +55,10 @@ class _OnlinePaymentReciptViewState extends ConsumerState<OnlinePaymentReciptVie
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.r),
-          child: Image.network(
+          child:state.Image != null
+              ?  Image.network(
             state.Image!,
-             fit: BoxFit.contain,
+            fit: BoxFit.contain,
             width: double.infinity,
             height: double.infinity,
             errorBuilder: (context, error, stackTrace) =>
@@ -55,7 +66,8 @@ class _OnlinePaymentReciptViewState extends ConsumerState<OnlinePaymentReciptVie
                   color: Colors.grey[200],
                   child: const Icon(Icons.image_not_supported),
                 ),
-          ),
+          )
+              : Center(child: Text("Loading...",style: TextStyle(color: Appcolors.baseColorLight30,fontSize: 18,fontWeight: FontWeight.w500),)),
         )
 
           

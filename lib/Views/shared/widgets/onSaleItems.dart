@@ -46,7 +46,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
     final productState =  ref.watch(onSaleViewModelProvider);
     return productState.when(
 
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
       data: (products) {
         if (products.isEmpty) {
           return SizedBox(child: const Center(child: Text("No sale on any Product.",style: TextStyle(color: Appcolors.whiteSmoke),)));

@@ -44,7 +44,7 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
   Widget build(BuildContext context) {
     final productState = ref.watch(newArrivalViewModelProvider);
     return productState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
       data: (products) {
         if (products.isEmpty) {
           return const Center(child: Text("No New Products available."));

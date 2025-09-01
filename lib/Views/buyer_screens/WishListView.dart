@@ -24,7 +24,7 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
           title:  Text("WishList",style: AppTextStyles.headline,)),
       body: state.when(
             loading: () => const Center(
-                child: CircularProgressIndicator(color: Appcolors.baseColor)),
+                child: LinearProgressIndicator(color: Appcolors.baseColor)),
             data: (list) {
               if (list.isEmpty) {
                 return const Center(child: Text("No Favourite Items available."));
@@ -78,10 +78,10 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         ),
                       ),
                       subtitle: Text(
-                        '\Rs.${item.product?.price}',
+                        '${item.product?.subcategory?.name!}',
                         style:  TextStyle(
                           fontSize: 16.sp,
-                          color: Colors.blue,
+                          color: Appcolors.baseColor,
                         ),
                       ),
                       trailing: IconButton(

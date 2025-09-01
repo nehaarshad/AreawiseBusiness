@@ -20,6 +20,7 @@ class routesName {
   static const String searchUser = "searchUserView";
   static const String addCategory = "addCategory";
   static const String manageProduct = "ManageSearchProducts";
+  static const String feedbacks = "feedbackView";
 
   //Buyers Screens Routes Names
   static const String bHome = "buyerhomeview";
@@ -64,6 +65,7 @@ class routesName {
   static const String search = "searchProductView";
   static const String searchShop = "searchShopView";
   static const String explore = "exploreProductsView";
+  static const String FAQ = "FAQview";
   static const String categoryView = "categoryView";
   static const String toSearchProduct = "toSearchProduct";
   static const String account = "AccountView";

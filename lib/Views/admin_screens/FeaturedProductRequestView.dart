@@ -53,7 +53,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
         return StatefulBuilder(
             builder: (stateContext, setDialogState) {
               return AlertDialog(
-                title: const Text("Update Expiration Time"),
+                title: const Text("Expiration DateTime"),
                 content: Form(
                   key: key,
                   child: Column(
@@ -83,7 +83,7 @@ class _FeaturedproductrequestviewState extends ConsumerState<Featuredproductrequ
                               Text(selectedDate != null
                                   ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year} at ${selectedDate!.hour}:${selectedDate!.minute.toString().padLeft(2, '0')}"
                                   : "Select Date and Time"),
-                              Icon(Icons.calendar_today, color: Colors.blue),
+                              Icon(Icons.calendar_today, color: Appcolors.baseColor),
                             ],
                           ),
                         ),

@@ -23,15 +23,12 @@ class _SubcategoriesListState extends ConsumerState<SubcategoriesList> {
   @override
   Widget build(BuildContext context) {
     final subcategories = ref.watch(subCategoryViewModelProvider(widget.category.name!));
-
     return Scaffold(
-
-
       body: subcategories.when(
         loading: () => const Center(
           child: Padding(
             padding: EdgeInsets.all(20.0),
-            child: CircularProgressIndicator(color: Appcolors.baseColor),
+            child: LinearProgressIndicator(color: Appcolors.baseColor),
           ),
         ),
         data: (categories) => Subcategories(categories),

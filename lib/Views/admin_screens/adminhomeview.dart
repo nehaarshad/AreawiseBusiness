@@ -56,13 +56,13 @@ class _adminhomeviewState extends ConsumerState<adminhomeview> {
       key: _scaffoldKey,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.menu),
+            icon: Icon(Icons.menu,color: Appcolors.baseColor,),
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
           ),
           automaticallyImplyLeading: false,
           title: Padding(
             padding: const EdgeInsets.all(11),
-            child:Text("Areawise Business", style: TextStyle(color:Appcolors.baseColor,fontWeight: FontWeight.bold, fontSize: 18.sp),),
+            child:Text("BizAroundU", style: TextStyle(color:Appcolors.baseColor,fontWeight: FontWeight.bold, fontSize: 18.sp),),
 
           ),
         ),

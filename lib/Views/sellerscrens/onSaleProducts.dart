@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../../View_Model/SellerViewModels/SellerOnSaleProductViewModel.dart';
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
@@ -77,7 +78,7 @@ class _OnsaleproductsState extends ConsumerState<Onsaleproducts> {
                     loading: () => const Center(
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
-                        child: CircularProgressIndicator(color: Appcolors.baseColor),
+                        child: LinearProgressIndicator(color: Appcolors.baseColor),
                       ),
                     ),
                     data: (products) {
@@ -139,9 +140,18 @@ class _OnsaleproductsState extends ConsumerState<Onsaleproducts> {
                                       product.name ?? 'No Name',
                                       style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
-                                    subtitle: Text(
-                                      product.category?.name ?? 'No Category',
-                                      style:  TextStyle(fontSize: 12.h),
+                                    subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Expire At: ${formatTime(product.saleOffer?.expireAt)}",
+                                          style:  TextStyle(fontSize: 12.h),
+                                        ),
+                                        Text(
+                                          "Discount:${product.saleOffer?.discount}%",
+                                          style:  TextStyle(fontSize: 12.h),
+                                        ),
+                                      ],
                                     ),
                                     trailing:  IconButton(
                                       icon: const Icon(Icons.delete, color: Colors.red),
@@ -183,5 +193,18 @@ class _OnsaleproductsState extends ConsumerState<Onsaleproducts> {
         ),
       ),
     );
+
+  }
+  String formatTime(String? timestamp) {
+    if (timestamp == null) return '';
+    try {
+      final dateTime = DateTime.parse(timestamp).toLocal();
+      final hour = dateTime.day;
+      final minute = dateTime.month;
+      final period = dateTime.year;
+      return '$hour/$minute/$period';
+    } catch (_) {
+      return '';
+    }
   }
 }

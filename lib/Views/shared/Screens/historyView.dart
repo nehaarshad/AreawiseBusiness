@@ -37,12 +37,11 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Appcolors.whiteSmoke,
         title: const Text("Orders History"),
         elevation: 2,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh,color: Appcolors.baseColorLight30,),
             onPressed: () {
               ref.refresh(sellerOrderViewModelProvider(widget.id.toString()));
             },
@@ -50,7 +49,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
         ],
       ),
       body: orderState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
         error: (err, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -84,17 +83,25 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                   ExpansionTile(
                       title: Text(
                         "Order #${order.id}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold,color: Appcolors.baseColor),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Total: \$${order.total?.toStringAsFixed(2)}",
+                            "Total: Rs.${order.total?.toStringAsFixed(2)}",
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           Text(
+                            "Discount %: ${order.discount} , ( - Rs.${order.discountAmount} )",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          Text(
                             "Order Date: ${_formatDate(order.createdAt)}",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          Text(
+                            "PaymentStatus: ${order.paymentStatus}",
                             style: const TextStyle(fontSize: 12),
                           ),
                         ],
@@ -111,6 +118,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.sp,
+                                    color: Appcolors.baseColorLight30
                                   ),
                                 ),
                                  SizedBox(height: 8.h),
@@ -156,7 +164,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                                                 style:  TextStyle(fontSize: 14.sp),
                                               ),
                                               Text(
-                                                'Price: \$${item.price}',
+                                                'Price: ${item.price}',
                                                 style:  TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w500,

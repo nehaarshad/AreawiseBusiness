@@ -34,7 +34,7 @@ class _CategoriesGridState extends ConsumerState<CategoriesGrid> {
           return categoriesAsync.isLoading ? const Center(
             child: Padding(
               padding: EdgeInsets.all(20.0),
-              child: CircularProgressIndicator(color: Appcolors.baseColor),
+              child: LinearProgressIndicator(color: Appcolors.baseColor),
             ),
           ) : (categoriesAsync.category != null)
               ? Categories(categoriesAsync.category)

@@ -28,7 +28,7 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
       ),
       backgroundColor: Appcolors.whiteSmoke,
       body: shopState.when(
-        loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
+        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor)),
         data: (shops) {
           if (shops.isEmpty) {
             return const Center(child: Text("No Shops Available"));

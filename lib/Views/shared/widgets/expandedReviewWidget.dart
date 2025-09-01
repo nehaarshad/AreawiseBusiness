@@ -4,7 +4,7 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../View_Model/SharedViewModels/reviewItems.dart';
+import 'reviewItems.dart';
 import '../../../models/reviewsModel.dart';
 
 class ExpandedReviewsWidget extends StatefulWidget {
@@ -32,7 +32,6 @@ class _ExpandedReviewsWidgetState extends State<ExpandedReviewsWidget> {
 
     return Column(
       children: [
-        // Always show first 2 reviews or all if expanded
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -48,8 +47,6 @@ class _ExpandedReviewsWidgetState extends State<ExpandedReviewsWidget> {
             );
           },
         ),
-
-        // Show expand/collapse button if there are more than 2 reviews
         if (hasMoreReviews)
           Padding(
             padding:  EdgeInsets.symmetric(vertical: 8.0.h),

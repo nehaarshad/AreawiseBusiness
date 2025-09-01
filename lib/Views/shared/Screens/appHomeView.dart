@@ -30,22 +30,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        final selectedCategory = ref.read(selectedCategoryProvider);
-        ref.read(featureProductViewModelProvider(widget.id.toString()).notifier)
-            .getAllFeaturedProducts(selectedCategory);
-        ref.read(sharedProductViewModelProvider.notifier)
-            .getAllProduct(selectedCategory);
-        ref.read(newArrivalViewModelProvider.notifier)
-            .getNewArrivalProduct(selectedCategory);
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
@@ -143,7 +127,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                       ),
                ],
              ),
-
               AllProducts(userid: widget.id),
             ],
           ),

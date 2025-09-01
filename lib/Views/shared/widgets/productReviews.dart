@@ -88,10 +88,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
               ],
             ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
+              
               TextButton(
                 onPressed: () async {
                   print('Post button pressed');
@@ -148,7 +145,7 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
              Text(
               "Reviews",
               style: TextStyle(
-                color: Colors.blueGrey,
+                color: Appcolors.baseColorLight30,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
               ),

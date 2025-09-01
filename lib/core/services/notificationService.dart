@@ -45,11 +45,7 @@ class NotificationService {
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
       await androidPlugin?.requestNotificationsPermission();
-      await androidPlugin?.requestExactAlarmsPermission();
 
-      // Request additional permissions
-      await Permission.notification.request();
-      await Permission.audio.request();
     } else if (Platform.isIOS) {
       final iosPlugin = _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();

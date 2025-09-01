@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,7 +37,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
         ],
       ),
       body: orderState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
         error: (err, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -59,6 +60,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final orderRequest = orders[index];
+              print(orderRequest?.total);
               final order = orderRequest?.order;
               final cartItems = order?.cart?.cartItems;
 
@@ -68,7 +70,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                 child: ExpansionTile(
                   title: Text(
                     "Order #${order!.id}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold,color: Appcolors.baseColor),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,6 +83,10 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                         ),
                       ),
                       Text(
+                        "Discount %: ${order.discount} , ( - Rs.${order.discountAmount} )",
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      Text(
                         "Order Date: ${orderedDate(order.createdAt)}",
                         style:  TextStyle(fontSize: 12.sp),
                       ),
@@ -88,6 +94,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                         "Payment Status: ${orderRequest.order?.paymentStatus}",
                         style:  TextStyle(fontSize: 12.sp),
                       ),
+
                       if(orderRequest.order?.paymentStatus == "paid")
                       TextButton(
                           onPressed: (){
@@ -96,11 +103,13 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                               'orderId':orderRequest.orderId,
                               'sellerId':orderRequest.sellerId
                             };
+                            print("Passing params: ${parameters}");
                             Navigator.pushNamed(context, routesName.transactionSlip,arguments: parameters);
                           },
                           child: Text("viewReceipt"))
                     ],
                   ),
+                  trailing: Text("Total ${orderRequest.total?.toStringAsFixed(2)}"),
                   children: [
                     if (cartItems != null)
                       ...cartItems.map((item) {
@@ -145,7 +154,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                                         style:  TextStyle(fontSize: 14.sp),
                                       ),
                                       Text(
-                                        'Price: \$${item.price}',
+                                        'Price: ${item.price!.toStringAsFixed(2)}',
                                         style:  TextStyle(fontSize: 14.sp),
                                       ),
                                     ],

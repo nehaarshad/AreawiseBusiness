@@ -74,8 +74,15 @@ class DrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
+            icon: Icons.help_center_outlined,
+            title: 'help',
+            onTap: (){
+              Navigator.pushNamed(context, routesName.FAQ);
+            },
+          ),
+          drawerItems(
               icon: Icons.logout,
-              title: 'Logout',
+              title: 'SignOut',
               onTap:(){
                 logout(context,ref);
               }

@@ -42,7 +42,7 @@ class _CartviewState extends ConsumerState<Cartview> {
         title: Text("Cart",style: AppTextStyles.headline,),
         actions: [
           state.when(
-            loading: () => const SizedBox.shrink(),
+            loading: () => Center(child: const LinearProgressIndicator(color: Appcolors.baseColor,)),
             data: (items) {
               cartId = items?.id; // Extract cart ID safely
               return IconButton(

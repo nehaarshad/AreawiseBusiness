@@ -21,23 +21,13 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Add this to ensure fresh data
-      ref.invalidate(sharedProductViewModelProvider);
-      await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(widget.shopId);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_)  {
+      if (mounted) {
+        ref.invalidate(sharedProductViewModelProvider);
+         ref.read(sharedProductViewModelProvider.notifier).getShopProduct(
+            widget.shopId);
+      }  });
   }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
-      ref.invalidate(sharedProductViewModelProvider);
-      await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(widget.shopId);
-      return true;
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +36,7 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
       loading: () =>  Center(
         child: SizedBox(
           height: 100.h,
-          child: Center(child: CircularProgressIndicator()),
+          child: Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
         ),
       ),
       data: (products) {
@@ -75,7 +65,7 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
                         context,
                         routesName.productdetail,
                         arguments:  {
-                          'id': widget.id,
+                          'id': int.tryParse(widget.id),
                           'productId':product.id,
                           'product': product
                         },

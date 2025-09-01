@@ -83,7 +83,7 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
               final productState = ref.watch(CategoryProductViewModelProvider(_selectedCategory));
 
               return productState.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
                 data: (products) {
                   if (products.isEmpty) {
                     return const Center(child: Text("No Products available."));

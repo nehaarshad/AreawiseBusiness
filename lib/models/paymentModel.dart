@@ -4,16 +4,14 @@ import 'cartItemModel.dart';
 
 class paymentModel {
   String? sellerId;
-  int? amount;
+  double? amount;
   int? orderId;
   List<paymentAccount>? accounts;
   List<CartItems>? items;
-
   paymentModel({this.sellerId, this.orderId,this.amount, this.accounts, this.items});
-
   paymentModel.fromJson(Map<String, dynamic> json) {
     sellerId = json['sellerId'];
-    amount = json['amount'];
+    amount = json['amount'] != null ? double.tryParse(json['amount'].toString()) : null;
     orderId = json['orderId'];
     if (json['accounts'] != null) {
       accounts = <paymentAccount>[];
@@ -28,7 +26,6 @@ class paymentModel {
       });
     }
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['sellerId'] = this.sellerId;

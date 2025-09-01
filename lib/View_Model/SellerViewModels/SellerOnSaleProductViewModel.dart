@@ -21,6 +21,7 @@ class sellerOnSaleProductViewModel extends StateNotifier<AsyncValue<List<Product
   Future<void> getOnSaleProduct(String id) async {
     try {
       List<ProductModel?> product = await ref.read(productProvider).getUserOnSaleProducts(id);
+      print(product);
       state = AsyncValue.data(product.isEmpty ? [] : product);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

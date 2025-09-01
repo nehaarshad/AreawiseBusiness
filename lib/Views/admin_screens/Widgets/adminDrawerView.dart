@@ -87,6 +87,16 @@ class AdminDrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
+            icon: Icons.feedback_outlined,
+            title: 'feedbacks',
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.feedbacks,
+              );
+            },
+          ),
+          drawerItems(
               icon: Icons.logout,
               title: 'Logout',
               onTap:(){

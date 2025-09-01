@@ -12,6 +12,7 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
 
   Future<void> getShopProduct(String id) async {
     try {
+      state=AsyncValue.loading();
       List<ProductModel?> product = await ref.read(productProvider).getShopProduct(id);
       state = AsyncValue.data(product.isEmpty ? [] : product);
     } catch (e) {
@@ -21,6 +22,7 @@ class sharedProductViewModel extends StateNotifier<AsyncValue<List<ProductModel?
 
   Future<void> getUserProduct(String id) async {
     try {
+     state= AsyncValue.loading();
       List<ProductModel?> product = await ref.read(productProvider).getUserProduct(id);
       state = AsyncValue.data(product.isEmpty ? [] : product);
     } catch (e) {

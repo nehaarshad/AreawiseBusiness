@@ -4,6 +4,7 @@ class OrdersRequestModel {
   int? id;
   int? sellerId;
   int? customerId;
+  double? total;
   int? orderId;
   int? orderProductId;
   String? status;
@@ -16,6 +17,7 @@ class OrdersRequestModel {
         this.sellerId,
         this.customerId,
         this.orderId,
+        this.total,
         this.orderProductId,
         this.status,
         this.createdAt,
@@ -27,6 +29,7 @@ class OrdersRequestModel {
     int? sellerId,
     int? customerId,
     int? orderId,
+    double? total,
     int? orderProductId,
     String? status,
     String? createdAt,
@@ -37,6 +40,7 @@ class OrdersRequestModel {
       id: id ?? this.id,
       sellerId: sellerId ?? this.sellerId,
       customerId: customerId ?? this.customerId,
+      total:total ?? this.total,
       orderId: orderId ?? this.orderId,
       orderProductId: orderProductId ?? this.orderProductId,
       status: status ?? this.status,
@@ -50,6 +54,7 @@ class OrdersRequestModel {
     id = json['id'];
     sellerId = json['sellerId'];
     customerId = json['customerId'];
+    total = json['total'] != null ? double.tryParse(json['total'].toString()) : null;
     orderId = json['orderId'];
     orderProductId = json['orderProductId'];
     status = json['status'];
@@ -66,6 +71,7 @@ class OrdersRequestModel {
     data['orderId'] = this.orderId;
     data['orderProductId'] = this.orderProductId;
     data['status'] = this.status;
+    data['total'] = this.total;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     if (this.order != null) {

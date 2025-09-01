@@ -26,7 +26,7 @@ class _SubcategoriesproductviewState extends ConsumerState<Subcategoriesproductv
           final productState = ref.watch(subCategoryProductViewModelProvider(widget.name));
 
           return productState.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
             data: (products) {
               if (products.isEmpty) {
                 return const Center(child: Text("No Products available."));
@@ -43,7 +43,7 @@ class _SubcategoriesproductviewState extends ConsumerState<Subcategoriesproductv
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 itemBuilder: (context, index) {
                   final product = products[index];
-                  if (product == null) return const SizedBox.shrink();
+                  if (product?.name == null)  return const Center(child: Text("No Products available."));
 
                   return GestureDetector(
                       onTap: () {

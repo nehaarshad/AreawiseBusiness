@@ -46,7 +46,7 @@ class _getSellerProductView extends ConsumerState<getSellerProductView> {
               loading: () => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: CircularProgressIndicator(color: Appcolors.baseColor),
+                  child: LinearProgressIndicator(color: Appcolors.baseColor),
                 ),
               ),
               data: (products) {

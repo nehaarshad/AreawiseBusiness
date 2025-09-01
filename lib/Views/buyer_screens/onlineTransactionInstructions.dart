@@ -179,10 +179,7 @@ class _paymentInstructionsState extends ConsumerState<paymentInstructions> {
   Widget sellerAccountPayment( AsyncValue<List<paymentModel> > state,OrderViewModelProvider viewModel){
     return Column(
       children: [
-
-        Card(
-          elevation: 3,
-          child: Column(
+         Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -285,7 +282,7 @@ class _paymentInstructionsState extends ConsumerState<paymentInstructions> {
                             children: [
                               Row(
                                 children: [
-                                  Text("Items from this Shop",style: TextStyle(fontWeight: FontWeight.w500),),
+                                  Text("Items from this seller",style: TextStyle(fontWeight: FontWeight.w500),),
                                   IconButton(
                                       onPressed: (){
                                         setState(() {
@@ -323,7 +320,7 @@ class _paymentInstructionsState extends ConsumerState<paymentInstructions> {
               ),
             ],
           ),
-        ),
+
         // Always show the button but make it conditional
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),

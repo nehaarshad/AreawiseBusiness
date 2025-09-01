@@ -45,13 +45,13 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
   Widget build(BuildContext context) {
     final productState = ref.watch(featureProductViewModelProvider(widget.userid.toString()));
     return productState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
       data: (products) {
         if (products.isEmpty) {
           return SizedBox(child: const Center(child: Text("No Featured Products available.")));
         }
         return SizedBox(
-          height: 200.h,
+          height: 220.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,

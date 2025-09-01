@@ -2,9 +2,9 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../Views/shared/widgets/profileImageWidget.dart';
-import '../../models/reviewsModel.dart';
-import 'ReviewsViewModel.dart';
+import 'profileImageWidget.dart';
+import '../../../models/reviewsModel.dart';
+import '../../../View_Model/SharedViewModels/ReviewsViewModel.dart';
 
 
 class ReviewItem extends ConsumerWidget {
@@ -25,7 +25,7 @@ class ReviewItem extends ConsumerWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      color: Appcolors.whiteSmoke,
+
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -38,7 +38,7 @@ class ReviewItem extends ConsumerWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Appcolors.baseColorLight30,
                       child:  ProfileImageWidget(user:  review.user!, height: 50, width: 50),
                     ),
                     const SizedBox(width: 8),
@@ -67,7 +67,7 @@ class ReviewItem extends ConsumerWidget {
                           children: List.generate(5, (index) {
                             return Icon(
                               Icons.star,
-                              color: index < review.rating! ? Colors.blue : Colors.grey,
+                              color: index < review.rating! ? Appcolors.baseColorLight30 : Colors.grey,
                               size: 16,
                             );
                           }),

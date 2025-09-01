@@ -1,12 +1,16 @@
-class AppApis {
-  static var baseurl = "http://10.236.31.179:5000/api";
-  static var socketURL = "http://10.236.31.179:5000";
+class AppApis {//161.35.22.15
+  static var baseurl = "http://10.81.121.179:5000/api";
+  static var socketURL = "http://10.81.121.179:5000";
 
   //AUTH URLS
   static var loginEndPoints = "$baseurl/login";
   static var signUpEndPoints = "$baseurl/signup";
   static var logoutEndPoints = "$baseurl/logout";
   static var forgetPasswordEndPoints = "$baseurl/forgetpassword";
+
+  //feedbackUrls
+  static var submitFeedbackEndPoints = "$baseurl/submitFeedback";
+  static var getFeedbackEndPoints = "$baseurl/getFeedback";
 
   //Account Urls
   static var createSellerPayementAccountEndPoints = "$baseurl/createAccount";

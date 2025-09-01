@@ -43,7 +43,7 @@ class _findShopViewState extends ConsumerState<findShopView> {
         body:Consumer(builder: (context, ref, child) {
           final shopState = ref.watch(searchShopViewModelProvider);
           return shopState.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
+              loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor)),
               data: (shops) {
                 if (shops.isEmpty) {
                   return Center(child: Text("No shops available."));

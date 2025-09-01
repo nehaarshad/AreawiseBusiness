@@ -39,13 +39,14 @@ class TranscriptsViewModel extends StateNotifier<transcriptsState> {
   ///for seller
   Future<void> getTranscript(int sellerId,int orderId) async {
     try {
+      state=state.copyWith(isLoading: true);
       final data={
         "sellerId":sellerId,
         "orderId":orderId
       };
       List<ImageModel> image = await ref.read(transcriptsProvider).getTranscript(data);
       print(image[0].imageUrl);
-      state = state.copyWith(Image: image.last.imageUrl);
+      state = state.copyWith(isLoading: false,Image: image.last.imageUrl!.isEmpty ? null : image.last.imageUrl);
     } catch (e) {
       state = state.copyWith(isLoading: true);
     }

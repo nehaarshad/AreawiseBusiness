@@ -25,7 +25,7 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
     }
 
       final data = {
-        'shippingPrice': int.tryParse(viewModel.shippingPrice.text),
+        'shippingPrice': 0,
         'discount': discount ?? 0.0,
         'totalBill': double.tryParse(viewModel.total.text)
       };
@@ -48,10 +48,6 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
     print(model.discount);
     return Column(
       children: [
-        TextFormField(
-          controller: model.shippingPrice,
-          decoration: const InputDecoration(labelText: "Shipping Price"),
-        ),
 
         TextFormField(
           controller: model.discount,
@@ -111,11 +107,9 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final model = ref.read(attributesViewModelProvider.notifier);
-
     return Scaffold(
       appBar: AppBar(
          title: Text("Settings",style: AppTextStyles.headline,),
@@ -139,30 +133,22 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
                       child: DurationField(model),
                     ): CircularProgressIndicator(),
                     TextButton(onPressed: (){
-        
                     updateDuration(model, context);
                     }, child: Text("Update"))
                   ],
                 ),
                 SizedBox(height: 30.h,),
-                Text("Manage Pricing & Offers",style: AppTextStyles.body,),
+                Text("Special discount offer:",style: AppTextStyles.body,),
                 SizedBox(height: 10.h,),
-                SizedBox(
-                  width: 200,
-                  child: formFields(model),
-                ),
+                SizedBox(width: 200, child: formFields(model)),
                 Padding(
                   padding:  EdgeInsets.only(top: 28.0.h),
                   child: UpdateButton( model, context),
                 ),
-        
-        
               ],
             ),
           ),
       ),
-
-
     );
   }
 }

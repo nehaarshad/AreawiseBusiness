@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/Views/admin_screens/ManageSearchProducts.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addCategory.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
+import 'package:ecommercefrontend/Views/admin_screens/feedBackView.dart';
 import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
@@ -15,6 +16,7 @@ import 'package:ecommercefrontend/Views/sellerscrens/addToSaleView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/onSaleProducts.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/viewReceipt.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/AccountView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/FAQview.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/categoryView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/changePasswordView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/exploreProductsView.dart';
@@ -99,6 +101,12 @@ class Routes {
 
       case (routesName.auser):
         return MaterialPageRoute(builder: (BuildContext context) => const UserView(),);
+
+      case (routesName.feedbacks):
+        return MaterialPageRoute(builder: (BuildContext context) => const Feedbackview(),);
+
+      case (routesName.FAQ):
+        return MaterialPageRoute(builder: (BuildContext context) => const Faqview(),);
 
       case (routesName.changePassword):
         String id = arg as String;

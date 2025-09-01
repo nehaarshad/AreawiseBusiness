@@ -6,6 +6,7 @@ class orderModel {
   int? addressId;
   int? total;
   double? discount;
+  int? discountAmount;
   int? shippingPrice;
   String? status;
   String? paymentMethod;
@@ -23,6 +24,7 @@ class orderModel {
         this.shippingPrice,
         this.status,
         this.paymentMethod,
+        this.discountAmount,
         this.paymentStatus,
         this.createdAt,
         this.updatedAt,
@@ -33,6 +35,7 @@ class orderModel {
     addressId = json['addressId'] != null ? int.tryParse(json['addressId'].toString()) : null;
     total = json['total'] != null ? int.tryParse(json['total'].toString()) : null;
     discount = json['discount'] != null ? double.tryParse(json['discount'].toString()) : null;
+    discountAmount = json['discountAmount'] != null ? int.tryParse(json['discountAmount'].toString()) : null;
     shippingPrice = json['shippingPrice'] != null ? int.tryParse(json['shippingPrice'].toString()) : null;
     status = json['status'];
     paymentStatus = json['paymentStatus'];
@@ -51,6 +54,7 @@ class orderModel {
     data['discount'] = this.discount;
     data['shippingPrice'] = this.shippingPrice;
     data['status'] = this.status;
+    data['discountAmount'] = this.discountAmount;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     if (this.cart != null) {

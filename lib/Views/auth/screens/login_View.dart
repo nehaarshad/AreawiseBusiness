@@ -49,7 +49,7 @@ class _login_viewState extends ConsumerState<login_view> {
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 70.h,),
+            padding: EdgeInsets.symmetric(vertical: 40.h,),
             child: Container(
               decoration: BoxDecoration(
                 color: Appcolors.whiteSmoke,
@@ -68,7 +68,8 @@ class _login_viewState extends ConsumerState<login_view> {
                   children: [
                     Text("BizAroundU",style: TextStyle(fontWeight: FontWeight.bold,color: Appcolors.baseColor,fontSize: 20.sp),),
 
-                    Text("Continue to sign in!",style: TextStyle(fontWeight: FontWeight.w400,color: Appcolors.baseColorLight30,fontSize: 18.sp),),
+                    Text("Continue to sign in!",
+                      style: TextStyle(fontWeight: FontWeight.w400,color: Appcolors.baseColorLight30,fontSize: 15.sp),),
                     SizedBox(height: 40.h,),
                     TextFormField(
                       controller: _usernameController,
@@ -111,14 +112,14 @@ class _login_viewState extends ConsumerState<login_view> {
                       children: [
                       TextButton(onPressed: (){
                         Navigator.pushNamed(context, routesName.forget);
-                      }, child: Text("forget password?"))
+                      }, child: Text("Forget Password?"))
                     ],),
-                    SizedBox(height: 50.h),
+                    SizedBox(height: 40.h),
                     Consumer(
                       builder: (context, ref, child) {
                         final loading = ref.watch(loginProvider);
                         return CustomButton(
-                          text: "Sign in",
+                          text: "Sign In",
                           onPressed: () {
                             if (_usernameController.text.isEmpty) {
                               Utils.flushBarErrorMessage(
@@ -147,24 +148,25 @@ class _login_viewState extends ConsumerState<login_view> {
                         );
                       },
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 3.h),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 15.w,
+                        horizontal: 18.w,
                       ),
                       child: Row(
                         children: [
-                          Text("Don't have an Account?",style: TextStyle(fontSize: 15.sp),),
+                          Text("Don't have an account?",style: TextStyle(fontSize: 15.sp),),
                           InkWell(
                             onTap: () {
                               Navigator.pushNamed(context, routesName.signUp);
                             },
                             child: Text(
-                              "SignUp",
+                              "  Sign Up",
                               style: TextStyle(
                                   color: Appcolors.baseColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 15.sp
+                                  fontSize: 15.sp,
+
                               ),
                             ),
                           ),

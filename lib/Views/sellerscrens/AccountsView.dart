@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../View_Model/SellerViewModels/paymentAccountViewModel.dart';
 import '../../core/utils/colors.dart';
 import '../../core/utils/routes/routes_names.dart';
@@ -72,7 +71,7 @@ class _SellerAccountsViewState extends ConsumerState<SellerAccountsView> {
                 loading: () => const Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: CircularProgressIndicator(color: Appcolors.baseColor),
+                    child: LinearProgressIndicator(color: Appcolors.baseColor),
                   ),
                 ),
                 data: (products) {

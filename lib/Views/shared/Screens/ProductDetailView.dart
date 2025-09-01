@@ -15,6 +15,7 @@ import '../widgets/contactWithSellerButton.dart';
 import '../widgets/imageSlider.dart';
 import '../widgets/productReviews.dart';
 import '../widgets/relatedProducts.dart';
+import '../widgets/shopProducts.dart';
 import '../widgets/wishListButton.dart';
 
 class productDetailView extends ConsumerStatefulWidget {
@@ -29,14 +30,17 @@ class productDetailView extends ConsumerStatefulWidget {
 }
 
 class _productDetailViewState extends ConsumerState<productDetailView> {
+
   @override
   void initState() {
     super.initState();
-    print("UserId passes ${widget.userid}");
+    print("UserId passed ${widget.userid}");
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Add this to ensure fresh data
+      if (!mounted) return;
       ref.invalidate(ProductDetailsViewModelProvider(widget.productId.toString()));
-      await ref.read(ProductDetailsViewModelProvider(widget.productId.toString()).notifier).getProductDetails(widget.productId.toString());
+      if (!mounted) return;
+      await ref.read(ProductDetailsViewModelProvider(widget.productId.toString()).notifier)
+          .getProductDetails(widget.productId.toString());
     });
   }
 
@@ -66,7 +70,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
           loading: () => const Center(
             child: Padding(
               padding: EdgeInsets.all(20.0),
-              child: CircularProgressIndicator(color: Appcolors.baseColor),
+              child: LinearProgressIndicator(color: Appcolors.baseColor),
             ),
           ),
           data: (product) {
@@ -348,6 +352,27 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                             ],
                           ),
                           RelatedProducts(userid: widget.userid,category: product.category?.name,),
+                          SizedBox(height: 20.h,),
+                          Padding(
+                            padding:  EdgeInsets.symmetric(vertical: 8.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "More products from this shop",
+                                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  children: [
+                                    const Text("See All", style: TextStyle(color: Colors.grey)),
+                                    Icon(Icons.arrow_forward_ios_sharp, size: 10.h),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20.h,),
+                          shopProducts(shopId:  product.shop!.id.toString(),id: widget.userid.toString(),),
                         ],
                       ),
 

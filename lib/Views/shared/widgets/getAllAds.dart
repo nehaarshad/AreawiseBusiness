@@ -78,7 +78,7 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
         height: 170.h,
         child: adsState.when(
           loading: () => const Center(
-            child: CircularProgressIndicator(color: Appcolors.baseColor),
+            child: LinearProgressIndicator(color: Appcolors.baseColor),
           ),
           data: (ads) {
             if (ads.isEmpty) {

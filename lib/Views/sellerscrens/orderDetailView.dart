@@ -74,7 +74,7 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                               Text(product?.name ?? 'Unknown Product', style:  TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp)),
                                SizedBox(height: 4.h),
                               Text('Quantity: ${item.quantity}', style:  TextStyle(fontSize: 14.sp)),
-                              Text('Price: \$${item.price}', style:  TextStyle(fontSize: 14.sp)),
+                              Text('Price: ${item.price}', style:  TextStyle(fontSize: 14.sp)),
                             ],
                           ),
                         ),

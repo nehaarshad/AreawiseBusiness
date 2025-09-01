@@ -1,6 +1,3 @@
-import 'package:ecommercefrontend/View_Model/auth/sessionmanagementViewModel.dart';
-import 'package:ecommercefrontend/models/UserDetailModel.dart';
-import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/utils.dart';

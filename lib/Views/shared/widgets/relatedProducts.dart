@@ -44,7 +44,7 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
       loading: () =>  Center(
         child: SizedBox(
           height: 100.h,
-          child: Center(child: CircularProgressIndicator()),
+          child: Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
         ),
       ),
       data: (products) {
