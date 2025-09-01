@@ -11,17 +11,17 @@ class appException implements Exception {
 
 class fetchdataException extends appException {
   fetchdataException([String? _msg])
-    : super(_msg, "Error during communication");
+    : super( "Try Later!");
 }
 
 class badrequestException extends appException {
-  badrequestException([String? _msg]) : super(_msg, "Invalid Request");
+  badrequestException([String? _msg]) : super( "Invalid Request");
 }
 
 class unauthorizeException extends appException {
-  unauthorizeException([String? _msg]) : super(_msg, "Unauthorize requests");
+  unauthorizeException([String? _msg]) : super( "UnAuthorize requests");
 }
 
 class invalidinputException extends appException {
-  invalidinputException([String? _msg]) : super(_msg, "Invalid Input");
+  invalidinputException([String? _msg]) : super("Invalid Input");
 }

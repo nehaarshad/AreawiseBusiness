@@ -303,12 +303,11 @@ class networkapiservice extends baseapiservice {
       case 400: //invalid input ,type errors...
         throw badrequestException(res.body.toString());
       case 500:
-      case 404:
+      case 401:
         throw unauthorizeException(res.body.toString());
       default:
         throw fetchdataException(
-          "Error occur while communication with server \t Status Code:" +
-              res.statusCode.toString(),
+          "Try later!"
         );
     }
   }
