@@ -38,14 +38,14 @@ class _addProductViewState extends ConsumerState<addProductView> {
 
   @override
   void dispose() {
-    super.dispose();
+
     _viewModel.resetState();
     name.dispose();
     subtitle.dispose();
     description.dispose();
     price.dispose();
     stock.dispose();
-
+    super.dispose();
   }
 
   @override

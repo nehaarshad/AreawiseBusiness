@@ -170,6 +170,7 @@ class UserRepositories {
       dynamic response = await apiservice.DeleteApiResponce(
         AppApis.DeleteUserEndPoints.replaceFirst(':id', id),headers()
       );
+      print(response);
       return response;
     } catch (e) {
       throw e;

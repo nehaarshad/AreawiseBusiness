@@ -138,7 +138,7 @@ class userInfo extends StatelessWidget {
     return Column(
       children: [
         infoWidget(heading: "Username", value: user.username!),
-        infoWidget(heading: "Username", value: user.email!),
+        infoWidget(heading: "Email", value: user.email!),
         infoWidget(heading: "Role", value: user.role!),
         infoWidget(
           heading: "Contact",

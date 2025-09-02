@@ -29,14 +29,14 @@ class _addShopViewState extends ConsumerState<addShopView> {
 
   @override
   void dispose() {
-    super.dispose();
+
     _viewModel.resetState();
     shopname.dispose();
     sector.dispose();
     shopaddress.dispose();
     city.dispose();
     delivery.dispose();
-
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -232,7 +232,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
     ),
     child: Center(
     child: Text(
-    "Cancel",
+    "Back",
     style: TextStyle(
     color: Appcolors.baseColor,
     fontWeight: FontWeight.bold,

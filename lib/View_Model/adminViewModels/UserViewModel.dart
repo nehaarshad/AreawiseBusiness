@@ -30,35 +30,39 @@ class UserViewModel extends StateNotifier<AsyncValue<List<UserDetailModel?>>> {
     }
   }
 
-  Future<void> deleteusers(String id,BuildContext context) async {
+  Future<void> deleteusers(String id, BuildContext context) async {
     try {
       print("delete user Id ${id}");
-      await ref.read(userProvider).deleteUser(id);
-      getallusers();
       final currentUserId = ref.read(sessionProvider)?.id;
       print("Current user Id ${currentUserId}");
-      if(currentUserId != null){
-        if(currentUserId==id){
+
+      await ref.read(userProvider).deleteUser(id);
+      getallusers();
+
+      if (currentUserId != null) {
+        if (currentUserId.toString() == id) {
+          // User deleted their own account
           final SharedPreferences sp = await SharedPreferences.getInstance();
-          final String? token = sp.getString('token');
-          if (token != null) {
-            await sp.clear();
-            Utils.flushBarErrorMessage("Account Deleted", context);
-            print("SharedPreferences cleared: ${sp.getString('token')}");
-            await Future.delayed(Duration(seconds: 1));
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              routesName.login,
-                  (route) => false,
-            );
-          }
+          await sp.clear();
+          Utils.flushBarErrorMessage("Account Deleted", context);
+          print("SharedPreferences cleared: ${sp.getString('token')}");
+          await Future.delayed(Duration(seconds: 1));
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            routesName.login,
+                (route) => false,
+          );
+        } else {
+          // User deleted someone else's account
+          Utils.flushBarErrorMessage("User Deleted Successfully", context);
         }
-        else{
-          Navigator.pop(context);
-        }
+      } else {
+        Utils.flushBarErrorMessage("Failed to Delete - No current user", context);
       }
+
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
+      Utils.flushBarErrorMessage("Failed to Delete", context);
     }
   }
 }

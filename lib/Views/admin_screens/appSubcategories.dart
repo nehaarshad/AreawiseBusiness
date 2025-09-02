@@ -36,7 +36,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
         actions: [
           IconButton(onPressed:()=>  AddSubcategoryDialog(), icon:Padding(
             padding:  EdgeInsets.only(right: 8.0.w),
-            child: Icon(Icons.add,color: Colors.blue, size: 20.h),
+            child: Icon(Icons.add,color: Appcolors.baseColorLight30, size: 20.h),
           ) )
         ],
         backgroundColor: Appcolors.whiteSmoke,
@@ -128,7 +128,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.blue.shade600, width: 2.w),
+              borderSide: BorderSide(color: Appcolors.baseColorLight30, width: 2.w),
             ),
           ),
           textCapitalization: TextCapitalization.words,
@@ -150,7 +150,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.shade600,
+              backgroundColor: Appcolors.baseColor,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
