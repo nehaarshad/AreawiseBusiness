@@ -30,7 +30,7 @@ try {
     
 } catch (error) {
     console.log(error);
-    res.json({error:error})
+    res.status(500).json(error)
 }
 }
 
@@ -122,6 +122,7 @@ const getUserSaleProducts=async(req,res)=>{
 const deleteOnSale=async(req,res)=>{
     try {
         const {id}=req.params;
+        console.log(`Deleting On Sale Product with ID: ${id}`)
         const onSale = await sale.findByPk(id);
         const productId=onSale.productId;
         const product = await Product.findByPk(productId)

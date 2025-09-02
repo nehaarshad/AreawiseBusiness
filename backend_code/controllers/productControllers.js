@@ -259,7 +259,7 @@ const getProductsOnSale = async (req, res) => {
             })
             console.log(products)
         }
-
+      console.log("OnSale",products);
         res.json(products);
     } catch (error) {
         console.log(error);
