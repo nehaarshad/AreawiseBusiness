@@ -58,10 +58,7 @@ const addshop = async (req, res) => {
                await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
            }
 
-        res.status(201).json({
-            success:true,
-            message:"Shop Added Successfully!"
-        });
+        res.status(201).json("Shop Added Successfully!");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal Server Error" });

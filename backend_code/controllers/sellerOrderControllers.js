@@ -63,6 +63,7 @@ const getSellerOrders = async (req, res) => {
             };
         });
 
+        console.log('Filtered Orders:', JSON.stringify(filteredOrders, null, 2));
         res.json(filteredOrders);
     } catch (error) {
         console.log(error);

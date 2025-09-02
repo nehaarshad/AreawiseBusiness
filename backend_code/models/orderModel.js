@@ -23,6 +23,10 @@ const order = sequelize.define('Orders', {
         type: DataTypes.DOUBLE, 
         allowNull: true, 
     },
+    discountAmount: { 
+        type: DataTypes.INTEGER, 
+        allowNull: true, 
+    },
     status: {
          type: DataTypes.STRING, //on pending,send,approved,completed
          allowNull: false,

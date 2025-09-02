@@ -8,7 +8,7 @@ const uploadOrderOnlineTransactionSlip=async(req,res)=>{
         if (!req.file) {
             return res.json({ error: 'No file uploaded' });
         }
-        console.log('Uploading transaction slip:', req.file);
+        console.log('Uploading transaction slip:', req.body, req.file);
         
        if (req.file) {
             const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`;
@@ -33,6 +33,7 @@ const getOrderOnlineTransactionSlip=async(req,res)=>{
             { order: [['createdAt', 'DESC']] }
         );
         if (!transactionSlip) {
+               console.log('Transaction Slip not Found:', transactionSlip);
             return res.status(404).json({ error: 'Transaction slip not found' });
         }
         console.log('Transaction Slip Found:', transactionSlip);

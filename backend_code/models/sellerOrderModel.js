@@ -19,6 +19,10 @@ const SellerOrder = sequelize.define("SellerOrder", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+     total: { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     orderProductId: {  //which product to be ordered
         type: DataTypes.INTEGER,
         allowNull: false,
