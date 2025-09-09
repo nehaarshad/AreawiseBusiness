@@ -1,6 +1,6 @@
 import express from 'express';
 import shopControllers from '../controllers/shopControllers.js';
-import upload from '../MiddleWares/uploadimage.js';
+import {upload} from '../MiddleWares/uploadimage.js';
 const {addshop,getShopByName,getallshops,getusershop,updateshop,updateShopStatus,getshopcategory,getshopId,deleteshopbyid} = shopControllers;
 const shopRouter = express.Router();
 

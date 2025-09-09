@@ -49,12 +49,7 @@ const chatService = (io) => {
         try {
           const { chatId, senderId, msg } = data;
            
-              const chat = await Chat.findByPk(chatId,{
-                where: {
-                  buyerId,
-                  sellerId: product.seller,
-                  productId:id
-                },
+               await Chat.findByPk(chatId,{
                 include:{
                   model:Product
                 }

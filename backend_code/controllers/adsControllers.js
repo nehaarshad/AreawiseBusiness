@@ -1,7 +1,13 @@
 import Ads from "../models/adsModel.js";
 import image from "../models/imagesModel.js";
+import path from "path";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { optimizeImage } from "../MiddleWares/uploadimage.js";
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 dotenv.config();
+
   
 const createAd=async(req,res)=>{
 try {
@@ -9,20 +15,26 @@ try {
     const {expire_at}=req.body; 
 
 
-//     const expire_at = new Date();  //current date and time
-// //
-// //     If today is January 28, 2025, and days is 5, it will calculate January 28 + 5 = February 2, 2025
-//       //retrive current date of month and add the days after which ad expired
-//    expire_at.setDate(expire_at.getDate() + parseInt(expireIn)); //modify current date with future date when ad will expire
-
-    if (req.file) {
-        const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`; 
+  if (req.file) {
+        try {
+                            const originalPath = req.file.path;
+                            const optimizedFilename = 'optimized-' + req.file.filename;
+                            const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                            
+                            // Optimize the image
+                            await optimizeImage(originalPath, optimizedPath);
+                            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`; 
            const ads= await Ads.create({sellerId:id,expire_at,is_active: true});
             await image.create({ imagetype: 'ad', AdId: ads.id, imageUrl });
             return res.status(201).json({
-                mesaage:"AD Created Successfully"
-            })
-    }
+                message:"AD Created Successfully"
+            });
+
+                        } catch (imageError) {
+                            console.error('Error processing image:', req.file.filename, imageError);
+                        
+                        }
+                  }
     return res.status(400).json({
         error: "An image is required for the ad"
       });

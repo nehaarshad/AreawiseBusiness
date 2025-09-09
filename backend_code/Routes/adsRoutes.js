@@ -1,6 +1,6 @@
 import express from "express";
 import  adsController  from "../controllers/adsControllers.js";
-import upload from "../MiddleWares/uploadimage.js";
+import {upload} from "../MiddleWares/uploadimage.js";
 const adsRouter = express.Router();
 const {createAd,getAllAds,getUserAds,deleteAd}=adsController;
 

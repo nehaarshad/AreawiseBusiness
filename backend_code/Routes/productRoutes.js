@@ -1,6 +1,6 @@
 import express from 'express';
 import productControllers from '../controllers/productControllers.js';
-import upload from '../MiddleWares/uploadimage.js';
+import {upload} from '../MiddleWares/uploadimage.js';
 const { addproduct,getProductsOnSale,updateproductArrivalDays,getproductArrivalDays, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductBySubcategory,getNewArrivalproducts,getProductByName,updateproduct, deleteproduct } = productControllers;
 const productRouter = express.Router();
 

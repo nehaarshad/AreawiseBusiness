@@ -1,52 +1,81 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import {v4 as uuidv4} from "uuid"; //universal unique identifier
-
+import { v4 as uuidv4 } from "uuid";
 import { fileURLToPath } from 'url';
+import sharp from 'sharp'; 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
-// defines the storage engine (destination: where file uploads) and the file name(give unique name to each file)
-const storage = multer.diskStorage({  ///permanently store the image into the server
+const IMAGE_CONFIG = {
+    width: 800,
+    height: 800,
+    quality: 85,
+    format: 'webp'
+};
+
+const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-              //const {entity,entityid}=req.params;
-            //  console.log(entity);
-          //    let dest = path.join(__dirname, '..', 'uploads' ,entity,entityid.toString());
-         let dest = path.join(__dirname, '..', 'uploads' );///path of the directory where image will be stored
-        //dest=>backend_code/uploads/product/1
+        let dest = path.join(dirname, '..', 'uploads');
+        
         if (!fs.existsSync(dest)) {
-            fs.mkdirSync(dest, { recursive: true });  //create directory if not exist specifically when new product or user or shop is added then new directory will be created
-            fs.chmodSync(dest, 0o755);  //ensure that directory is created with read,write and execute permission
+            fs.mkdirSync(dest, { recursive: true });
+            fs.chmodSync(dest, 0o755);
         }
-
+        
         cb(null, dest);
     },
-    //give unique name to each file
     filename: function(req, file, cb) {
         const uniquename = Date.now() + '-' + uuidv4();
-        cb(null, file.fieldname + '-' + uniquename + path.extname(file.originalname));
+        const filename = file.fieldname + '-' + uniquename + '.webp';
+        cb(null, filename);
     }
 });
 
 const filefilter = (req, file, cb) => {
-    const allowedexe = /jpeg|jpg|png|gif/;
-    const extname = allowedexe.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedexe.test(file.mimetype);
-
+    const allowedTypes = /jpeg|jpg|png|gif|webp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
     if (mimetype && extname) {
         return cb(null, true);
     } else {
-        cb('Error: Images Only!');
+        cb(new Error('Images Only! Allowed formats: JPEG, JPG, PNG, GIF, WebP'));
     }
 };
 
-// upload middleware
+// Create and export the multer instance directly
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 5000000 }, // 5MB limit
+    limits: { 
+        fileSize: 10 * 1024 * 1024,
+        files: 10
+    },
     fileFilter: filefilter
 });
 
-export default upload;
+// Function to optimize image
+const optimizeImage = async (originalPath, outputPath) => {
+    try {
+        await sharp(originalPath)
+            .resize(IMAGE_CONFIG.width, IMAGE_CONFIG.height, {
+                fit: 'inside', 
+                withoutEnlargement: true 
+            })
+            .webp({ 
+                quality: IMAGE_CONFIG.quality,
+                effort: 4
+            })
+            .toFile(outputPath);
+            
+        fs.unlinkSync(originalPath);
+        return true;
+    } catch (error) {
+        console.error('Image optimization error:', error);
+        throw error;
+    }
+};
+
+// Export the multer instance directly and other utilities as named exports
+export { upload, optimizeImage, IMAGE_CONFIG };

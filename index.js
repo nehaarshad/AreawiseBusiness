@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import compression from "compression";
 import bodyparser from "body-parser";
 import  sequelize  from "./backend_code/config/db_config.js";
 import dotenv from "dotenv"
@@ -88,7 +89,28 @@ app.use(bodyparser.json({ limit: '10mb' }));
 app.use(bodyparser.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static file serving
-app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_code/uploads")));
+app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_code/uploads"), {
+    maxAge: '1y', // Cache images for 1 year
+    etag: true,
+    lastModified: true,
+    cacheControl: true,
+    setHeaders: (res, path) => {
+        if (path.endsWith('.webp') || path.endsWith('.jpg') || path.endsWith('.png')) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+        }
+    }
+}));
+
+app.use(compression({
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    },
+    level: 6,
+    threshold: 1024
+}));
 
 // Security headers
 app.use((req, res, next) => {

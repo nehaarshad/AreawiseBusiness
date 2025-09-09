@@ -7,6 +7,12 @@ import SellerPaymentAccount from "../models/sellerAccountModel.js";
 import dotenv from "dotenv" 
 import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
+import path from "path";
+import { fileURLToPath } from "url";
+import { optimizeImage } from "../MiddleWares/uploadimage.js";
+import fs from "fs";
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 dotenv.config();
 
 const addshop = async (req, res) => {
@@ -42,15 +48,35 @@ const addshop = async (req, res) => {
             categoryId:categoryid,
             userId: user.id
         });
-            if (images && images.length > 0) {
-                const imageRecords = images.map(file => ({
-                    imagetype:'shop',
+                 if (images && images.length > 0) {
+            const imageRecords = [];
+            
+            // Process each image with optimization
+            for (const file of images) {
+                try {
+                    const originalPath = file.path;
+                    const optimizedFilename = 'optimized-' + file.filename;
+                    const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                    
+                    // Optimize the image
+                    await optimizeImage(originalPath, optimizedPath);
+                    imageRecords.push({
+                         imagetype:'shop',
                     ShopId:newshop.id,
-                    imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
-                }));
-    
+                    imageUrl: `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`
+                    });
+                    
+                } catch (imageError) {
+                    console.error('Error processing image:', file.filename, imageError);
+                    continue;
+                }
+            }
+
+            if (imageRecords.length > 0) {
                 await image.bulkCreate(imageRecords);
             }
+        }
+            
            const sellerId = id; 
            const notificationMessage = `Your new shop "${newshop.shopname || 'Shop'}" has been created.`;
 
@@ -79,6 +105,7 @@ const getusershop=async(req,res)=>{
             include:[{
                 model:image,
                 where: { imagetype: 'shop' },
+                 attributes: ['imageUrl'] ,
                 required:false //all shops may not have image
             },
             {
@@ -107,6 +134,7 @@ const getallshops=async(req,res)=>{
             include:[{
                 model:image,
                 where: { imagetype: 'shop' },
+                  attributes: ['imageUrl'] ,
                 required:false //all shops may not have image
             },
             {
@@ -136,6 +164,7 @@ const getShopByName=async(req,res)=>{
                     [Op.like]:`${name}%`
                 } },
              include:[{
+                  attributes: ['imageUrl'] ,
                 model:image,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
@@ -168,6 +197,7 @@ const updateshop=async(req,res)=>{
                 {
             model:image,
             where:{imagetype:"shop"},
+              attributes: ['imageUrl'] ,
             required:false 
         },
         {
@@ -186,26 +216,56 @@ const updateshop=async(req,res)=>{
                 deliveryPrice:deliveryPrice||usershop.deliveryPrice,
                 categoryId:findcategory.id
             };
-            const entity = 'shop';
-            const entityid = id;
-             if (images) {
-                // Remove existing shop images
-                await image.destroy({
-                    where: { 
-                        imagetype: 'shop', 
-                        ShopId: id 
+           
+           if (images && images.length > 0) {
+            // Remove previous images
+            const oldImages = await image.findAll({
+                where: { imagetype: 'shop', ShopId: id }
+            });
+
+            // Delete old image files from filesystem
+            for (const oldImage of oldImages) {
+                try {
+                    const oldPath = path.join(dirname, '..', 'uploads', path.basename(oldImage.imageUrl));
+                    if (fs.existsSync(oldPath)) {
+                        fs.unlinkSync(oldPath);
                     }
-                });
-                
-                // Create new image records
-                const imageRecords = images.map(file => ({
-                    imagetype: entity,
-                    ShopId: entityid,
-                    imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
-                }));
-                
+                } catch (deleteError) {
+                    console.error('Error deleting old image files:', deleteError);
+                }
+            }
+
+            await image.destroy({
+                where: { imagetype: 'shop', ShopId: id }
+            });
+
+            // Process new images
+            const imageRecords = [];
+            for (const file of images) {
+                try {
+                    const originalPath = file.path;
+                    const optimizedFilename = 'optimized-' + file.filename;
+                    const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                    
+                    // Optimize the image
+                    await optimizeImage(originalPath, optimizedPath);
+                    
+                    imageRecords.push({
+                        imagetype: 'shop',
+                        ShopId: id,
+                        imageUrl: `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`,
+                     });
+                    
+                } catch (imageError) {
+                    console.error('Error processing image during update:', file.filename, imageError);
+                    continue;
+                }
+            }
+
+            if (imageRecords.length > 0) {
                 await image.bulkCreate(imageRecords);
             }
+        }
 
           await usershop.update(updatedshop);
 
@@ -277,6 +337,7 @@ const getshopId=async(req,res)=>{
             include:[{
                 model:image,
                 where: { imagetype: 'shop' },
+                  attributes: ['imageUrl'] ,
                 required:false //all shops may not have image
             },
             {
@@ -308,6 +369,7 @@ const getshopcategory=async(req,res)=>{
         const shops=await shop.findAll({where:{categoryId:category.id},
             include:[{
                 model:image,
+                  attributes: ['imageUrl'] ,
                 where: { imagetype: 'shop' },
                 required:false //all shops may not have image
             },

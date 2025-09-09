@@ -1,6 +1,14 @@
 import category from "../models/categoryModel.js";
 import image from "../models/imagesModel.js";
 import subcategories from "../models/subCategoryModel.js";
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { optimizeImage } from "../MiddleWares/uploadimage.js";
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+dotenv.config();
+
 
 const getallcategories = async (req, res) => {
     try {
@@ -60,9 +68,21 @@ const addcategory = async (req, res) => {
          console.log(req.file);
         const newCategory = await category.create({ name });
        if (req.file) {
-                   const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
-                   await image.create({ imagetype: 'category', CategoryId: newCategory.id, imageUrl });
-               }
+        try {
+                            const originalPath = req.file.path;
+                            const optimizedFilename = 'optimized-' + req.file.filename;
+                            const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                            
+                            // Optimize the image
+                            await optimizeImage(originalPath, optimizedPath);
+                             await image.create({ imagetype: 'category', CategoryId: newCategory.id,  imageUrl: `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`, });
+        
+                            
+                        } catch (imageError) {
+                            console.error('Error processing image:', req.file.filename, imageError);
+                        
+                        }
+                  }
         res.json(newCategory);
     } catch (error) {
         console.log(error);

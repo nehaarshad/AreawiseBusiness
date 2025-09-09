@@ -1,6 +1,6 @@
 import express from 'express';
 import categoryControllers from '../controllers/categoryControllers.js';
-import upload from "../MiddleWares/uploadimage.js";
+import {upload} from "../MiddleWares/uploadimage.js";
 const {getallcategories,getallsubcategories,getsubcategoriesofcategory,addcategory,addsubcategory,deletecategory,deletesubcategory}= categoryControllers;
 const categoryRouter = express.Router();
 

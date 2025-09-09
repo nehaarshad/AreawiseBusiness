@@ -1,5 +1,6 @@
 import Product from "../models/productModel.js";
 import Shop from "../models/shopmodel.js";
+import fs from "fs";
 import User from "../models/userModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
@@ -11,6 +12,12 @@ import { Op, where } from "sequelize";
 import sendNotificationToUser from "../utils/sendNotification.js";
 import Day from "../models/dayModel.js";
 import sale from "../models/salesModel.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import { optimizeImage } from "../MiddleWares/uploadimage.js";
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
 dotenv.config();
 
 
@@ -43,25 +50,48 @@ const addproduct = async (req, res) => {
             categoryId:findcategory.id,
             subcategoryId:findsubcategory.id});
         const entityid = product.id;
-            if (images && images.length > 0) {
-                console.log(images);
-                const imageRecords = images.map(file => ({
+               if (images && images.length > 0) {
+            const imageRecords = [];
+            
+            // Process each image with optimization
+            for (const file of images) {
+                try {
+                    const originalPath = file.path;
+                    const optimizedFilename = 'optimized-' + file.filename;
+                    const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
                     
-                    imagetype:'product',
-                    ProductId:entityid,
-                    imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
-                }));
-    
-                await image.bulkCreate(imageRecords);
+                    // Optimize the image
+                    await optimizeImage(originalPath, optimizedPath);
+                    imageRecords.push({
+                        imagetype: 'product',
+                        ProductId: entityid,
+                        imageUrl: `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`,
+                    });
+                    
+                } catch (imageError) {
+                    console.error('Error processing image:', file.filename, imageError);
+                    continue;
+                }
             }
 
+            if (imageRecords.length > 0) {
+                await image.bulkCreate(imageRecords);
+            }
+        }
             const sellerId = usershop.userId; 
             const notificationMessage = `New product added to your shop "${usershop.shopname}"`;
             if (req.io && req.userSockets) {
-             await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+             await sendNotificationToUser(req.io, req.userSockets, parseInt(sellerId), notificationMessage);
              }
-
-        res.status(201).json(product);
+  const newProduct = await Product.findByPk(product.id, {
+            include: [{
+                model: image,
+                where: { imagetype: "product" },
+                required: false,
+                attributes: ['imageUrl'] 
+            }]
+        });
+        res.status(201).json(newProduct);
 
 
     } catch (err) {
@@ -78,10 +108,18 @@ const findproductbyid = async (req, res) => {
             {
                 model:image,
                 where:{imagetype:"product"},
-                required:false //all products may not have image
+                required:false, //all products may not have image
+                   attributes: ['imageUrl'] 
             },
             {
                 model:shop,
+                 include:[{
+                    model:User,
+                },
+                {
+                model:category,
+            },
+            ]
             },
             {
                 model:category,
@@ -94,9 +132,9 @@ const findproductbyid = async (req, res) => {
                 },
             {
                 model:reviews,
-                include:[{
+                include:{
                     model:User,
-                }]
+                }
             }
         ]
         });
@@ -119,6 +157,7 @@ const getallproducts = async (req, res) => {
                 include:[{
                     model:image,
                     where:{imagetype:"product"},
+                       attributes: ['imageUrl'] ,
                     required:false //all products may not have image
                 },
                 {
@@ -155,6 +194,7 @@ const getallproducts = async (req, res) => {
                             {
                                 model:image,
                                 where:{imagetype:"product"},
+                                   attributes: ['imageUrl'] ,
                                 required:false //all products may not have image
                             },
                             {
@@ -200,6 +240,7 @@ const getProductsOnSale = async (req, res) => {
                 include:[{
                     model:image,
                     where:{imagetype:"product"},
+                       attributes: ['imageUrl'] ,
                     required:false //all products may not have image
                 },
                 {
@@ -235,6 +276,7 @@ const getProductsOnSale = async (req, res) => {
                         include:[
                             {
                                 model:image,
+                                   attributes: ['imageUrl'] ,
                                 where:{imagetype:"product"},
                                 required:false //all products may not have image
                             },
@@ -291,6 +333,7 @@ console.log(dateThreshold);
                 include:[{
                     model:image,
                     where:{imagetype:"product"},
+                       attributes: ['imageUrl'] ,
                     required:false //all products may not have image
                 },
                 {
@@ -317,16 +360,9 @@ console.log(dateThreshold);
         }
        
         else{
-        //     const categoryID=await category.findOne({
-        //        where:{
-        //          name: {
-        //             [Op.like]:`${Category}`
-        //         }},
-        // })
             products=await Product.findAll(
                         {
                             where:{
-                          //  categoryId:categoryID.id,
                             createdAt: {
                          [Op.gte]: dateThreshold 
             }
@@ -336,6 +372,7 @@ console.log(dateThreshold);
                             {
                                 model:image,
                                 where:{imagetype:"product"},
+                                   attributes: ['imageUrl'] ,
                                 required:false //all products may not have image
                             },
                             {
@@ -386,6 +423,7 @@ const getuserproducts = async (req, res) => {
               order: [['createdAt', 'DESC']], 
              include:[{
                 model:image,
+                   attributes: ['imageUrl'] ,
                 where:{imagetype:"product"},
                 required:false //all products may not have image
             },
@@ -432,6 +470,7 @@ const getshopproducts = async (req, res) => {
              order: [['createdAt', 'DESC']], 
             include:[{
                 model:image,
+                   attributes: ['imageUrl'] ,
                 where:{imagetype:"product"},
                 required:false //all products may not have image
             },
@@ -475,6 +514,7 @@ const getProductBySubcategory = async (req, res) => {
                 {
                     model: image,
                     where: { imagetype: "product" },
+                       attributes: ['imageUrl'] ,
                     required: false // all products may not have image
                 },
                 {
@@ -530,6 +570,7 @@ const getProductByName = async (req, res) => {
               order: [['createdAt', 'DESC']], 
              include:[{
                  model:image,
+                    attributes: ['imageUrl'] ,
                  where:{imagetype:"product"},
                  required:false //all products may not have image
              },
@@ -639,25 +680,54 @@ const updateproduct = async (req, res) => {
             categoryId:  findcategory.id,
             subcategoryId: findsubcategory.id
         }
-        const entity = "product";
-        const entityid = id;
-         if (images) {
-            // Remove prvious list of product images
-            await image.destroy({
-                where: { 
-                    imagetype: 'product', 
-                    ProductId: id 
-                }
+        if (images && images.length > 0) {
+            // Remove previous images
+            const oldImages = await image.findAll({
+                where: { imagetype: 'product', ProductId: id }
             });
-            
-            // Re-Create or add new images 
-            const imageRecords = images.map(file => ({
-                imagetype: entity,
-                ProductId: entityid,
-                imageUrl: `${process.env.baseUrl}/backend_code/uploads/${file.filename}`
-            }));
-            
-            await image.bulkCreate(imageRecords);
+
+            // Delete old image files from filesystem
+            for (const oldImage of oldImages) {
+                try {
+                    const oldPath = path.join(dirname, '..', 'uploads', path.basename(oldImage.imageUrl));
+                    if (fs.existsSync(oldPath)) {
+                        fs.unlinkSync(oldPath);
+                    }
+                } catch (deleteError) {
+                    console.error('Error deleting old image files:', deleteError);
+                }
+            }
+
+            await image.destroy({
+                where: { imagetype: 'product', ProductId: id }
+            });
+
+            // Process new images
+            const imageRecords = [];
+            for (const file of images) {
+                try {
+                    const originalPath = file.path;
+                    const optimizedFilename = 'optimized-' + file.filename;
+                    const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                    
+                    // Optimize the image
+                    await optimizeImage(originalPath, optimizedPath);
+                    
+                    imageRecords.push({
+                        imagetype: 'product',
+                        ProductId: id,
+                        imageUrl: `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`,
+                     });
+                    
+                } catch (imageError) {
+                    console.error('Error processing image during update:', file.filename, imageError);
+                    continue;
+                }
+            }
+
+            if (imageRecords.length > 0) {
+                await image.bulkCreate(imageRecords);
+            }
         }
         await product.update(updatedproduct);
         const sellerId = product.seller; 
@@ -667,7 +737,6 @@ const updateproduct = async (req, res) => {
              }
         res.json({
             message: " product updated Successfully",
-            product: updatedproduct
         })
 
     } catch (error) {

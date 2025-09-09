@@ -5,6 +5,12 @@ import shop from "../models/shopmodel.js";
 import Notification from "../models/notifications.js";
 import image from "../models/imagesModel.js";
 import bcrypt from "bcryptjs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { optimizeImage } from "../MiddleWares/uploadimage.js";
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+import fs from "fs";
 import dotenv from "dotenv";
 import { Op } from "sequelize";
 dotenv.config();
@@ -130,7 +136,13 @@ const addUser = async (req, res) => {
         await Address.create({ sector, city, address, userId: newUser.id });
         
         if (req.file) {
-            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
+             const originalPath = req.file.path;
+                            const optimizedFilename = 'optimized-' + req.file.filename;
+                            const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                            
+                            // Optimize the image
+                            await optimizeImage(originalPath, optimizedPath);
+            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`; // Adjust the path as needed
             await image.create({ imagetype: 'user', UserId: newUser.id, imageUrl });
         }
         
@@ -196,7 +208,13 @@ const updateuser = async (req, res) => {
             const userImage = await image.findOne({
                 where: {  UserId: id }
             });
-            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${req.file.filename}`; // Adjust the path as needed
+             const originalPath = req.file.path;
+                            const optimizedFilename = 'optimized-' + req.file.filename;
+                            const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                            
+                            // Optimize the image
+                            await optimizeImage(originalPath, optimizedPath);
+            const imageUrl = `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`; // Adjust the path as needed
             
             if (userImage) {
                 await userImage.update({ imageUrl });

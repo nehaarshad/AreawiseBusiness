@@ -3,8 +3,8 @@ import Notification from "../models/notifications.js";
 const sendNotificationToUser = async (io, userSockets, userId, message) => {
   try {
     const newNotification = await Notification.create({
-      userId,
-      message
+      userId: parseInt(userId),
+      message: message
     });
 
     // Get the socket ID for the user
