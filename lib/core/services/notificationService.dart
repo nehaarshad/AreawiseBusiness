@@ -31,7 +31,6 @@ class NotificationService {
     try {
       await _requestPermissions();
       await _initializeNotifications();
-      await _setupAudio();
       _isInitialized = true;
       print('NotificationService initialized successfully');
     } catch (e) {
@@ -81,14 +80,6 @@ class NotificationService {
       initializationSettings,
       onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse,
     );
-  }
-
-  Future<void> _setupAudio() async {
-    try {
-      await _audioPlayer.setReleaseMode(ReleaseMode.stop);
-    } catch (e) {
-      print('Error setting up audio: $e');
-    }
   }
 
   // Handle notification tap
@@ -181,19 +172,11 @@ class NotificationService {
 
   Future<void> _playNotificationSound() async {
     try {
-      // Play from assets
-      await _audioPlayer.play(AssetSource('sound/notification-1-269296.mp3'));
-      // Device Vibration
-      await HapticFeedback.vibrate();
-    } catch (e) {
-      print(' Error playing notification sound: $e');
-      // Fallback to system sound
-      try {
         await SystemSound.play(SystemSoundType.alert);
       } catch (fallbackError) {
         print('Error playing fallback sound: $fallbackError');
       }
-    }
+
   }
 
   // Cancel notification

@@ -6,7 +6,8 @@ import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/routes/routes_names.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../../repositories/ShopRepositories.dart';
 import '../../repositories/product_repositories.dart';
 import '../SharedViewModels/getAllCategories.dart';
@@ -28,10 +29,21 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     getUserShops();
   }
 
+  bool isDisposed = false;
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
+  }
+
   void resetState() {
-    state = ProductState(isLoading: false,images: []); // Reset to initial state
-    getCategories();
-    getUserShops();
+    if (!isDisposed) {
+      state =
+          ProductState(isLoading: false, images: []); // Reset to initial state
+      getCategories();
+      getUserShops();
+    }
   }
 
   Future<void> getCategories() async {
@@ -150,7 +162,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     state = state.copyWith(customSubcategoryName: name);
   }
 
-  Future<void> addProduct({
+  Future<bool> addProduct({
     required String name,
     required String price,
     required String subtitle,
@@ -166,6 +178,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       print("User ID: $id");
       // Validate images
       if (state.images.isEmpty || state.images.length > 7) {
+        Utils.flushBarErrorMessage("Please select 1 to 7 images", context);
         throw Exception('Please select 1 to 7 images');
       }
 
@@ -181,7 +194,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       final shopId = state.isCustomShop ? null : state.selectedShop?.id.toString();
        if(shopId == null){
          Utils.flushBarErrorMessage("Select your Active Shop", context);
-         return;
+         return false;
        }
       // Validate category and subcategory
       final categoryName = state.isCustomCategory ? null : state.selectedCategory?.name;
@@ -189,7 +202,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
 
       if (categoryName == null || subcategoryName == null) {
          Utils.flushBarErrorMessage("Select Existed category or Subcategory", context);
-          return;
+          return false;
 
       }
 
@@ -234,15 +247,14 @@ class AddProductViewModel extends StateNotifier<ProductState> {
      resetState();
       state = state.copyWith(isLoading: false,images: null);
       Utils.toastMessage("Added Successfully!");
-      Navigator.pop(context);
+      return true;
     } catch (e) {
       print(e);
-      // Handle errors and show error message
-      Utils.flushBarErrorMessage('${e}', context);
       state = state.copyWith(
         product: AsyncValue.error(e, StackTrace.current),
         isLoading: false,
       );
+      return false;
     }
   }
 

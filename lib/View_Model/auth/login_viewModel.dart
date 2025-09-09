@@ -5,7 +5,7 @@ import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:flutter/material.dart';
 

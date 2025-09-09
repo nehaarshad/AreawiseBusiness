@@ -24,14 +24,14 @@ class Utils {
       flushbar: Flushbar(
         message: msg,
         backgroundColor: Appcolors.baseColorLight30,
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 3),
         forwardAnimationCurve: Curves.decelerate,
         reverseAnimationCurve: Curves.easeInOut,
         flushbarPosition: FlushbarPosition.TOP,
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         padding: EdgeInsets.all(15),
         positionOffset: 20,
-        icon: Icon(Icons.error, size: 25, color: Colors.white),
+        icon: Icon(Icons.message_outlined, size: 25, color: Colors.white),
       )..show(context),
     );
   }

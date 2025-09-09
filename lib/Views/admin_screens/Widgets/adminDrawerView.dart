@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/notifyUtils.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../core/utils/colors.dart';
 

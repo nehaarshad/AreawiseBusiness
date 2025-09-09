@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:ecommercefrontend/View_Model/adminViewModels/userState.dart';
 import 'package:ecommercefrontend/models/NewArrivalDuration.dart';
 import 'package:ecommercefrontend/models/deliveryOrderAttributes.dart';import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import 'package:flutter/material.dart';
 import '../../repositories/deliveryOrderAttributesRepository.dart';
 import '../../repositories/product_repositories.dart';

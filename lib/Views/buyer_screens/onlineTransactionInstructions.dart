@@ -2,7 +2,7 @@ import 'package:ecommercefrontend/Views/buyer_screens/widgets/paymentMethod.dart
 import 'package:ecommercefrontend/Views/buyer_screens/widgets/paymentMethodSelection.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/paymentModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

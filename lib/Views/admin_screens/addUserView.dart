@@ -7,7 +7,7 @@ import 'package:riverpod/riverpod.dart';
 import '../../../View_Model/UserProfile/EditProfileViewModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../View_Model/adminViewModels/addUserViewModel.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../shared/widgets/buttons.dart';
 import '../../core/utils/colors.dart';
 

@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../shared/widgets/SetDateTime.dart';
 
 

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/SignUp_viewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/notifyUtils.dart';
 import '../../shared/widgets/buttons.dart';
 import '../../../core/utils/colors.dart';
 
@@ -129,16 +129,13 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
     }
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){
-          Navigator.pop(context);
-        }, icon: Icon(Icons.arrow_back,color: Appcolors.whiteSmoke,size: 20.h,)),
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding:  EdgeInsets.only(top: 25.0.h,left: 0),
+          child:  Text("SignUp",style: TextStyle(color: Appcolors.whiteSmoke,fontSize: 24.sp,fontWeight: FontWeight.bold),)
+
+        ),
         backgroundColor: Appcolors.baseColor,
-        actions: [
-      Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 13 ),
-      child:Text("SignUp",style: TextStyle(color: Appcolors.whiteSmoke,fontSize: 25.sp,fontWeight: FontWeight.bold),)
-      ),
-        ],
       ),
       backgroundColor: Appcolors.baseColor,
       body: SingleChildScrollView(
@@ -314,31 +311,27 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                             );
                           },
                         ),
-                        // SizedBox(height: 5.h),
-                        // Padding(
-                        //   padding:  EdgeInsets.symmetric(
-                        //     vertical: 2.h,
-                        //     horizontal: 15.w,
-                        //   ),
-                        //   child: Row(
-                        //     children: [
-                        //       Text("Already have an Account? ",style: TextStyle(fontSize: 15.sp),),
-                        //       InkWell(
-                        //         onTap: () {
-                        //           Navigator.pushNamed(context, routesName.login);
-                        //         },
-                        //         child: Text(
-                        //           "Login",
-                        //           style: TextStyle(
-                        //             color: Appcolors.baseColor,
-                        //             fontWeight: FontWeight.bold,
-                        //             fontSize: 15.sp
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
+                       SizedBox(height: 2.h,),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Already have an account? ",style: TextStyle(fontSize: 15.sp),),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, routesName.login);
+                                },
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    color: Appcolors.baseColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.sp
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
                       ],
                     ),
                   ),

@@ -1,9 +1,10 @@
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/cartModel.dart';
 import 'package:ecommercefrontend/repositories/cartRepositories.dart';
-import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/utils/dialogueBox.dart';
 
 final cartViewModelProvider =StateNotifierProvider.family<cartViewModel, AsyncValue<Cart?>, String>(
       (ref, id) {
@@ -18,10 +19,16 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
     getUserCart(id);
   }
 
+  int cartItems=0;
+  int get Items => cartItems;
   Future<Cart?> getUserCart(String id) async {
     try {
       Cart items = await ref.read(cartProvider).getUserCart(id);
+      cartItems=items.cartItems?.length ?? 0;
       state = AsyncValue.data(items);
+      // Notify listeners about cart items change
+      ref.read(cartItemCountProvider.notifier).state = cartItems;
+
       return items;
     } catch (e) {
       print(e);
@@ -46,52 +53,44 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
   Future<void> deleteUserCart(String id,String userId, BuildContext context) async {
     try {
       dynamic items = await ref.read(cartProvider).deleteUserCart(id);
-      print(items);
-      // state=AsyncValue.data(items);
       await getUserCart(userId);
-      // Navigator.pop(context);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
 
-  //send userId as params, and product id as req.body  //accesssd  on productdetailview
-  Future<void> addToCart(String id,int productId, int quantity) async {
+  Future<bool> addToCart(String id,int productId, int quantity,BuildContext context) async {
     try {
       final data={
         'productId':productId,
         'quantity':quantity,
       };
-
-      print("Request Body (productId): ${data['productId']} with type: ${data['productId'].runtimeType}");
-      print("Request Body (quantity): ${data['quantity']} with type: ${data['quantity'].runtimeType}");
-      print("(id): ${this.id} with type: ${this.id.runtimeType}");
-
-      Cart items = await ref.read(cartProvider).addToCart(id, data);
-      if (kDebugMode) {
-        print(items);
-      }
+      await ref.read(cartProvider).addToCart(id, data);
       await getUserCart(id);
-      Utils.toastMessage("Added Successfully!");
+      await DialogUtils.showSuccessDialog(context, "Product added to cart successfully!");
+      return true;
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
-      Utils.toastMessage("Failed!");
+      await DialogUtils.showErrorDialog(context, "Failed to add product!");
+      return false;
     }
   }
 
   //send itemId as params, and product quantity as req.body
   Future<void> updateCartItem(String userId, String id, int data) async {
     try {
-      Cart items = await ref.read(cartProvider).updateCartItem(id, data);
-      if (kDebugMode) {
-        print(items);
-      }
+      await ref.read(cartProvider).updateCartItem(id, data);
       await getUserCart(userId);
     } catch (e) {
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+
+
 }
+
+final cartItemCountProvider = StateProvider<int>((ref) => 0);

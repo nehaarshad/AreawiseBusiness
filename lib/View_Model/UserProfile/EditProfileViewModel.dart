@@ -5,7 +5,7 @@ import 'package:ecommercefrontend/repositories/UserDetailsRepositories.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/utils/routes/routes_names.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 

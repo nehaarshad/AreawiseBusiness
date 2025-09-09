@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/notifyUtils.dart';
 
 class RelatedProducts extends ConsumerStatefulWidget {
   final int userid;

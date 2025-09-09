@@ -7,7 +7,8 @@ import 'package:ecommercefrontend/repositories/ShopRepositories.dart';
 import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/routes/routes_names.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../SharedViewModels/getAllCategories.dart';
 import '../adminViewModels/ShopViewModel.dart';
 import 'sellerShopViewModel.dart';
@@ -25,10 +26,20 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     getCategories();
   }
 
+  bool isDisposed = false;
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
+  }
+
   Future<void> getCategories() async {
     try {
+      if (isDisposed) return;
       state = state.copyWith(isLoading: true);
       final categories = await ref.read(categoryProvider).getCategories();
+      if (isDisposed) return;
       state = state.copyWith(categories: categories, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);
@@ -78,8 +89,10 @@ class AddShopViewModel extends StateNotifier<ShopState> {
   }
 
   void resetState() {
-    state = ShopState(isLoading: false,images: [],selectedCategory: null); // Reset to initial state
-    getCategories();
+    if (!isDisposed) {
+      state = ShopState(images: [], selectedCategory: null);
+      getCategories();
+    }
   }
 
 
@@ -87,16 +100,14 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     resetState();
     ref.invalidate(sellerShopViewModelProvider(userId.toString()));
     ref.invalidate(GetallcategoriesProvider);
-    // 2. Explicitly call getShops to ensure data refresh
     await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());
     await ref.read(GetallcategoriesProvider.notifier);
-    resetState();
     await Future.delayed(Duration(milliseconds: 500));
     Navigator.pop(context);
   }
 
 
-  Future<void> addShop({
+  Future<bool> addShop({
     required String shopname,
     required String shopaddress,
     required String sector,
@@ -120,7 +131,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
               : state.selectedCategory?.name;
       if (categoryName == null ) {
         Utils.flushBarErrorMessage("Select Existed category ", context);
-        return;
+        return false;
 
       }
 
@@ -138,23 +149,20 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       final response = await ref.read(shopProvider).addShop(data, shopId, state.images.whereType<File>().toList());
 print(response);
       Utils.flushBarErrorMessage(response.toString(),context);
-      final addshop = ShopModel.fromJson(response);
-      print(addshop);
-
       ref.invalidate(sellerShopViewModelProvider(userId.toString()));
-      ref.invalidate(GetallcategoriesProvider);
       await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());///update seller shop list
-      await ref.read(shopViewModelProvider.notifier).getShops();///update admin and buyer shopList
-      await ref.read(GetallcategoriesProvider.notifier);
-      await Future.delayed(Duration(milliseconds: 500));
+      await ref.read(shopViewModelProvider.notifier).getShops();
       resetState();
-      state = state.copyWith(selectedCategory: null,isLoading: false);
-      Navigator.pop(context);
+
+     return true;
+
+
     } catch (e) {
       state = state.copyWith(
         shop: AsyncValue.error(e, StackTrace.current),
         isLoading: false,
       );
+      return false;
     }
   }
 }

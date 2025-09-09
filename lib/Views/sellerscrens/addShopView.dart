@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/routes/routes_names.dart';
+import '../../core/utils/notifyUtils.dart';
 import 'widgets/ShopCategoryDropDownMenu.dart';
 import '../../core/utils/colors.dart';
 
@@ -29,8 +30,6 @@ class _addShopViewState extends ConsumerState<addShopView> {
 
   @override
   void dispose() {
-
-    _viewModel.resetState();
     shopname.dispose();
     sector.dispose();
     shopaddress.dispose();
@@ -44,7 +43,6 @@ class _addShopViewState extends ConsumerState<addShopView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Appcolors.whiteSmoke,
-          automaticallyImplyLeading:false,
         actions: [ Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -172,8 +170,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
                       ? null
                       : () async {
                     if (formkey.currentState!.validate()) {
-                      await ref
-                          .read(
+                   bool response =  await ref.read(
                         addShopProvider(
                           widget.id.toString(),
                         ).notifier,
@@ -187,6 +184,9 @@ class _addShopViewState extends ConsumerState<addShopView> {
                           userId:widget.id,
                           context: context
                       );
+                   if(response){
+                    Navigator.pop(context);
+                            }
                     }
                   },
                   child: Container(

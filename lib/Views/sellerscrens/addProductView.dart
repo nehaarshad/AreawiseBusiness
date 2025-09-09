@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/widgets/productCondition.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +10,7 @@ import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../View_Model/SellerViewModels/ProductStates.dart';
+import '../../core/utils/routes/routes_names.dart';
 import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
 import 'widgets/ShopCategoryDropDownMenu.dart';
 import 'widgets/shopsDropDown.dart';
@@ -38,8 +39,6 @@ class _addProductViewState extends ConsumerState<addProductView> {
 
   @override
   void dispose() {
-
-    _viewModel.resetState();
     name.dispose();
     subtitle.dispose();
     description.dispose();
@@ -217,9 +216,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                   onTap:state.isLoading ? null : () async {
                     if (formkey.currentState!.validate()) {
                       condition==ProductCondition.New ?'New':"Used";
-                      print(condition.value);
-                      String conditionValue = condition.value;
-                      await ref.read(addProductProvider(userid).notifier,)
+                    bool response=  await ref.read(addProductProvider(userid).notifier,)
                           .addProduct(
                         name: name.text,
                         price: price.text,
@@ -230,6 +227,10 @@ class _addProductViewState extends ConsumerState<addProductView> {
                         condition:condition.value,
                         context: context,
                       );
+                    if(response){
+
+                      Navigator.pop(context);
+                    }
                     }
                   },
                   child: Container(
@@ -242,7 +243,9 @@ class _addProductViewState extends ConsumerState<addProductView> {
 
                     ),
                     child: Center(
-                      child: Text(
+                      child:state.isLoading
+                          ? CircularProgressIndicator(color: Appcolors.whiteSmoke,)
+                          : Text(
                         "Add Product",
                         style: TextStyle(
                           color: Appcolors.whiteSmoke,

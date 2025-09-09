@@ -5,18 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/notifyUtils.dart';
 
 
-class AllProducts extends ConsumerStatefulWidget {
+class usedItems extends ConsumerStatefulWidget {
   int userid;
-  AllProducts({required this.userid});
+  usedItems({required this.userid});
 
   @override
-  ConsumerState<AllProducts> createState() => _ProductsViewState();
+  ConsumerState<usedItems> createState() => _usedProductsViewState();
 }
 
-class _ProductsViewState extends ConsumerState<AllProducts> {
+class _usedProductsViewState extends ConsumerState<usedItems> {
   @override
   void initState() {
     super.initState();
@@ -45,22 +44,18 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
             if (products.isEmpty) {
               return const Center(child: Text("No Products available."));
             }
-            return SizedBox(
-              height: 480.h,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 2.w,
-                  mainAxisSpacing: 18.h,
-                  childAspectRatio: 0.70,
-                ),
-                itemCount: products.length,
-                physics: const ScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  if (product == null) return const SizedBox.shrink();
+            final filteredProducts = products.where((product) => product?.condition == "Used").toList();
 
+            if(filteredProducts.isEmpty){
+              return Center(child: Text("No Products Found!"));
+            }
+            return SizedBox(
+              height: 220.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: filteredProducts.length,
+                itemBuilder: (context, index) {
+                  final product = filteredProducts[index];
                   return GestureDetector(
                       onTap: () {
                         if (product != null) {

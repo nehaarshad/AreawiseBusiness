@@ -2,7 +2,7 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/buyerViewModels/WishListViewModel.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/notifyUtils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 

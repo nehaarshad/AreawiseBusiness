@@ -39,6 +39,7 @@ class ChatMessagesViewModel extends StateNotifier<AsyncValue<List<Message>>> {
 
     try {
       final messages = await repository.getChatMessages(chatId);
+      print(messages);
       state = AsyncValue.data(messages);
       _isLoaded = true;
     } catch (e) {

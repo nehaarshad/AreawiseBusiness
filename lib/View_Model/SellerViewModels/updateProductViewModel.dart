@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../../models/ProductModel.dart';
 import '../../models/SubCategoryModel.dart';
 import '../../models/categoryModel.dart';

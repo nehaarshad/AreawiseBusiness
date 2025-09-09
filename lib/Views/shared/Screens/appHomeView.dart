@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/usedItems.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/DashBoardProductsView.dart';
 import '../widgets/categoryTopBar.dart';
 import '../widgets/getAllAds.dart';
@@ -84,12 +86,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                       style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Text("See All", style: TextStyle(color: Colors.grey,fontSize: 12.sp)),
-                      Icon(Icons.arrow_forward_ios_sharp, size: 9.h,color: Colors.grey,),
-                    ],
-                  ),
                 ],
               ),
               NewArrivals(userid: widget.id,),
@@ -105,15 +101,43 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                       style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Row(
-                    children: [
-                       Text("See All", style: TextStyle(color: Colors.grey,fontSize: 12.sp)),
-                       Icon(Icons.arrow_forward_ios_sharp, size: 9.h,color: Colors.grey,),
-                    ],
-                  ),
+
                 ],
               ),
               AllFeaturedProducts(userid: widget.id),
+              //UsedItems
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+                    child: Text(
+                      "Used Items",
+                      style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
+                    child: TextButton(
+                      onPressed: (){
+                          final   parameters={
+                            "id": widget.id,
+                            "category": "All",
+                            "condition":"Used"
+                          };
+                          print(parameters);
+                          Navigator.pushNamed(context, routesName.explore,arguments: parameters);
+
+
+                      },
+                      child: Text("View all",
+                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+                    ),
+                  ),
+                ],
+              ),
+              usedItems(userid: widget.id),
               //All Products
              Row(
                mainAxisAlignment: MainAxisAlignment.start,

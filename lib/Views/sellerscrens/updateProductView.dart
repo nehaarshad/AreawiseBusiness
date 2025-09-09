@@ -4,7 +4,7 @@ import 'package:ecommercefrontend/View_Model/SellerViewModels/updateProductViewM
 import 'package:ecommercefrontend/Views/sellerscrens/widgets/productCondition.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/ProductDetailView.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:image_picker/image_picker.dart';

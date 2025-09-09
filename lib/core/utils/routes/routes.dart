@@ -385,16 +385,18 @@ class Routes {
         );
 
       case (routesName.account):
-        final id = arg as int;
+        final id = arg['id'] as int;
+        final user = arg['user'] as UserDetailModel;
         return MaterialPageRoute(
-          builder: (BuildContext context) => AccountView(userid: id),
+          builder: (BuildContext context) => AccountView(userid: id,user: user,),
         );
 
       case (routesName.explore):
         final id = arg['id'] as int;
         final category = arg['category'] as String;
+        final condition = arg['condition'] as String?;
         return MaterialPageRoute(
-          builder: (BuildContext context) => Exploreproductsview(userId:id,category:category),
+          builder: (BuildContext context) => Exploreproductsview(userId:id,category:category,condition:condition),
         );
 
       default:

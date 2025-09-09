@@ -71,7 +71,7 @@ class _CategoriesGridState extends ConsumerState<CategoriesGrid> {
         padding: EdgeInsets.all(16.w),
         itemBuilder: (context, index) {
           final category = categories[index];
-          if (category == null) return const SizedBox.shrink();
+          if (category == null ) return const SizedBox.shrink();
 
           print(category.image?.imageUrl);
 

@@ -46,10 +46,7 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-
-        ],
-      ),
+     ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

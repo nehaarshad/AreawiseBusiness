@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../models/UserDetailModel.dart';
+
 class AccountView extends StatefulWidget {
   final int userid;
-  const AccountView({super.key,required this.userid});
+  final UserDetailModel? user;
+  const AccountView({super.key,required this.userid, this.user});
 
   @override
   State<AccountView> createState() => _AccountViewState();
@@ -18,6 +21,17 @@ class _AccountViewState extends State<AccountView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+
+          automaticallyImplyLeading: false,
+          leading: IconButton(onPressed: (){
+            Navigator.pushNamed(
+              context,
+              routesName.dashboard,
+              arguments: widget.user,
+            );
+          },
+              icon: Icon(Icons.arrow_back,color: Appcolors.baseColorLight30,size: 20.h,)),
+
           title: const Text('Account',style: TextStyle(fontWeight: FontWeight.w500),),
           backgroundColor: Appcolors.whiteSmoke,
           elevation: 0,

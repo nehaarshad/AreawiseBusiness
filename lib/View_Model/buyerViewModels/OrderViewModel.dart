@@ -1,6 +1,6 @@
 
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/paymentModel.dart';
 import 'package:ecommercefrontend/repositories/transactionSlipRepository.dart';
 import 'package:flutter/material.dart';

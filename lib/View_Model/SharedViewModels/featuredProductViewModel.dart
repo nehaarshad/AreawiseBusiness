@@ -2,7 +2,7 @@ import 'package:ecommercefrontend/repositories/featuredRepositories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/routes/routes_names.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../../models/featureModel.dart';
 
 final featureProductViewModelProvider = StateNotifierProvider.family<FeatureProductViewModel, AsyncValue<List<featureModel?>>, String>((ref, id) {

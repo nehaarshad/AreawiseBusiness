@@ -1,4 +1,4 @@
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/repositories/adRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/adsModel.dart';

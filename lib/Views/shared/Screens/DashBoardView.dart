@@ -7,13 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/auth/sessionmanagementViewModel.dart';
+import '../../../View_Model/buyerViewModels/cartViewModel.dart';
 import '../../../core/services/notificationService.dart';
 import '../../../core/services/socketService.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/notifyUtils.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../models/auth_users.dart';
 import '../widgets/bottomNavBar.dart';
+import '../widgets/cartBadgeWidget.dart';
 import '../widgets/drawerList.dart';
 import '../widgets/logout_button.dart';
 import '../widgets/notificationBadge.dart';
@@ -66,27 +68,20 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
 
     BuyerViews = [
       ShopsView(id: widget.id),
-      Exploreproductsview(userId: widget.id,category: "All",),//explore
+      Exploreproductsview(userId: widget.id,category: "All",condition: null,),//explore
       appHomeview(id: widget.id),
       CategoriesView(userid: widget.id),//categories
       Tosearchproduct(userid: widget.id),//SearchProductIcon
     ];
     WidgetsBinding.instance.addObserver(this);
     _initializeServices();
-    // BuyerViews = [
-    //   ShopsView(id: widget.id),
-    //   Wishlistview(id: widget.id),
-    //   appHomeview(id: widget.id),
-    //   Cartview(id: widget.id),
-    //   profileDetailView(id: widget.id,role: 'Buyer',),
-    // ];
-    // SellerViews = [
-    //   SellerShopsView(id: widget.id),
-    //   Sellerproductsview(id: widget.id),
-    //   appHomeview(id: widget.id),
-    //   OrdersView(sellerId: widget.id),
-    //   profileDetailView(id: widget.id,role: 'Seller',),
-    // ];
+    initializeCartCount();
+  }
+
+  Future<void> initializeCartCount() async {
+    // Initialize cart view model to get current cart count
+    final cartViewModel = ref.read(cartViewModelProvider(widget.id.toString()).notifier);
+    await cartViewModel.getUserCart(widget.id.toString());
   }
 
   Future<void> _initializeServices() async {
@@ -94,14 +89,9 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
     final userId = widget.id.toString();
 
     if (userId != null) {
-      // Initialize socket service
       final socketService = ref.read(socketServiceProvider);
       await socketService.initialize(userId: userId);
-
-      // Join user's chats
       socketService.joinChats(userId);
-
-      // Listen to notification actions
       _listenToNotificationActions(socketService);
     }
   }
@@ -149,13 +139,24 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
               },
             ),
           ),
-          IconButton(
-                    onPressed:(){
+          CartBadgeWidget(
+            userId: widget.id,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  routesName.cart,
+                  arguments: widget.id,
+                );
+              },
+              icon: Icon(
+                Icons.shopping_cart_outlined,
+                color: Appcolors.baseColor,
+              ),
+            ),
+          ),
 
-                      Navigator.pushNamed(context, routesName.cart,arguments: widget.id);
-
-                    },
-                    icon: Icon(Icons.shopping_cart_outlined,size: 18.h,color: Appcolors.baseColor,))
+          const SizedBox(width: 8),
 
         ],
       ),

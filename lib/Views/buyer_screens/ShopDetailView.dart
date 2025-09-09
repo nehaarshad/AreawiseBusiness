@@ -43,7 +43,7 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                         SizedBox(height: 15.h),
                         Row(
                           children: [
-                            Text("Seller Name: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                            Text("Seller Name: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                             Text(
                               "${widget.shop.user?.username}",
                               style: TextStyle(
@@ -55,8 +55,21 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                           ],
                         ),
                         Row(
+                          children: [
+                            Text("Contact Number: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                            Text(
+                              "${widget.shop.user?.contactnumber}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.sp,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
                               children: [
-                                Text("Category: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                                Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                 Text(
                                   "${widget.shop.category?.name}",
                                   style: TextStyle(
@@ -69,7 +82,7 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                             ),
                         Row(
                           children: [
-                            Text("Sector: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                            Text("Sector: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                             Text(
                               "${widget.shop.sector}",
                               style: TextStyle(
@@ -87,20 +100,9 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
               ),
               Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 12.0.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        "Shop Products",
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-                      ),
-                    Row(
-                      children: [
-                        const Text("See All", style: TextStyle(color: Colors.grey)),
-                         Icon(Icons.arrow_forward_ios_sharp, size: 10.sp),
-                      ],
-                    ),
-                  ],
+                child:  Text(
+                  "Shop Products",
+                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: 10.h,),

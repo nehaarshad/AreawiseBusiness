@@ -1,7 +1,7 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,12 +37,11 @@ class _login_viewState extends ConsumerState<login_view> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Appcolors.baseColor,
-        actions: [
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 13 ),
-              child:Text("Login",style: TextStyle(color: Appcolors.whiteSmoke,fontSize: 25.sp,fontWeight: FontWeight.bold),)
+        title:Padding(
+          padding:  EdgeInsets.only(top: 25.0.h),
+          child: Text("SignIn",style: TextStyle(color: Appcolors.whiteSmoke,fontSize: 25.sp,fontWeight: FontWeight.bold),
           ),
-        ],
+        )
       ),
       backgroundColor: Appcolors.baseColor,
       body: SafeArea(
@@ -114,7 +113,7 @@ class _login_viewState extends ConsumerState<login_view> {
                         Navigator.pushNamed(context, routesName.forget);
                       }, child: Text("Forget Password?"))
                     ],),
-                    SizedBox(height: 40.h),
+                    SizedBox(height: 5.h),
                     Consumer(
                       builder: (context, ref, child) {
                         final loading = ref.watch(loginProvider);
@@ -148,12 +147,8 @@ class _login_viewState extends ConsumerState<login_view> {
                         );
                       },
                     ),
-                    SizedBox(height: 3.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 18.w,
-                      ),
-                      child: Row(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Don't have an account?",style: TextStyle(fontSize: 15.sp),),
                           InkWell(
@@ -161,7 +156,7 @@ class _login_viewState extends ConsumerState<login_view> {
                               Navigator.pushNamed(context, routesName.signUp);
                             },
                             child: Text(
-                              "  Sign Up",
+                              " Sign Up",
                               style: TextStyle(
                                   color: Appcolors.baseColor,
                                   fontWeight: FontWeight.bold,
@@ -172,7 +167,7 @@ class _login_viewState extends ConsumerState<login_view> {
                           ),
                         ],
                       ),
-                    ),
+
                   ],
                 ),
               ),

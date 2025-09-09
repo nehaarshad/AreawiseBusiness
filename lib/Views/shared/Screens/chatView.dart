@@ -32,10 +32,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
   void initState() {
     super.initState();
     _messageController = TextEditingController();
-
-    // Load messages asynchronously after the widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(chatMessagesProvider(widget.chatId).notifier).loadMessages();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+     await ref.read(chatMessagesProvider(widget.chatId).notifier).loadMessages();
     });
   }
 

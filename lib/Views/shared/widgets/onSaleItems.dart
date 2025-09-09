@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getOnSaleProducts.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/notifyUtils.dart';
 
 
 class onSaleProducts extends ConsumerStatefulWidget {

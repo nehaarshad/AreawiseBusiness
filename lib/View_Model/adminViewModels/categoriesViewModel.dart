@@ -4,7 +4,7 @@ import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod/riverpod.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../../models/UserDetailModel.dart';
 import '../../repositories/UserDetailsRepositories.dart';
 import '../../repositories/categoriesRepository.dart';

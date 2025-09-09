@@ -2,25 +2,21 @@ import 'dart:io';
 import '../../models/categoryModel.dart';
 
 //Multiple state management at a time in riverpod done by using CopyWith Method
-class CategoryState {
+class CartState {
   final List<Category?>? category;
-  final File? image;
   final bool isLoading;
 
-  CategoryState({
+  CartState({
     this.category = null,
-    this.image = null,
     this.isLoading = false,
   });
 
-  CategoryState copyWith({
+  CartState copyWith({
     List<Category?>? category,
-    File? image,
     bool? isLoading,
   }) {
-    return CategoryState(
+    return CartState(
       category: category ?? this.category,
-      image: image ?? this.image,
       isLoading: isLoading ?? this.isLoading,
     );
   }

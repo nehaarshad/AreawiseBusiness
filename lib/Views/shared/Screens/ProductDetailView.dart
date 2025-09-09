@@ -1,7 +1,7 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/WishListViewModel.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import '../../../View_Model/SharedViewModels/getProductDetailsViewModel.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/DashBoardProductsView.dart';
+import '../widgets/cartBadgeWidget.dart';
 import '../widgets/contactWithSellerButton.dart';
 import '../widgets/imageSlider.dart';
 import '../widgets/productReviews.dart';
@@ -35,6 +36,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
   void initState() {
     super.initState();
     print("UserId passed ${widget.userid}");
+    addToCart =false;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       ref.invalidate(ProductDetailsViewModelProvider(widget.productId.toString()));
@@ -43,11 +45,12 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
           .getProductDetails(widget.productId.toString());
     });
   }
-
+  bool addToCart =false;
   int Qty=1;
 
   @override
   Widget build(BuildContext context) {
+
     final productState = ref.watch(ProductDetailsViewModelProvider(widget.productId.toString()));
     return Scaffold(
       appBar: AppBar(
@@ -96,15 +99,43 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: (){
+                                  final parameters={
+                                    'shop':product.shop,
+                                    'id':widget.userid.toString()
+                                  };
+                                  Navigator.pushNamed(
+                                    context,
+                                    routesName.shopdetail,
+                                    arguments: parameters,
+                                  );
+                                },
+                                child: Row(
+                                      children: [
+                                        Icon(Icons.store,color: Colors.grey,),
+                                        Text('${product.shop?.shopname!}',style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 15.sp
+                                        ),),
+
+                                      ],
+                                    ),
+                              ),
+                              Row(
                                 children: [
-                                  Icon(Icons.store,color: Colors.grey,),
-                                  Text('${product.shop?.shopname!}',style: TextStyle(
+                                  Icon(Icons.phone,color: Colors.grey,size: 14.h,),
+                                  Text(' ${product.shop?.user?.contactnumber}',style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 15.sp
                                   ),),
 
                                 ],
                               ),
+                            ],
+                          ),
                           Divider(thickness: 0.4.h,),
                           RichText(
                             text: TextSpan(
@@ -142,7 +173,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                             children: [
                               Row(
                                     children: [
-                                      Text("Price (Rs.): ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                                      Text("Price (Rs.): ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                       product.onSale ?? false ?
                                       Row(
                                           children: [
@@ -196,7 +227,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           SizedBox(height: 10.h),
                           Row(
                             children: [
-                              Text("Sold: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              Text("Sold: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                               Text(
                                 "${product.sold}",
                                 style: TextStyle(
@@ -212,7 +243,22 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           SizedBox(height: 10.h),
                           Row(
                             children: [
-                              Text("Qty: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              Text("Type: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              Text(
+                                "${product.condition}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.sp,
+                                  color: Colors.black87,
+                                ),
+                              ),
+
+                            ],
+                          ),
+                          SizedBox(height: 10.h,),
+                          Row(
+                            children: [
+                              Text("Qty: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                               Container(
                                 height: 35.h,
                                 width: 124.w,
@@ -272,7 +318,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                             children: [
                               Row(
                                 children: [
-                                  Text("Category: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                                  Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                   Text(
                                     "${product.subcategory?.name}",
                                     style: TextStyle(
@@ -313,7 +359,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                 TextSpan(
                                   text: "Product Description: ",
                                   style: TextStyle(
-                                    color: Colors.blueGrey,
+                                    color: Appcolors.baseColor,
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -399,33 +445,69 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
         )
 
       ),
+      bottomNavigationBar: addToCart == false
+          ? Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: SizedBox(
+            width: double.infinity,
+            height: 50.h,
+            child:   ElevatedButton.icon(
+              onPressed: () async {
+                bool isAdded = await ref.read(cartViewModelProvider(widget.userid.toString()).notifier)
+                    .addToCart(widget.userid.toString(), widget.productId!,Qty,context);
+                setState(() {
+                  addToCart=isAdded;
+                });
 
-    bottomNavigationBar: Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: SizedBox(
-    width: double.infinity,
-    height: 50.h,
-    child: ElevatedButton.icon(
-    onPressed: () async {
-    await ref.read(cartViewModelProvider(widget.userid.toString()).notifier)
-        .addToCart(widget.userid.toString(), widget.productId!,Qty);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Appcolors.baseColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.r),
+                ),
+                padding:  EdgeInsets.symmetric(horizontal: 20.w),
+              ),
+              icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+              label:  Text(
+                'Add to Cart',
+                style: TextStyle(color: Colors.white, fontSize: 16.sp),
+              ),
+            )
 
-    },
-    style: ElevatedButton.styleFrom(
-    backgroundColor: Appcolors.baseColor,
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30.r),
-    ),
-    padding:  EdgeInsets.symmetric(horizontal: 20.w),
-    ),
-    icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-    label:  Text(
-    'Add to Cart',
-    style: TextStyle(color: Colors.white, fontSize: 16.sp),
-    ),
-    ),
-    ),
-    )
+        ),
+      )
+      :null,
+
+      floatingActionButton: CartBadgeWidget(
+        userId: widget.userid,
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              routesName.cart,
+              arguments: widget.userid,
+            );
+          },
+          backgroundColor: Colors.white, // White background
+          foregroundColor: Appcolors.baseColor, // Base color for the icon
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0), // Fully rounded shape
+            side: BorderSide(
+              color: Appcolors.baseColor, // Base color outline
+              width: 2.0, // Outline thickness
+            ),
+          ),
+          elevation: 3.0, // Subtle shadow
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+               Icon(Icons.shopping_cart_outlined,size: 18.h,),
+               Text("Cart",style: TextStyle(fontSize: 12.sp),)
+            ],
+          ), // Outlined cart icon
+        ),
+      ),
+
     );
   }
 }

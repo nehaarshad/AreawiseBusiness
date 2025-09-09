@@ -3,7 +3,7 @@ import 'package:ecommercefrontend/View_Model/SellerViewModels/sellerShopViewMode
 import 'package:ecommercefrontend/View_Model/SharedViewModels/searchedShopViewMode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:ecommercefrontend/core/utils/utils.dart';
+import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:ecommercefrontend/repositories/ShopRepositories.dart';
 import 'package:flutter/material.dart';
