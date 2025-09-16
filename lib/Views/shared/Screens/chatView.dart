@@ -175,22 +175,22 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     ),
                   ),
                    SizedBox(width: 8.w),
-                  Container(
-                    padding: const EdgeInsets.all(11),
-                    decoration: BoxDecoration(
-                      color: Appcolors.baseColor,
-                      borderRadius: BorderRadius.circular(10.r)
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        if (_messageController.text.trim().isNotEmpty) {
-                          ref
-                              .read(chatMessagesProvider(widget.chatId).notifier)
-                              .sendMessage(widget.userId, _messageController.text.trim());
-                          _messageController.clear();
-                        }
-                      },
-                      child:  Icon(Icons.send, color: Appcolors.whiteSmoke,),
+                  InkWell(
+                    onTap: () {
+                      if (_messageController.text.trim().isNotEmpty) {
+                        ref
+                            .read(chatMessagesProvider(widget.chatId).notifier)
+                            .sendMessage(widget.userId, _messageController.text.trim());
+                        _messageController.clear();
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(11),
+                      decoration: BoxDecoration(
+                        color: Appcolors.baseColor,
+                        borderRadius: BorderRadius.circular(10.r)
+                      ),
+                      child: Icon(Icons.send, color: Appcolors.whiteSmoke,),
                     ),
                   )
 

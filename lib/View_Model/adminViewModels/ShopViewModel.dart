@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/shopModel.dart';
 import '../../repositories/ShopRepositories.dart';
 import '../SellerViewModels/sellerShopViewModel.dart';
-import '../SharedViewModels/getAllCategories.dart';
 
 //for admin and buyer to view all Shops and delete shops by admin only
 final shopViewModelProvider =

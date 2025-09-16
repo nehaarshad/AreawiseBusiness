@@ -190,7 +190,7 @@ class ProductImages {
   int? id;
   String? imagetype;
   int? entityId;
-  Null? imageData;
+  Null imageData;
   File? file;
   String? imageUrl;
   String? createdAt;

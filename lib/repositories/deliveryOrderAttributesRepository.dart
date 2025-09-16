@@ -6,7 +6,6 @@ import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/services/app_APIs.dart';
-import '../models/UserAddressModel.dart';
 import '../models/deliveryOrderAttributes.dart';
 
 final attributesProvider = Provider<AttributeRepositories>((ref) {

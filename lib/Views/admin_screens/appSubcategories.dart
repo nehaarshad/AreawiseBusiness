@@ -122,7 +122,7 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
         content: TextField(
           controller: subCategoryController,
           decoration: InputDecoration(
-            hintText: 'Enter category name',
+            hintText: 'Enter Subcategory name',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),

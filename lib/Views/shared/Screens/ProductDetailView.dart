@@ -1,16 +1,12 @@
-import 'package:ecommercefrontend/View_Model/buyerViewModels/WishListViewModel.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/getProductDetailsViewModel.dart';
-import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import '../widgets/DashBoardProductsView.dart';
 import '../widgets/cartBadgeWidget.dart';
 import '../widgets/contactWithSellerButton.dart';
 import '../widgets/imageSlider.dart';
@@ -101,28 +97,15 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              InkWell(
-                                onTap: (){
-                                  final parameters={
-                                    'shop':product.shop,
-                                    'id':widget.userid.toString()
-                                  };
-                                  Navigator.pushNamed(
-                                    context,
-                                    routesName.shopdetail,
-                                    arguments: parameters,
-                                  );
-                                },
-                                child: Row(
-                                      children: [
-                                        Icon(Icons.store,color: Colors.grey,),
-                                        Text('${product.shop?.shopname!}',style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 15.sp
-                                        ),),
+                              Row(
+                                children: [
+                                  Icon(Icons.store,color: Colors.grey,),
+                                  Text('${product.shop?.shopname!}',style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.sp
+                                  ),),
 
-                                      ],
-                                    ),
+                                ],
                               ),
                               Row(
                                 children: [
@@ -408,12 +391,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   "More products from this shop",
                                   style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                                 ),
-                                Row(
-                                  children: [
-                                    const Text("See All", style: TextStyle(color: Colors.grey)),
-                                    Icon(Icons.arrow_forward_ios_sharp, size: 10.h),
-                                  ],
-                                ),
+
                               ],
                             ),
                           ),

@@ -25,8 +25,6 @@ class signupviewmodel extends StateNotifier<bool> {
         UserDetailModel user= UserDetailModel.fromJson(response);
         await ref.read(sessionProvider.notifier).saveuser(user);
         print(user);
-        // Utils.flushBarErrorMessage("Signup Successful", context);
-        // await Future.delayed(Duration(seconds: 2));
         if (user.role == 'Admin') {
           Navigator.pushNamed(context, routesName.aHome, arguments: user);
         }
@@ -35,7 +33,6 @@ class signupviewmodel extends StateNotifier<bool> {
           Navigator.pushNamed(context, routesName.dashboard, arguments: user);
           Utils.flushBarErrorMessage("Registration Completed", context);
         }
-        ref.read(socketServiceProvider);
       }
       else {
         Utils.flushBarErrorMessage("Signup Failed", context);

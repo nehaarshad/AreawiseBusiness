@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/sellerShopViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SharedViewModels/searchedShopViewMode.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
@@ -10,9 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../core/utils/dialogueBox.dart';
 import '../../models/categoryModel.dart';
 import '../../repositories/categoriesRepository.dart';
 import '../adminViewModels/ShopViewModel.dart';
+import 'package:path/path.dart' as path;
 
 final updateShopProvider = StateNotifierProvider.family<UpdateShopViewModel, AsyncValue<ShopModel?>, String>((ref, id) {
   return UpdateShopViewModel(ref, id);
@@ -72,34 +75,84 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
   Future<void> pickImages(BuildContext context) async {
     try {
       final List<XFile> pickedFiles = await pickImage.pickMultiImage();
+
+      // Check if total images would exceed 8
       if (pickedFiles.isNotEmpty && images.length + pickedFiles.length > 4) {
         Utils.flushBarErrorMessage("Select only 4 Images", context);
         return;
       }
 
       if (pickedFiles.isNotEmpty) {
-        // Wrap new images in ShopImages with file property
-        final newImages =
-            pickedFiles.map((x) {
-              final file = File(x.path);
-              return ShopImages(imageUrl: null, file: file);
-            }).toList();
+        // Compress all images first
+        final List<File?> compressedFiles = await Future.wait(
+          pickedFiles.map((xFile) async {
+            try {
+              final File file = File(xFile.path);
+              return await compressImage(file, context);
+            } catch (e) {
+              print('Error processing image: $e');
+              return null;
+            }
+          }),
+        );
 
+        // Filter out any null results from failed compressions
+        final List<File> successfulCompressions = compressedFiles.whereType<File>().toList();
+
+        // Create ProductImages objects
+        final List<ShopImages> newImages = successfulCompressions
+            .map((file) => ShopImages(imageUrl: null, file: file))
+            .toList();
+
+        // Add to images list
         images.addAll(newImages);
+
         print('Images count after adding: ${images.length}');
-        if (images.length > 4) {
-          Utils.flushBarErrorMessage("Select only 4 Images", context);
+
+        // Final check (shouldn't be needed but good practice)
+        if (images.length > 8) {
+          Utils.flushBarErrorMessage("Select only 8 Images", context);
+          // Remove excess images
+          images.removeRange(8, images.length);
           return;
         }
-        // Update state with combined images
-        state.whenData((shop) {
-          if (shop != null) {
-            state = AsyncValue.data(shop.copyWith(images: images));
+
+        // Update state
+        state.whenData((product) {
+          if (product != null) {
+            state = AsyncValue.data(product.copyWith(images: images));
           }
         });
       }
     } catch (e) {
       print('Error picking images: $e');
+      Utils.flushBarErrorMessage("Error selecting images", context);
+    }
+  }
+
+// Compress image before adding to state
+  Future<File?> compressImage(File file, BuildContext context) async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final targetPath = path.join(
+        dir.path,
+        '${DateTime.now().millisecondsSinceEpoch}_compressed.jpg',
+      );
+
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 85,
+        minWidth: 800,
+        minHeight: 800,
+        format: CompressFormat.jpeg,
+      );
+
+      return compressedFile != null ? File(compressedFile.path) : file;
+    } catch (e) {
+      print('Error compressing image: $e');
+      Utils.flushBarErrorMessage("Error compressing image", context);
+      return null;
     }
   }
 
@@ -175,11 +228,13 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       await ref.read(sellerShopViewModelProvider(userid.toString()).notifier).getShops(userid.toString());
       await ref.read(searchShopViewModelProvider.notifier).searchShops(shopname.substring(0, 2));
       await ref.read(shopViewModelProvider.notifier).getShops();///update admin and buyer shopList
-   //   state = AsyncValue.data(updatedShop);
+      await DialogUtils.showSuccessDialog(context,"Shop updated successfully");
+
       Navigator.pop(context);
     } catch (e) {
       print(e);
-      state = AsyncValue.error(e, StackTrace.current);
+      await DialogUtils.showErrorDialog(context,"Failed to update. Try later!");
+
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
+import 'package:ecommercefrontend/core/utils/dialogueBox.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
@@ -46,7 +47,7 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
                     SizedBox(height: 15.h),
                     Row(
                       children: [
-                        Text("Seller Name: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                        Text("Seller Name: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                         Text(
                           "${widget.shop.user?.username}",
                           style: TextStyle(
@@ -59,7 +60,20 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
                     ),
                     Row(
                       children: [
-                        Text("Category: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                        Text("Contact Number: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                        Text(
+                          "${widget.shop.user?.contactnumber}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.sp,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                         Text(
                           "${widget.shop.category?.name}",
                           style: TextStyle(
@@ -72,7 +86,7 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
                     ),
                     Row(
                       children: [
-                        Text("Sector: ",style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                        Text("Sector: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                         Text(
                           "${widget.shop.sector}",
                           style: TextStyle(
@@ -115,7 +129,7 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
       bottomNavigationBar: Container(
         margin: EdgeInsets.symmetric(horizontal: 22.w),
         child: ElevatedButton.icon(
-          onPressed: () {
+          onPressed: () async {
             
             if(widget.shop.status=='Active') {
               Navigator.pushNamed(
@@ -125,8 +139,8 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
               );
             }
             else{
-              Utils.flushBarErrorMessage("Shop is not Active. Please wait for admin approval before adding products.",context);
-            }
+              await DialogUtils.showErrorDialog(context, "Shop is not Active. Please wait for admin approval before adding products.");
+                 }
           },
           icon: Icon(Icons.add, size: 18.h,color: Appcolors.whiteSmoke,),
           label: Text("Add Product"),

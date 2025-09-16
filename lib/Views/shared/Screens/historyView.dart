@@ -97,7 +97,7 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                             style: const TextStyle(fontSize: 12),
                           ),
                           Text(
-                            "Order Date: ${_formatDate(order.createdAt)}",
+                            "Order Date: ${_formatDate(order.updatedAt)}",
                             style: const TextStyle(fontSize: 12),
                           ),
                           Text(

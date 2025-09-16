@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/View_Model/SharedViewModels/getOnSaleProducts.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +68,27 @@ print(categoriesAsync.value?.length);
                   child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircleAvatar(
-                      radius: 25.r,
-                      backgroundImage: NetworkImage(ImageUrl)
-
+                    ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: ImageUrl,
+                        width: 50, // Set both width and height to same value
+                        height: 50,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          width: 100,
+                          height: 100,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.person, color: Colors.grey),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: 100,
+                          height: 100,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.person, color: Colors.grey),
+                        ),
+                      ),
                     ),
+
                     SizedBox(height: 5.h,),
                     Text(
                       categoryName,

@@ -2,12 +2,16 @@ import 'dart:async';
 import 'dart:io';
 import 'package:ecommercefrontend/View_Model/adminViewModels/userState.dart';
 import 'package:ecommercefrontend/repositories/UserDetailsRepositories.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/notifyUtils.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 import '../adminViewModels/UserViewModel.dart';
+import 'package:path/path.dart' as path;
 
 final addUserViewModelProvider = StateNotifierProvider<addUserViewModel,UserState>((ref) {
   return addUserViewModel(ref);
@@ -23,16 +27,54 @@ class addUserViewModel extends StateNotifier<UserState> {
   File? uploadimage;
   bool loading = false;
 
-  Future<void> pickImages(BuildContext context) async {
-    final XFile? pickedimage = await pickimage.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
+  Future<File?> compressImage(File file, BuildContext context) async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final targetPath = path.join(
+        dir.path,
+        '${DateTime.now().millisecondsSinceEpoch}_compressed.jpg',
+      );
 
-    if (pickedimage != null) {
-      uploadimage = File(pickedimage.path);
-      Utils.flushBarErrorMessage("Uploading...",context);
-      state = state.copyWith(image: uploadimage);
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 85,
+        minWidth: 800,
+        minHeight: 800,
+        format: CompressFormat.jpeg,
+      );
+
+      return compressedFile != null ? File(compressedFile.path) : file;
+    } catch (e) {
+      print('Error compressing image: $e');
+      state = state.copyWith(isLoading: false);
+      Utils.flushBarErrorMessage("Error compressing image", context);
+      return null;
+    }
+  }
+
+  Future<void> pickImages(BuildContext context) async {
+    try {
+      final XFile? pickedFile = await pickimage.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+
+      if (pickedFile == null) {
+        Utils.flushBarErrorMessage("Upload Ad Poster", context);
+        return;
+      }
+
+      // Convert XFile to File
+      final File file = File(pickedFile.path);
+      final compressedFile = await compressImage(file, context);
+
+      if (compressedFile != null) {
+        state = state.copyWith(image: compressedFile);
+      }
+    } catch (e) {
+      print('Error picking images: $e');
+      Utils.flushBarErrorMessage("Error selecting images", context);
     }
   }
 
@@ -61,12 +103,13 @@ class addUserViewModel extends StateNotifier<UserState> {
       uploadimage=null;
       resetState();
   //    state=state.copyWith(isLoading: false,image: null);
-      Utils.toastMessage("User Added Successfully!");
+      await DialogUtils.showSuccessDialog(context,"New user added");
+
       await ref.read(UserViewModelProvider.notifier).getallusers();
       await Future.delayed(Duration(seconds: 1));
       Navigator.pop(context);
     } catch (e) {
-      state = state.copyWith(user: AsyncValue.error(e, StackTrace.current));
+      await DialogUtils.showErrorDialog(context,"Try Later!");
     }
   }
 }

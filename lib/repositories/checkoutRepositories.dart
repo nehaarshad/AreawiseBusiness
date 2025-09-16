@@ -39,7 +39,7 @@ class OrderRepositories {
             .toList();
       }
       paymentlist = [paymentModel.fromJson(response)];
-      return response;
+      return paymentlist;
     } catch (e) {
       throw e;
     }

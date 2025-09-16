@@ -124,7 +124,7 @@ class AdminDrawerListItems extends ConsumerWidget {
               Navigator.pushNamed(
                 context,
                 routesName.profile,
-                arguments:parameters,
+                arguments:user.id,
               );
             },
             child: Column(

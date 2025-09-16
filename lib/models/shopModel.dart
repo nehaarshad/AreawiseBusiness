@@ -125,7 +125,7 @@ class ShopImages {
   int? id;
   String? imagetype;
   int? entityId;
-  Null? imageData;
+  Null imageData;
   String? imageUrl;
   String? createdAt;
   String? updatedAt;

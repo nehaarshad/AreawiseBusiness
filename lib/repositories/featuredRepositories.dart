@@ -84,6 +84,7 @@ class featureRepositories {
 
   Future<featureModel> updateFeaturedProducts(String id,  Map<String,dynamic>  status) async {
     try {
+      print(id);
       final responseData=jsonEncode(status);
       dynamic response = await apiservice.UpdateApiWithJson(AppApis.updateFeaturedProductsEndPoints.replaceFirst(':id', id), responseData, headers(),);
       return featureModel.fromJson(response);

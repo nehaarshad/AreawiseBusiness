@@ -26,8 +26,6 @@ class NotificationService {
   bool _isInitialized = false;
 
   Future<void> initialize() async {
-    if (_isInitialized) return;
-
     try {
       await _requestPermissions();
       await _initializeNotifications();
@@ -90,11 +88,6 @@ class NotificationService {
     }
   }
 
-  // Handle iOS foreground notification
-  static void _onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) {
-    print(' iOS foreground notification: $title - $body');
-  }
 
   // Show notification with sound
   Future<void> showNotification(NotificationModel notification) async {

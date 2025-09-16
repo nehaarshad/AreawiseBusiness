@@ -6,7 +6,6 @@ import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/network/baseapiservice.dart';
 import '../core/network/networkapiservice.dart';
 import '../core/services/app_APIs.dart';
-import '../models/cartModel.dart';
 
 final accountProvider = Provider<AccountsRepositories>((ref) {
   return AccountsRepositories(ref: ref);

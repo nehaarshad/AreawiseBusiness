@@ -1,19 +1,14 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
-import 'package:ecommercefrontend/repositories/adRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
+import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../models/ProductModel.dart';
-import '../../models/featureModel.dart';
 import '../../repositories/featuredRepositories.dart';
 import '../../repositories/onSaleRepository.dart';
 import '../../repositories/product_repositories.dart';
 import '../SharedViewModels/getOnSaleProducts.dart';
-import '../adminViewModels/AdViewModel.dart';
 import '../SharedViewModels/featuredProductViewModel.dart';
-import '../adminViewModels/AdStates.dart';
 import 'SellerOnSaleProductViewModel.dart';
 import 'featureStates.dart';
 
@@ -65,25 +60,6 @@ class CreateFeatureProductViewModel extends StateNotifier<createFeatureProductSt
     Navigator.pop(context);
   }
 
-  void showRequestSentDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Success"),
-          content: Text("Request sent successfully."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Closes the dialog
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Future<void> selectExpirationDateTime(DateTime dateTime) async {
     state = state.copyWith(expirationDateTime: dateTime);
@@ -101,7 +77,7 @@ class CreateFeatureProductViewModel extends StateNotifier<createFeatureProductSt
       await ref.read(featureProvider).createProductFeatured(sellerId, reqData);
 
       // Show success dialog
-      showRequestSentDialog(context);
+      DialogUtils.showSuccessDialog(context,"Request send. Wait for admin approval");
 
       // Refresh only seller's featured products
       final viewModel = ref.read(featureProductViewModelProvider(sellerId).notifier);

@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/appexception.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class networkapiservice extends baseapiservice {
   @override
@@ -91,23 +94,36 @@ class networkapiservice extends baseapiservice {
       request.headers['Authorization'] = 'Bearer $token';
       print("inMultiport headers ${request.headers}");
       //upload files of images
-      if (files != null) {
+      if (files != null && files.isNotEmpty) {
         for (var i = 0; i < files.length; i++) {
-          final stream = http.ByteStream(files[i].openRead());
-          final length = await files[i].length();
+          try {
+            // Compress image before upload
+            final compressedFile = await compressImage(files[i]);
+            if (compressedFile == null) continue;
 
-          final multipartFile = new http.MultipartFile(
-            'image', // matched with api file field keys
-            stream,
-            length,
-            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
-            contentType: MediaType('image', 'jpeg'),
-          );
-          request.files.add(multipartFile);
+            final stream = http.ByteStream(compressedFile.openRead());
+            final length = await compressedFile.length();
+
+            final multipartFile = http.MultipartFile(
+              'image', // Field name matching backend
+              stream,
+              length,
+              filename: '${DateTime.now().millisecondsSinceEpoch}_$i.jpg',
+              contentType: MediaType('image', 'jpeg'),
+            );
+
+            request.files.add(multipartFile);
+            print("Added compressed image ${i + 1}, size: ${length} bytes");
+          } catch (e) {
+            print('Error processing file $i: $e');
+            continue;
+          }
         }
       }
+
+      print("Uploading ${request.files.length} files");
       final streameresponse = await request.send().timeout(
-        Duration(seconds: 10),
+        Duration(seconds: 30),
       );
       final response = await http.Response.fromStream(streameresponse);
 
@@ -139,23 +155,33 @@ class networkapiservice extends baseapiservice {
       request.headers['Authorization'] = 'Bearer $token';
       print("inMultiport headers ${request.headers}");
       //upload files of images
-      if (files != null) {
+      if (files != null && files.isNotEmpty) {
         for (var i = 0; i < files.length; i++) {
-          final stream = http.ByteStream(files[i].openRead());
-          final length = await files[i].length();
+          try {
+            final compressedFile = await compressImage(files[i]);
+            if (compressedFile == null) continue;
 
-          final multipartFile = new http.MultipartFile(
-            'image', // matched with keys
-            stream,
-            length,
-            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
-            contentType: MediaType('image', 'jpeg'),
-          );
-          request.files.add(multipartFile);
+            final stream = http.ByteStream(compressedFile.openRead());
+            final length = await compressedFile.length();
+
+            final multipartFile = http.MultipartFile(
+              'image',
+              stream,
+              length,
+              filename: '${DateTime.now().millisecondsSinceEpoch}_$i.jpg',
+              contentType: MediaType('image', 'jpeg'),
+            );
+
+            request.files.add(multipartFile);
+          } catch (e) {
+            print('Error processing file $i: $e');
+            continue;
+          }
         }
       }
+
       final streameresponse = await request.send().timeout(
-        Duration(seconds: 10),
+        Duration(seconds: 30),
       );
       final response = await http.Response.fromStream(streameresponse);
 
@@ -190,21 +216,25 @@ class networkapiservice extends baseapiservice {
       //upload files of images
       print(files);
       if (files != null) {
-        final stream = http.ByteStream(files.openRead());
-        final length = await files.length();
+        final compressedFile = await compressImage(files);
+        if (compressedFile != null) {
+          final stream = http.ByteStream(compressedFile.openRead());
+          final length = await compressedFile.length();
 
-        final multipartFile = new http.MultipartFile(
-          'image', // matched with keys
-          stream,
-          length,
-          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
-          contentType: MediaType('image', 'jpeg'), // Set MIME type
-        );
-        request.files.add(multipartFile);
-        print("files send to api ${request.files}");
+          final multipartFile = http.MultipartFile(
+            'image',
+            stream,
+            length,
+            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
+            contentType: MediaType('image', 'jpeg'),
+          );
+
+          request.files.add(multipartFile);
+          print("Compressed file size: ${length} bytes");
+        }
       }
       final streameresponse = await request.send().timeout(
-        Duration(seconds: 10),
+        Duration(seconds: 30),
       );
       final response = await http.Response.fromStream(streameresponse);
 
@@ -237,17 +267,21 @@ class networkapiservice extends baseapiservice {
       print("inMultiport headers ${request.headers}");
       //upload files of images
       if (files != null) {
-        final stream = http.ByteStream(files.openRead());
-        final length = await files.length();
+        final compressedFile = await compressImage(files);
+        if (compressedFile != null) {
+          final stream = http.ByteStream(compressedFile.openRead());
+          final length = await compressedFile.length();
 
-        final multipartFile = new http.MultipartFile(
-          'image', // matched with keys
-          stream,
-          length,
-          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
-          contentType: MediaType('image', 'jpeg'), // Set MIME type
-        );
-        request.files.add(multipartFile);
+          final multipartFile = http.MultipartFile(
+            'image',
+            stream,
+            length,
+            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
+            contentType: MediaType('image', 'jpeg'),
+          );
+
+          request.files.add(multipartFile);
+        }
       }
       final streameresponse = await request.send().timeout(
         Duration(seconds: 10),
@@ -290,6 +324,30 @@ class networkapiservice extends baseapiservice {
       throw fetchdataException("No Internet Connnection");
     }
     return responseJson;
+  }
+
+  Future<File?> compressImage(File file) async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final targetPath = path.join(
+          dir.path,
+          '${DateTime.now().millisecondsSinceEpoch}_compressed.jpg'
+      );
+
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 85, // Match backend quality
+        minWidth: 800, // Match backend max width
+        minHeight: 800, // Match backend max height
+        format: CompressFormat.jpeg,
+      );
+
+      return compressedFile != null ? File(compressedFile.path) : null;
+    } catch (e) {
+      print('Error compressing image: $e');
+      return file; // Return original if compression fails
+    }
   }
 
   dynamic httpResponse(http.Response res) {

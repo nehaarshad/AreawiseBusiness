@@ -2,7 +2,6 @@ import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpod/riverpod.dart';
 import '../../../View_Model/UserProfile/EditProfileViewModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../core/utils/colors.dart';
@@ -57,7 +56,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
     return Column(
       children: [
         GestureDetector(
-          onTap: model.pickImages,
+          onTap:(){ model.pickImages(context);},
           child: Stack(
             children: [
               CircleAvatar(

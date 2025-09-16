@@ -95,25 +95,21 @@ class FeatureProductViewModel extends StateNotifier<AsyncValue<List<featureModel
       // Delete the featured product
       await ref.read(featureProvider).deleteFeaturedProducts(featureId);
 
-      // Check which screen we're on and refresh accordingly
       if (!_isDisposed) {
-        // Determine which refresh method to call based on the current context
         final currentRoute = ModalRoute.of(context)?.settings.name;
 
         if (currentRoute == routesName.activefeature) {
-          // We're on the Featured Products screen
           await getAllFeaturedProducts('All');
           await getFeaturedProducts('All');
         } else {
-          // We're on the Requests screen
           await getAllRequestedFeatured();
         }
 
-        Utils.toastMessage("Product removed successfully");
+        Utils.flushBarErrorMessage("Product removed",context);
       }
     } catch (e) {
       if (!_isDisposed) {
-        Utils.toastMessage("Failed to delete product: ${e.toString()}");
+        Utils.flushBarErrorMessage("Failed to remove product",context);
         state = AsyncValue.error(e, StackTrace.current);
       }
     }

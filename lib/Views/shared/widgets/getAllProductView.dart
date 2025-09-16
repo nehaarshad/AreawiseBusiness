@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
@@ -48,53 +49,7 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
                   if(product==null){
                     return SizedBox.shrink();
                   }
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, routesName.productdetail,
-                      arguments:  {
-                        'id': widget.userid,
-                        'productId':product.id,
-                        'product': product
-                      },);
-                    },
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0.r),
-                      ),
-                      child: Container(
-                        width: 150.w,
-                        margin: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child:
-                                  product?.images != null && product!.images!.isNotEmpty
-                                      ? Image.network(
-                                        product.images!.first.imageUrl!,
-                                        fit: BoxFit.fill,
-                                        width: double.infinity,
-                                      )
-                                      : const Icon(Icons.image_not_supported),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child:  Text(
-                                product.name ?? "Unknown",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Text("\$${product?.price ?? 0}", style: const TextStyle(color: Colors.green)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                  return Productcard(product: product,userid: widget.userid);
                 },
               ),
             ),

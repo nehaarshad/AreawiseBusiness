@@ -2,8 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/repositories/adRepository.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+import '../../core/utils/dialogueBox.dart';
 import 'AdViewModel.dart';
 import 'AdStates.dart';
 
@@ -22,24 +26,56 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
   void resetState() {
     state = CreateAdState(isLoading: false,adImage: null); // Reset to initial state
   }
-
-  Future<void> pickImages(BuildContext context) async {
+  Future<File?> compressImage(File file, BuildContext context) async {
     try {
-      final XFile? pickedFiles = await pickimage.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 80,
+      final dir = await getTemporaryDirectory();
+      final targetPath = path.join(
+        dir.path,
+        '${DateTime.now().millisecondsSinceEpoch}_compressed.jpg',
       );
-      if (pickedFiles == null) {
-        Utils.flushBarErrorMessage("Upload Ad Poster", context);
-      }
-      else {
-        state = state.copyWith(adImage: File(pickedFiles.path));
-      }
+
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 85,
+        minWidth: 800,
+        minHeight: 800,
+        format: CompressFormat.jpeg,
+      );
+
+      return compressedFile != null ? File(compressedFile.path) : file;
     } catch (e) {
-      print('Error picking images: $e');
+      print('Error compressing image: $e');
+      state = state.copyWith(isLoading: false);
+      Utils.flushBarErrorMessage("Error compressing image", context);
+      return null;
     }
   }
 
+  Future<void> pickImages(BuildContext context) async {
+    try {
+      final XFile? pickedFile = await pickimage.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+
+      if (pickedFile == null) {
+        Utils.flushBarErrorMessage("Upload Ad Poster", context);
+        return;
+      }
+
+      // Convert XFile to File
+      final File file = File(pickedFile.path);
+      final compressedFile = await compressImage(file, context);
+
+      if (compressedFile != null) {
+        state = state.copyWith(adImage: compressedFile);
+      }
+    } catch (e) {
+      print('Error picking images: $e');
+      Utils.flushBarErrorMessage("Error selecting images", context);
+    }
+  }
   void selectExpirationDateTime(DateTime dateTime) {
     state = state.copyWith(expirationDateTime: dateTime);
   }
@@ -66,13 +102,15 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors
       }
-      Utils.flushBarErrorMessage("AD Created Successfully!",context);
+      await DialogUtils.showSuccessDialog(context,"New Advertisement created.");
 
       resetState();
 
 
     } catch (e) {
       state = state.copyWith(isLoading: false);
+      await DialogUtils.showErrorDialog(context,"Try Later!");
+
       print(e);
     }
   }

@@ -87,7 +87,7 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                         style: const TextStyle(fontSize: 12),
                       ),
                       Text(
-                        "Order Date: ${orderedDate(order.createdAt)}",
+                        "Order Date: ${orderedDate(order.updatedAt)}",
                         style:  TextStyle(fontSize: 12.sp),
                       ),
                       Text(

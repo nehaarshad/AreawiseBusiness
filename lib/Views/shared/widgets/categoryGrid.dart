@@ -84,7 +84,7 @@ class _CategoriesGridState extends ConsumerState<CategoriesGrid> {
                 borderRadius: BorderRadius.circular(16.r),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: Appcolors.baseColorLight30,
                   ),
                 ],
               ),

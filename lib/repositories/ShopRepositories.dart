@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:ecommercefrontend/models/shopModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';

@@ -5,7 +5,7 @@ class ImageModel {
   int? productId;
   int? shopId;
   int? adId;
-  dynamic? imageData;
+  dynamic imageData;
   String? imageUrl;
   String? createdAt;
   String? updatedAt;

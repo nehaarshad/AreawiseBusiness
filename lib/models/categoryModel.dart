@@ -1,4 +1,3 @@
-import 'categoryModel.dart';
 
 class Category {
   int? id;
@@ -35,7 +34,7 @@ class catImage {
   int? id;
   String? imagetype;
   int? entityId;
-  Null? imageData;
+  Null imageData;
   String? imageUrl;
   String? createdAt;
   String? updatedAt;

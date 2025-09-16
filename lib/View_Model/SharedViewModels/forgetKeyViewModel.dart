@@ -4,6 +4,8 @@ import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/utils/dialogueBox.dart';
+
 final forgetKeyVMProvider = StateNotifierProvider<forgetKeyViewModel, bool>((ref) {
   return forgetKeyViewModel(ref);
 });
@@ -17,8 +19,7 @@ class forgetKeyViewModel extends StateNotifier<bool> {
 
     try {
       dynamic response = await ref.read(authprovider).forgetPassword(data);
-      Utils.flushBarErrorMessage('Password Reset Successfully!', context);
-      Navigator.pushNamed(context, routesName.login);
+      await DialogUtils.showSuccessDialog(context,"Password reset ");  Navigator.pushNamed(context, routesName.login);
     } catch (error) {
       Utils.flushBarErrorMessage('Unable to Reset Password', context);
     } finally {

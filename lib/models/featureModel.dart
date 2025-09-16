@@ -59,11 +59,11 @@ class featureModel {
 class Images {
   int? id;
   String? imagetype;
-  Null? userId;
+  Null userId;
   int? productId;
-  Null? shopId;
-  Null? adId;
-  Null? imageData;
+  Null shopId;
+  Null adId;
+  Null imageData;
   String? imageUrl;
   String? createdAt;
   String? updatedAt;

@@ -31,8 +31,6 @@ class SocketService {
   String? _currentUserId;
 
   Future<void> initialize({String? userId}) async {
-    if (_isInitialized) return;
-
     _currentUserId = userId;
 
     // Initialize notification service

@@ -1,8 +1,5 @@
-import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:ecommercefrontend/models/notificationModel.dart';
-import 'package:ecommercefrontend/repositories/product_repositories.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../core/services/socketService.dart';
 import '../../repositories/UserDetailsRepositories.dart';
 

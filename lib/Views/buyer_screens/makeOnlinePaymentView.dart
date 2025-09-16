@@ -43,19 +43,22 @@ class _makeOnlinePaymentViewState extends ConsumerState<makeOnlinePaymentView> {
             children: [
               GestureDetector(
                 onTap: () {
-                  ref.read(TranscriptsViewModelProvider.notifier).pickImages();
+                  ref.read(TranscriptsViewModelProvider.notifier).pickImages(context);
                 },
                 child: Container(
                    width: 900.w,
                   height: 500.h,
+                  decoration: BoxDecoration(
+                    color: Appcolors.whiteSmoke
+                  ),
                   margin: EdgeInsets.only(top: 10.h,bottom: 20.h),
 
                   child: state.adImage != null ? Image.file(state.adImage!, fit: BoxFit.contain,) : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.upload, size: 50.h, color: Colors.grey[600]),
+                      Icon(Icons.upload, size: 55.h, color: Appcolors.baseColorLight30),
                       SizedBox(height: 8),
-                      Text("Tap to upload image", style: TextStyle(color: Colors.grey[600]),),
+                      Text("Tap to upload image", style: TextStyle(color: Appcolors.baseColor),),
                     ],
                   ),
                 ),

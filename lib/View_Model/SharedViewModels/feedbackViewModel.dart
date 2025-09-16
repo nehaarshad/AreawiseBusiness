@@ -1,9 +1,7 @@
 import 'package:ecommercefrontend/models/feedbackModel.dart';
 import 'package:ecommercefrontend/repositories/feedbackRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
-import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:flutter/material.dart';
 
 final feedbackVMProvider = StateNotifierProvider<feedbackViewModel, AsyncValue<List<feedbackModel>>>((ref) {

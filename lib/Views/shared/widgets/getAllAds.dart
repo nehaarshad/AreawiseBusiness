@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,11 +105,11 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
                         height: 240.h,
                         width: double.infinity, // Ensure it takes the full width
                         child: ad?.image != null && ad?.image!.imageUrl != null
-                            ? Image.network(
-                          ad!.image!.imageUrl!,
+                            ? CachedNetworkImage(
+                        imageUrl:   ad!.image!.imageUrl!,
                           fit: BoxFit.fill,
                           width: double.infinity,
-                          errorBuilder: (context, error, stackTrace) {
+                          errorWidget: (context, error, stackTrace) {
                             return Center(child: Icon(Icons.error));
                           },
                         )

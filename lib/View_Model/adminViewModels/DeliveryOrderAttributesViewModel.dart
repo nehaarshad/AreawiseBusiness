@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:ecommercefrontend/View_Model/adminViewModels/userState.dart';
 import 'package:ecommercefrontend/models/NewArrivalDuration.dart';
 import 'package:ecommercefrontend/models/deliveryOrderAttributes.dart';import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/notifyUtils.dart';
 import 'package:flutter/material.dart';
 import '../../repositories/deliveryOrderAttributesRepository.dart';
@@ -74,13 +73,14 @@ class attributesViewModel extends StateNotifier<AsyncValue<DeliveryOrderAttribut
   Future<void> updateDuration(  Map<String, dynamic> data,  BuildContext context,) async {
     try {
       await ref.read(productProvider).updateArrivalDuration(data);
-      Utils.toastMessage("Updated Successfully!");
+      await DialogUtils.showSuccessDialog(context,"New Product arrival days updated successfully");
+
       getDays();
       ref.invalidate(sharedProductViewModelProvider);
       await ref.read(newArrivalViewModelProvider.notifier).getNewArrivalProduct('All');
       await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      await DialogUtils.showErrorDialog(context,"Try Later!");
       print('Error loading categories: $e');
     }
   }
@@ -88,10 +88,11 @@ class attributesViewModel extends StateNotifier<AsyncValue<DeliveryOrderAttribut
     try {
 
       dynamic attributes = await ref.read(attributesProvider).updateAttributes(data);
-      Utils.toastMessage("Updated Successfully!");
-     getAttributes();
+      await DialogUtils.showSuccessDialog(context,"Official app offer's updated.");
+
+      getAttributes();
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      await DialogUtils.showErrorDialog(context,"Try Later!");
       print('Error loading categories: $e');
     }
   }

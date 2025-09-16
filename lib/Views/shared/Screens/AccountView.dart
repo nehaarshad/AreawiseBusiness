@@ -30,7 +30,7 @@ class _AccountViewState extends State<AccountView> {
               arguments: widget.user,
             );
           },
-              icon: Icon(Icons.arrow_back,color: Appcolors.baseColorLight30,size: 20.h,)),
+              icon: Icon(Icons.arrow_back,color: Appcolors.blackColor,size: 20.h,)),
 
           title: const Text('Account',style: TextStyle(fontWeight: FontWeight.w500),),
           backgroundColor: Appcolors.whiteSmoke,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
         final productState = ref.watch(sharedProductViewModelProvider);
 
         return productState.when(
-          loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
+          loading: () => LinearProgressIndicator(color: Appcolors.baseColor,),
           data: (products) {
             if (products.isEmpty) {
               return const Center(child: Text("No Products available."));
@@ -86,12 +87,12 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                                   if (product?.images != null && product!.images!.isNotEmpty)
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.r),
-                                      child: Image.network(
-                                        product.images!.first.imageUrl!,
+                                      child: CachedNetworkImage(
+                                       imageUrl:  product.images!.first.imageUrl!,
                                         fit: BoxFit.cover,
                                         width: double.infinity,
                                         height: double.infinity,
-                                        errorBuilder: (context, error, stackTrace) =>
+                                        errorWidget: (context, error, stackTrace) =>
                                             Container(
                                               color: Colors.grey[200],
                                               child: const Icon(Icons.image_not_supported),

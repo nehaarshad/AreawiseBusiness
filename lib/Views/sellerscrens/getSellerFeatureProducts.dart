@@ -76,15 +76,8 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
 
                   // Check if still mounted before showing success message
                   if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Product removed successfully"),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-
                     // Refresh the list
-                    ref.refresh(featureProductViewModelProvider(widget.sellerId.toString()));
+                    ref.read(featureProductViewModelProvider(widget.sellerId.toString()));
                   }
                 } catch (e) {
                   // Check if still mounted before showing error
@@ -166,7 +159,7 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                     Color statusColor;
                     switch (status) {
                       case 'Featured':
-                        statusColor = Colors.orange;
+                        statusColor = Appcolors.baseColor;
                         break;
                       case 'Requested':
                         statusColor = Colors.red;

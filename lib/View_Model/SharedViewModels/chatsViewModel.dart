@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../models/messagesModel.dart';
 import '../../repositories/chatRepositories.dart';
 
@@ -34,7 +33,6 @@ class ChatMessagesViewModel extends StateNotifier<AsyncValue<List<Message>>> {
   }
 
   Future<void> loadMessages() async {
-    // Only load messages once to prevent duplicate loading
     if (_isLoaded) return;
 
     try {
@@ -48,14 +46,6 @@ class ChatMessagesViewModel extends StateNotifier<AsyncValue<List<Message>>> {
   }
 
   void sendMessage(String senderId, String text) {
-    // Optimistic update with temp message
-    final tempMessage = Message(
-      chatId: int.tryParse(chatId),
-      senderId: int.tryParse(senderId),
-      msg: text,
-      createdAt: DateTime.now().toString(),
-      status: false,
-    );
 
     if (state.hasValue) {
       state = AsyncValue.data(state.value!);

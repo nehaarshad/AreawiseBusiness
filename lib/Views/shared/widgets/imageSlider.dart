@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,11 +44,11 @@ class _ImageSliderState extends ConsumerState<ImageSlider> {
             },
             itemBuilder: (context, index) {
               return GestureDetector(
-                child: Image.network(
-                  widget.images[index].imageUrl ??
+                child: CachedNetworkImage(
+               imageUrl:    widget.images[index].imageUrl ??
                       "https://th.bing.com/th/id/OIP.GnqZiwU7k5f_kRYkw8FNNwHaF3?rs=1&pid=ImgDetMain",
                   fit: BoxFit.contain,
-                  errorBuilder:
+                  errorWidget:
                       (context, error, stackTrace) =>  Icon(
                         Icons.image_not_supported_outlined,
                         size: 50.h,

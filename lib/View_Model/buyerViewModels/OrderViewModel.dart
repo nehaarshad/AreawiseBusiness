@@ -94,40 +94,4 @@ class OrderViewModelProvider extends StateNotifier<AsyncValue<List<paymentModel>
     }
   }
 
-  // TextButton(
-  // onPressed: () async {
-  // await cancelOrder(order.cart!.id.toString());
-  // ref.refresh(cartViewModelProvider(order.cart!.userId.toString()));
-  // Navigator.of(context).pop();
-  // },
-  // child: const Text('Close'),
-  // ),
-  // ElevatedButton(
-  // onPressed: () async {
-  // final parameters = {
-  // 'CartId': order.cartId,
-  // 'userid': order.cart!.userId.toString(),
-  // };
-  // Navigator.pushNamed(
-  // context,
-  // routesName.deliveryAddress,
-  // arguments: parameters
-  // );
-  // },
-  // style: ElevatedButton.styleFrom(
-  // backgroundColor: Appcolors.baseColor,
-  // shape: RoundedRectangleBorder(
-  // borderRadius: BorderRadius.circular(40.0),
-  // ),
-  // ),
-  // child: const Text(
-  // "Proceed",
-  // style: TextStyle(
-  // color: Appcolors.whiteSmoke,
-  // fontWeight: FontWeight.bold,
-  // fontSize: 15,
-  // ),
-  // ),
-  // ),
-
 }

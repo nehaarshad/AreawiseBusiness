@@ -27,7 +27,6 @@ import 'package:ecommercefrontend/Views/shared/Screens/subcategoriesProductView.
 import 'package:ecommercefrontend/Views/shared/Screens/toSearchProduct.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
-import 'package:ecommercefrontend/models/paymentModel.dart';
 import 'package:flutter/material.dart';
 import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
 import '../../../Views/admin_screens/FeaturedProducts.dart';
@@ -62,7 +61,6 @@ import '../../../Views/shared/Screens/splashScreen.dart';
 import '../../../Views/admin_screens/getSellerAds.dart';
 import '../../../models/ProductModel.dart';
 import '../../../models/UserDetailModel.dart';
-import '../../../models/auth_users.dart';
 import '../../../models/ordersRequestModel.dart';
 import '../../../models/shopModel.dart';
 

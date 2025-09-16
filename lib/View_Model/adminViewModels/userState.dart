@@ -7,18 +7,18 @@ import '../../models/categoryModel.dart';
 
 //Multiple state management at a time in riverpod done by using CopyWith Method
 class UserState {
-  final AsyncValue<UserDetailModel?> user;
+  final UserDetailModel? user;
   final File? image;
   final bool isLoading;
 
   UserState({
-    this.user = const AsyncValue.data(null),
+    this.user = null,
     this.image = null,
     this.isLoading = false,
   });
 
   UserState copyWith({
-    AsyncValue<UserDetailModel?>? user,
+    UserDetailModel? user,
     File? image,
     bool? isLoading,
   }) {

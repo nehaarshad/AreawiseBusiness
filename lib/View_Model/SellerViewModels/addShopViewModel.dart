@@ -2,16 +2,18 @@ import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/ShopStates.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
-import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:ecommercefrontend/repositories/ShopRepositories.dart';
 import 'package:ecommercefrontend/repositories/categoriesRepository.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../core/utils/routes/routes_names.dart';
+import 'package:path_provider/path_provider.dart';
+import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/notifyUtils.dart';
 import '../SharedViewModels/getAllCategories.dart';
 import '../adminViewModels/ShopViewModel.dart';
 import 'sellerShopViewModel.dart';
+import 'package:path/path.dart' as path;
 
 final addShopProvider = StateNotifierProvider.family<AddShopViewModel, ShopState, String>((ref, id,) {
       return AddShopViewModel(ref, id);
@@ -49,24 +51,53 @@ class AddShopViewModel extends StateNotifier<ShopState> {
 
   Future<void> pickImages(BuildContext context) async {
     try {
+      state = state.copyWith(isLoading: true); // Show loading while processing
       final List<XFile> pickedFiles = await pickImage.pickMultiImage();
-      if (pickedFiles.isNotEmpty &&
-          state.images.length + pickedFiles.length > 4) {
-        Utils.flushBarErrorMessage("Select only 4 Images", context);
-        state = state.copyWith(images: state.images);
-      }
-      //atleast one image is selected & Previously and Newly Selected images are no more than 7
-      if (pickedFiles.isNotEmpty &&
-          state.images.length + pickedFiles.length <= 4) {
-        // [...] "Spread Operator" used to combine 2 lists (Previously and Newly Selected images lists)
-        final newImages = [
-          ...state.images,
-          ...pickedFiles.map((x) => File(x.path)),
-        ];
-        state = state.copyWith(images: newImages);
+      if (pickedFiles.isNotEmpty && state.images.length + pickedFiles.length <= 5) {
+        final List<File> compressedImages = [];
+
+        // Compress each selected image
+        for (final xFile in pickedFiles) {
+          final originalFile = File(xFile.path);
+          final compressedFile = await compressImage(originalFile,context);
+
+          if (compressedFile != null) {
+            compressedImages.add(compressedFile);
+            print('Compressed image: ${originalFile.lengthSync()} -> ${compressedFile.lengthSync()} bytes');
+          }
+        }
+
+        final newImages = [...state.images, ...compressedImages];
+        state = state.copyWith(images: newImages, isLoading: false);
       }
     } catch (e) {
       print('Error picking images: $e');
+    }
+  }
+
+  // Compress image before adding to state
+  Future<File?> compressImage(File file,BuildContext context) async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final targetPath = path.join(
+        dir.path,
+        '${DateTime.now().millisecondsSinceEpoch}_compressed.jpg',
+      );
+
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 85, // Match backend optimization
+        minWidth: 800,
+        minHeight: 800,
+        format: CompressFormat.jpeg,
+      );
+
+      return compressedFile != null ? File(compressedFile.path) : file;
+    } catch (e) {
+      print('Error picking images: $e');
+      state = state.copyWith(isLoading: false);
+      Utils.flushBarErrorMessage("Error selecting images", context);
     }
   }
 
@@ -148,7 +179,14 @@ class AddShopViewModel extends StateNotifier<ShopState> {
         print('data ${data}');
       final response = await ref.read(shopProvider).addShop(data, shopId, state.images.whereType<File>().toList());
 print(response);
-      Utils.flushBarErrorMessage(response.toString(),context);
+if(response.toString()!="A payment account is required to receive online transactions. Please add one to continue."){
+     await DialogUtils.showSuccessDialog(context,response.toString());
+
+}
+else{
+  await DialogUtils.showErrorDialog(context,response.toString());
+
+}
       ref.invalidate(sellerShopViewModelProvider(userId.toString()));
       await ref.read(sellerShopViewModelProvider(userId.toString()).notifier).getShops(userId.toString());///update seller shop list
       await ref.read(shopViewModelProvider.notifier).getShops();
@@ -159,9 +197,9 @@ print(response);
 
     } catch (e) {
       state = state.copyWith(
-        shop: AsyncValue.error(e, StackTrace.current),
         isLoading: false,
       );
+     await DialogUtils.showErrorDialog(context,"Failed to add new shop. Try Later!");
       return false;
     }
   }

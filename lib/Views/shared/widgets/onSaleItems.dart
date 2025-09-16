@@ -1,12 +1,10 @@
-import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getOnSaleProducts.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/notifyUtils.dart';
 
 
 class onSaleProducts extends ConsumerStatefulWidget {
@@ -91,12 +89,12 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                               if (product?.images != null && product!.images!.isNotEmpty)
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
-                                  child: Image.network(
-                                    product.images!.first.imageUrl!,
+                                  child: CachedNetworkImage(
+                                   imageUrl:  product.images!.first.imageUrl!,
                                     fit: BoxFit.cover,
                                     width: double.infinity,
                                     height: double.infinity,
-                                    errorBuilder: (context, error, stackTrace) =>
+                                    errorWidget: (context, error, stackTrace) =>
                                         Container(
                                           color: Colors.grey[200],
                                           child: const Icon(Icons.image_not_supported),

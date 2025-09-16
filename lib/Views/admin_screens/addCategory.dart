@@ -18,14 +18,6 @@ class addCategory extends ConsumerStatefulWidget {
 
 class _addCategoryState extends ConsumerState<addCategory> {
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _viewModel.resetState();
-  //
-  //
-  // }
-
   late final categoryViewModel _viewModel;
 
   final TextEditingController name=TextEditingController();
@@ -110,7 +102,7 @@ class _addCategoryState extends ConsumerState<addCategory> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Appcolors.baseColor,
                 ),
                 child: category.isLoading ? CircularProgressIndicator(color: Appcolors.whiteSmoke, )
                     : Text("Submit", style: TextStyle(fontSize: 16.sp,color: Appcolors.whiteSmoke, fontWeight: FontWeight.bold)),

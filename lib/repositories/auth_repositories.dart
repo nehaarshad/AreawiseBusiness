@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
@@ -75,7 +74,6 @@ class AuthRepositories {
         'Authorization':
             'Bearer $token', // Include the token in the Authorization header
       };
-
       dynamic response = await apiservice.PostApiWithJson(
         AppApis.logoutEndPoints,
         null,

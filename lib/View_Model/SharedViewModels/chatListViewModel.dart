@@ -81,20 +81,15 @@ class ChatListViewModel extends StateNotifier<AsyncValue<List<Chat?>>> {
 
   Future<void> deleteChats(String id) async {
     try {
-      // Store current chats to revert in case of error
-      final previousState = state;
-
-      // If we have data, optimistically remove the chat from the list
+      //  remove the chat from the list
       if (state.hasValue) {
         final currentChats = List<Chat?>.from(state.value!);
         final updatedChats = currentChats.where((chat) => chat?.id.toString() != id).toList();
         state = AsyncValue.data(updatedChats);
       }
 
-      // Call the API to delete the chat
       await repository.deleteChat(id);
 
-      // No need to update state again since we've already done it optimistically
     } catch (e) {
       // If there's an error, revert to the previous state
       state = AsyncValue.error(e, StackTrace.current);

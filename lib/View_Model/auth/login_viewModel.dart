@@ -34,7 +34,7 @@ class LoginViewModel extends StateNotifier<bool> {
 
         Navigator.pushNamed(context, routesName.dashboard, arguments: user);
       }
-      ref.read(socketServiceProvider);
+
     } catch (error) {
       print(error);
       developer.log("Logged in user:${error}");
