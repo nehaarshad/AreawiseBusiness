@@ -1,14 +1,10 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
 import '../../../View_Model/SharedViewModels/notificationViewModel.dart';
-import '../../../View_Model/buyerViewModels/ordersHistoryViewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
-import '../widgets/orderStatusColor.dart';
+import '../widgets/loadingState.dart';
 
 class NotificationView extends ConsumerStatefulWidget {
   String id;
@@ -43,7 +39,14 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
         elevation: 2,
       ),
       body: notifications.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+
+          ],
+        ),
         data: (notificationList) {
 
           if (notificationList.isEmpty) {

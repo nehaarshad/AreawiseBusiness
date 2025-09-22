@@ -1,6 +1,6 @@
-import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../Views/shared/widgets/notificatioPermissionFunction.dart';
 import '../../core/services/socketService.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/notifyUtils.dart';
@@ -13,17 +13,22 @@ final signupProvider = StateNotifierProvider<signupviewmodel, bool>((ref) {
 });
 
 class signupviewmodel extends StateNotifier<bool> {
+  final NotificationPermission _notificationPermission = NotificationPermission();
   final Ref ref;
   signupviewmodel(this.ref) : super(false);
 
   Future<void> SignUpApi(Map<String,dynamic> data, BuildContext context) async {
     try {
+
       state = true;
       dynamic response = await ref.read(authprovider).sinupapi(data);
       print("API Response: $response");
       if (response != null) {
         UserDetailModel user= UserDetailModel.fromJson(response);
         await ref.read(sessionProvider.notifier).saveuser(user);
+        await _notificationPermission.requestNotificationPermissions(context);
+        final socketService = ref.read(socketServiceProvider);
+        await socketService.initialize(userId: user.id.toString());
         print(user);
         if (user.role == 'Admin') {
           Navigator.pushNamed(context, routesName.aHome, arguments: user);

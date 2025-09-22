@@ -1,18 +1,10 @@
-import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/widgets/productCondition.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import '../../View_Model/SellerViewModels/ProductStates.dart';
-import '../../core/utils/routes/routes_names.dart';
 import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
-import 'widgets/ShopCategoryDropDownMenu.dart';
 import 'widgets/shopsDropDown.dart';
 
 class addProductView extends ConsumerStatefulWidget {

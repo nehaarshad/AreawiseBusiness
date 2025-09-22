@@ -1,12 +1,8 @@
 import 'dart:async';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
-import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
-import '../../models/UserDetailModel.dart';
-import '../../repositories/UserDetailsRepositories.dart';
 import '../../repositories/categoriesRepository.dart';
-import '../SharedViewModels/getAllCategories.dart';
 
 final subCategoryViewModelProvider = StateNotifierProvider.family<subCategoryViewModel, AsyncValue<List<Subcategory?>>,String>((
     ref,name

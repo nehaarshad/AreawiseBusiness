@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/colors.dart';
+import 'loadingState.dart';
 
 
 class usedItems extends ConsumerStatefulWidget {
@@ -40,7 +41,8 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
         final productState = ref.watch(sharedProductViewModelProvider);
 
         return productState.when(
-          loading: () => LinearProgressIndicator(color: Appcolors.baseColor,),
+          loading: () => const ShimmerListTile(),
+
           data: (products) {
             if (products.isEmpty) {
               return const Center(child: Text("No Products available."));

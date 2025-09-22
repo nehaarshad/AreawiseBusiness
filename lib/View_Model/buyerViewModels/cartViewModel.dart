@@ -1,4 +1,3 @@
-import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/cartModel.dart';
 import 'package:ecommercefrontend/repositories/cartRepositories.dart';
 import 'package:riverpod/riverpod.dart';

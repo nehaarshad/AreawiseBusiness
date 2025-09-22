@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/adminViewModels/AdViewModel.dart';
-import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
+import '../shared/widgets/loadingState.dart';
 
 class UserAdsView extends ConsumerStatefulWidget {
   final String sellerId;
@@ -35,7 +36,14 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
         padding: const EdgeInsets.all(15.0),
         child: Consumer(builder: (context, ref, child) {
               return adsState.when(
-                loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
+                loading: () => const Column(
+                  children: [
+                    ShimmerListTile(),
+                    ShimmerListTile(),
+                    ShimmerListTile(),
+                    ShimmerListTile(),
+                  ],
+                ),
                 data: (ads) {
                   if (ads.isEmpty) {
                     return Center(child: Text("No Active Ads Available"));
@@ -55,11 +63,11 @@ class _UserAdsViewState extends ConsumerState<UserAdsView> {
                               height: 200.h, // Set a fixed height or adjust as needed
                               width: double.infinity, // Ensure it takes the full width
                               child: ad?.image != null && ad?.image!.imageUrl != null
-                                  ? Image.network(
-                                ad!.image!.imageUrl!,
+                                  ? CachedNetworkImage(
+                               imageUrl:  ad!.image!.imageUrl!,
                                 fit: BoxFit.fill,
                                 width: double.infinity,
-                                errorBuilder: (context, error, stackTrace) {
+                                errorWidget: (context, error, stackTrace) {
                                   return Center(child: Icon(Icons.error));
                                 },
                               )

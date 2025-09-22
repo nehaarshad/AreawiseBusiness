@@ -1,13 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../View_Model/adminViewModels/categoriesViewModel.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/routes/routes_names.dart';
 import '../../../models/categoryModel.dart';
+import 'loadingState.dart';
 
 class CategoriesList extends ConsumerStatefulWidget {
   final int userid;
@@ -36,12 +34,12 @@ class _CategoriesListState extends ConsumerState<CategoriesList> {
     return Consumer(
         builder: (context, ref, child) {
           final categoriesAsync = ref.watch(categoryViewModelProvider);
-          return categoriesAsync.isLoading ? const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: LinearProgressIndicator(color: Appcolors.baseColor),
-            ),
-          ) : (categoriesAsync.category != null)
+          return categoriesAsync.isLoading ? const Column(
+            children: [
+              ShimmerListTile(),
+              ShimmerListTile(),
+            ],
+          ): (categoriesAsync.category != null)
               ? Categories(categoriesAsync.category)
               : SizedBox.shrink();
         }
@@ -78,12 +76,12 @@ class _CategoriesListState extends ConsumerState<CategoriesList> {
               child: Column(
                 children: [
                   (category.image != null && category.image!.imageUrl!.isNotEmpty)
-                      ? Image.network(
-                    category.image!.imageUrl!,
+                      ? CachedNetworkImage(
+                  imageUrl:   category.image!.imageUrl!,
                     fit: BoxFit.cover,
                     width: 50.w,
                     height: 50.h,
-                    errorBuilder: (context, error, stackTrace) {
+                    errorWidget: (context, error, stackTrace) {
                       return const Icon(Icons.error);
                     },
                   )

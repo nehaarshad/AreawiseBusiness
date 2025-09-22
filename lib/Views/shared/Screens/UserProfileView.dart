@@ -8,6 +8,7 @@ import '../../../models/UserAddressModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../core/utils/colors.dart';
 import '../widgets/infoRow.dart';
+import '../widgets/loadingState.dart';
 import '../widgets/profileImageWidget.dart';
 
 class profileDetailView extends ConsumerStatefulWidget {
@@ -48,8 +49,8 @@ backgroundColor: Appcolors.whiteSmoke,
       ),
       backgroundColor: Appcolors.whiteSmoke,
       body: userdetail.when(
-        loading: () => Center(
-              child: CircularProgressIndicator(color: Appcolors.blackColor),),
+        loading: () => const ShimmerListTile(),
+
         data: (user) {
           if (user == null) return const Center(child: Text("User not found"));
           return SingleChildScrollView(

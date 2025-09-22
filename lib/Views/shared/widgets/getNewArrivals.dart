@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
+import 'loadingState.dart';
 
 class NewArrivals extends ConsumerStatefulWidget {
   int userid;
@@ -42,7 +43,11 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
   Widget build(BuildContext context) {
     final productState = ref.watch(newArrivalViewModelProvider);
     return productState.when(
-      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
+      loading: () => const Column(
+        children: [
+          ShimmerListTile(),
+        ],
+      ),
       data: (products) {
         if (products.isEmpty) {
           return const Center(child: Text("No New Products available."));

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
+import '../shared/widgets/loadingState.dart';
 
 class SellerShopsView extends ConsumerStatefulWidget {
   int id;//userId
@@ -28,7 +29,14 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
       ),
       backgroundColor: Appcolors.whiteSmoke,
       body: shopState.when(
-        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor)),
+          loading: () => const Column(
+            children: [
+              ShimmerListTile(),
+              ShimmerListTile(),
+              ShimmerListTile(),
+              ShimmerListTile(),
+            ],
+          ),
         data: (shops) {
           if (shops.isEmpty) {
             return const Center(child: Text("No Shops Available"));

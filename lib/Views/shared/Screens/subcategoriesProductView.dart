@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/subCategoriesProductViewModel.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/routes/routes_names.dart';
+import '../widgets/loadingState.dart';
 import '../widgets/productCard.dart';
-import '../widgets/wishListButton.dart';
 
 class Subcategoriesproductview extends ConsumerStatefulWidget {
   final int userid;
@@ -27,7 +26,12 @@ class _SubcategoriesproductviewState extends ConsumerState<Subcategoriesproductv
           final productState = ref.watch(subCategoryProductViewModelProvider(widget.name));
 
           return productState.when(
-            loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
+            loading: () => const Column(
+              children: [
+                ShimmerListTile(),
+                ShimmerListTile(),
+              ],
+            ),
             data: (products) {
               if (products.isEmpty) {
                 return const Center(child: Text("No Products available."));

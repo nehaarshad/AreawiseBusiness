@@ -1,10 +1,9 @@
 import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import 'loadingState.dart';
 
 class ProductsView extends ConsumerStatefulWidget {
   int userid;
@@ -27,8 +26,8 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
   Widget build(BuildContext context) {
     final productState = ref.watch(sharedProductViewModelProvider);
     return productState.when(
-      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-      data: (products) {
+      loading: () => const ShimmerListTile(),
+            data: (products) {
         if (products.isEmpty) {
           return const Center(child: Text("No Products available."));
         }

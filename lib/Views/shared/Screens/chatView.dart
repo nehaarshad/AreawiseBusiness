@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/chatsViewModel.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import '../widgets/loadingState.dart';
 import '../widgets/messageItems.dart';
 
 
@@ -79,12 +81,12 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 widget.product?.images?.first.imageUrl != null
                     ? ClipRRect(
                   borderRadius: BorderRadius.circular(30.r),
-                  child: Image.network(
-                    widget.product!.images!.first.imageUrl!,
+                  child:CachedNetworkImage(
+                   imageUrl:  widget.product!.images!.first.imageUrl!,
                     width: 40.w,
                     height: 35.h,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
+                    errorWidget: (context, error, stackTrace) =>
                         Container(
                           width: 50.w,
                           height: 50.h,
@@ -144,7 +146,12 @@ class _ChatViewState extends ConsumerState<ChatView> {
                   },
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Column(
+                children: [
+                    ShimmerListTile(),
+                  ShimmerListTile(),
+                ],
+              ),
               error: (error, stack) => Center(child: Text('Error: $error')),
             ),
           ),

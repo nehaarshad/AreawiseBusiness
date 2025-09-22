@@ -1,5 +1,4 @@
 import 'package:ecommercefrontend/Views/buyer_screens/widgets/paymentMethod.dart';
-import 'package:ecommercefrontend/Views/buyer_screens/widgets/paymentMethodSelection.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';

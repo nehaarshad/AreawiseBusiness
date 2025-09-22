@@ -1,5 +1,4 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../models/shopModel.dart';
+import '../shared/widgets/loadingState.dart';
 import '../shared/widgets/searchShop.dart';
 
 class allShopsView extends ConsumerStatefulWidget {
@@ -42,7 +42,14 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
               final shopState = ref.watch(shopViewModelProvider);
               return shopState.when(
 
-                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
+                  loading: () => const Column(
+                    children: [
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                    ],
+                  ),
                   data: (shops) {
                     ShopList=shops;
                     if (shops.isEmpty) {

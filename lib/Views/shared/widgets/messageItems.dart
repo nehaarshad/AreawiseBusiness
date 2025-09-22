@@ -1,7 +1,6 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/utils/textStyles.dart';
 import '../../../models/messagesModel.dart';
 
 class MessageView extends StatelessWidget {

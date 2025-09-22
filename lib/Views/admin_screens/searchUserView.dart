@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/adminViewModels/UserViewModel.dart';
 import '../../View_Model/adminViewModels/searchUserViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
+import '../shared/widgets/loadingState.dart';
 
 class searchUserView extends ConsumerStatefulWidget {
   final String search;
@@ -52,8 +54,13 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
         builder: (context, ref, child) {
           final userState = ref.watch(searchUserViewModelProvider);
           return userState.when(
-            loading: () => const Center(
-              child: CircularProgressIndicator(color: Appcolors.baseColor),
+            loading: () => const Column(
+              children: [
+                ShimmerListTile(),
+                ShimmerListTile(),
+                ShimmerListTile(),
+                ShimmerListTile(),
+              ],
             ),
             data: (users) {
               if (users.isEmpty) {
@@ -83,13 +90,18 @@ class _SearchUserViewState extends ConsumerState<searchUserView> {
                               arguments:parameters,
                             );
                           },
-                          leading: Image.network(
-                            user!.image?.imageUrl?.isEmpty == false
+                          leading: CachedNetworkImage(
+                            imageUrl:  user!.image?.imageUrl?.isEmpty == false
                                 ? user.image!.imageUrl!
                                 : "https://th.bing.com/th/id/R.8e2c571ff125b3531705198a15d3103c?rik=gzhbzBpXBa%2bxMA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-big-image-png-2240.png&ehk=VeWsrun%2fvDy5QDv2Z6Xm8XnIMXyeaz2fhR3AgxlvxAc%3d&risl=&pid=ImgRaw&r=0",
                             width: 56.w,
                             height: 60.h,
                             fit: BoxFit.cover,
+                            errorWidget: (context, error, stackTrace) =>
+                                Container(
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.image_not_supported),
+                                ),
                           ),
                           title: Text("${user.username}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
                           subtitle: Text("${user.role}",style:  TextStyle(fontWeight: FontWeight.w300,fontSize: 14.sp)),

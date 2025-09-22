@@ -10,7 +10,7 @@ Color StatusColor(String status) {
     case 'delivered':
       return Colors.purple;
     case 'completed':
-      return Colors.teal;
+      return Colors.amber;
     default:
       return Colors.grey;
   }

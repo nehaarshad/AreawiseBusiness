@@ -1,11 +1,7 @@
-import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/notifyUtils.dart';
 import 'widgets/ShopCategoryDropDownMenu.dart';
 import '../../core/utils/colors.dart';

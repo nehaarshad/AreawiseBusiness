@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/DeliveryOrderAttributesViewModel.dart';
-import '../../models/deliveryOrderAttributes.dart';
 
 class UpdateAttributes extends ConsumerStatefulWidget {
   const UpdateAttributes({super.key});

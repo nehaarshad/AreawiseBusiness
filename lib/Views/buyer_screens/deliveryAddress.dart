@@ -1,8 +1,6 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/onlineTransactionInstructions.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/widgets/paymentMethodSelection.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/buttons.dart';
-import 'package:ecommercefrontend/models/orderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

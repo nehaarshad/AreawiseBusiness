@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/UserProfile/UserProfileViewModel.dart';
 import '../../../models/UserDetailModel.dart';
-import '../../../core/utils/colors.dart';
+import 'loadingState.dart';
 
 class ProfileImageWidget extends ConsumerWidget {
   final UserDetailModel user;
@@ -47,21 +48,30 @@ class ProfileImageWidget extends ConsumerWidget {
         final imageUrl = ref.read(UserProfileViewModelProvider(user.id.toString()).notifier)
             .getProfileImage(userData);
 print(imageUrl);
-        return Container(
-          width: width.w,
-          height: height.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-// border: Border.all(color: Colors.grey.shade500, width: 2),
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-              onError:
-                  (e, stackTrace) => Icon(
-                Icons.image_not_supported_outlined,
-                size: 50.h,
-                color: Colors.grey,
+        return CachedNetworkImage(
+          imageUrl: imageUrl,
+          imageBuilder: (context, imageProvider) => Container(
+            width: width.w,
+            height: height.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
               ),
+            ),
+          ),
+          errorWidget: (context, url, error) => Container(
+            width: width.w,
+            height: height.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey[300],
+            ),
+            child: Icon(
+              Icons.image_not_supported_outlined,
+              size: 50.h,
+              color: Colors.grey,
             ),
           ),
         );

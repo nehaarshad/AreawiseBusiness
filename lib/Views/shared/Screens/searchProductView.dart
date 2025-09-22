@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../View_Model/SharedViewModels/searchProductViewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
+import '../widgets/loadingState.dart';
 import '../widgets/productCard.dart';
-import '../widgets/searchBar.dart';
-import '../widgets/wishListButton.dart';
 
 class searchView extends ConsumerStatefulWidget {
   final String search;
@@ -41,8 +38,13 @@ class _searchViewState extends ConsumerState<searchView> {
               final productState = ref.watch(searchProductViewModelProvider);
 
               return productState.when(
-                loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-                data: (products) {
+                loading: () => const Column(
+                  children: [
+                    ShimmerListTile(),
+                    ShimmerListTile(),
+                    ShimmerListTile(),
+                  ],
+                ),               data: (products) {
                   if (products.isEmpty) {
                     return const Center(child: Text("No Products available."));
                   }

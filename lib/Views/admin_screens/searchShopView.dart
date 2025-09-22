@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../View_Model/SellerViewModels/sellerShopViewModel.dart';
 import '../../View_Model/SharedViewModels/searchedShopViewMode.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
 import '../../core/utils/colors.dart';
 import '../../core/utils/routes/routes_names.dart';
+import '../shared/widgets/loadingState.dart';
 
 class searchShopView extends ConsumerStatefulWidget {
   final String search;
@@ -55,7 +55,15 @@ class _searchShopViewState extends ConsumerState<searchShopView> {
         body:Consumer(builder: (context, ref, child) {
               final shopState = ref.watch(searchShopViewModelProvider);
               return shopState.when(
-                  loading: () => const Center(child: CircularProgressIndicator(color: Appcolors.baseColor)),
+                  loading: () => const Column(
+                    children: [
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                      ShimmerListTile(),
+                    ],
+                  ),
                   data: (shops) {
 
                     if (shops.isEmpty) {

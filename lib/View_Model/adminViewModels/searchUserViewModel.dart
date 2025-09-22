@@ -1,12 +1,8 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/utils/routes/routes_names.dart';
 import '../../models/UserDetailModel.dart';
 import '../../repositories/UserDetailsRepositories.dart';
-import '../auth/sessionmanagementViewModel.dart';
-import 'package:flutter/material.dart';
 
 final searchUserViewModelProvider = StateNotifierProvider<searchUserViewModel, AsyncValue<List<UserDetailModel?>>>((
     ref,

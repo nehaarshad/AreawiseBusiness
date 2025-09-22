@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +6,8 @@ import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
-import 'getUserProducts.dart';
+import '../shared/widgets/loadingState.dart';
 import '../shared/widgets/searchBar.dart';
-import 'getSellerFeatureProducts.dart';
 
 class Sellerproductsview extends ConsumerStatefulWidget {
   final int id;
@@ -99,11 +99,13 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
               Consumer(
                 builder: (context, ref, child) {
                   return productState.when(
-                    loading: () => const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: LinearProgressIndicator(color: Appcolors.baseColor),
-                      ),
+                    loading: () => const Column(
+                      children: [
+                        ShimmerListTile(),
+                        ShimmerListTile(),
+                        ShimmerListTile(),
+
+                      ],
                     ),
                     data: (products) {
                       if (products.isEmpty) {
@@ -155,10 +157,10 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
                                       child: (product.images != null &&
                                           product.images!.isNotEmpty &&
                                           product.images!.first.imageUrl != null)
-                                          ? Image.network(
-                                        product.images!.first.imageUrl!,
+                                          ? CachedNetworkImage(
+                                       imageUrl:  product.images!.first.imageUrl!,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
+                                        errorWidget: (context, error, stackTrace) {
                                           return const Icon(Icons.error);
                                         },
                                       )

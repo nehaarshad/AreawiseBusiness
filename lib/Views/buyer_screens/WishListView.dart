@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/buyerViewModels/WishListViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
+import '../shared/widgets/loadingState.dart';
 
 class Wishlistview extends ConsumerStatefulWidget {
   int id;
@@ -23,8 +25,15 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
           automaticallyImplyLeading:false,
           title:  Text("WishList",style: AppTextStyles.headline,)),
       body: state.when(
-            loading: () => const Center(
-                child: LinearProgressIndicator(color: Appcolors.baseColor)),
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+          ],
+        ),
             data: (list) {
               if (list.isEmpty) {
                 return const Center(child: Text("No Favourite Items available."));
@@ -53,12 +62,12 @@ class _WishlistviewState extends ConsumerState<Wishlistview> {
                         borderRadius: BorderRadius.circular(8.r),
                         child: (item.product?.images?.isNotEmpty == true &&
                             item.product?.images?.first.imageUrl?.isNotEmpty == true)
-                            ? Image.network(
-                          item.product!.images!.first.imageUrl!,
+                            ? CachedNetworkImage(
+                        imageUrl:   item.product!.images!.first.imageUrl!,
                           fit: BoxFit.cover,
                           width: 80.w,
                           height: 100.h,
-                          errorBuilder: (context, error, stackTrace) =>  Icon(
+                          errorWidget: (context, error, stackTrace) =>  Icon(
                             Icons.image_not_supported,
                             size: 50.h,
                             color: Colors.grey,

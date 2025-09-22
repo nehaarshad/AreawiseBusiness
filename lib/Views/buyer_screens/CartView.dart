@@ -1,4 +1,4 @@
-import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/foundation.dart';
@@ -109,22 +109,16 @@ class _CartviewState extends ConsumerState<Cartview> {
               child:
               (item.product!.images?.isNotEmpty == true &&
               item.product!.images!.first.imageUrl?.isNotEmpty == true)
-              ? Image.network(
-              item.product!.images!.first.imageUrl!,
+              ? CachedNetworkImage(
+             imageUrl:  item.product!.images!.first.imageUrl!,
               fit: BoxFit.cover,
               width: 60.w,
               height: 50.h,
-              errorBuilder: (context, error, stackTrace) {
-              return  SizedBox(
-              width: 60.w,
-              height: 50.h,
-              child: Icon(
-              Icons.image_not_supported,
-              size: 50.h,
-              color: Colors.grey,
-              ),
-              );
-              },
+                errorWidget: (context, error, stackTrace) =>  Icon(
+                  Icons.image_not_supported,
+                  size: 50.h,
+                  color: Colors.grey,
+                ),
               )
                   :  SizedBox(
               width: 100.w,

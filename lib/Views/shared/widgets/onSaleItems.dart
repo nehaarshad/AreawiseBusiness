@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/getOnSaleProducts.dart';
 import '../../../core/utils/colors.dart';
+import 'loadingState.dart';
 
 
 class onSaleProducts extends ConsumerStatefulWidget {
@@ -44,7 +45,8 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
     final productState =  ref.watch(onSaleViewModelProvider);
     return productState.when(
 
-      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
+      loading: () => const ShimmerListTile(),
+
       data: (products) {
         if (products.isEmpty) {
           return SizedBox(child: const Center(child: Text("No sale on any Product.",style: TextStyle(color: Appcolors.whiteSmoke),)));

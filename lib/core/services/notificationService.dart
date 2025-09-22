@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/notificationModel.dart';
 
@@ -24,10 +23,10 @@ class NotificationService {
   Stream<String> get notificationActionStream => _notificationActionStreamController.stream;
 
   bool _isInitialized = false;
+  bool _permissionsRequested = false;
 
   Future<void> initialize() async {
     try {
-      await _requestPermissions();
       await _initializeNotifications();
       _isInitialized = true;
       print('NotificationService initialized successfully');
@@ -36,23 +35,54 @@ class NotificationService {
     }
   }
 
-  Future<void> _requestPermissions() async {
+  // Make this method public so it can be called from login/signup
+  Future<bool> requestPermissions() async {
+    try {
+      if (_permissionsRequested) {
+        return await _checkPermissionStatus();
+      }
+
+      bool granted = false;
+
+      if (Platform.isAndroid) {
+        final androidPlugin = _flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+
+        granted = await androidPlugin?.requestNotificationsPermission() ?? false;
+
+      } else if (Platform.isIOS) {
+        final iosPlugin = _flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
+
+        granted = await iosPlugin?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        ) ?? false;
+      }
+
+      _permissionsRequested = true;
+      print('Notification permissions granted: $granted');
+      return granted;
+    } catch (e) {
+      print('Error requesting notification permissions: $e');
+      return false;
+    }
+  }
+
+  // Check if permissions are already granted
+  Future<bool> _checkPermissionStatus() async {
     if (Platform.isAndroid) {
       final androidPlugin = _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
-      await androidPlugin?.requestNotificationsPermission();
-
+      return await androidPlugin?.areNotificationsEnabled() ?? false;
     } else if (Platform.isIOS) {
-      final iosPlugin = _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
-
-      await iosPlugin?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+      // For iOS, we can't easily check permission status without requesting
+      // So we'll assume they need to be requested again
+      return false;
     }
+    return false;
   }
 
   Future<void> _initializeNotifications() async {
@@ -63,10 +93,10 @@ class NotificationService {
     // iOS initialization settings
     const DarwinInitializationSettings iosInitializationSettings =
     DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-   //   onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
+      requestAlertPermission: false, // Don't auto-request permissions
+      requestBadgePermission: false, // Don't auto-request permissions
+      requestSoundPermission: false, // Don't auto-request permissions
+      //   onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
     );
 
     const InitializationSettings initializationSettings = InitializationSettings(
@@ -88,7 +118,6 @@ class NotificationService {
     }
   }
 
-
   // Show notification with sound
   Future<void> showNotification(NotificationModel notification) async {
     if (!_isInitialized) {
@@ -97,6 +126,13 @@ class NotificationService {
     }
 
     try {
+      // Check if permissions are granted before showing notification
+      bool permissionsGranted = await _checkPermissionStatus();
+      if (!permissionsGranted) {
+        print('Notification permissions not granted, cannot show notification');
+        return;
+      }
+
       // Play notification sound
       await _playNotificationSound();
 
@@ -162,14 +198,12 @@ class NotificationService {
     );
   }
 
-
   Future<void> _playNotificationSound() async {
     try {
-        await SystemSound.play(SystemSoundType.alert);
-      } catch (fallbackError) {
-        print('Error playing fallback sound: $fallbackError');
-      }
-
+      await SystemSound.play(SystemSoundType.alert);
+    } catch (fallbackError) {
+      print('Error playing fallback sound: $fallbackError');
+    }
   }
 
   // Cancel notification
@@ -185,6 +219,12 @@ class NotificationService {
   // Get pending notifications
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {
     return await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  }
+
+  // Add method to reset permission state
+  void resetPermissionState() {
+    _permissionsRequested = false;
+    print('Notification permission state reset');
   }
 
   void dispose() {

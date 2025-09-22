@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/colors.dart';
+import 'loadingState.dart';
 
 class RelatedProducts extends ConsumerStatefulWidget {
   final int userid;
@@ -38,12 +39,8 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
     final productState = ref.watch(sharedProductViewModelProvider);
 
     return productState.when(
-      loading: () =>  Center(
-        child: SizedBox(
-          height: 100.h,
-          child: Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-        ),
-      ),
+      loading: () => const ShimmerListTile(),
+
       data: (products) {
         // Filter products to show only ones in the same category
         final relatedProducts = products.where((product) =>

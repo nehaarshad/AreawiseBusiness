@@ -10,6 +10,7 @@ import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/cartBadgeWidget.dart';
 import '../widgets/contactWithSellerButton.dart';
 import '../widgets/imageSlider.dart';
+import '../widgets/loadingState.dart';
 import '../widgets/productReviews.dart';
 import '../widgets/relatedProducts.dart';
 import '../widgets/shopProducts.dart';
@@ -66,12 +67,8 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
 
       body: SafeArea(
         child: productState.when(
-          loading: () => const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: LinearProgressIndicator(color: Appcolors.baseColor),
-            ),
-          ),
+          loading: () => const ShimmerListTile(),
+
           data: (product) {
             if (product == null) {
               return const Center(

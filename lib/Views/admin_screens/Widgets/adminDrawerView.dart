@@ -88,7 +88,7 @@ class AdminDrawerListItems extends ConsumerWidget {
           ),
           drawerItems(
             icon: Icons.feedback_outlined,
-            title: 'feedbacks',
+            title: 'Feedbacks',
             onTap: () {
               Navigator.pushNamed(
                 context,
@@ -98,7 +98,7 @@ class AdminDrawerListItems extends ConsumerWidget {
           ),
           drawerItems(
               icon: Icons.logout,
-              title: 'Logout',
+              title: 'SignOut',
               onTap:(){
                 logout(context,ref);
               }

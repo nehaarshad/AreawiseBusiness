@@ -1,7 +1,6 @@
 //users(all,seller,buyer),products(all,categories),shops(all,categories),feedbacks,profile
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class adminBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;

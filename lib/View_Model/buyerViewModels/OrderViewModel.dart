@@ -1,15 +1,10 @@
 
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
-import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/models/paymentModel.dart';
-import 'package:ecommercefrontend/repositories/transactionSlipRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/utils/colors.dart';
 import '../../models/cartModel.dart';
-import '../../models/orderModel.dart';
 import '../../repositories/checkoutRepositories.dart';
-import '../SharedViewModels/transcriptsViewModel.dart';
 import '../auth/sessionmanagementViewModel.dart';
 import 'cartViewModel.dart';
 import 'ordersHistoryViewModel.dart';

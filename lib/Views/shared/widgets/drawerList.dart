@@ -79,7 +79,7 @@ class DrawerListItems extends ConsumerWidget {
           ),
           drawerItems(
             icon: Icons.help_center_outlined,
-            title: 'help',
+            title: 'Help',
             onTap: (){
               Navigator.pushNamed(context, routesName.FAQ);
             },

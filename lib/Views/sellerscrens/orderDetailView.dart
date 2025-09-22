@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter/material.dart';
@@ -58,12 +59,12 @@ class _OrderDetailViewState extends ConsumerState<OrderDetailView> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
-                          child: imageUrl != null ? Image.network(
-                            imageUrl,
+                          child: imageUrl != null ? CachedNetworkImage(
+                        imageUrl:     imageUrl,
                             width: 80.w,
                             height: 80.h,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => const _ErrorImage(),
+                            errorWidget: (context, error, stackTrace) => const _ErrorImage(),
                           ) : const _ErrorImage(),
                         ),
                          SizedBox(width: 12.w),

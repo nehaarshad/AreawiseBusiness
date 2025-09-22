@@ -4,7 +4,6 @@ import 'package:ecommercefrontend/Views/shared/widgets/listOfSubcategories.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/categoryModel.dart';
-import '../../admin_screens/appSubcategories.dart';
 
 class CategoriesView extends ConsumerStatefulWidget {
   final int userid;

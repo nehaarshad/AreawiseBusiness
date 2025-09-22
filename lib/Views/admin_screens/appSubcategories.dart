@@ -1,5 +1,4 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/adminViewModels/categoriesViewModel.dart';
 import '../../View_Model/adminViewModels/subCategoriesViewModel.dart';
+import '../shared/widgets/loadingState.dart';
 
 class SubcategoriesView extends ConsumerStatefulWidget {
   Category category;
@@ -43,11 +43,13 @@ class _SubcategoriesViewState extends ConsumerState<SubcategoriesView> {
       ),
 
       body: subcategories.when(
-        loading: () => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: CircularProgressIndicator(color: Appcolors.baseColor),
-          ),
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+          ],
         ),
         data: (categories) => Subcategories(categories),
         error: (error, stackTrace) => Center(

@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
-import '../../core/utils/routes/routes_names.dart';
 import '../shared/widgets/SetDateTime.dart';
 import '../../core/utils/colors.dart';
+import '../shared/widgets/loadingState.dart';
 
 class Featuredproducts extends ConsumerStatefulWidget {
   String id;
@@ -167,7 +168,15 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
         children: [
           Expanded(
             child: featureState.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Column(
+                children: [
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                ],
+              ),
               data: (featuredProducts) {
                 if (featuredProducts.isEmpty) {
                   return Center(
@@ -219,13 +228,13 @@ class _FeaturedproductState extends ConsumerState<Featuredproducts> {
                                   featuredProduct.product!.images!.isNotEmpty &&
                                   featuredProduct.product?.images!.first
                                       .imageUrl != null)
-                                  ? Image.network(
-                                featuredProduct.product!.images!.first
+                                  ? CachedNetworkImage(
+                               imageUrl:  featuredProduct.product!.images!.first
                                     .imageUrl!,
                                 fit: BoxFit.cover,
                                 width: 50.w,
                                 height: 50.h,
-                                errorBuilder: (context, error, stackTrace) {
+                                errorWidget: (context, error, stackTrace) {
                                   return const Icon(Icons.error);
                                 },
                               )

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/orderModel.dart';
-import '../../models/ordersRequestModel.dart';
 import '../../repositories/sellerOrdersRepository.dart';
 
 final orderHistoryViewModelProvider=StateNotifierProvider.family<orderHistoryViewModel,AsyncValue<List<orderModel?>>,String>((ref,id){

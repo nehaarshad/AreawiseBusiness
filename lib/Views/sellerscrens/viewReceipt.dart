@@ -1,5 +1,5 @@
 
-import 'package:ecommercefrontend/Views/shared/widgets/buttons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,12 +56,12 @@ class _OnlinePaymentReciptViewState extends ConsumerState<OnlinePaymentReciptVie
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.r),
           child:state.Image != null
-              ?  Image.network(
-            state.Image!,
+              ?  CachedNetworkImage(
+         imageUrl:    state.Image!,
             fit: BoxFit.contain,
             width: double.infinity,
             height: double.infinity,
-            errorBuilder: (context, error, stackTrace) =>
+            errorWidget: (context, error, stackTrace) =>
                 Container(
                   color: Colors.grey[200],
                   child: const Icon(Icons.image_not_supported),

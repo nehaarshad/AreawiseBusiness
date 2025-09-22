@@ -1,13 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
-import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/notifyUtils.dart';
+import 'loadingState.dart';
 
 
 class AllFeaturedProducts extends ConsumerStatefulWidget {
@@ -47,8 +44,8 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
   Widget build(BuildContext context) {
     final productState = ref.watch(featureProductViewModelProvider(widget.userid.toString()));
     return productState.when(
-      loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-      data: (products) {
+      loading: () => const ShimmerListTile(),
+              data: (products) {
         if (products.isEmpty) {
           return SizedBox(child: const Center(child: Text("No Featured Products available.")));
         }

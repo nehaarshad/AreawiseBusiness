@@ -1,14 +1,13 @@
-import 'package:ecommercefrontend/View_Model/SharedViewModels/searchBarViewModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/View_Model/adminViewModels/allProductsViewModel.dart';
-import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../View_Model/SharedViewModels/searchProductViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
+import '../shared/widgets/loadingState.dart';
 import '../shared/widgets/searchBar.dart';
 
 class ManageSearchedProductsview extends ConsumerStatefulWidget {
@@ -59,11 +58,13 @@ class _ManageSearchedProductsviewState extends ConsumerState<ManageSearchedProdu
                 Consumer(
                   builder: (context, ref, child) {
                     return productState.when(
-                      loading: () => const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: CircularProgressIndicator(color: Appcolors.baseColor),
-                        ),
+                      loading: () => const Column(
+                        children: [
+                          ShimmerListTile(),
+                          ShimmerListTile(),
+                          ShimmerListTile(),
+                          ShimmerListTile(),
+                        ],
                       ),
                       data: (products) {
                         if (products.isEmpty) {
@@ -109,12 +110,14 @@ class _ManageSearchedProductsviewState extends ConsumerState<ManageSearchedProdu
                                       child: (product.images != null &&
                                           product.images!.isNotEmpty &&
                                           product.images!.first.imageUrl != null)
-                                          ? Image.network(
-                                        product.images!.first.imageUrl!,
+                                          ? CachedNetworkImage(
+                                        imageUrl:  product.images!.first.imageUrl!,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return const Icon(Icons.error);
-                                        },
+                                        errorWidget: (context, error, stackTrace) =>
+                                            Container(
+                                              color: Colors.grey[200],
+                                              child: const Icon(Icons.image_not_supported),
+                                            ),
                                       )
                                           :  Icon(Icons.image_not_supported, size: 40.h),
                                     ),

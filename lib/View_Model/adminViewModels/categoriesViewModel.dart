@@ -7,8 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod/riverpod.dart';
 import '../../core/utils/notifyUtils.dart';
-import '../../models/UserDetailModel.dart';
-import '../../repositories/UserDetailsRepositories.dart';
 import '../../repositories/categoriesRepository.dart';
 import '../SharedViewModels/getAllCategories.dart';
 import 'package:flutter/material.dart';

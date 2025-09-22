@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,25 +101,16 @@ class _CategoriesGridState extends ConsumerState<CategoriesGrid> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.r),
                       child: (category.image != null && category.image!.imageUrl!.isNotEmpty)
-                          ? Image.network(
-                        category.image!.imageUrl!,
+                          ? CachedNetworkImage(
+                      imageUrl:   category.image!.imageUrl!,
                         fit: BoxFit.cover,
                         width: 80.w,
                         height: 80.h,
-                        errorBuilder: (context, error, stackTrace) {
+                        errorWidget: (context, error, stackTrace) {
                           return Icon(
                             Icons.image_not_supported_rounded,
                             size: 40.sp,
                             color: Colors.white,
-                          );
-                        },
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
                           );
                         },
                       )

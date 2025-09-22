@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/utils/colors.dart';
+import '../shared/widgets/loadingState.dart';
 
 class Feedbackview extends ConsumerStatefulWidget {
   const Feedbackview({super.key});
@@ -40,9 +41,14 @@ class _FeedbackviewState extends ConsumerState<Feedbackview> {
         builder: (context, ref, child) {
           final feedbacks = ref.watch(feedbackVMProvider);
           return feedbacks.when(
-            loading:
-                () => const Center(
-              child: CircularProgressIndicator(color: Appcolors.baseColor),
+            loading: () => const Column(
+              children: [
+                ShimmerListTile(),
+                ShimmerListTile(),
+                ShimmerListTile(),
+                ShimmerListTile(),
+                ShimmerListTile(),
+              ],
             ),
             data: (feedback) {
               if (feedback.isEmpty) {

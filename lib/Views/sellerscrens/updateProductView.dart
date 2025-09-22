@@ -1,20 +1,13 @@
-import 'dart:io';
-import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/updateProductViewModel.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/widgets/productCondition.dart';
-import 'package:ecommercefrontend/Views/shared/Screens/ProductDetailView.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../models/ProductModel.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
+import '../shared/widgets/loadingState.dart';
 import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
-import 'widgets/ShopCategoryDropDownMenu.dart';
 
 class updateProductView extends ConsumerStatefulWidget {
   ProductModel product;
@@ -73,7 +66,12 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
     return Scaffold(
       appBar: AppBar(title: Text("Update Product")),
       body: state.when(
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+          ],
+        ),
         error: (error, stack) => Center(child: Text('Error: $error')),
         data: (shop) {
           return SingleChildScrollView(

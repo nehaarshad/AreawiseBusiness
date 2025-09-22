@@ -8,6 +8,7 @@ import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import 'loadingState.dart';
 
 
 class CategoriesButton extends ConsumerWidget {
@@ -103,21 +104,13 @@ print(categoriesAsync.value?.length);
                   ],
                                 ),
                 ) ,
-                // child: ChoiceChip(
-                //   label: Text(categoryName),
-                //   selected: selectedCategory == categoryName,
-                //   onSelected: (selected) {
-                //     if (selected) {
-                //       onCategoryChange(categoryName);
-                //     }
-                //   },
-                // ),
               );
             },
           );
         },
-        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-        error: (e, _) => Text('Error: $e'),
+        loading: () => const ShimmerListTile(),
+        error: (err, stack) => Center(child: Text('Error: ${err.toString()}')),
+
       ),
     );
   }

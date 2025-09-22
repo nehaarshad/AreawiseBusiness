@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/adminViewModels/AdViewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
 import '../../../core/utils/colors.dart';
+import 'loadingState.dart';
 
 class getAdsView extends ConsumerStatefulWidget {
   const getAdsView({Key? key,}) : super(key: key);
@@ -78,9 +78,8 @@ class _getAdsViewState extends ConsumerState<getAdsView> {
       child: Container(
         height: 170.h,
         child: adsState.when(
-          loading: () => const Center(
-            child: LinearProgressIndicator(color: Appcolors.baseColor),
-          ),
+          loading: () => const  ShimmerListTile(),
+
           data: (ads) {
             if (ads.isEmpty) {
               return Center(

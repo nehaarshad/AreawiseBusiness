@@ -1,34 +1,20 @@
-import 'package:ecommercefrontend/Views/buyer_screens/buyerBottomnavigationBar.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/categoryView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/exploreProductsView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/toSearchProduct.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../../../View_Model/buyerViewModels/cartViewModel.dart';
 import '../../../core/services/notificationService.dart';
 import '../../../core/services/socketService.dart';
 import '../../../core/utils/routes/routes_names.dart';
-import '../../../core/utils/notifyUtils.dart';
 import '../../../models/UserDetailModel.dart';
-import '../../../models/auth_users.dart';
 import '../widgets/bottomNavBar.dart';
 import '../widgets/cartBadgeWidget.dart';
 import '../widgets/drawerList.dart';
-import '../widgets/logout_button.dart';
 import '../widgets/notificationBadge.dart';
-import '../widgets/profileImageWidget.dart';
 import '../../buyer_screens/ShopView.dart';
-import '../../buyer_screens/CartView.dart';
-import '../../buyer_screens/WishListView.dart';
-import '../../sellerscrens/OrdersView.dart';
-import '../../sellerscrens/SellerProductsView.dart';
-import '../../sellerscrens/SellerShopView.dart';
-import '../../sellerscrens/sellerBottomNavigationView.dart';
 import 'appHomeView.dart';
-import 'UserProfileView.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
   UserDetailModel user;

@@ -1,5 +1,4 @@
 import 'package:ecommercefrontend/View_Model/adminViewModels/categoriesViewModel.dart';
-import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,10 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/categoryProductsViewModel.dart';
 import '../../../core/utils/colors.dart';
-import '../../../core/utils/routes/routes_names.dart';
+import '../widgets/loadingState.dart';
 import '../widgets/productCard.dart';
-import '../widgets/searchBar.dart';
-import '../widgets/wishListButton.dart';
 
 class Exploreproductsview extends ConsumerStatefulWidget {
   final int userId;
@@ -174,8 +171,12 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                     final productState = ref.watch(CategoryProductViewModelProvider(_selectedCategory));
 
                     return productState.when(
-                      loading: () => const Center(
-                        child: LinearProgressIndicator(color: Appcolors.baseColor),
+                      loading: () => const Column(
+                        children: [
+                          ShimmerListTile(),
+                          ShimmerListTile(),
+                          ShimmerListTile(),
+                        ],
                       ),
                       data: (products) {
                         if (products.isEmpty) {

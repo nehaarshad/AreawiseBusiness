@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../View_Model/auth/sessionmanagementViewModel.dart';
 import '../utils/routes/routes_names.dart';
-import '../../models/auth_users.dart';
 
 final splashserviceProvider = Provider((ref) {
   return splashservice(ref);

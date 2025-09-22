@@ -1,8 +1,8 @@
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/services/notificationService.dart';
 import '../../models/UserDetailModel.dart';
-import '../../models/auth_users.dart';
 
 final sessionProvider = StateNotifierProvider<sessionViewModel, UserDetailModel?>((
   ref,
@@ -56,6 +56,7 @@ class sessionViewModel extends StateNotifier<UserDetailModel?> {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final String? token = sp.getString('token');
     if (token != null) {
+      NotificationService().resetPermissionState();
       await ref.read(authprovider).logoutApi(token);
       await sp.clear();
       print("SharedPreferences cleared: ${sp.getString('token')}");

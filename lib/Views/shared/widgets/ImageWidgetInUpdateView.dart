@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,24 +22,24 @@ Widget UpdateImage(dynamic image) {
       );
     } else if (image.imageUrl != null) {
       // If the imageUrl is a network URL, use Image.network
-      return Image.network(
-        image.imageUrl!,
+      return CachedNetworkImage(
+       imageUrl:  image.imageUrl!,
         fit: BoxFit.cover,
         width: 100.w,
         height: 100.h,
-        errorBuilder:
+        errorWidget:
             (context, error, stackTrace) =>
                 Icon(Icons.error, color: Colors.red),
       );
     }
   } else if (image is String) {
     // For strings that represent URLs, use Image.network
-    return Image.network(
-      image,
+    return CachedNetworkImage(
+    imageUrl:   image,
       fit: BoxFit.cover,
       width: 100.w,
       height: 100.h,
-      errorBuilder:
+      errorWidget:
           (context, error, stackTrace) => Icon(Icons.error, color: Colors.red),
     );
   }

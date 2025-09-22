@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../../core/utils/colors.dart';
+import 'loadingState.dart';
 
 class shopProducts extends ConsumerStatefulWidget {
   String shopId;
@@ -31,12 +32,8 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
   Widget build(BuildContext context) {
     final productState =ref.watch(sharedProductViewModelProvider);
     return productState.when(
-      loading: () =>  Center(
-        child: SizedBox(
-          height: 100.h,
-          child: Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-        ),
-      ),
+      loading: () => const  ShimmerListTile(),
+
       data: (products) {
         if (products.isEmpty) {
           return Center(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
 import '../../../View_Model/buyerViewModels/ordersHistoryViewModel.dart';
-import '../../../core/utils/routes/routes_names.dart';
-import '../widgets/orderStatusColor.dart';
+import '../widgets/loadingState.dart';
 
 class OrdersHistoryView extends ConsumerStatefulWidget {
   String id;
@@ -49,8 +49,13 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
         ],
       ),
       body: orderState.when(
-        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
-        error: (err, stack) => Center(
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+
+          ],
+        ),       error: (err, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -136,12 +141,12 @@ class _OrdersHistoryViewState extends ConsumerState<OrdersHistoryView> {
                                         ClipRRect(
                                           borderRadius: BorderRadius.circular(8.r),
                                           child: imageUrl != null
-                                              ? Image.network(
-                                            imageUrl,
+                                              ? CachedNetworkImage(
+                                            imageUrl: imageUrl,
                                             width: 80.w,
                                             height: 80.h,
                                             fit: BoxFit.cover,
-                                            errorBuilder: (context, error, stackTrace) =>
+                                            errorWidget: (context, error, stackTrace) =>
                                             const _ErrorImage(),
                                           )
                                               : const _ErrorImage(),

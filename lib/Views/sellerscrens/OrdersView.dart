@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/SellerViewModels/sellerOrderViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
-import 'orderDetailView.dart';
+import '../shared/widgets/loadingState.dart';
 import '../shared/widgets/orderStatusColor.dart';
 
 
@@ -37,7 +38,15 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
         ],
       ),
       body: orderState.when(
-        loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor,)),
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+            ShimmerListTile(),
+
+          ],
+        ),
         error: (err, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -130,12 +139,12 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
                                   child: imageUrl != null
-                                      ? Image.network(
-                                    imageUrl,
+                                      ? CachedNetworkImage(
+                                  imageUrl:   imageUrl,
                                     width: 80.w,
                                     height: 80.h,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) => const _ErrorImage(),
+                                    errorWidget: (context, error, stackTrace) => const _ErrorImage(),
                                   )
                                       : const _ErrorImage(),
                                 ),

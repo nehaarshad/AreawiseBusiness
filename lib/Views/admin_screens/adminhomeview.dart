@@ -1,16 +1,12 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
-import 'package:ecommercefrontend/Views/shared/widgets/logout_button.dart';
 import 'package:ecommercefrontend/models/UserDetailModel.dart';
-import 'package:ecommercefrontend/models/auth_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/buyerViewModels/cartViewModel.dart';
 import '../../core/services/notificationService.dart';
 import '../../core/services/socketService.dart';
-import '../buyer_screens/ShopView.dart';
 import '../shared/Screens/appHomeView.dart';
-import '../shared/widgets/getAllProductView.dart';
 import 'FeaturedProductRequestView.dart';
 import 'UsersView.dart';
 import 'Widgets/adminBottomNavigationView.dart';

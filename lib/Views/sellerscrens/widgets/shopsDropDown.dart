@@ -1,11 +1,8 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
-import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
 import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SellerViewModels/sellerShopViewModel.dart';
-import '../../../models/categoryModel.dart';
 
 
 class ActiveUserShopDropdown extends ConsumerStatefulWidget {

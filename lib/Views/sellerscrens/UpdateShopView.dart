@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/UpdateShopViewModel.dart';
-import 'package:ecommercefrontend/models/shopModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../core/utils/notifyUtils.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
+import '../shared/widgets/loadingState.dart';
 import 'widgets/ShopCategoryDropDownMenu.dart';
 import '../../core/utils/colors.dart';
 
@@ -62,7 +60,12 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
     return Scaffold(
       appBar: AppBar(title: Text("Update Shop")),
       body: state.when(
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => const Column(
+          children: [
+            ShimmerListTile(),
+            ShimmerListTile(),
+          ],
+        ),
         error: (error, stack) => Center(child: Text('Error: $error')),
         data: (shop) {
           return SingleChildScrollView(

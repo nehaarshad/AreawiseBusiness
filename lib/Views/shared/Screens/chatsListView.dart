@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/chatListViewModel.dart';
 import '../../../core/utils/textStyles.dart';
 import '../../../models/chatsModel.dart';
+import '../widgets/loadingState.dart';
 import 'chatView.dart';
 
 class ChatsListView extends ConsumerStatefulWidget {
@@ -70,7 +72,13 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
           SizedBox(height: 10,),
           Expanded(child:
           chatsList.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Column(
+              children: [
+                ShimmerListTile(),
+                ShimmerListTile(),
+                ShimmerListTile(),
+              ],
+            ),
             error: (error, stack) => Center(child: Text('Error: $error')),
             data: (chats) => chats.isEmpty
                 ? const Center(child: Text('No chats yet'))
@@ -147,12 +155,12 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
         leading: chat.product?.images?.isNotEmpty == true && chat.product?.images?.first.imageUrl != null
             ? ClipRRect(
           borderRadius: BorderRadius.circular(30.r),
-          child: Image.network(
-            chat.product!.images!.first.imageUrl!,
+          child: CachedNetworkImage(
+           imageUrl:  chat.product!.images!.first.imageUrl!,
             width: 45.w,
             height: 38.h,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
+            errorWidget: (context, error, stackTrace) =>
                 Container(
                   width: 45.w,
                   height: 38.h,

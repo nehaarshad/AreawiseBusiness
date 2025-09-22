@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/ReviewsViewModel.dart';
 import '../../../core/utils/colors.dart';
 import 'expandedReviewWidget.dart';
+import 'loadingState.dart';
 
 
 // ProductReviews widget
@@ -158,7 +159,8 @@ class _ProductReviewsState extends ConsumerState<ProductReviews> {
         ),
         const Divider(),
         reviewsAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const ShimmerListTile(),
+
           error: (error, stack) => Center(child: Text('Error: $error')),
     data: (comments) {
     if (comments.isEmpty) {

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import '../../../core/utils/colors.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../View_Model/SharedViewModels/searchedShopViewMode.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
+import '../shared/widgets/loadingState.dart';
 
 class findShopView extends ConsumerStatefulWidget {
   final String search;
@@ -43,7 +45,13 @@ class _findShopViewState extends ConsumerState<findShopView> {
         body:Consumer(builder: (context, ref, child) {
           final shopState = ref.watch(searchShopViewModelProvider);
           return shopState.when(
-              loading: () => const Center(child: LinearProgressIndicator(color: Appcolors.baseColor)),
+              loading: () => const Column(
+                children: [
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                ],
+              ),
               data: (shops) {
                 if (shops.isEmpty) {
                   return Center(child: Text("No shops available."));
@@ -82,10 +90,15 @@ class _findShopViewState extends ConsumerState<findShopView> {
                                   Expanded(
                                     child:shop?.images != null &&
                                         shop!.images!.isNotEmpty
-                                        ? Image.network(
-                                      shop.images!.first.imageUrl!,
+                                        ? CachedNetworkImage(
+                                 imageUrl:      shop.images!.first.imageUrl!,
                                       fit: BoxFit.cover,
                                       width: double.infinity,
+                                      errorWidget: (context, error, stackTrace) =>  Icon(
+                                        Icons.image_not_supported,
+                                        size: 50.h,
+                                        color: Colors.grey,
+                                      ),
                                     )
                                         : Center(
                                       child: const Icon(
