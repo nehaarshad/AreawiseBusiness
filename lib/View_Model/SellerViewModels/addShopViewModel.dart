@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/ShopStates.dart';
+import 'package:ecommercefrontend/View_Model/SellerViewModels/paymentAccountViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:ecommercefrontend/repositories/ShopRepositories.dart';
@@ -10,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/notifyUtils.dart';
+import '../../core/utils/routes/routes_names.dart';
 import '../SharedViewModels/getAllCategories.dart';
 import '../adminViewModels/ShopViewModel.dart';
 import 'sellerShopViewModel.dart';
@@ -51,15 +53,24 @@ class AddShopViewModel extends StateNotifier<ShopState> {
 
   Future<void> pickImages(BuildContext context) async {
     try {
-      state = state.copyWith(isLoading: true); // Show loading while processing
       final List<XFile> pickedFiles = await pickImage.pickMultiImage();
-      if (pickedFiles.isNotEmpty && state.images.length + pickedFiles.length <= 5) {
+
+      // Check if adding these images would exceed the limit
+      if (pickedFiles.isNotEmpty) {
+        if (state.images.length + pickedFiles.length > 1) {
+          Utils.flushBarErrorMessage("Select only 1 image", context);
+          return;
+        }
+
         final List<File> compressedImages = [];
+
+        // Show loading indicator
+        state = state.copyWith(isLoading: true);
 
         // Compress each selected image
         for (final xFile in pickedFiles) {
           final originalFile = File(xFile.path);
-          final compressedFile = await compressImage(originalFile,context);
+          final compressedFile = await compressImage(originalFile);
 
           if (compressedFile != null) {
             compressedImages.add(compressedFile);
@@ -72,11 +83,12 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       }
     } catch (e) {
       print('Error picking images: $e');
+      state = state.copyWith(isLoading: false);
     }
   }
 
-  // Compress image before adding to state
-  Future<File?> compressImage(File file,BuildContext context) async {
+// Compress image before adding to state
+  Future<File?> compressImage(File file) async {
     try {
       final dir = await getTemporaryDirectory();
       final targetPath = path.join(
@@ -87,7 +99,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       final compressedFile = await FlutterImageCompress.compressAndGetFile(
         file.absolute.path,
         targetPath,
-        quality: 85, // Match backend optimization
+        quality: 85,
         minWidth: 800,
         minHeight: 800,
         format: CompressFormat.jpeg,
@@ -95,9 +107,8 @@ class AddShopViewModel extends StateNotifier<ShopState> {
 
       return compressedFile != null ? File(compressedFile.path) : file;
     } catch (e) {
-      print('Error picking images: $e');
-      state = state.copyWith(isLoading: false);
-      Utils.flushBarErrorMessage("Error selecting images", context);
+      print('Error compressing image: $e');
+      return null;
     }
   }
 
@@ -121,7 +132,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
 
   void resetState() {
     if (!isDisposed) {
-      state = ShopState(images: [], selectedCategory: null);
+      state = ShopState(images: [], selectedCategory: null,isLoading: false);
       getCategories();
     }
   }
@@ -150,8 +161,9 @@ class AddShopViewModel extends StateNotifier<ShopState> {
   {
     try {
 
-      if (state.images.isEmpty || state.images.length > 4) {
-        throw Exception('Please select 1 to 4 images');
+      if (state.images.isEmpty ) {
+        Utils.flushBarErrorMessage("Please select images", context);
+        return false;
       }
 
       final parsedPrice = int.tryParse(deliveryPrice);
@@ -165,6 +177,8 @@ class AddShopViewModel extends StateNotifier<ShopState> {
         return false;
 
       }
+
+      await ref.read(sellerPaymentAccountViewModelProvider(userId.toString()).notifier).handleSubmission(userId, context);
 
       state = state.copyWith(isLoading: true);
 
@@ -199,7 +213,8 @@ else{
       state = state.copyWith(
         isLoading: false,
       );
-     await DialogUtils.showErrorDialog(context,"Failed to add new shop. Try Later!");
+      print(e);
+     await DialogUtils.showErrorDialog(context,e.toString());
       return false;
     }
   }

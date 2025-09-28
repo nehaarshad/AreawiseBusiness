@@ -60,7 +60,6 @@ class createAdsViewModel extends StateNotifier<CreateAdState> {
       );
 
       if (pickedFile == null) {
-        Utils.flushBarErrorMessage("Upload Ad Poster", context);
         return;
       }
 

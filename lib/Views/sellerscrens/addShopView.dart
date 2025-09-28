@@ -1,8 +1,10 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/notifyUtils.dart';
+import 'addAccountView.dart';
 import 'widgets/ShopCategoryDropDownMenu.dart';
 import '../../core/utils/colors.dart';
 
@@ -38,20 +40,8 @@ class _addShopViewState extends ConsumerState<addShopView> {
     final state = ref.watch(addShopProvider(widget.id.toString()));
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Appcolors.whiteSmoke,
-        actions: [ Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                ref
-                    .read(addShopProvider(widget.id.toString()).notifier)
-                    .pickImages(context);
-              },
-              child: Text("Upload Images"),
-            ),
-          ],
-        ),],
       ),
       backgroundColor: Appcolors.whiteSmoke,
       body: SingleChildScrollView(
@@ -60,13 +50,38 @@ class _addShopViewState extends ConsumerState<addShopView> {
           child: Form(
             key: formkey,
             child: Column(
+              spacing: 8.h,
               children: [
-                SizedBox(height: 20.h),
+                if(state.images.isEmpty)
+                  InkWell(
+                    onTap: () {
+                      ref
+                          .read(addShopProvider(widget.id.toString()).notifier)
+                          .pickImages(context);
+                    },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.upload, size: 50.h, color: Colors.grey[600]),
+                        SizedBox(height: 8),
+                        Text("Tap to upload image", style: TextStyle(color: Colors.grey[600]),),
+                      ],
+                    ),
+                    height: 200.h,
+                  width: 400.w,
+                  //  width: 250.w,
+                  ),
+                  ),
                 if (state.images.isNotEmpty) ...[
-                  if (state.images.length > 4)
-                    Utils.flushBarErrorMessage("Select only 4 images", context),
+
                   SizedBox(
-                    height: 100.h,
+                    height: 150.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: state.images.length,
@@ -76,7 +91,21 @@ class _addShopViewState extends ConsumerState<addShopView> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Image.file(state.images[index]),
+                              child: Container(
+                              width: 130.w, // Define explicit width
+                              height: 150.h, // Define explicit height
+                              decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Image.file(
+                              state.images[index],
+                              fit: BoxFit.cover, // Important for proper display
+                              ),
+                              ),
+                              ),
                             ),
                             Positioned(
                               right: 0,
@@ -102,11 +131,16 @@ class _addShopViewState extends ConsumerState<addShopView> {
                       },
                     ),
                   ),
+
                 ],
 
                 TextFormField(
                   controller: shopname,
-                  decoration: InputDecoration(labelText: "Shop Name"),
+                  decoration: InputDecoration(
+                      labelText: "Shop Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),),
                   keyboardType: TextInputType.text,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -117,7 +151,11 @@ class _addShopViewState extends ConsumerState<addShopView> {
                 ),
                 TextFormField(
                   controller: shopaddress,
-                  decoration: InputDecoration(labelText: "Shop Address"),
+                  decoration: InputDecoration(
+                      labelText: "Shop Address",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter address";
@@ -127,7 +165,11 @@ class _addShopViewState extends ConsumerState<addShopView> {
                 ),
                 TextFormField(
                   controller: delivery,
-                  decoration: InputDecoration(labelText: "Delivery charges"),
+                  decoration: InputDecoration(
+                      labelText: "Delivery charges",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -141,7 +183,11 @@ class _addShopViewState extends ConsumerState<addShopView> {
                 ),
                 TextFormField(
                   controller: sector,
-                  decoration: InputDecoration(labelText: "Sector"),
+                  decoration: InputDecoration(
+                      labelText: "Sector",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter Sector";
@@ -151,7 +197,12 @@ class _addShopViewState extends ConsumerState<addShopView> {
                 ),
                 TextFormField(
                   controller: city,
-                  decoration: InputDecoration(labelText: "city"),
+                  decoration: InputDecoration(
+                      labelText: "city",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),),
+
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter city";
@@ -160,11 +211,21 @@ class _addShopViewState extends ConsumerState<addShopView> {
                   },
                 ),
                 ShopcategoryDropdown(userid: widget.id.toString()),
-                SizedBox(height: 20.h),
+                SizedBox(height: 8.h,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Payment Account",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18.sp)),
+                    Text("  (Optional)",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 15.sp)),
+                  ],
+                ),
+                addSellerAccount(userid: widget.id,),
+                SizedBox(height: 8.h),
                 InkWell(
                   onTap:state.isLoading
                       ? null
                       : () async {
+
                     if (formkey.currentState!.validate()) {
                    bool response =  await ref.read(
                         addShopProvider(
@@ -208,7 +269,6 @@ class _addShopViewState extends ConsumerState<addShopView> {
                     ),
                   ),
                 ),
-                SizedBox(height: 5.h),
 
                 InkWell(
     onTap:()async{

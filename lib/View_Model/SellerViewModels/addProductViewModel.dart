@@ -211,9 +211,9 @@ class AddProductViewModel extends StateNotifier<ProductState> {
 
       print("User ID: $id");
       // Validate images
-      if (state.images.isEmpty || state.images.length > 7) {
-        Utils.flushBarErrorMessage("Please select 1 to 7 images", context);
-        throw Exception('Please select 1 to 7 images');
+      if (state.images.isEmpty ) {
+        Utils.flushBarErrorMessage("Please select images", context);
+        return false;
       }
 
       // Validate price and stock
@@ -235,7 +235,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       final subcategoryName = state.isCustomSubcategory ? null : state.selectedSubcategory?.name;
 
       if (categoryName == null || subcategoryName == null) {
-         Utils.flushBarErrorMessage("Select Existed category or Subcategory", context);
+         Utils.flushBarErrorMessage("Select existed category or subcategory", context);
           return false;
 
       }

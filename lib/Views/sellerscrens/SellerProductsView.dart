@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/widgets/sellerProductTabs.dart';
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,6 +48,10 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+            "My Product's",
+            style: AppTextStyles.headline
+        ),
      ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -53,49 +59,9 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               searchBar(id: widget.id,isAdmin: true,),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        "My Products",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)
-                    ),
-                    InkWell(
-                      onTap:()async{
-                        Navigator.pushNamed(
-                          context,
-                          routesName.sAddProduct,
-                          arguments: widget.id.toString(),
-                        );
-                        },
-                      child: Container(
-                        height: 25.h,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          color: Appcolors.whiteSmoke,
-                          borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(  // Use Border.all instead of boxShadow for borders
-                            color: Appcolors.baseColor,
-                            width: 1.0,  // Don't forget to specify border width
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Add Product",
-                            style: TextStyle(
-                              color: Appcolors.baseColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.sp,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              SizedBox(height: 8.h,),
+              SellerProductTabs(widget.id,context),
+              SizedBox(height: 10.h,),
               Consumer(
                 builder: (context, ref, child) {
                   return productState.when(
@@ -257,3 +223,4 @@ class _SellerproductsviewState extends ConsumerState<Sellerproductsview> {
     );
   }
 }
+

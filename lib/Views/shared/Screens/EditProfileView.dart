@@ -29,6 +29,9 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           value: model.role, // Ensure this matches one of the available items
           decoration: InputDecoration(
             labelText: "Role",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -95,21 +98,27 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
 
   Widget formFields(EditProfileViewModel model) {
     return Column(
+      spacing: 10.h,
       children: [
         TextFormField(
           controller: model.username,
-          decoration: const InputDecoration(labelText: "Username"),
+          decoration:  InputDecoration(labelText: "Username", border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0.r),
+          ),),
         ),
 
         TextFormField(
           controller: model.email,
-          decoration: const InputDecoration(labelText: "Email"),
+          decoration:  InputDecoration(labelText: "Email", border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0.r),
+          ),),
         ),
 
-        SizedBox(height: 10.h,),
         TextFormField(
           controller: model.contactnumber,
-          decoration: const InputDecoration(labelText: "Contact Number"),
+          decoration:  InputDecoration(labelText: "Contact Number", border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0.r),
+          ),),
           keyboardType: TextInputType.phone,
         ),
 
@@ -117,17 +126,25 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
 
         TextFormField(
           controller: model.sector,
-          decoration: const InputDecoration(labelText: "Sector"),
+          decoration:  InputDecoration(labelText: "Sector", border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0.r),
+          ),),
         ),
 
         TextFormField(
           controller: model.city,
-          decoration: const InputDecoration(labelText: "City"),
+          decoration:  InputDecoration(labelText: "City", border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0.r),
+          ),),
         ),
 
         TextFormField(
           controller: model.address,
-          decoration: const InputDecoration(labelText: "Address"),
+          decoration:  InputDecoration(labelText: "Address",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
+          ),
         ),
       ],
     );

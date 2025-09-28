@@ -33,7 +33,7 @@ class CartBadgeWidget extends ConsumerWidget {
                 boxShadow: [
                   BoxShadow(
                     color:Appcolors.baseColorLight30,
-                    blurRadius: 4,
+                    blurRadius: 1,
                     offset: const Offset(0, 2),
                   ),
                 ],

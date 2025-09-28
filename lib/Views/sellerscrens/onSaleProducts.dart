@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommercefrontend/core/utils/CapitalizesFirst.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,7 +139,7 @@ class _OnsaleproductsState extends ConsumerState<Onsaleproducts> {
                                           :  Icon(Icons.image_not_supported, size: 40.h),
                                     ),
                                     title: Text(
-                                      product.name ?? 'No Name',
+                                      capitalizeFirst(product.name!),
                                       style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Column(

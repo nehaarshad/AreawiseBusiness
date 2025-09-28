@@ -128,6 +128,9 @@ class _UserProductsState extends ConsumerState<UserProductsDropdown> {
           decoration: InputDecoration(
             labelText: 'Products',
             hintText: 'Select Product',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             suffixIcon: products.text.isNotEmpty
                 ? IconButton(
               icon: Icon(Icons.clear),

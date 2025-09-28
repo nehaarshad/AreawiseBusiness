@@ -24,7 +24,7 @@ class Utils {
       flushbar: Flushbar(
         message: msg,
         backgroundColor: Appcolors.baseColorLight30,
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 4),
         forwardAnimationCurve: Curves.decelerate,
         reverseAnimationCurve: Curves.easeInOut,
         flushbarPosition: FlushbarPosition.TOP,

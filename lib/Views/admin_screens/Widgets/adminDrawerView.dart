@@ -132,7 +132,8 @@ class AdminDrawerListItems extends ConsumerWidget {
                 ProfileImageWidget(user: user, height: 70.h, width: 100.w),
                 Text(user.username!,style: TextStyle(
                   color: Appcolors.whiteSmoke,
-                  fontSize: 15.sp,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500
                 ),)
               ],
           

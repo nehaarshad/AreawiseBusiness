@@ -67,6 +67,10 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                           shop?.category?.name ?? 'No Category',
                           style:  TextStyle(fontSize: 12.sp),
                         ),
+                        Text(
+                          shop!.status!,
+                          style:  TextStyle(fontSize: 14.sp,color: shop.status=='Active' ? Appcolors.baseColor : Colors.red,fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
                     trailing: Row(

@@ -76,16 +76,17 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
         data: (shop) {
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding:  EdgeInsets.symmetric(horizontal: 18.0),
               child: Form(
                 key: formkey,
                 child: Column(
+                  spacing: 10.h,
                   children: [
                     SizedBox(height: 20.h),
                     if (state.value?.images != null &&
                         state.value!.images!.isNotEmpty)
                       Container(
-                        height: 120.h,
+                        height: 220.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: state.value?.images?.length ?? 0,
@@ -96,8 +97,8 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    width: 100.w,
-                                    height: 100.h,
+                                    width: 150.w,
+                                    height: 280.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       borderRadius: BorderRadius.circular(8.r),
@@ -132,22 +133,46 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                           },
                         ),
                       ),
-
-                    ElevatedButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         ref
                             .read(
-                              updateProductProvider(
-                                widget.product.id.toString(),
-                              ).notifier,
-                            )
-                            .pickImages(context);
-                      },
-                      child: Text("Upload Images"),
+                          updateProductProvider(
+                            widget.product.id.toString(),
+                          ).notifier,
+                        )
+                            .pickImages(context);    },
+                      child: Container(
+                        height: 30.h,
+                        margin: EdgeInsets.symmetric(horizontal: 25.w),
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                          color: Appcolors.whiteSmoke,
+                          borderRadius: BorderRadius.circular(25.r),
+                          border: Border.all(  // Use Border.all instead of boxShadow for borders
+                            color: Appcolors.baseColor,
+                            width: 1.0,  // Don't forget to specify border width
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Upload images",
+                            style: TextStyle(
+                              color: Appcolors.baseColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+                    SizedBox(height: 10.h,),
                     TextFormField(
                       controller: name,
-                      decoration: InputDecoration(labelText: "Product Name"),
+                      decoration: InputDecoration(labelText: "Product Name",  border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),),
+
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -159,7 +184,9 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     TextFormField(
                       controller: price,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: "Price"),
+                      decoration: InputDecoration(labelText: "Price", border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter Price";
@@ -169,7 +196,9 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     ),
                     TextFormField(
                       controller: subtitle,
-                      decoration: InputDecoration(labelText: "Subtitle"),
+                      decoration: InputDecoration(labelText: "Subtitle", border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Provide subtitle of a product";
@@ -179,7 +208,9 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     ),
                     TextFormField(
                       controller: description,
-                      decoration: InputDecoration(labelText: "Description"),
+                      decoration: InputDecoration(labelText: "Description", border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter Description";
@@ -189,7 +220,9 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     ),
                     TextFormField(
                       controller: stock,
-                      decoration: InputDecoration(labelText: "Stock"),
+                      decoration: InputDecoration(labelText: "Stock", border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter Stock";
@@ -231,43 +264,57 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                       shopId: widget.product.id.toString(),
                     ),
                     SizedBox(height: 20.h),
-                    ElevatedButton(
-                      onPressed:
-                          state.isLoading
-                              ? null
-                              : () async {
-                                if (formkey.currentState!.validate()) {
-                                  print(
-                                    "Name: ${name.text}, Price: ${price.text}, Description: ${description.text}, Stock: ${stock.text}",
-                                  ); // Debugging line
-                                  await ref
-                                      .read(
-                                        updateProductProvider(
-                                          widget.product.id.toString(),
-                                        ).notifier,
-                                      )
-                                      .updateProduct(
-                                        name: name.text,
-                                        price: int.parse(price.text),
-                                        subtitle: subtitle.text,
-                                        description: description.text,
-                                        stock: int.parse(stock.text),
-                                    condition:condition.value,
-                                        shopId: widget.product.shopid.toString(),
-                                        user: widget.product.seller.toString(),
-                                        context: context,
-                                      );
-                                }
-                              },
-                      child:
-                          state.isLoading
-                              ? Center(
-                                child: CircularProgressIndicator(
-                                  color: Appcolors.baseColor,
-                                ),
-                              )
-                              : const Text('Update Product'),
+                    InkWell(
+                      onTap:  state.isLoading
+                          ? null
+                          : () async {
+                        if (formkey.currentState!.validate()) {
+                          print(
+                            "Name: ${name.text}, Price: ${price.text}, Description: ${description.text}, Stock: ${stock.text}",
+                          ); // Debugging line
+                          await ref
+                              .read(
+                            updateProductProvider(
+                              widget.product.id.toString(),
+                            ).notifier,
+                          )
+                              .updateProduct(
+                            name: name.text,
+                            price: int.parse(price.text),
+                            subtitle: subtitle.text,
+                            description: description.text,
+                            stock: int.parse(stock.text),
+                            condition:condition.value,
+                            shopId: widget.product.shopid.toString(),
+                            user: widget.product.seller.toString(),
+                            context: context,
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 40.h,
+                        margin: EdgeInsets.symmetric(horizontal: 25.w),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Appcolors.baseColor,
+                          borderRadius: BorderRadius.circular(15.r),
+
+                        ),
+                        child: Center(
+                          child:state.isLoading
+                              ? CircularProgressIndicator(color: Appcolors.whiteSmoke,)
+                              : Text(
+                            "Save changes",
+                            style: TextStyle(
+                              color: Appcolors.whiteSmoke,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+
                   ],
                 ),
               ),

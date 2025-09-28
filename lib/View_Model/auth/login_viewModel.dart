@@ -42,7 +42,7 @@ class LoginViewModel extends StateNotifier<bool> {
     } catch (error) {
       print(error);
       developer.log("Logged in user:${error}");
-      Utils.flushBarErrorMessage("Incorrect Usename or Password", context);
+      Utils.flushBarErrorMessage("Incorrect Username or Password", context);
     } finally {
       state = false;
     }

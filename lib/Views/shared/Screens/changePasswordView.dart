@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/utils/colors.dart';
 import '../../../core/utils/notifyUtils.dart';
 import '../../../models/UserDetailModel.dart';
 
@@ -81,21 +82,29 @@ class _ChangepasswordviewState extends ConsumerState<Changepasswordview> {
         EditProfileViewModel viewModel,
         BuildContext context,
         ) {
-      return TextButton(
-
-        onPressed: state.isLoading ? null : () => onSubmit(viewModel, context),
-        child:
-        state.isLoading
-            ? const CircularProgressIndicator()
-            : const Text("Save"),
+      return InkWell(
+        onTap:  state.isLoading ? null : () => onSubmit(viewModel, context),
+        child: Container(
+          height: 40.h,
+          margin: EdgeInsets.symmetric(horizontal: 25.w),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Appcolors.baseColor,
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          child: Center(
+            child:
+            state.isLoading
+                ? CircularProgressIndicator(color: Appcolors.whiteSmoke)
+                : Text("Reset Password", style: TextStyle(color: Appcolors.whiteSmoke,fontWeight: FontWeight.bold,fontSize: 15.sp)),
+          ),
+        ),
       );
+
     }
 
     return Scaffold(
-      appBar: AppBar(
-        // automaticallyImplyLeading: false,
-        title: Center(child: Text('Reset Password',style: AppTextStyles.headline,)),
-      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -119,6 +128,9 @@ class _ChangepasswordviewState extends ConsumerState<Changepasswordview> {
                         focusNode: oldPassword,
                         decoration: InputDecoration(
                           hintText: "Old Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0.r),
+                          ),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -154,6 +166,9 @@ class _ChangepasswordviewState extends ConsumerState<Changepasswordview> {
                         focusNode: password,
                         decoration: InputDecoration(
                           hintText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0.r),
+                          ),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -188,6 +203,9 @@ class _ChangepasswordviewState extends ConsumerState<Changepasswordview> {
                         focusNode: confirmPassword,
                         decoration: InputDecoration(
                           hintText: "Confirm Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0.r),
+                          ),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -219,6 +237,33 @@ class _ChangepasswordviewState extends ConsumerState<Changepasswordview> {
 
                     },
                   ),
+                  InkWell(
+                    onTap:()async{
+                      Navigator.pop(context);   },
+                    child: Container(
+                      height: 40.h,
+                      margin: EdgeInsets.symmetric(horizontal: 25.w),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Appcolors.whiteSmoke,
+                        borderRadius: BorderRadius.circular(15.r),
+                        border: Border.all(  // Use Border.all instead of boxShadow for borders
+                          color: Appcolors.baseColor,
+                          width: 1.0,  // Don't forget to specify border width
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Back",
+                          style: TextStyle(
+                            color: Appcolors.baseColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
 
                 ],
               ),

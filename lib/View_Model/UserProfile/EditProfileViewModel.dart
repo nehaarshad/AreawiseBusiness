@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/notifyUtils.dart';
+import '../../core/utils/routes/routes_names.dart';
 import '../../models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
@@ -152,12 +153,8 @@ class EditProfileViewModel extends StateNotifier<AsyncValue<UserDetailModel?>> {
       print(response);
       final message = response['message'] ?? 'Password change failed';
       print("Message ${message}");
-      Utils.flushBarErrorMessage(message,context);
-      await ref.read(UserProfileViewModelProvider(id).notifier).getuserdetail(id);
-      await ref.read(UserViewModelProvider.notifier).getallusers();
-      await ref.read(searchUserViewModelProvider.notifier).searchuser(data['username'].substring(0, 2));
+    await  Utils.flushBarErrorMessage(message,context);
 
-      await Future.delayed(Duration(seconds: 1));
 
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

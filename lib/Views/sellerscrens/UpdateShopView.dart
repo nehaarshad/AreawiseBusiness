@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/UpdateShopViewModel.dart';
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,7 +59,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
   Widget build(BuildContext context) {
     final state = ref.watch(updateShopProvider(widget.id.toString()));
     return Scaffold(
-      appBar: AppBar(title: Text("Update Shop")),
+      appBar: AppBar(title: Text("Update Shop",style: AppTextStyles.headline,)),
       body: state.when(
         loading: () => const Column(
           children: [
@@ -74,8 +75,9 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
               child: Form(
                 key: formkey,
                 child: Column(
+                  spacing: 10.h,
                   children: [
-                    SizedBox(height: 20.h),
+
                     if (state.value?.images != null &&
                         state.value!.images!.isNotEmpty)
                       Container(
@@ -90,8 +92,8 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    width: 100.w,
-                                    height: 100.h,
+                                    width: 130.w,
+                                    height: 180.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       borderRadius: BorderRadius.circular(8.r),
@@ -117,15 +119,42 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                           },
                         ),
                       ),
-                    ElevatedButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         ref.read(updateShopProvider(widget.id.toString()).notifier,).pickImages(context);
-                        },
-                      child: Text("Upload Images"),
+                      },
+                      child: Container(
+                        height: 30.h,
+                        margin: EdgeInsets.symmetric(horizontal: 25.w),
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                          color: Appcolors.whiteSmoke,
+                          borderRadius: BorderRadius.circular(25.r),
+                          border: Border.all(  // Use Border.all instead of boxShadow for borders
+                            color: Appcolors.baseColor,
+                            width: 1.0,  // Don't forget to specify border width
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Upload image",
+                            style: TextStyle(
+                              color: Appcolors.baseColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+                    SizedBox(height: 10.h,),
                     TextFormField(
                       controller: shopname,
-                      decoration: InputDecoration(labelText: "Shop Name"),
+                      decoration: InputDecoration(labelText: "Shop Name",
+                        border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),),
+
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -136,7 +165,10 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     ),
                     TextFormField(
                       controller: shopaddress,
-                      decoration: InputDecoration(labelText: "Shop Address"),
+                      decoration: InputDecoration(labelText: "Shop Address",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter address";
@@ -147,7 +179,10 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     TextFormField(
                       controller: delivery,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: "Delivery charges"),
+                      decoration: InputDecoration(labelText: "Delivery charges",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter delivery charges";
@@ -157,7 +192,10 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     ),
                     TextFormField(
                       controller: sector,
-                      decoration: InputDecoration(labelText: "Sector"),
+                      decoration: InputDecoration(labelText: "Sector",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter Sector";
@@ -167,7 +205,10 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     ),
                     TextFormField(
                       controller: city,
-                      decoration: InputDecoration(labelText: "city"),
+                      decoration: InputDecoration(labelText: "city",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter city";
@@ -177,18 +218,39 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     ),
                     UpdateShopcategoryDropdown(userid: widget.id.toString()),
                     SizedBox(height: 20.h),
-                    ElevatedButton(
-                      onPressed: state.isLoading ? null : () async {
-                                if (formkey.currentState!.validate()) {
-                                  print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",); // Debugging line
+                    InkWell(
+                      onTap: state.isLoading ? null : () async {
+                        if (formkey.currentState!.validate()) {
+                          print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",); // Debugging line
 
-                                  await ref.read(updateShopProvider(widget.id.toString(),).notifier,)
-                                      .updateShop(shopname: shopname.text,price:delivery.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:shop!.userId.toString(), context: context,);
-                                }
-                              },
-                      child: state.isLoading ? Center(child: CircularProgressIndicator(color: Appcolors.baseColor,),)
-                              : const Text('Update Shop'),
+                          await ref.read(updateShopProvider(widget.id.toString(),).notifier,)
+                              .updateShop(shopname: shopname.text,price:delivery.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:shop!.userId.toString(), context: context,);
+                        }
+                      },
+                      child: Container(
+                        height: 40.h,
+                        margin: EdgeInsets.symmetric(horizontal: 25.w),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Appcolors.baseColor,
+                          borderRadius: BorderRadius.circular(15.r),
+
+                        ),
+                        child: Center(
+                          child:state.isLoading
+                              ? CircularProgressIndicator(color: Appcolors.whiteSmoke,)
+                              : Text(
+                            "Save changes",
+                            style: TextStyle(
+                              color: Appcolors.whiteSmoke,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+
                   ],
                 ),
               ),

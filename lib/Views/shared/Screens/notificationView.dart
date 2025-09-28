@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/notificationViewModel.dart';
+import '../../../core/utils/routes/notificationRoutes.dart';
+import '../../../core/utils/textStyles.dart';
 import '../widgets/loadingState.dart';
 
 class NotificationView extends ConsumerStatefulWidget {
@@ -35,7 +37,7 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Appcolors.whiteSmoke,
-        title: const Text("Notifications"),
+        title:  Text("Notifications",style: AppTextStyles.headline,),
         elevation: 2,
       ),
       body: notifications.when(
@@ -57,40 +59,39 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
           }
 
           return ListView.builder(
-            padding: const EdgeInsets.all(8),
+            padding:  EdgeInsets.symmetric(horizontal: 8.w,vertical: 5.h),
             itemCount: notificationList.length,
             itemBuilder: (context, index) {
               final notify = notificationList[index];
 
-              return ListTile(
-                onTap: (){
-                  print(notify.id);
-                  if (notify.id != null && notify.read==false) {
-                    ref.read(NotificationViewModelProvider(widget.id).notifier)
-                        .markNotificationAsRead(
-                      notify.id!,
-                      int.parse(widget.id),
-                    );
-                  }
-                },
-                leading: notify.read == true
-                    ? Icon(Icons.notifications, size: 20, color: Appcolors.baseColor)
-                    : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.circle, size: 12, color: Appcolors.baseColorLight30),
-                    Icon(Icons.notifications, size: 20, color: Appcolors.baseColor),
-                  ],
+              return Card(
+
+                elevation: 1,
+                child: ListTile(
+
+                  onTap: (){
+                    print(notify.id);
+                    if (notify.id != null && notify.read==false) {
+                      ref.read(NotificationViewModelProvider(widget.id).notifier)
+                          .markNotificationAsRead(
+                        notify.id!,
+                        int.parse(widget.id),
+                      );
+                    }
+                    int userId=int.tryParse(widget.id) ?? 0;
+                    navigateBasedOnNotification(message: notify.message!,userId: userId,context: context,ref: ref);
+
+                  },
+
+                  title: notify.read == true
+                      ? Text(notify.message ?? "no message",
+                      style: TextStyle(color: Colors.black54,fontSize: 14, fontWeight: FontWeight.normal,),maxLines: 2,)
+                      : Text(notify.message ?? "no message",
+                      style: TextStyle(color: Appcolors.baseColor,fontSize: 14,  fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
+
+                  trailing: Text(formatDate(notify.createdAt),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 9.sp)),
                 ),
-
-                title: notify.read == true
-                    ? Text(notify.message ?? "no message",
-                    style: TextStyle(color: Colors.grey,fontSize: 12, fontWeight: FontWeight.normal,),maxLines: 2,)
-                    : Text(notify.message ?? "no message",
-                    style: TextStyle(color: Appcolors.baseColor,fontSize: 12,  fontWeight: FontWeight.w600),maxLines: 2,overflow: TextOverflow.ellipsis,),
-
-                trailing: Text(formatDate(notify.createdAt),
-                    style: TextStyle(color: Colors.grey[600], fontSize: 9.sp)),
               );
             },
           );
@@ -99,7 +100,7 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "Error loading Notifications: $err",
+                "Something went wrong. Try Later!",
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.red),
             ),

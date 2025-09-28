@@ -105,56 +105,15 @@ class _paymentInstructionsState extends ConsumerState<paymentInstructions> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 5,
                 children: [
-                  Text("⚠️ VERY IMPORTANT:",style: TextStyle(color: Appcolors.baseColorLight30,fontWeight: FontWeight.w400,fontSize: 14.sp)),
-                  RichText(text:TextSpan(text: "1. If you have items from multiple sellers, you must pay ALL sellers ",
+                  RichText(text:TextSpan(text: "1. If items are from different sellers, make separate advance payments to each seller’s account.",
                       style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                  RichText(text:TextSpan(text: "2. You cannot pay only one seller and leave others - this may cause your payment to be lost",
+                  RichText(text:TextSpan(text: "2. If items are from different shops but the same seller, make one combined payment to that seller’s account.",
                       style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                  RichText(text:TextSpan(text: "3. Each seller needs to receive their payment separately",
+                  RichText(text:TextSpan(text: "3. Upload payment screenshot to the correct recipient after payment.",
                       style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                  RichText(text:TextSpan(text: "4. If you upload a wrong or fake receipt, the payment amount doesn't match, or if the receipt is unclear or damaged, you will have to pay Cash on Delivery instead",
+                  RichText(text:TextSpan(text: "4. Orders are processed only after seller confirms payment.",
                       style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                spacing: 5,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Step 1: Choose Your Payment Method",style: TextStyle(color: Appcolors.baseColorLight30,fontWeight: FontWeight.w400,fontSize: 14.sp)),
-                  RichText(text:TextSpan(text: "Select one of these payment options: JazzCash, EasyPaisa, Bank Transfer",
-                      style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                spacing: 5,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Step 2: Send Payment to Each Seller",style: TextStyle(color: Appcolors.baseColorLight30,fontWeight: FontWeight.w400,fontSize: 14.sp)),
-                  RichText(text:TextSpan(text: "1. Send the exact amount to each seller's account using your chosen payment method",
-                      style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                  RichText(text:TextSpan(text: "2. Keep all transaction receipts - you'll need them for proof",
-                      style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                spacing: 5,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Step 3: Upload Transaction Slips",style: TextStyle(color: Appcolors.baseColorLight30,fontWeight: FontWeight.w400,fontSize: 14.sp)),
-                  RichText(text:TextSpan(text: "1. Take a clear photo of your payment receipt/transaction slip",
-                      style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                  RichText(text:TextSpan(text: "2. Upload the correct receipt for the correct seller",
-                      style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
-                  RichText(text:TextSpan(text: "3. Make sure the receipt shows: Payment amount, Date and time, Your phone number, Transaction ID",
+                  RichText(text:TextSpan(text: "5. Use only official account details and ensure the screenshot clearly shows all transaction details.",
                       style: TextStyle(color: Colors.grey,wordSpacing: 5,fontWeight: FontWeight.normal,fontSize: 14.sp)) ),
                 ],
               ),
@@ -215,7 +174,7 @@ class _paymentInstructionsState extends ConsumerState<paymentInstructions> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "${sellers.items![0].product!.shop?.shopname}",
+                                      "Seller #BAU.109${sellers.sellerId}",
                                       style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12.sp),
                                     ),
                                   ),

@@ -22,12 +22,6 @@ class appHomeview extends ConsumerStatefulWidget {
 
 class _appHomeviewState extends ConsumerState<appHomeview> {
 
- @override
-  void initState() {
-    super.initState();
-    // Initial load with 'All' category - moved to didChangeDependencies to avoid provider issues
-  }
-
   @override
   Widget build(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
@@ -72,6 +66,23 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                       ),
                       onSaleProducts(userid: widget.id,),
                SizedBox(height: 10.h),
+              // Featured Products
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+                    child: Text(
+                      "Featured Products",
+                      style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+
+                ],
+              ),
+              AllFeaturedProducts(userid: widget.id),
+
+              SizedBox(height: 10.h),
               // New Arrivals
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,22 +97,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                 ],
               ),
               NewArrivals(userid: widget.id,),
-              SizedBox(height: 10.h),
-              // Featured Products
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
-                    child: Text(
-                      "Featured Products",
-                      style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-
-                ],
-              ),
-              AllFeaturedProducts(userid: widget.id),
               //UsedItems
               SizedBox(height: 10.h),
               Row(

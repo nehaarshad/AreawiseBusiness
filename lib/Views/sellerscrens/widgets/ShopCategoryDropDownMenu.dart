@@ -99,6 +99,9 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
           decoration: InputDecoration(
             labelText: 'Category',
             hintText: 'Search Category',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             suffixIcon: shopcategory.text.isNotEmpty
                 ? IconButton(
               icon: Icon(Icons.clear),
@@ -273,6 +276,9 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
           decoration: InputDecoration(
             labelText: 'Category',
             hintText: 'Search Category',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             suffixIcon: shopcategory.text.isNotEmpty
                 ? IconButton(
               icon: Icon(Icons.clear),

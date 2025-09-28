@@ -17,8 +17,18 @@ class OrdersView extends ConsumerStatefulWidget {
   @override
   ConsumerState<OrdersView> createState() => _OrderListScreenState();
 }
-
 class _OrderListScreenState extends ConsumerState<OrdersView> {
+  String? _selectedStatus; // null means "All"
+  List<String> statusOptions = [
+    'All',
+    'requested',
+    'approved',
+    'rejected',
+    'dispatched',
+    'delivered',
+    'completed'
+  ];
+
   @override
   Widget build(BuildContext context) {
     final orderState = ref.watch(sellerOrderViewModelProvider(widget.sellerId.toString()));
@@ -31,158 +41,261 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              // Refresh the data by invalidating the provider
               ref.refresh(sellerOrderViewModelProvider(widget.sellerId.toString()));
             },
           ),
         ],
       ),
-      body: orderState.when(
-        loading: () => const Column(
-          children: [
-            ShimmerListTile(),
-            ShimmerListTile(),
-            ShimmerListTile(),
-            ShimmerListTile(),
-
-          ],
-        ),
-        error: (err, stack) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              "Error loading orders: $err",
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
-        ),
-        data: (orders) {
-          if (orders.isEmpty) {
-            return  Center(
-              child: Text("No orders available", style: TextStyle(fontSize: 18.sp, color: Colors.grey),),
-            );
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              final orderRequest = orders[index];
-              print(orderRequest?.total);
-              final order = orderRequest?.order;
-              final cartItems = order?.cart?.cartItems;
-
-              return Card(
-                elevation: 3,
-                margin:  EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
-                child: ExpansionTile(
-                  title: Text(
-                    "Order #${order!.id}",
-                    style: const TextStyle(fontWeight: FontWeight.bold,color: Appcolors.baseColor),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Status: ${orderRequest!.status}",
-                        style: TextStyle(
-                          color: StatusColor(orderRequest.status!),
-                          fontWeight: FontWeight.w500,
+      body: Column(
+        children: [
+          // Status filter buttons
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  // All button
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedStatus = null;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      margin: EdgeInsets.only(right: 8.w),
+                      decoration: BoxDecoration(
+                        color: _selectedStatus == null
+                            ? Appcolors.baseColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(
+                          color: Appcolors.baseColor,
+                          width: 1.5,
                         ),
                       ),
-                      Text(
-                        "Discount %: ${order.discount} , ( - Rs.${order.discountAmount} )",
-                        style: const TextStyle(fontSize: 12),
+                      child: Text(
+                        "All",
+                        style: TextStyle(
+                          color: _selectedStatus == null
+                              ? Colors.white
+                              : Appcolors.baseColor,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      Text(
-                        "Order Date: ${orderedDate(order.updatedAt)}",
-                        style:  TextStyle(fontSize: 12.sp),
-                      ),
-                      Text(
-                        "Payment Status: ${orderRequest.order?.paymentStatus}",
-                        style:  TextStyle(fontSize: 12.sp),
-                      ),
-
-                      if(orderRequest.order?.paymentStatus == "paid")
-                      TextButton(
-                          onPressed: (){
-
-                            final parameters={
-                              'orderId':orderRequest.orderId,
-                              'sellerId':orderRequest.sellerId
-                            };
-                            print("Passing params: ${parameters}");
-                            Navigator.pushNamed(context, routesName.transactionSlip,arguments: parameters);
-                          },
-                          child: Text("viewReceipt"))
-                    ],
+                    ),
                   ),
-                  trailing: Text("Total ${orderRequest.total?.toStringAsFixed(2)}"),
-                  children: [
-                    if (cartItems != null)
-                      ...cartItems.map((item) {
-                        final product = item.product;
-                        final imageUrl = product?.images?.isNotEmpty == true
-                            ? product?.images!.first.imageUrl
-                            : null;
 
-                        return InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, routesName.orderDetails,arguments: orderRequest);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  child: imageUrl != null
-                                      ? CachedNetworkImage(
-                                  imageUrl:   imageUrl,
-                                    width: 80.w,
-                                    height: 80.h,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, error, stackTrace) => const _ErrorImage(),
-                                  )
-                                      : const _ErrorImage(),
-                                ),
-                                 SizedBox(width: 12.w),
-                                Expanded(
-                                  child: Column(
+                  // Status buttons
+                  ...statusOptions.where((status) => status != 'All').map((status) =>
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedStatus = status;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                          margin: EdgeInsets.only(right: 8.w),
+                          decoration: BoxDecoration(
+                            color: _selectedStatus == status
+                                ? Appcolors.baseColor
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(
+                              color: Appcolors.baseColor,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Text(
+                            status.toUpperCase(),
+                            style: TextStyle(
+                              color: _selectedStatus == status
+                                  ? Colors.white
+                                  : Appcolors.baseColor,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ).toList(),
+                ],
+              ),
+            ),
+          ),
+
+          // Orders list
+          Expanded(
+            child: orderState.when(
+              loading: () => const Column(
+                children: [
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                  ShimmerListTile(),
+                ],
+              ),
+              error: (err, stack) => Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    "Error loading orders: $err",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+              data: (orders) {
+                // Filter orders based on selected status
+                final filteredOrders = _selectedStatus == null || _selectedStatus == 'All'
+                    ? orders
+                    : orders.where((order) => order?.status?.toLowerCase() == _selectedStatus?.toLowerCase()).toList();
+
+                if (filteredOrders.isEmpty) {
+                  return Center(
+                    child: Text(
+                      _selectedStatus == null || _selectedStatus == 'All'
+                          ? "No orders available"
+                          : "No $_selectedStatus orders",
+                      style: TextStyle(fontSize: 18.sp, color: Colors.grey),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: filteredOrders.length,
+                  itemBuilder: (context, index) {
+                    final orderRequest = filteredOrders[index];
+                    print(orderRequest?.total);
+                    final order = orderRequest?.order;
+                    final cartItems = order?.cart?.cartItems;
+
+                    return Card(
+                      elevation: 3,
+                      margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+                      child: ExpansionTile(
+                        title: Text(
+                          "Order #${order!.id}",
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Appcolors.baseColor),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Status: ${orderRequest!.status}",
+                              style: TextStyle(
+                                color: StatusColor(orderRequest.status!),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              "Discount %: ${order.discount} , ( - Rs.${order.discountAmount} )",
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            Text(
+                              "Order Date: ${orderedDate(order.updatedAt)}",
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            Text(
+                              "Payment Status: ${orderRequest.order?.paymentStatus}",
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+
+                            if(orderRequest.order?.paymentStatus == "paid")
+                              TextButton(
+                                  onPressed: (){
+                                    final parameters={
+                                      'orderId': orderRequest.orderId,
+                                      'sellerId': orderRequest.sellerId
+                                    };
+                                    print("Passing params: ${parameters}");
+                                    Navigator.pushNamed(context, routesName.transactionSlip, arguments: parameters);
+                                  },
+                                  child: Text("View Receipt")
+                              )
+                          ],
+                        ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Total ${orderRequest.total?.toStringAsFixed(2)}"),
+                          ],
+                        ),
+                        children: [
+                          if (cartItems != null)
+                            ...cartItems.map((item) {
+                              final product = item.product;
+                              final imageUrl = product?.images?.isNotEmpty == true
+                                  ? product?.images!.first.imageUrl
+                                  : null;
+
+                              return InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, routesName.orderDetails, arguments: orderRequest);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(product?.name ?? 'Unknown Product', style:  TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.sp,
-                                        )),
-                                       SizedBox(height: 4.h),
-                                      Text(
-                                        'Quantity: ${item.quantity}',
-                                        style:  TextStyle(fontSize: 14.sp),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8.r),
+                                        child: imageUrl != null
+                                            ? CachedNetworkImage(
+                                          imageUrl: imageUrl,
+                                          width: 80.w,
+                                          height: 80.h,
+                                          fit: BoxFit.cover,
+                                          errorWidget: (context, error, stackTrace) => const _ErrorImage(),
+                                        )
+                                            : const _ErrorImage(),
                                       ),
-                                      Text(
-                                        'Price: ${item.price!.toStringAsFixed(2)}',
-                                        style:  TextStyle(fontSize: 14.sp),
+                                      SizedBox(width: 12.w),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              product?.name ?? 'Unknown Product',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.sp,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              'Quantity: ${item.quantity}',
+                                              style: TextStyle(fontSize: 14.sp),
+                                            ),
+                                            Text(
+                                              'Price: ${item.price!.toStringAsFixed(2)}',
+                                              style: TextStyle(fontSize: 14.sp),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+                              );
+                            }).toList(),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
+
   String orderedDate(String? dateString) {
     if (dateString == null) return '../../..';
     try {
@@ -193,7 +306,6 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
     }
   }
 }
-
 class _ErrorImage extends StatelessWidget {
   const _ErrorImage();
 

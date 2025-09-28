@@ -44,7 +44,6 @@ class _createAdsState extends ConsumerState<createAds> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Ad"),
         actions: [
           TextButton(
               onPressed: (){

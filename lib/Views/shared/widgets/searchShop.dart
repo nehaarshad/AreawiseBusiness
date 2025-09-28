@@ -7,9 +7,10 @@ import '../../../core/utils/routes/routes_names.dart';
 
 
 class searchShop extends ConsumerStatefulWidget {
-  int id;
-  bool myShop;
-   searchShop({super.key,required this.id,required this.myShop});
+ final int id;
+ final bool myShop;
+ final int width;
+  const searchShop({super.key,required this.id,required this.myShop,required this.width});
 
   @override
   ConsumerState<searchShop> createState() => _searchShopState();
@@ -49,7 +50,7 @@ class _searchShopState extends ConsumerState<searchShop> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 350.w,
+      width: widget.width.w,
       child: Padding(
         padding:  EdgeInsets.only(right: 8.0.w,bottom: 5.h),
         child: SearchBar(

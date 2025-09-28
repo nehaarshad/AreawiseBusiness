@@ -22,14 +22,5 @@ final List<Map<String, dynamic>> accountWidgets = [
     'icon': Icons.receipt_long,
     'route':routesName.OrderRequests,
   },
-  {
-    'title': 'On Sale Products',
-    'icon': Icons.local_offer,
-    'route':  routesName.onSale,
-  },
-  {
-    'title': 'Featured Products',
-    'icon': Icons.star,
-    'route': routesName.featuredProducts,
-  },
+
 ];

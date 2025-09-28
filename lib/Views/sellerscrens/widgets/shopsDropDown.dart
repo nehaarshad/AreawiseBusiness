@@ -93,6 +93,9 @@ class _ActiveUserShopState extends ConsumerState<ActiveUserShopDropdown> {
           decoration: InputDecoration(
             labelText: 'Shop',
             hintText: 'Select Shop',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             suffixIcon: shops.text.isNotEmpty
                 ? IconButton(
               icon: Icon(Icons.clear),

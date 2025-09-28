@@ -1,16 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/searchShop.dart';
-import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
+import '../../core/utils/CapitalizesFirst.dart';
+import '../../core/utils/colors.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../shared/widgets/loadingState.dart';
 
 class ShopsView extends ConsumerStatefulWidget {
-  int id;//userId
-   ShopsView({super.key,required this.id});
+ final int id;//userId
+  const ShopsView({super.key,required this.id});
 
   @override
   ConsumerState<ShopsView> createState() => _ShopsViewState();
@@ -22,9 +23,10 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
     return Column(
 
       children: [
-        // Center(child: Text(" Shops",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sp),)),
-        searchShop(id:widget.id,myShop: false),
         SizedBox(height: 8.h,),
+        searchShop(id:widget.id,myShop: false,width: 350,),
+        SizedBox(height: 16.h,),
+
         Expanded(
           child: Consumer(
               builder: (context, ref, child) {
@@ -56,6 +58,9 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                         ),
                         itemBuilder: (context, index) {
                           final shop = shops[index];
+                          if(shop==null){
+                            return SizedBox.shrink();
+                          }
                           return GestureDetector(
                             onTap: (){
                               final parameters={
@@ -97,7 +102,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: SizedBox(
                                       child: Text(
-                                        "${shop?.shopname}",
+                                        capitalizeFirst(shop.shopname!),
                                         style: TextStyle(fontWeight: FontWeight.w500,fontSize: 10.h),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,

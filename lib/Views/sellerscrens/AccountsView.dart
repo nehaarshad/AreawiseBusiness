@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,42 +29,7 @@ class _SellerAccountsViewState extends ConsumerState<SellerAccountsView> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap:()async{
-                Navigator.pushNamed(
-                  context,
-                  routesName.addAccount,
-                  arguments: widget.userid,
-                );
-              },
-              child: Container(
-                height: 25.h,
-                width: 100.w,
-                decoration: BoxDecoration(
-                  color: Appcolors.whiteSmoke,
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(  // Use Border.all instead of boxShadow for borders
-                    color: Appcolors.baseColor,
-                    width: 1.0,  // Don't forget to specify border width
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    "Add Account",
-                    style: TextStyle(
-                      color: Appcolors.baseColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
+        title: Text("Payment Accounts",style: AppTextStyles.headline,),
       ),
       body:Consumer(
             builder: (context, ref, child) {

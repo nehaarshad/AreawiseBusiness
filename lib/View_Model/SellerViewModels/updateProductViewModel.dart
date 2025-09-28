@@ -241,8 +241,8 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
   }) async {
     try {
       print('Images count before update: ${images.length}');
-      if (images.isEmpty || images.length > 7) {
-        throw Exception('Please select 1 to 7 images');
+      if (images.isEmpty || images.length > 8) {
+        Utils.flushBarErrorMessage('Please select 1 to 8 images',context);
       }
 
 

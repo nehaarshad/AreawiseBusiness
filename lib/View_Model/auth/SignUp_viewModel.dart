@@ -26,7 +26,6 @@ class signupviewmodel extends StateNotifier<bool> {
       if (response != null) {
         UserDetailModel user= UserDetailModel.fromJson(response);
         await ref.read(sessionProvider.notifier).saveuser(user);
-        await _notificationPermission.requestNotificationPermissions(context);
         final socketService = ref.read(socketServiceProvider);
         await socketService.initialize(userId: user.id.toString());
         print(user);
@@ -36,15 +35,17 @@ class signupviewmodel extends StateNotifier<bool> {
         else {
 
           Navigator.pushNamed(context, routesName.dashboard, arguments: user);
-          Utils.flushBarErrorMessage("Registration Completed", context);
+
         }
+        await _notificationPermission.requestNotificationPermissions(context);
       }
       else {
         Utils.flushBarErrorMessage("Signup Failed", context);
       }
+
     } catch (error) {
       print("Error: $error");
-      Utils.flushBarErrorMessage('Error During Registeration, Try Later!', context);
+      Utils.flushBarErrorMessage('Error During Registration, Try Later!', context);
     } finally {
       state = false;
     }

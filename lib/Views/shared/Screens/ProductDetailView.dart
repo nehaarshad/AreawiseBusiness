@@ -91,30 +91,43 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                       child:Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.store,color: Colors.grey,),
-                                  Text('${product.shop?.shopname!}',style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.sp
-                                  ),),
+                          InkWell(
+                            onTap: (){
+                              final parameters={
+                                'shop':product.shop,
+                                'id':widget.userid.toString()
+                              };
+                              Navigator.pushNamed(
+                                context,
+                                routesName.shopdetail,
+                                arguments: parameters,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.store,color: Colors.grey,),
+                                    Text('${product.shop?.shopname!}',style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.sp
+                                    ),),
 
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(Icons.phone,color: Colors.grey,size: 14.h,),
-                                  Text(' ${product.shop?.user?.contactnumber}',style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.sp
-                                  ),),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(Icons.phone,color: Colors.grey,size: 14.h,),
+                                    Text(' ${product.shop?.user?.contactnumber}',style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.sp
+                                    ),),
 
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           Divider(thickness: 0.4.h,),
                           RichText(
@@ -223,7 +236,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           SizedBox(height: 10.h),
                           Row(
                             children: [
-                              Text("Type: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              Text("Condition: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                               Text(
                                 "${product.condition}",
                                 style: TextStyle(
@@ -294,13 +307,27 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           ),
                           SizedBox(height: 10.h),
                           Row(
+                            children: [
+                              Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              Text(
+                                "${product.subcategory?.name}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.sp,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10.h),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                                  Text("Rating: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                   Text(
-                                    "${product.subcategory?.name}",
+                                    "${product.reviews?.length ?? 0}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 15.sp,
@@ -368,12 +395,6 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   "Related Products",
                                   style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              Row(
-                                children: [
-                                  const Text("See All", style: TextStyle(color: Colors.grey)),
-                                  Icon(Icons.arrow_forward_ios_sharp, size: 10.h),
-                                ],
                               ),
                             ],
                           ),

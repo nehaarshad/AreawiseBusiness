@@ -62,7 +62,10 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
               if (product == null || product.id == null) {
                 return const SizedBox();
               }
-              print("${product.shop!.deliveryPrice ?? 0}",);
+              if ( product.saleOffer?.discount == null || product.saleOffer?.discount ==0) {
+                return const SizedBox();
+              }
+              print("${product.shop?.deliveryPrice ?? 0}",);
               return GestureDetector(
                 onTap: () {
 
@@ -130,7 +133,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                                             children: [
                                               Icon(Icons.discount_outlined,color: Appcolors.whiteSmoke,size: 12.h,),
                                               SizedBox(width: 4.w,),
-                                              Text("${product.saleOffer!.discount}% off",style: TextStyle(fontSize:10.sp,color: Appcolors.whiteSmoke),),
+                                              Text("${product.saleOffer?.discount ?? 0}% off",style: TextStyle(fontSize:10.sp,color: Appcolors.whiteSmoke),),
                                             ],
                                           ),
                                         )),
@@ -156,7 +159,6 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            // WishlistButton( userId: widget.userid.toString(),product:product!),
 
                             Padding(
                               padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
@@ -177,7 +179,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                                   ),
                                   SizedBox(width: 3.w,),
                                   Text(
-                                    "${product.saleOffer!.price ?? 0}",
+                                    "${product.saleOffer?.price ?? 0}",
                                     style: TextStyle(
                                       color: Appcolors.baseColorLight30,
                                       fontSize: 14.sp,
@@ -198,7 +200,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                                       Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
                                       SizedBox(width: 3.w,),
                                       Text(
-                                        "${product.shop!.deliveryPrice ?? 0}",
+                                        "${product.shop?.deliveryPrice ?? 0}",
                                         style: TextStyle(
                                             color: Colors.grey,
                                             fontSize: 14.sp,

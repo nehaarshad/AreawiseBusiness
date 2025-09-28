@@ -77,6 +77,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
           decoration: InputDecoration(
             hintText: "Select Role",
             prefixIcon: Icon(Icons.person_outline),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -125,6 +128,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
+
                   ),
                   child: Icon(
                     Icons.camera_alt,
@@ -197,7 +201,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-          title: Center(child: Text("Add User",style: AppTextStyles.headline,))),
+         ),
       body:SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -205,6 +209,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
             child: Form(
               key: formkey,
               child: Column(
+                spacing: 10.h,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -215,6 +220,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                     focusNode: username,
                     decoration: InputDecoration(
                       hintText: "Username",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
                       prefixIcon: Icon(Icons.person_outline),
                     ),
                     validator: (value) {
@@ -235,6 +243,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                     focusNode: email,
                     decoration: InputDecoration(
                       hintText: "Email",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
                       prefixIcon: Icon(Icons.email_outlined),
                     ),
                     validator: (value) {
@@ -255,6 +266,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                     focusNode: contactNumber,
                     decoration: InputDecoration(
                       hintText: "Contact Number",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
                       prefixIcon: Icon(Icons.phone),
                     ),
                     validator: (value) {
@@ -279,6 +293,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                         focusNode: password,
                         decoration: InputDecoration(
                           hintText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0.r),
+                          ),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -313,6 +330,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                         focusNode: confirmPassword,
                         decoration: InputDecoration(
                           hintText: "Confirm Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0.r),
+                          ),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -341,6 +361,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                     focusNode: sector,
                     decoration: InputDecoration(
                       hintText: "Sector",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
                       prefixIcon: Icon(Icons.location_on_outlined),
                     ),
                     validator: (value) {
@@ -358,6 +381,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                     focusNode: city,
                     decoration: InputDecoration(
                       hintText: "City",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
                       prefixIcon: Icon(Icons.location_city_outlined),
                     ),
                     validator: (value) {
@@ -375,6 +401,9 @@ class _AddUserViewState extends ConsumerState<addUser> {
                     focusNode: address,
                     decoration: InputDecoration(
                       hintText: "Address",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
                       prefixIcon: Icon(Icons.holiday_village_outlined),
                     ),
                     validator: (value) {
@@ -396,7 +425,6 @@ class _AddUserViewState extends ConsumerState<addUser> {
                       );
                     },
                   ),
-                  SizedBox(height: 8.h,),
                   Consumer(
                     builder: (context, ref, child) {
                       final loading = ref.watch(addUserViewModelProvider);

@@ -89,6 +89,10 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           focusNode: focus,
           decoration: InputDecoration(
             labelText: 'Category',
+
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             suffixIcon: ProductCategory.text.isNotEmpty ? IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
@@ -243,6 +247,9 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
       return TextField(
         enabled: false,
         decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0.r),
+          ),
           labelText: 'Subcategory',
           hintText: 'Select a category first',
         ),
@@ -257,6 +264,10 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
           focusNode: subcategoryFocus,
           decoration: InputDecoration(
             labelText: 'Subcategory',
+
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             hintText: 'Search Subcategory',
             suffixIcon: subcategoryController.text.isNotEmpty ? IconButton(
               icon: Icon(Icons.clear),
@@ -419,6 +430,9 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
           focusNode: focus,
           decoration: InputDecoration(
             labelText: 'Category',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             suffixIcon: ProductCategory.text.isNotEmpty ? IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
@@ -578,6 +592,9 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
           focusNode: subcategoryFocus,
           decoration: InputDecoration(
             labelText: 'Subcategory',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
             hintText: 'Select Subcategory',
             suffixIcon: subcategoryController.text.isNotEmpty
                 ? IconButton(

@@ -22,35 +22,24 @@ class DrawerListItems extends ConsumerWidget {
         padding: EdgeInsets.zero,
         children: [
           drawerHeader(context),
+          // drawerItems(
+          //   icon: Icons.business_center_outlined,
+          //   title: 'Seller Account',
+          //   onTap: () {
+          //     final params={
+          //       'user':user,
+          //       'id':id
+          //     };
+          //     Navigator.pushNamed(
+          //       context,
+          //       routesName.account,
+          //       arguments: params,
+          //     );
+          //   },
+          // ),
           drawerItems(
-            icon: Icons.person_outlined,
-            title: 'My Profile',
-            onTap: (){
-              Navigator.pushNamed(
-                context,
-                routesName.profile,
-                arguments:id,
-              );
-            },
-          ),
-          drawerItems(
-            icon: Icons.business_center_outlined,
-            title: 'Business Account',
-            onTap: () {
-              final params={
-                'user':user,
-                'id':id
-              };
-              Navigator.pushNamed(
-                context,
-                routesName.account,
-                arguments: params,
-              );
-            },
-          ),
-          drawerItems(
-            icon: Icons.chat,
-            title: 'Chats',
+            icon: Icons.chat_outlined,
+            title: 'Inbox',
             onTap: () {
               Navigator.pushNamed(
                 context,
@@ -60,8 +49,30 @@ class DrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
+            icon: Icons.store_mall_directory_outlined,
+            title: "My Shop",
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.sShop,
+                arguments: id,
+              );
+            },
+          ),
+          drawerItems(
+            icon: Icons.shopping_bag_outlined,
+            title: "My Product",
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.sProducts,
+                arguments: id,
+              );
+            },
+          ),
+          drawerItems(
             icon: Icons.history_outlined,
-            title: 'Orders History',
+            title: 'My Orders',
             onTap: () {
               Navigator.pushNamed(
                   context,
@@ -75,6 +86,28 @@ class DrawerListItems extends ConsumerWidget {
             title: 'Wishlist',
             onTap: (){
               Navigator.pushNamed(context, routesName.favorite,arguments:id);
+            },
+          ),
+          drawerItems(
+            icon: Icons.receipt_long_outlined,
+            title: "Order's Requests",
+            onTap: () {
+              Navigator.pushNamed(
+                  context,
+                  routesName.OrderRequests,
+                  arguments: id.toString()
+              );
+            },
+          ),
+          drawerItems(
+            icon: Icons.account_balance_wallet_outlined,
+            title: 'Payment Account',
+            onTap: (){
+              Navigator.pushNamed(
+                context,
+                routesName.sellerAccounts,
+                arguments:id,
+              );
             },
           ),
           drawerItems(
@@ -116,7 +149,8 @@ class DrawerListItems extends ConsumerWidget {
                 ProfileImageWidget(user: user, height: 70.h, width: 100.w),
                 Text(user.username!,style: TextStyle(
                   color: Appcolors.whiteSmoke,
-                  fontSize: 15.sp,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500
                 ),)
               ],
           
@@ -128,7 +162,7 @@ class DrawerListItems extends ConsumerWidget {
 
   Widget drawerItems({required IconData icon, required String title, required GestureTapCallback onTap}){
     return ListTile(
-      leading: Icon(icon),
+      leading: Icon(icon,),
       title: Text(title),
       onTap: onTap,
     );

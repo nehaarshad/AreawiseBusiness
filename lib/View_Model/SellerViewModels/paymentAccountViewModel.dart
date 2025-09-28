@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/models/paymentAccountModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/utils/dialogueBox.dart';
 import '../../repositories/sellerAccountsRepository.dart';
 
 //for seller to manage payementAccounts
@@ -15,6 +16,48 @@ class sellerPaymentAccountViewModel extends StateNotifier<AsyncValue<List<paymen
   String id;
   sellerPaymentAccountViewModel(this.ref, this.id) : super(const AsyncValue.loading()) {
     getPaymentAcconts(id);
+  }
+
+  final formkey = GlobalKey<FormState>();
+  bool isBank=false;
+  TextEditingController bankName=TextEditingController();
+  TextEditingController IBAN=TextEditingController();
+  TextEditingController accountNumber=TextEditingController();
+  TextEditingController accountHolderName=TextEditingController();
+  String? accountType;
+
+  @override
+  void dispose() {
+
+    bankName.clear();
+    IBAN.clear();
+    accountHolderName.clear();
+    accountNumber.clear();
+    accountType=null;
+
+  }
+
+  Future<bool> handleSubmission(int userid,BuildContext context) async{
+
+    if(!formkey.currentState!.validate()) {
+      return false;
+    }
+      if (accountType == null || accountHolderName.text.trim().isEmpty || accountNumber.text.trim().isEmpty) {
+        return false;
+      }
+      else {
+        addPaymentAcconts(
+            userid,
+            accountType!,
+            bankName.text.trim(),
+            accountNumber.text.trim(),
+            IBAN.text.trim(),
+            accountHolderName.text.trim(),
+            context);
+
+        return false;
+
+      }
   }
 
   Future<void> getPaymentAcconts(String id) async {
@@ -39,11 +82,11 @@ class sellerPaymentAccountViewModel extends StateNotifier<AsyncValue<List<paymen
       };
 
        await ref.read(accountProvider).addSellerAccount(data);
-       Utils.toastMessage("New Wallet Added");
-      await getPaymentAcconts(this.id);
-      Navigator.pop(context);
+       dispose();
+       await getPaymentAcconts(this.id);
+
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+     print(e.toString());
     }
   }
 

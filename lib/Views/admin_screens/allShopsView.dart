@@ -33,7 +33,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
          actions: [
-          searchShop(id:widget.id,myShop: true,),
+          searchShop(id:widget.id,myShop: true,width: 350,),
          ]
       ),
       body: ListView(

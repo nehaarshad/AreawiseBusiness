@@ -1,4 +1,4 @@
-class AppApis {//161.35.22.15
+abstract class AppApis {//161.35.22.15
   static var baseurl = "http://161.35.22.15:5000/api";
   static var socketURL = "http://161.35.22.15:5000";
 

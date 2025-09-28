@@ -46,11 +46,15 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
   Widget formFields(attributesViewModel model) {
     print(model.discount);
     return Column(
+      spacing: 10.h,
       children: [
 
         TextFormField(
           controller: model.discount,
-          decoration: const InputDecoration(labelText: "Discount %",
+          decoration:  InputDecoration(labelText: "Discount %",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),
 
           ),
 
@@ -58,7 +62,10 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
 
         TextFormField(
           controller: model.total,
-          decoration: const InputDecoration(labelText: "Total"),
+          decoration:  InputDecoration(labelText: "Total",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0.r),
+            ),),
         ),
       ],
     );
@@ -67,7 +74,8 @@ class _UpdateAttributesState extends ConsumerState<UpdateAttributes> {
   Widget DurationField(attributesViewModel model) {
     return TextFormField(
           controller: model.duration,
-          decoration: const InputDecoration(labelText: "Days"),
+          decoration: InputDecoration(labelText: "Days",
+          ),
         );
 
 

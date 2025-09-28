@@ -48,18 +48,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading:false,
-          backgroundColor: Appcolors.whiteSmoke,
-          actions: [  Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  ref.read(addProductProvider(userid).notifier).pickImages(context);
-                },
-                child: Text("Upload Images"),
-              ),
-            ],
-          ),],
+        backgroundColor: Appcolors.whiteSmoke,
       ),
       backgroundColor: Appcolors.whiteSmoke,
 
@@ -69,11 +58,37 @@ class _addProductViewState extends ConsumerState<addProductView> {
           child: Form(
             key: formkey,
             child: Column(
+              spacing: 10.h,
               children: [
-                SizedBox(height: 20.h),
-                if (state.images.isNotEmpty)
+
+                if(state.images.isEmpty)
+                  InkWell(
+                    onTap: () {
+                      ref.read(addProductProvider(userid).notifier).pickImages(context);
+
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8.0.r),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload, size: 50.h, color: Colors.grey[600]),
+                          SizedBox(height: 8),
+                          Text("Tap to upload image", style: TextStyle(color: Colors.grey[600]),),
+                        ],
+                      ),
+                      height: 200.h,
+                      width: 400.w,
+                      //  width: 250.w,
+                    ),
+                  ),
+                if (state.images.isNotEmpty) ...[
                   SizedBox(
-                    height: 120.h,
+                    height: 150.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: state.images.length,
@@ -83,8 +98,8 @@ class _addProductViewState extends ConsumerState<addProductView> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 100.w, // Define explicit width
-                                height: 100.h, // Define explicit height
+                                width: 130.w, // Define explicit width
+                                height: 150.h, // Define explicit height
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(8.r),
@@ -116,10 +131,40 @@ class _addProductViewState extends ConsumerState<addProductView> {
                       },
                     ),
                   ),
-
+                  InkWell(
+                    onTap:(){
+                      ref.read(addProductProvider(userid).notifier).pickImages(context);
+                    },
+                    child: Container(
+                      height: 30.h,
+                      margin: EdgeInsets.symmetric(horizontal: 25.w),
+                      width: 130.w,
+                      decoration: BoxDecoration(
+                        color: Appcolors.whiteSmoke,
+                        borderRadius: BorderRadius.circular(25.r),
+                        border: Border.all(  // Use Border.all instead of boxShadow for borders
+                          color: Appcolors.baseColor,
+                          width: 1.0,  // Don't forget to specify border width
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Upload Images",
+                          style: TextStyle(
+                            color: Appcolors.baseColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
                 TextFormField(
                   controller: name,
-                  decoration: InputDecoration(labelText: "Product Name"),
+                  decoration: InputDecoration(labelText: "Product Name",border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0.r),
+                  ),),
                   keyboardType: TextInputType.text,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -130,7 +175,9 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ),
                 TextFormField(
                   controller: price,
-                  decoration: InputDecoration(labelText: "Price"),
+                  decoration: InputDecoration(labelText: "Price",border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0.r),
+                  ),),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -141,7 +188,9 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ),
                 TextFormField(
                     controller: subtitle,
-                    decoration: InputDecoration(labelText: "Subtitle"),
+                    decoration: InputDecoration(labelText: "Subtitle",border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0.r),
+                    ),),
                     keyboardType: TextInputType.text,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -152,7 +201,9 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ),
                 TextFormField(
                   controller: description,
-                  decoration: InputDecoration(labelText: "Description"),
+                  decoration: InputDecoration(labelText: "Description",border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0.r),
+                  ),),
                   maxLines: 3,
                   maxLength: 500,
                   validator: (value) {
@@ -164,7 +215,10 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ),
                 TextFormField(
                   controller: stock,
-                  decoration: InputDecoration(labelText: "Stock"),
+                  decoration: InputDecoration(labelText: "Stock",
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0.r),
+                  ),),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -203,7 +257,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ProductCategoryDropdown(shopid: userid),
                 ProductSubcategoryDropdown(userId:userid),
                 ActiveUserShopDropdown(userid:userid),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 InkWell(
                   onTap:state.isLoading ? null : () async {
                     if (formkey.currentState!.validate()) {
@@ -248,7 +302,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     ),
                   ),
                 ),
-                SizedBox(height: 5.h),
+
                 InkWell(
                   onTap:()async{
                     await ref.read(addProductProvider(widget.userId.toString()).notifier).Cancel(widget.userId.toString(),context);

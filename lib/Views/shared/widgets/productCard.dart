@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/Views/shared/widgets/wishListButton.dart';
+import 'package:ecommercefrontend/core/utils/CapitalizesFirst.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/utils/colors.dart';
@@ -104,7 +105,7 @@ class _ProductcardState extends State<Productcard> {
               Padding(
                 padding: EdgeInsets.only(top: 8.h, left: 4.w),
                 child: Text(
-                  widget.product.name ?? "Unknown",
+                 capitalizeFirst(widget.product.name!),
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14.sp,

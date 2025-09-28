@@ -77,8 +77,8 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       final List<XFile> pickedFiles = await pickImage.pickMultiImage();
 
       // Check if total images would exceed 8
-      if (pickedFiles.isNotEmpty && images.length + pickedFiles.length > 4) {
-        Utils.flushBarErrorMessage("Select only 4 Images", context);
+      if (pickedFiles.isNotEmpty && images.length + pickedFiles.length > 1) {
+        Utils.flushBarErrorMessage("Select only 1 Images", context);
         return;
       }
 
@@ -197,8 +197,9 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     required BuildContext context,
   }) async {
     try {
-      if (images.isEmpty || images.length > 4) {
-        throw Exception('Please select 1 to 4 images');
+      if (images.isEmpty ) {
+        Utils.flushBarErrorMessage("Please select image", context);
+        return ;
       }
 
       final categoryName = isCustomCategory ? null : selectedCategory?.name;
