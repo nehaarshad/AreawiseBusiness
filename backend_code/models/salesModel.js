@@ -27,7 +27,10 @@ const sale = sequelize.define('saleOffers', {
         type: DataTypes.INTEGER, 
         allowNull: false 
     },
-   
+    is_active: {  //if sale is active or not
+        type: DataTypes.BOOLEAN, 
+        defaultValue: true 
+    },
 },
 {
     timestamps: true

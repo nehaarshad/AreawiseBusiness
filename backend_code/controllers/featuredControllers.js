@@ -185,6 +185,7 @@ const getAllRequestedFeaturedProducts=async(req,res)=>{
 const updateFeaturedProducts=async(req,res)=>{
     try {
         const {id}=req.params; //featuredID
+        console.log(id);
         const {status,expire_at}=req.body;
         const requestedFeaturedProduct=await featured.findByPk(id,{
         include: {
@@ -203,8 +204,8 @@ const updateFeaturedProducts=async(req,res)=>{
     requestedFeaturedProduct.save(); //save the status and expire date in the database
     
     
-         const sellerId = requestedFeaturedProduct.Product.seller; 
-                 const NotificationMessage = `Your request to feature product #"${requestedFeaturedProduct.Product.id}" is ${status}.`;
+         const sellerId = requestedFeaturedProduct.userID; 
+                 const NotificationMessage = `Your request to feature product #"${requestedFeaturedProduct.productID}" is ${status}.`;
                   if (req.io && req.userSockets) {
                      await sendNotificationToUser(req.io, req.userSockets, sellerId, NotificationMessage);
                      }

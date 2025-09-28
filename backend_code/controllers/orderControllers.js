@@ -196,7 +196,8 @@ const PlaceOrder = async (req, res) => {
             addressId: userAddress.id,
             status: 'send',
             paymentMethod: paymentMethod,
-            paymentStatus: paymentStatus
+            paymentStatus: paymentStatus,
+            updatedAt: new Date(),
         });
           // Group seller items to create its payments 
         const sellerGroups = {}; //{1:[p1,p2],2:[p3]}

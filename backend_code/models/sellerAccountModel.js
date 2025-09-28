@@ -18,6 +18,7 @@ const SellerPaymentAccount = sequelize.define('sellerPaymentAccounts', {
     accountNumber: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     },
     bankName: {
         type: DataTypes.STRING,
@@ -26,6 +27,7 @@ const SellerPaymentAccount = sequelize.define('sellerPaymentAccounts', {
     IBAN: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     },
     accountHolderName: {
         type: DataTypes.STRING,

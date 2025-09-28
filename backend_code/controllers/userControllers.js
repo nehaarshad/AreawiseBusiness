@@ -10,9 +10,13 @@ import { fileURLToPath } from "url";
 import { optimizeImage } from "../MiddleWares/uploadimage.js";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-import fs from "fs";
+import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
 import dotenv from "dotenv";
+import sale from "../models/salesModel.js";
+import featured from "../models/featuredModel.js";
 import { Op } from "sequelize";
+import SellerPaymentAccount from "../models/sellerAccountModel.js";
+import cart from "../models/CartModel.js";
 dotenv.config();
 
 //get all users
@@ -208,6 +212,9 @@ const updateuser = async (req, res) => {
             const userImage = await image.findOne({
                 where: {  UserId: id }
             });
+            if(userImage) { // Delete old image files from filesystem
+                       await removeImageFromDirectory(userImage.imageUrl);
+            }
              const originalPath = req.file.path;
                             const optimizedFilename = 'optimized-' + req.file.filename;
                             const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
@@ -275,28 +282,66 @@ const deleteuser=async(req,res)=>{
             return res.json({error:"User not Exit"});
           } 
           const userId=user.id;
-          const userimage=await image.destroy({where:{imagetype:'user',UserId:user.id}});
-            if(userimage>0){
-                console.log(`${userimage} images of this user is deleted`)
+           const userImage = await image.findOne({
+                where: {  UserId: id }
+            });
+            if(userImage){
+              await removeImageFromDirectory(userImage.imageUrl);
             }
-          const useraddress=await Address.destroy({where:{userId}});
-            if(useraddress>0){
-                console.log(`${useraddress} adddress of this user is deleted`)
-             }
-            const products=await Product.destroy({where:{seller:userId}});
-            if(products>0){
-                console.log(`${products} Products of this shop deleted`)
-            }
-           const shops=await shop.destroy({where:{userId}});
-                if(shops>0){
-                    console.log(`${shops} shops of this user is deleted`)
+          await image.destroy({where:{imagetype:'user',UserId:user.id}});
+          await Address.destroy({where:{userId}});
+
+            const products=await Product.findAll({where:{seller:userId}}); //get all products of user
+            if(products.length>0){
+                for(const product of products){ //delete images of each product //delete each product's sales and featured if any
+                     const productImages = await image.findAll({
+                        where: { imagetype: 'product', ProductId: product.id }
+                    });
+                    for(const productImage of productImages){
+                        if(productImage.imageUrl){
+                            try {
+                                await removeImageFromDirectory(productImage.imageUrl);
+                            } catch (error) {
+                                console.error('Error removing product image:', productImage.imageUrl, error);
+                            }
+                        }
+                    }
+                   
                 }
-               
-         await user.destroy();
-         res.json({
-            success:true,
-            message:"User Deleted Successfully"
-         });
+            }
+
+           const shops=await shop.findAll({where:{userId}});
+                if(shops.length>0){
+                    for(const shop of shops){ //delete images of each shop from directory
+                     const shopImages = await image.findAll({
+                        where: { imagetype: 'shop', ShopId: shop.id }
+                    });
+                    for(const shopImage of shopImages){
+                        if(shopImage.imageUrl){
+                            try {
+                                await removeImageFromDirectory(shopImage.imageUrl);
+                            } catch (error) {
+                                console.error('Error removing shop image:', shopImage.imageUrl, error);
+                            }
+                        }
+                    }
+                   
+                }
+                
+                }
+                    await image.destroy({where:{imagetype:'product',ProductId:products.map(p=>p.id)}}); //delete all product images from db
+                await image.destroy({where:{imagetype:'shop',ShopId:shops.map(s=>s.id)}});
+            
+              await SellerPaymentAccount.destroy({where:{sellerId:userId}}); 
+              await Notification.destroy({where:{userId}});
+              await cart.destroy({where:{UserId:userId}});
+                await Product.destroy({where:{seller:userId}}); //delete all products of user
+                  await shop.destroy({where:{userId}}); //delete all shops of user
+              await user.destroy();
+              res.json({
+                 success:true,
+                 message:"User Deleted Successfully"
+              });
 
     } catch (error) {
         console.log(error);

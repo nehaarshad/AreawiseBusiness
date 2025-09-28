@@ -7,6 +7,8 @@ import SellerPaymentAccount from "../models/sellerAccountModel.js";
 import dotenv from "dotenv" 
 import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
+import sale from "../models/salesModel.js";
+import featured from "../models/featuredModel.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { optimizeImage } from "../MiddleWares/uploadimage.js";
@@ -14,6 +16,7 @@ import fs from "fs";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 dotenv.config();
+import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
 
 const addshop = async (req, res) => {
     try {
@@ -400,18 +403,37 @@ const deleteshopbyid=async(req,res)=>{
           if(!shops){
             return res.json({error:"shop not Exit"});
           } 
+           const shopImages = await image.findAll({
+                                  where: { imagetype: 'shop', ShopId: shops.id }
+                              });
+                              for(const shopImage of shopImages){
+                                    await removeImageFromDirectory(shopImage.imageUrl);
+                              }
            const sellerId = shops.userId; 
           const shopid=shops.id;
-            const products=await Product.destroy({where:{shopid}});
-            if(products>0){
-                console.log(`${products} Products of this shop deleted`)
+          const products=await Product.findAll({where:{shopid}});
+            if(products.length>0){
+                for(const product of products){
+                     const productImages = await image.findAll({
+                       where: { imagetype: 'product', ProductId: product.id }
+                    });
+                    for(const productImage of productImages){
+                        try {
+                            await removeImageFromDirectory(productImage.imageUrl);
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                   
+                } 
             }
-           const images=await image.destroy({where:{imagetype: 'shop',ShopId:id}}) ;
-           if(images>0){
-            console.log(`${images} Images of this shop deleted`)
-        }
+             await image.destroy({where:{imagetype:'product',ProductId:products.map(p=>p.id)}});
+              await sale.destroy({where:{productId:products.map(p=>p.id)}});
+                await featured.destroy({where:{productID:products.map(p=>p.id)}});
+            await Product.destroy({where:{shopid}});
+           await image.destroy({where:{imagetype: 'shop',ShopId:id}}) ;
 
-         await shops.destroy();
+            await shops.destroy();
            const notificationMessage = `Your shop has been deleted.`;
 
            if (req.io && req.userSockets) {

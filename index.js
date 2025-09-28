@@ -90,10 +90,10 @@ app.use(bodyparser.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static file serving
 app.use("/backend_code/uploads", express.static(path.join(__dirname, "backend_code/uploads"), {
-    maxAge: '1y', // Cache images for 1 year
-    etag: true,
-    lastModified: true,
-    cacheControl: true,
+    maxAge: '1y', // Tells browsers to cache the image for 1 year.
+    etag: true, //Enables ETag headers, which help browsers validate cached content.
+    lastModified: true, //Adds a Last-Modified header for cache validation.
+    cacheControl: true, //Enables Cache-Control headers.
     setHeaders: (res, path) => {
         if (path.endsWith('.webp') || path.endsWith('.jpg') || path.endsWith('.png')) {
             res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year

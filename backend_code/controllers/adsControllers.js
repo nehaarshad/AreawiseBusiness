@@ -7,7 +7,7 @@ import { optimizeImage } from "../MiddleWares/uploadimage.js";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 dotenv.config();
-
+import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
   
 const createAd=async(req,res)=>{
 try {
@@ -94,6 +94,14 @@ const deleteAd=async(req,res)=>{
         if (!ads) {
             return res.json({ error: "AD not Exit" });
         }
+          const oldImages = await image.findAll({
+                        where: { imagetype: 'ad', AdId: id }
+                    });
+        
+                    // Delete old image files from filesystem
+                    for (const oldImage of oldImages) {
+                       await removeImageFromDirectory(oldImage.imageUrl);
+                    }
         const adimage=await image.destroy({where:{imagetype:"ad",AdId:id}})
         if(adimage>0){
             console.log(`${adimage} Images of this AD deleted`)

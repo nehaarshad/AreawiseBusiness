@@ -1,6 +1,5 @@
 import Product from "../models/productModel.js";
 import Shop from "../models/shopmodel.js";
-import fs from "fs";
 import User from "../models/userModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
@@ -17,7 +16,8 @@ import { fileURLToPath } from "url";
 import { optimizeImage } from "../MiddleWares/uploadimage.js";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-
+import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
+import featured from "../models/featuredModel.js";
 dotenv.config();
 
 
@@ -115,6 +115,10 @@ const findproductbyid = async (req, res) => {
                 model:shop,
                  include:[{
                     model:User,
+                
+                },
+                {
+                    model:image,
                 },
                 {
                 model:category,
@@ -688,14 +692,7 @@ const updateproduct = async (req, res) => {
 
             // Delete old image files from filesystem
             for (const oldImage of oldImages) {
-                try {
-                    const oldPath = path.join(dirname, '..', 'uploads', path.basename(oldImage.imageUrl));
-                    if (fs.existsSync(oldPath)) {
-                        fs.unlinkSync(oldPath);
-                    }
-                } catch (deleteError) {
-                    console.error('Error deleting old image files:', deleteError);
-                }
+              await  removeImageFromDirectory(oldImage.imageUrl);
             }
 
             await image.destroy({
@@ -754,8 +751,16 @@ const deleteproduct = async (req, res) => {
         }
          const sellerId = product.seller; 
          const notificationMessage = `Your product "${product.name}" has been deleted.`;
-        const onSale=await sale.destroy({where:{productId:id}})
+        await sale.destroy({where:{productId:id}})
+        await featured.destroy({where:{productID:id}})
+          const oldImages = await image.findAll({
+                where: { imagetype: 'product', ProductId: id }
+            });
 
+            // Delete old image files from filesystem
+            for (const oldImage of oldImages) {
+               await removeImageFromDirectory(oldImage.imageUrl);
+            }
         const productimage=await image.destroy({where:{imagetype:"product",ProductId:id}})
         if(productimage>0){
             console.log(`${productimage} Images of this product deleted`)

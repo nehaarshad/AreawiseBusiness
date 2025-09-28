@@ -23,7 +23,8 @@ cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth
        //for onSale Products
       const onSale = await sale.findAll({
         where: {
-          expire_at: { [Op.lt]: currentDate },  //check set date is less than current date
+          expire_at: { [Op.lt]: currentDate },
+          is_active: true
         }
       });
 
@@ -42,7 +43,7 @@ cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth
 
       for (const sale of onSale) {
         await sale.destroy();
-        console.log(`Ad ${sale.id} deleted due to expiration`);
+        console.log(`onSale ${sale.id} deleted due to expiration`);
       }
 
       for (const feature of expiredFeaturedProduct) {

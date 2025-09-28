@@ -8,7 +8,7 @@ import { optimizeImage } from "../MiddleWares/uploadimage.js";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 dotenv.config();
-
+import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
 
 const getallcategories = async (req, res) => {
     try {
@@ -107,6 +107,14 @@ const deletecategory = async (req, res) => {
         const deletedCategory = await category.findByPk(id);
         if (deletedCategory) {
             await subcategories.destroy({ where: { categoryId: id } });
+              const oldImages = await image.findOne({
+                where: { imagetype:"category",CategoryId:id }
+            });
+
+            // Delete old image files from filesystem
+            if (oldImages) {
+               await removeImageFromDirectory(oldImages.imageUrl);
+            }
              const images=await image.destroy({where:{imagetype:"category",CategoryId:id}})
                     if(images>0){
                         console.log(`${images} Images of this category is deleted`)
