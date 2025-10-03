@@ -8,7 +8,7 @@ const image = sequelize.define('Image', {
         primaryKey: true, 
     }, 
     imagetype: { 
-        type: DataTypes.ENUM('product', 'user', 'shop','ad','category','transcript'),
+        type: DataTypes.ENUM('product', 'user', 'shop','ad','category','transcript','reviews'),
         allowNull: false, 
     }, 
     UserId: { 
@@ -32,6 +32,10 @@ const image = sequelize.define('Image', {
         allowNull: true, 
     }, 
     CategoryId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: true, 
+    },
+    reviewId: { 
         type: DataTypes.INTEGER, 
         allowNull: true, 
     },

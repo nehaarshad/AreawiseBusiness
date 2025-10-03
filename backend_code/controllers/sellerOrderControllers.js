@@ -179,7 +179,7 @@ const updateOrderStatus = async (req, res) => {
         await sellerOrder.save();
 
           const buyerId = orderDetails.Cart.UserId; 
-             const notificationMessage = `Your ordered #"${orderDetails.id}" Item #"${orderDetails.Cart.CartItems[0].name}" is "${status}" `;
+             const notificationMessage = `Your ordered #"${orderDetails.id}" Item "${orderDetails.Cart.CartItems[0].id}" is "${status}" `;
     
              if (req.io && req.userSockets) {
              await sendNotificationToUser(req.io, req.userSockets, buyerId, notificationMessage);

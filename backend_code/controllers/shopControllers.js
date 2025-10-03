@@ -4,6 +4,7 @@ import Product from "../models/productModel.js";
 import image from "../models/imagesModel.js";
 import category from "../models/categoryModel.js";
 import SellerPaymentAccount from "../models/sellerAccountModel.js";
+import review from "../models/reviewModel.js";
 import dotenv from "dotenv" 
 import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
@@ -414,6 +415,7 @@ const deleteshopbyid=async(req,res)=>{
           const products=await Product.findAll({where:{shopid}});
             if(products.length>0){
                 for(const product of products){
+
                      const productImages = await image.findAll({
                        where: { imagetype: 'product', ProductId: product.id }
                     });
@@ -423,12 +425,31 @@ const deleteshopbyid=async(req,res)=>{
                         } catch (error) {
                             console.log(error);
                         }
-                    }
-                   
-                } 
+                    }                          
+             }
             }
-             await image.destroy({where:{imagetype:'product',ProductId:products.map(p=>p.id)}});
-              await sale.destroy({where:{productId:products.map(p=>p.id)}});
+
+            
+              //review images deletion
+                 const  reviews=await review.findAll({where:{productId:products.map(p=>p.id)}});
+            if(reviews.length>0){
+                     const reviewImages = await image.findAll({
+                       where: { imagetype: 'reviews', reviewId: reviews.map(r=>r.id) }
+                    });
+                    for(const Image of reviewImages){
+                        try {
+                            await removeImageFromDirectory(Image.imageUrl);
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+
+                
+                }
+               await image.destroy({where:{imagetype:'reviews',reviewId:reviews.map(r=>r.id)}});
+           await review.destroy({where:{productId:products.map(p=>p.id)}});
+           await image.destroy({where:{imagetype:'product',ProductId:products.map(p=>p.id)}});
+            await sale.destroy({where:{productId:products.map(p=>p.id)}});
                 await featured.destroy({where:{productID:products.map(p=>p.id)}});
             await Product.destroy({where:{shopid}});
            await image.destroy({where:{imagetype: 'shop',ShopId:id}}) ;

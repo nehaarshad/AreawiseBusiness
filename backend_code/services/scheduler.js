@@ -2,6 +2,7 @@ import Ads from '../models/adsModel.js';
 import cron from 'node-cron';
 import featured from '../models/featuredModel.js';
 import sale from '../models/salesModel.js';
+import Product from '../models/productModel.js';
 import { Op } from 'sequelize';
 
 const scheduler=()=>{
@@ -42,6 +43,7 @@ cron.schedule('* * * * *', async () => { // runs after each hour 1-31 dayOfMonth
       }
 
       for (const sale of onSale) {
+        await Product.update({ onSale: false }, { where: { id: sale.productId } }); //update the product onSale status to false
         await sale.destroy();
         console.log(`onSale ${sale.id} deleted due to expiration`);
       }

@@ -18,6 +18,7 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
 import featured from "../models/featuredModel.js";
+import review from "../models/reviewModel.js";
 dotenv.config();
 
 
@@ -751,6 +752,24 @@ const deleteproduct = async (req, res) => {
         }
          const sellerId = product.seller; 
          const notificationMessage = `Your product "${product.name}" has been deleted.`;
+          const reviews=await review.findAll({where:{productId:id}});
+            if(reviews.length>0){
+                const reviewImages = await image.findAll({
+                    where: { imagetype: 'reviews', reviewId: reviews.map(r => r.id) }
+                });
+                if(reviewImages.length>0){
+                    for(const Image of reviewImages){
+                        try {
+                            await removeImageFromDirectory(Image.imageUrl);
+                            
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                   
+                } 
+            }
+             await image.destroy({where:{imagetype:'reviews',reviewId:reviews.map(r=>r.id)}});
         await sale.destroy({where:{productId:id}})
         await featured.destroy({where:{productID:id}})
           const oldImages = await image.findAll({
@@ -761,10 +780,7 @@ const deleteproduct = async (req, res) => {
             for (const oldImage of oldImages) {
                await removeImageFromDirectory(oldImage.imageUrl);
             }
-        const productimage=await image.destroy({where:{imagetype:"product",ProductId:id}})
-        if(productimage>0){
-            console.log(`${productimage} Images of this product deleted`)
-        }
+        await image.destroy({where:{imagetype:"product",ProductId:id}})
         await product.destroy();
 
             if (req.io && req.userSockets) {

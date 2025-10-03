@@ -143,6 +143,9 @@ const relation = () => {
     User.hasMany(review, { foreignKey: {name: 'userId', allowNull: false } });
     review.belongsTo(User, { foreignKey: 'userId' });
 
+    review.hasMany(image,{foreignKey:{name:'reviewId',allowNull:false},constraints: false,scope: {imagetype: 'reviews'},});
+    image.belongsTo(review,{foreignKey:{name:"reviewId"},constraints: false,scope: {imagetype: 'reviews'}});
+
     Product.hasMany(review, { foreignKey: {name: 'productId', allowNull: false } });
     review.belongsTo(Product, { foreignKey: 'productId' });
 };

@@ -13,9 +13,9 @@ const createNewUser = async (req, res) => {
             return res.json({message:"All fields are required to filled!"})
         }
        else{
-        const existingUser = await User.findOne({ where: { username ,email} });
+        const existingUser = await User.findOne({ where: { username } });
         if (existingUser) {
-            return res.json({message: "User Already Exist" });
+            return res.json("Username Already Exist");
         }
         else{
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -80,7 +80,7 @@ const loginUser = async (req, res) => {
 
         if(!checkpassword){
 
-            res.status(401).json({ message: "Incorrect Password" });
+            res.status(401).json( "Incorrect Password" );
         }
         else{
             const token = generateToken(existingUser.id);
@@ -104,7 +104,7 @@ const loginUser = async (req, res) => {
        
     } 
     else {
-        res.status(401).json({ message: "User not Found!" });
+        res.status(401).json( "Incorrect Username" );
     }
     }
    }catch(error){
