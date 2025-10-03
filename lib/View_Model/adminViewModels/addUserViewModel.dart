@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:ecommercefrontend/View_Model/adminViewModels/userState.dart';
+import 'package:ecommercefrontend/states/userState.dart';
 import 'package:ecommercefrontend/repositories/UserDetailsRepositories.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

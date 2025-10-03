@@ -4,8 +4,10 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import '../../models/ProductModel.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
+import '../shared/widgets/SetDateTime.dart';
 import '../shared/widgets/loadingState.dart';
 import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
 
@@ -27,13 +29,13 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
   late TextEditingController price = TextEditingController();
   late TextEditingController description = TextEditingController();
   late TextEditingController stock = TextEditingController();
+  final TextEditingController discount = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
-
-    /// WidgetsBinding.addPostFrameCallback to perform provider modifications after the widget tree is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+ WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(updateProductProvider(widget.product.id.toString()).notifier)
           .initValues(widget.product.id.toString())
@@ -58,6 +60,15 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
     });
   }
 
+  Future<void> addToSale(BuildContext context) async {
+    final DateTime? selectedDateTime = await setDateTime(context);
+    print(" ${selectedDateTime}");
+    if (selectedDateTime != null) {
+      ref.read(createfeatureProductViewModelProvider(widget.product.seller.toString()).notifier)
+          .selectExpirationDateTime(selectedDateTime);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(
@@ -80,6 +91,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
               child: Form(
                 key: formkey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 10.h,
                   children: [
                     SizedBox(height: 20.h),
@@ -263,6 +275,71 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                     updateProductSubcategoryDropdown(
                       shopId: widget.product.id.toString(),
                     ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text("Mark as on sale",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18.sp)),
+                        Text("  (Optional)",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 15.sp)),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TextFormField(
+                          controller: discount,
+                          decoration: InputDecoration(
+                            labelText: "Discount Offer (%)",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0.r),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+
+                        ),
+                        Text("Between 1-100",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 12.sp)),
+
+                      ],
+                    ),
+                    Text(
+                      "Select Expiration Date & Time",
+                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                    ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final addToSaleState = ref.watch(createfeatureProductViewModelProvider(widget.product.seller.toString()));
+
+                        return GestureDetector(
+                          onTap: () => addToSale(context),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.0.r),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    addToSaleState.expirationDateTime != null
+                                        ? "${addToSaleState.expirationDateTime!.day}/${addToSaleState.expirationDateTime!.month}/${addToSaleState.expirationDateTime!.year} at ${addToSaleState.expirationDateTime!.hour}:${addToSaleState.expirationDateTime!.minute.toString().padLeft(2, '0')}"
+                                        : "Select Date and Time",
+                                    style: TextStyle(
+                                      color: addToSaleState.expirationDateTime != null
+                                          ? Colors.black
+                                          : Colors.grey[600],
+                                    ),
+                                  ),
+                                ),
+                                Icon(Icons.calendar_today, color: Appcolors.baseColor),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(height: 20.h),
                     InkWell(
                       onTap:  state.isLoading
@@ -270,25 +347,31 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                           : () async {
                         if (formkey.currentState!.validate()) {
                           print(
-                            "Name: ${name.text}, Price: ${price.text}, Description: ${description.text}, Stock: ${stock.text}",
+                            "Name: ${name.text}, Price: ${price.text}, Description: ${description.text}, Stock: ${stock.text}, dis: ${discount.text}",
                           ); // Debugging line
                           await ref
-                              .read(
-                            updateProductProvider(
-                              widget.product.id.toString(),
-                            ).notifier,
-                          )
-                              .updateProduct(
-                            name: name.text,
-                            price: int.parse(price.text),
-                            subtitle: subtitle.text,
-                            description: description.text,
-                            stock: int.parse(stock.text),
-                            condition:condition.value,
-                            shopId: widget.product.shopid.toString(),
-                            user: widget.product.seller.toString(),
-                            context: context,
-                          );
+                              .read(updateProductProvider(widget.product.id.toString()).notifier).updateProduct(
+                                    name: name.text,
+                                    price: int.parse(price.text),
+                                    subtitle: subtitle.text.trim(),
+                                    description: description.text.trim(),
+                                    stock: int.parse(stock.text),
+                                    condition:condition.value,
+                                    discount: discount.text.trim(),
+                                    shopId: widget.product.shopid.toString(),
+                                    user: widget.product.seller.toString(),
+                                    context: context,
+                                    );
+                          if (discount.text.trim().isNotEmpty) {
+                            await ref
+                                .read(createfeatureProductViewModelProvider(widget.product.seller.toString()).notifier)
+                                .addOnSale(
+                              widget.product.seller.toString(),
+                              discount.text.trim(),
+                              context,
+                              widget.product.id,
+                            );
+                          }
                         }
                       },
                       child: Container(

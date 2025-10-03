@@ -87,6 +87,7 @@ class sellerPaymentAccountViewModel extends StateNotifier<AsyncValue<List<paymen
 
     } catch (e) {
      print(e.toString());
+     Utils.flushBarErrorMessage("Payment Account already exist.", context);
     }
   }
 

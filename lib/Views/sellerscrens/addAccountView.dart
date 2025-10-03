@@ -20,7 +20,6 @@ class _addSellerAccountState extends ConsumerState<addSellerAccount> {
 
   @override
   Widget build(BuildContext context) {
-    final addAccountModel = ref.read(sellerPaymentAccountViewModelProvider(widget.userid.toString()).notifier);
     final viewModel = ref.read(sellerPaymentAccountViewModelProvider(widget.userid.toString()).notifier);
 
     return Padding(

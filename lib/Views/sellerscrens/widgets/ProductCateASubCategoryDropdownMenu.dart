@@ -45,14 +45,10 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
     final input = ProductCategory.text.trim().toLowerCase();
     final categories = ref.read(addProductProvider(widget.shopid)).categories;
 
-    if (input.isEmpty) {
-      setState(() {
-        SelectCategories = [];
+        SelectCategories = categories;
         addnewCategory = false;
-        showDropdown = false;
-      });
-      return;
-    }
+        showDropdown = true;
+
 
     setState(() {
       SelectCategories = categories.where((category) => category.name!.toLowerCase().contains(input)).toList();
@@ -202,14 +198,10 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
     final input = subcategoryController.text.trim().toLowerCase();
     final subcategories = ref.read(addProductProvider(widget.userId)).subcategories;
 
-    if (input.isEmpty) {
-      setState(() {
-        recommendedSubcategories = [];
-        showSubcategoryDropdown = false;
+        recommendedSubcategories = subcategories;
+        showSubcategoryDropdown = true;
         addnewSubCategory=false;
-      });
-      return;
-    }
+
 
     setState(() {
       recommendedSubcategories = subcategories.where((subcategory) => subcategory.name!.toLowerCase().contains(input))
@@ -384,14 +376,11 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
     final input = ProductCategory.text.trim().toLowerCase();
     final productvalue = ref.read(updateProductProvider(widget.shopid).notifier);
     final categories = productvalue.categories;
-    if (input.isEmpty) {
-      setState(() {
-        SelectCategories = [];
+
+        SelectCategories = categories;
         addnewCategory = false;
-        showDropdown = false;
-      });
-      return;
-    }
+        showDropdown = true;
+
 
     setState(() {
       SelectCategories = categories.where((category) => category.name != null && category.name!.toLowerCase().contains(input)).toList();
@@ -545,14 +534,10 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
     final productsubcategories = ref.read(updateProductProvider(widget.shopId).notifier);
     final subcategories = productsubcategories.Subcategories;
 
-    if (input.isEmpty) {
-      setState(() {
-        recommendedSubcategories = [];
+        recommendedSubcategories = subcategories;
         showSubcategoryDropdown = false;
         addnewSubCategory = false;
-      });
-      return;
-    }
+
 
     setState(() {
       recommendedSubcategories = subcategories

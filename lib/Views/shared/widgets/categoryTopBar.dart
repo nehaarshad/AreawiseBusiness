@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
-import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
+import '../../../View_Model/SellerViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import 'loadingState.dart';

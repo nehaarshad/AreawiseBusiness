@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ecommercefrontend/View_Model/SharedViewModels/transacriptsStates.dart';
+import 'package:ecommercefrontend/states/transacriptsStates.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/OrderViewModel.dart';
 import 'package:ecommercefrontend/repositories/transactionSlipRepository.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';

@@ -98,7 +98,7 @@ class _ProductcardState extends State<Productcard> {
                   children: [
                     Icon(Icons.discount_outlined,color: Appcolors.baseColor,size: 14.h,),
                     SizedBox(width: 4.w,),
-                    Text("onSale",style: TextStyle(fontWeight: FontWeight.w500,fontSize:14.sp,color: Appcolors.baseColor),),
+                    Text("on sale",style: TextStyle(fontWeight: FontWeight.w500,fontSize:14.sp,color: Appcolors.baseColor),),
                   ],
                 ),
               // Product Info
@@ -168,24 +168,6 @@ class _ProductcardState extends State<Productcard> {
                       "${widget.product.price ?? 0}",
                       style: TextStyle(
                           color: Appcolors.baseColorLight30,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 10.0.w,),
-                child:   Row(
-
-                  children: [
-                    Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
-                    SizedBox(width: 3.w,),
-                    Text(
-                      "${widget.product.shop!.deliveryPrice ?? 0}",
-                      style: TextStyle(
-                          color: Colors.grey,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500
                       ),

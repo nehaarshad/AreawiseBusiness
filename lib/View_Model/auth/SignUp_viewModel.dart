@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../Views/shared/widgets/notificatioPermissionFunction.dart';
 import '../../core/services/socketService.dart';
+import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/notifyUtils.dart';
 import '../../models/UserDetailModel.dart';
@@ -24,28 +25,32 @@ class signupviewmodel extends StateNotifier<bool> {
       dynamic response = await ref.read(authprovider).sinupapi(data);
       print("API Response: $response");
       if (response != null) {
-        UserDetailModel user= UserDetailModel.fromJson(response);
-        await ref.read(sessionProvider.notifier).saveuser(user);
-        final socketService = ref.read(socketServiceProvider);
-        await socketService.initialize(userId: user.id.toString());
-        print(user);
-        if (user.role == 'Admin') {
-          Navigator.pushNamed(context, routesName.aHome, arguments: user);
-        }
-        else {
+        if (response.toString() !="Username Already Exist") {
 
-          Navigator.pushNamed(context, routesName.dashboard, arguments: user);
-
+          UserDetailModel user = UserDetailModel.fromJson(response);
+          await ref.read(sessionProvider.notifier).saveuser(user);
+          final socketService = ref.read(socketServiceProvider);
+          await socketService.initialize(userId: user.id.toString());
+          print(user);
+          if (user.role == 'Admin') {
+            Navigator.pushNamed(context, routesName.aHome, arguments: user);
+          }
+          else {
+            Navigator.pushNamed(context, routesName.dashboard, arguments: user);
+          }
+          await _notificationPermission.requestNotificationPermissions(context);
         }
-        await _notificationPermission.requestNotificationPermissions(context);
+        else{
+          await DialogUtils.showErrorDialog(context,response.toString());
+        }
       }
       else {
-        Utils.flushBarErrorMessage("Signup Failed", context);
+        await DialogUtils.showErrorDialog(context,"Something went wrong. Try Later!");
       }
 
     } catch (error) {
       print("Error: $error");
-      Utils.flushBarErrorMessage('Error During Registration, Try Later!', context);
+      await DialogUtils.showErrorDialog(context,"Something went wrong. Try Later!");
     } finally {
       state = false;
     }

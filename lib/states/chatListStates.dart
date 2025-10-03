@@ -1,4 +1,4 @@
-import '../../models/chatsModel.dart';
+import '../models/chatsModel.dart';
 
 class ChatListState {
   final List<Chat> chats;

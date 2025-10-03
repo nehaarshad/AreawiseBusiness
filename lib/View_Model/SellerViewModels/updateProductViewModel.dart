@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import '../SharedViewModels/NewArrivalsViewModel.dart';
 import '../SharedViewModels/productViewModels.dart';
+import 'createFeatureProductViewModel.dart';
 
 final updateProductProvider = StateNotifierProvider.family<UpdateProductViewModel, AsyncValue<ProductModel?>, String>((ref, id) {
   return UpdateProductViewModel(ref, id);
@@ -45,12 +46,13 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     getCategories();
   }
 
+  ProductModel? product=null;
   Future<void> initValues(String id) async {
     try {
-      ProductModel product = await ref.read(productProvider).FindProduct(id);
+       product = await ref.read(productProvider).FindProduct(id);
       final tempDir = await getTemporaryDirectory();
       images = await Future.wait(
-        product.images?.map((img) async {
+        product?.images?.map((img) async {
               final response = await http.get(Uri.parse(img.imageUrl!));
               final file = File(
                 '${tempDir.path}/${img.imageUrl!.split('/').last}',
@@ -61,8 +63,8 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
             [],
       );
 
-      selectedCategory = product.category;
-      selectedSubCategory = product.subcategory;
+      selectedCategory = product?.category;
+      selectedSubCategory = product?.subcategory;
       state = AsyncValue.data(product);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -113,7 +115,6 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
           }),
         );
 
-        // Filter out any null results from failed compressions
         final List<File> successfulCompressions = compressedFiles.whereType<File>().toList();
 
         // Create ProductImages objects
@@ -121,15 +122,10 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
             .map((file) => ProductImages(imageUrl: null, file: file))
             .toList();
 
-        // Add to images list
         images.addAll(newImages);
 
-        print('Images count after adding: ${images.length}');
-
-        // Final check (shouldn't be needed but good practice)
         if (images.length > 8) {
           Utils.flushBarErrorMessage("Select only 8 Images", context);
-          // Remove excess images
           images.removeRange(8, images.length);
           return;
         }
@@ -234,6 +230,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     required String subtitle,
     required String description,
     required int stock,
+    String? discount,
     required String shopId,
     required String user,
     required String condition,
@@ -243,6 +240,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       print('Images count before update: ${images.length}');
       if (images.isEmpty || images.length > 8) {
         Utils.flushBarErrorMessage('Please select 1 to 8 images',context);
+        return;
       }
 
 
@@ -274,9 +272,14 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       print("Request Body (stock): ${data['stock']} with type: ${data['stock'].runtimeType}",);
 
       final imageFiles = images.map((img) => img.file!).toList();
-      final response = await ref.read(productProvider).updateProduct(data, id.toString(), imageFiles);
-      final updatedProduct = ProductModel.fromJson(response);
-      print("Api Response ${updatedProduct}");
+      final response = await ref.read(productProvider).updateProduct(data, this.id, imageFiles);
+
+      // if(discount != null && discount.trim().isNotEmpty){
+      //   ref.read(createfeatureProductViewModelProvider(this.id).notifier).setProduct(product);
+      //   await ref.read(createfeatureProductViewModelProvider(this.id).notifier).addOnSale(user, discount, context,int.tryParse(this.id));
+      //
+      // }
+      print("Api Response ${response.id}");
       try {
         // Invalidate the provider to refresh the product list
         ref.invalidate(sharedProductViewModelProvider);
@@ -292,11 +295,10 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
         print("Error refreshing product lists: $innerError");
         // Continue with success flow despite refresh errors
       }
-      state = AsyncValue.data(updatedProduct);
+
      print("update product responce: ${updateProduct}");
       await DialogUtils.showSuccessDialog(context,"Product updated successfully");
 
-      Navigator.pop(context);
     } catch (e) {
       print(e);
       await DialogUtils.showErrorDialog(context,"Failed to update product. Try later!");

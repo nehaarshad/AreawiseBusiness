@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ecommercefrontend/View_Model/SellerViewModels/ShopStates.dart';
+import 'package:ecommercefrontend/states/ShopStates.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/paymentAccountViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';

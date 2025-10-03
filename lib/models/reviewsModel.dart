@@ -1,4 +1,6 @@
 
+import 'package:ecommercefrontend/models/imageModel.dart';
+
 import 'ProductModel.dart';
 import 'UserDetailModel.dart';
 
@@ -11,6 +13,7 @@ class Reviews {
   String? createdAt;
   String? updatedAt;
   ProductModel? product;
+  List<ImageModel?>? images;
   UserDetailModel? user;
 
   Reviews(
@@ -18,6 +21,7 @@ class Reviews {
         this.comment,
         this.rating,
         this.userId,
+        this.images,
         this.productId,
         this.createdAt,
         this.updatedAt,
@@ -29,11 +33,16 @@ class Reviews {
     comment = json['comment'];
     rating = json['rating'];
     userId = json['userId'];
+    if (json['Images'] != null) {
+      images = <ImageModel>[];
+      json['Images'].forEach((v) {
+        images!.add(new ImageModel.fromJson(v));
+      });
+    }
     productId = json['productId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    product =
-    json['product'] != null ? new ProductModel.fromJson(json['product']) : null;
+    product = json['product'] != null ? new ProductModel.fromJson(json['product']) : null;
     user = json['user'] != null ? new UserDetailModel.fromJson(json['user']) : null;
   }
 

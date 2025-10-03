@@ -1,4 +1,4 @@
-import '../../models/ProductModel.dart';
+import '../models/ProductModel.dart';
 
 class createFeatureProductState {
   final DateTime? expirationDateTime;

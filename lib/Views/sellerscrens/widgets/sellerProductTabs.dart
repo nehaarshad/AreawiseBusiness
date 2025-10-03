@@ -82,7 +82,7 @@ Widget SellerProductTabs(int userId,BuildContext context){
             ),
             child: Center(
               child: Text(
-                "onSale",
+                "on sale",
                 style: TextStyle(
                   color: Appcolors.baseColor,
                   fontWeight: FontWeight.bold,

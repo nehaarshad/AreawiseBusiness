@@ -37,7 +37,6 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Move the logic that depends on inherited widgets to didChangeDependencies
     shopcategory.addListener(RecommendedCategories);
   }
 
@@ -52,14 +51,11 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
     final input = shopcategory.text.trim().toLowerCase();
     final categories = ref.read(addShopProvider(widget.userid)).categories;
 
-    if (input.isEmpty) {
-      setState(() {
-        SelectCategories = [];
+
+        SelectCategories = categories;
         addnewCategory = false;
-        showDropdown = false;
-      });
-      return;
-    }
+        showDropdown = true;
+
 
     setState(() {
       SelectCategories = categories

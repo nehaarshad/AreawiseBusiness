@@ -197,21 +197,6 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                                   Row(
 
                                     children: [
-                                      Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
-                                      SizedBox(width: 3.w,),
-                                      Text(
-                                        "${product.shop?.deliveryPrice ?? 0}",
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-
-                                    children: [
                                       Text(
                                         "${product.ratings ?? 0}",
                                         style: TextStyle(

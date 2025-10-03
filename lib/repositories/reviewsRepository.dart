@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:ecommercefrontend/models/reviewsModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
@@ -41,13 +42,13 @@ class ReviewsRepositories {
     }
   }
 
-  Future<Reviews> addReview(Map<String, dynamic> data, String id) async {
+  Future<Reviews> addReview(Map<String, dynamic> data, String id,List<File>? file) async {
     try {
-      final body = jsonEncode(data);
 
-      dynamic response = await apiservice.PostApiWithJson(
+      dynamic response = await apiservice.PostApiWithMultiport(
           AppApis.AddReviewEndPoints.replaceFirst(':id', id),
-          body,
+          data,
+          file,
           headers());
       return Reviews.fromJson(response);
     } catch (e) {
@@ -55,12 +56,13 @@ class ReviewsRepositories {
     }
   }
 
-  Future<Reviews> updateReview(String id, String comment) async {
+  Future<Reviews> updateReview(String id, String comment,List<File>? file) async {
     try {
-      final data = jsonEncode({'comment': comment});
-      dynamic response = await apiservice.UpdateApiWithJson(
+      final data = {'comment': comment};
+      dynamic response = await apiservice.UpdateApiWithMultiport(
         AppApis.UpdateReviewEndPoints.replaceFirst(':id', id),
         data,
+        file,
         headers(),
       );
       return Reviews.fromJson(response);

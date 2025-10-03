@@ -36,7 +36,7 @@ class _OnsaleproductsState extends ConsumerState<Onsaleproducts> {
            },
            child: Container(
              height: 25.h,
-             width: 150.w,
+             width: 130.w,
              decoration: BoxDecoration(
                color: Appcolors.whiteSmoke,
                borderRadius: BorderRadius.circular(15.r),
@@ -47,7 +47,7 @@ class _OnsaleproductsState extends ConsumerState<Onsaleproducts> {
              ),
              child: Center(
                child: Text(
-                 "Create New Sale",
+                 "Add on sale",
                  style: TextStyle(
                    color: Appcolors.baseColor,
                    fontWeight: FontWeight.bold,

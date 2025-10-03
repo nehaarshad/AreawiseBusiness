@@ -12,7 +12,7 @@ import '../SharedViewModels/getAllCategories.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 
-import 'categoryStates.dart';
+import '../../states/categoryStates.dart';
 
 final categoryViewModelProvider = StateNotifierProvider<categoryViewModel, CategoryState>((
     ref,

@@ -1,4 +1,4 @@
-import 'package:ecommercefrontend/View_Model/SellerViewModels/featureStates.dart';
+import 'package:ecommercefrontend/states/featureStates.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,16 +43,7 @@ class _UserProductsState extends ConsumerState<UserProductsDropdown> {
     final currentState = ref.read(createfeatureProductViewModelProvider(widget.userid.toString()));
     final userProducts = currentState.products;
 
-    if (input.isEmpty) {
-      if (mounted) {
-        setState(() {
-          productList = [];
-          productFound = false;
-          showDropdown = false;
-        });
-      }
-      return;
-    }
+    productList =userProducts;
 
     final filteredProducts = userProducts
         .where((product) => product.name!.toLowerCase().contains(input))

@@ -13,7 +13,7 @@ Future<DateTime?> setDateTime(BuildContext context) async {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-
+    print("picked date ${pickedDate} , ${pickedTime}");
     if (pickedTime != null) {
       return DateTime(
         pickedDate.year,

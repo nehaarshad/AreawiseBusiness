@@ -16,43 +16,13 @@ class createNewSaleView extends ConsumerStatefulWidget {
 }
 
 class _createNewSaleViewState extends ConsumerState<createNewSaleView> {
-  final TextEditingController discount = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 
   @override
-  void dispose() {
-    discount.dispose();
-    super.dispose();
-  }
+  Widget build(BuildContext context)  {
 
-  Future<void> addToSale(BuildContext context) async {
-    final DateTime? selectedDateTime = await setDateTime(context);
-    if (selectedDateTime != null) {
-      ref.read(createfeatureProductViewModelProvider(widget.userid.toString()).notifier)
-          .selectExpirationDateTime(selectedDateTime);
-    }
-  }
+    final viewModel= ref.read(createfeatureProductViewModelProvider(widget.userid.toString()).notifier);
 
-  void onSubmit() async {
-    if (_formKey.currentState?.validate() ?? false) {
-
-      final discountValue = int.tryParse(discount.text);
-      if (discountValue == null || discountValue <= 0 || discountValue > 100) {
-        Utils.flushBarErrorMessage("Please enter a valid discount percentage (1-100)", context);
-        return;
-      }
-
-      await ref.read(createfeatureProductViewModelProvider(widget.userid.toString()).notifier)
-          .addOnSale(
-        widget.userid.toString(),
-        discountValue,
-        context,
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
        leading: IconButton(onPressed: ()async{
@@ -66,14 +36,14 @@ class _createNewSaleViewState extends ConsumerState<createNewSaleView> {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: viewModel.formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 24.h),
 
                 TextFormField(
-                  controller: discount,
+                  controller: viewModel.discount,
                   decoration: InputDecoration(
                     labelText: "Discount Offer (%)",
                     border: OutlineInputBorder(
@@ -107,7 +77,7 @@ class _createNewSaleViewState extends ConsumerState<createNewSaleView> {
                     final addToSaleState = ref.watch(createfeatureProductViewModelProvider(widget.userid.toString()));
 
                     return GestureDetector(
-                      onTap: () => addToSale(context),
+                      onTap: () => viewModel.addToSale(context),
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
                         decoration: BoxDecoration(
@@ -144,7 +114,7 @@ class _createNewSaleViewState extends ConsumerState<createNewSaleView> {
                     final addToSaleState = ref.watch(createfeatureProductViewModelProvider(widget.userid.toString()));
 
                     return ElevatedButton(
-                      onPressed: addToSaleState.isLoading ? null : onSubmit,
+                      onPressed:(){ addToSaleState.isLoading ? null : viewModel.onSubmit(context);},
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         backgroundColor: Appcolors.baseColor,

@@ -1,6 +1,6 @@
 // Single chat state (for active conversation)
-import '../../models/chatsModel.dart';
-import '../../models/messagesModel.dart';
+import '../models/chatsModel.dart';
+import '../models/messagesModel.dart';
 
 class ChatState {
   final Chat? chat;

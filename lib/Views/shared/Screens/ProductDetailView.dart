@@ -307,27 +307,13 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           ),
                           SizedBox(height: 10.h),
                           Row(
-                            children: [
-                              Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-                              Text(
-                                "${product.subcategory?.name}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.sp,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Text("Rating: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                                  Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
                                   Text(
-                                    "${product.reviews?.length ?? 0}",
+                                    "${product.subcategory?.name}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 15.sp,

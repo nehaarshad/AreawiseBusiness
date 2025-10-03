@@ -99,13 +99,15 @@ class FeatureProductViewModel extends StateNotifier<AsyncValue<List<featureModel
         final currentRoute = ModalRoute.of(context)?.settings.name;
 
         if (currentRoute == routesName.activefeature) {
-          await getAllFeaturedProducts('All');
           await getFeaturedProducts('All');
-        } else {
+        }
+        else if(currentRoute==routesName.featuredProducts){
+          await getUserFeaturedProducts(sellerId);
+        }
+        else {
           await getAllRequestedFeatured();
         }
-
-        Utils.flushBarErrorMessage("Product removed",context);
+        await getAllFeaturedProducts('All');
       }
     } catch (e) {
       if (!_isDisposed) {

@@ -2,7 +2,7 @@ import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../View_Model/SharedViewModels/featuredProductViewModel.dart';
+import '../../../View_Model/SellerViewModels/featuredProductViewModel.dart';
 import '../../../core/utils/colors.dart';
 import 'loadingState.dart';
 

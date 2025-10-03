@@ -45,14 +45,10 @@ class _ActiveUserShopState extends ConsumerState<ActiveUserShopDropdown> {
     final input = shops.text.trim().toLowerCase();
     final userShop = ref.read(addProductProvider(widget.userid.toString())).shops;
 
-    if (input.isEmpty) {
-      setState(() {
-        ActiveShopList = [];
+        ActiveShopList = userShop;
         shopExist = false;
-        showDropdown = false;
-      });
-      return;
-    }
+        showDropdown = true;
+
 
     setState(() {
 

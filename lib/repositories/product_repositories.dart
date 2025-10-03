@@ -243,7 +243,7 @@ class ProductRepositories {
       }
     }
 
-    Future<Map<String, dynamic>> updateProduct(Map<String, dynamic> data,
+    Future<ProductModel> updateProduct(Map<String, dynamic> data,
         String id,
         List<File>? images,) async
     {
@@ -256,7 +256,7 @@ class ProductRepositories {
         if (kDebugMode) {
           print(response);
         }
-        return response;
+        return ProductModel.fromJson(response);
       } catch (e) {
         rethrow;
       }

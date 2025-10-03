@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import '../../Views/shared/widgets/notificatioPermissionFunction.dart';
 import '../../core/services/socketService.dart';
+import '../../core/utils/dialogueBox.dart';
 
 final loginProvider = StateNotifierProvider<LoginViewModel, bool>((ref) {
   return LoginViewModel(ref);
@@ -26,23 +27,25 @@ class LoginViewModel extends StateNotifier<bool> {
 
     try {
       dynamic response = await ref.read(authprovider).loginapi(data);
-      UserDetailModel user= UserDetailModel.fromJson(response);
-      await ref.read(sessionProvider.notifier).saveuser(user);
-      developer.log("Logged in user:${user}");
-      final socketService = ref.read(socketServiceProvider);
-      await socketService.initialize(userId: user.id.toString());
-      if (user.role == 'Admin') {
-        Navigator.pushNamed(context, routesName.aHome, arguments: user);
+      if (response.toString() !="Incorrect Password" && response.toString() !="Incorrect Username") {
+        UserDetailModel user = UserDetailModel.fromJson(response);
+        await ref.read(sessionProvider.notifier).saveuser(user);
+        final socketService = ref.read(socketServiceProvider);
+        await socketService.initialize(userId: user.id.toString());
+        if (user.role == 'Admin') {
+          Navigator.pushNamed(context, routesName.aHome, arguments: user);
+        }
+        else {
+          Navigator.pushNamed(context, routesName.dashboard, arguments: user);
+        }
+        await _notificationPermission.requestNotificationPermissions(context);
       }
-      else {
-
-        Navigator.pushNamed(context, routesName.dashboard, arguments: user);
+      else{
+        await DialogUtils.showErrorDialog(context,response.toString());
       }
-      await _notificationPermission.requestNotificationPermissions(context);
     } catch (error) {
       print(error);
-      developer.log("Logged in user:${error}");
-      Utils.flushBarErrorMessage("Incorrect Username or Password", context);
+      await DialogUtils.showErrorDialog(context,"Incorrect username or password");
     } finally {
       state = false;
     }

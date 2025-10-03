@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ecommercefrontend/View_Model/SellerViewModels/createFeatureProductViewModel.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:ecommercefrontend/models/SubCategoryModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
@@ -14,7 +15,7 @@ import '../../repositories/ShopRepositories.dart';
 import '../../repositories/product_repositories.dart';
 import '../SharedViewModels/getAllCategories.dart';
 import '../SharedViewModels/productViewModels.dart';
-import 'ProductStates.dart';
+import '../../states/ProductStates.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 
@@ -203,6 +204,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     required String description,
     required String stock,
     required String user,
+    String? discount,
     required String condition,
     required BuildContext context,
   }) async {
@@ -268,7 +270,11 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       ProductModel product=await ref.read(productProvider).addProduct(data, shopId, state.images.whereType<File>().toList());
       print("Api Response ${product}");
       try {
-        // Invalidate the provider to refresh the product list
+     if(discount != null){
+        ref.read(createfeatureProductViewModelProvider(this.id).notifier).setProduct(product);
+       await ref.read(createfeatureProductViewModelProvider(this.id).notifier).addOnSale(id, discount, context,product.id);
+
+     }
         ref.invalidate(sharedProductViewModelProvider);
         await ref.read(sharedProductViewModelProvider.notifier).getShopProduct(shopId);
         await ref.read(sharedProductViewModelProvider.notifier).getAllProduct('All');

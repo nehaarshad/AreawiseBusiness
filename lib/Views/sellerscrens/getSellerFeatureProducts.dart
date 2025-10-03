@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../View_Model/SharedViewModels/featuredProductViewModel.dart';
+import '../../View_Model/SellerViewModels/featuredProductViewModel.dart';
 import '../../core/utils/colors.dart';
 import '../shared/widgets/loadingState.dart';
 
@@ -57,29 +57,8 @@ class _UserFeaturedProductsState extends ConsumerState<UserFeaturedProducts> {
                 if (!mounted) return;
 
                 try {
-                  // Show loading indicator
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          CircularProgressIndicator(color: Colors.white),
-                          SizedBox(width: 16.w),
-                          Text("Removing featured product...")
-                        ],
-                      ),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-
-                  // Delete the product
                   await ref.read(featureProductViewModelProvider(widget.sellerId.toString()).notifier)
                       .deleteFeatureProduct(featureId, widget.sellerId.toString(), context);
-
-                  // Check if still mounted before showing success message
-                  if (mounted) {
-                    // Refresh the list
-                    ref.read(featureProductViewModelProvider(widget.sellerId.toString()));
-                  }
                 } catch (e) {
                   // Check if still mounted before showing error
                   if (mounted) {

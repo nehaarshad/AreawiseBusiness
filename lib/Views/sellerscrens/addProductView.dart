@@ -4,6 +4,8 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
+import '../shared/widgets/SetDateTime.dart';
 import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
 import 'widgets/shopsDropDown.dart';
 
@@ -20,7 +22,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
   ProductCondition condition = ProductCondition.New;
 
 
-  late final AddProductViewModel _viewModel;
+  final TextEditingController discount = TextEditingController();
   final formkey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController subtitle = TextEditingController();
@@ -28,6 +30,13 @@ class _addProductViewState extends ConsumerState<addProductView> {
   final TextEditingController description = TextEditingController();
   final TextEditingController stock = TextEditingController();
 
+  Future<void> addToSale(BuildContext context) async {
+    final DateTime? selectedDateTime = await setDateTime(context);
+    if (selectedDateTime != null) {
+      ref.read(createfeatureProductViewModelProvider(widget.userId.toString()).notifier)
+          .selectExpirationDateTime(selectedDateTime);
+    }
+  }
 
   @override
   void dispose() {
@@ -35,6 +44,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
     subtitle.dispose();
     description.dispose();
     price.dispose();
+    discount.dispose();
     stock.dispose();
     super.dispose();
   }
@@ -58,6 +68,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
           child: Form(
             key: formkey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 10.h,
               children: [
 
@@ -257,7 +268,72 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ProductCategoryDropdown(shopid: userid),
                 ProductSubcategoryDropdown(userId:userid),
                 ActiveUserShopDropdown(userid:userid),
-                SizedBox(height: 10),
+                SizedBox(height: 10.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Mark as on sale",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18.sp)),
+                    Text("  (Optional)",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 15.sp)),
+                  ],
+                ),
+                SizedBox(height: 8.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextFormField(
+                      controller: discount,
+                      decoration: InputDecoration(
+                        labelText: "Discount Offer (%)",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+
+                    ),
+                    Text("Between 1-100",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 12.sp)),
+
+                  ],
+                ),
+                Text(
+                  "Select Expiration Date & Time",
+                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final addToSaleState = ref.watch(createfeatureProductViewModelProvider(widget.userId.toString()));
+
+                    return GestureDetector(
+                      onTap: () => addToSale(context),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                addToSaleState.expirationDateTime != null
+                                    ? "${addToSaleState.expirationDateTime!.day}/${addToSaleState.expirationDateTime!.month}/${addToSaleState.expirationDateTime!.year} at ${addToSaleState.expirationDateTime!.hour}:${addToSaleState.expirationDateTime!.minute.toString().padLeft(2, '0')}"
+                                    : "Select Date and Time",
+                                style: TextStyle(
+                                  color: addToSaleState.expirationDateTime != null
+                                      ? Colors.black
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                            Icon(Icons.calendar_today, color: Appcolors.baseColor),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 16.h,),
                 InkWell(
                   onTap:state.isLoading ? null : () async {
                     if (formkey.currentState!.validate()) {
@@ -269,6 +345,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                         subtitle:subtitle.text,
                         description: description.text,
                         stock: stock.text,
+                        discount: discount.text,
                         user:widget.userId.toString(),
                         condition:condition.value,
                         context: context,
