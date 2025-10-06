@@ -140,10 +140,8 @@ class _cartViewBottomWidgetState extends ConsumerState<cartViewBottomWidget> {
             width: double.infinity,
             height: 50.h,
             child: ElevatedButton(
-              onPressed: widget.cart.id != null ? () async {
-                if (kDebugMode) {
-                  print('cart ID Sent: ${widget.cart.id}');
-                }
+              onPressed: widget.cart.id != null && widget.cart.cartItems != null && widget.cart.cartItems!.length>0 ? () async {
+
               final cartid=  await ref.read(orderViewModelProvider.notifier).checkOut(widget.cart.id.toString(), total,Offer, context);
                 final parameters = {
                   'CartId': cartid,

@@ -274,11 +274,6 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       final imageFiles = images.map((img) => img.file!).toList();
       final response = await ref.read(productProvider).updateProduct(data, this.id, imageFiles);
 
-      // if(discount != null && discount.trim().isNotEmpty){
-      //   ref.read(createfeatureProductViewModelProvider(this.id).notifier).setProduct(product);
-      //   await ref.read(createfeatureProductViewModelProvider(this.id).notifier).addOnSale(user, discount, context,int.tryParse(this.id));
-      //
-      // }
       print("Api Response ${response.id}");
       try {
         // Invalidate the provider to refresh the product list

@@ -92,15 +92,6 @@ class _ProductcardState extends State<Productcard> {
                   ],
                 ),
               ),
-
-              if(widget.product.onSale!)
-                Row(
-                  children: [
-                    Icon(Icons.discount_outlined,color: Appcolors.baseColor,size: 14.h,),
-                    SizedBox(width: 4.w,),
-                    Text("on sale",style: TextStyle(fontWeight: FontWeight.w500,fontSize:14.sp,color: Appcolors.baseColor),),
-                  ],
-                ),
               // Product Info
               Padding(
                 padding: EdgeInsets.only(top: 8.h, left: 4.w),
@@ -114,7 +105,32 @@ class _ProductcardState extends State<Productcard> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                child:  Row(
+                  children: [
+                    Text(
+                      "${widget.product.ratings}",
+                      style: TextStyle(
+                          color: Appcolors.blackColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(width: 1.w),
+                    Icon(Icons.star,size: 14.h,color: Appcolors.blackColor,),
+                    SizedBox(width: 6.w),
+                    Text(
+                      "(${widget.product.reviews?.length} reviews)",
+                      style: TextStyle(
+                        color: Colors.grey, // Different color for strikethrough
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400, // Match text color
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               widget.product.onSale! ?
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.0.w),
@@ -129,23 +145,22 @@ class _ProductcardState extends State<Productcard> {
                       ),
                     ),
                     Text(
-                      "${widget.product.price ?? 0}",
+                      "${widget.product.saleOffer?.price ?? 0}", // Use ?. instead of !.
+                      style: TextStyle(
+                          color: Appcolors.baseColorLight30,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(width: 1.w),
+                    Text(
+                      "Rs.${widget.product.price ?? 0}",
                       style: TextStyle(
                         color: Colors.grey, // Different color for strikethrough
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         decoration: TextDecoration.lineThrough,
                         decorationColor: Colors.grey, // Match text color
-                      ),
-                    ),
-                    SizedBox(width: 3.w), // Slightly more spacing
-
-                    Text(
-                      "${widget.product.saleOffer?.price ?? 0}", // Use ?. instead of !.
-                      style: TextStyle(
-                          color: Appcolors.baseColorLight30,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500
                       ),
                     ),
                   ],

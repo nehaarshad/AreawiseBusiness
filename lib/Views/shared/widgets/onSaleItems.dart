@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/getOnSaleProducts.dart';
+import '../../../core/utils/CapitalizesFirst.dart';
 import '../../../core/utils/colors.dart';
 import 'loadingState.dart';
 
@@ -49,7 +50,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
 
       data: (products) {
         if (products.isEmpty) {
-          return SizedBox(child: const Center(child: Text("No sale on any Product.",style: TextStyle(color: Appcolors.whiteSmoke),)));
+          return SizedBox(height:100.h,child: const Center(child: Text("No sale on any Product.",style: TextStyle(color: Appcolors.whiteSmoke),)));
         }
         return SizedBox(
           height: 200.h,
@@ -151,7 +152,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                             Padding(
                               padding:  EdgeInsets.only(top: 0.0.h,left: 6.h),
                               child:  Text(
-                                product.name ?? "Unknown",
+                                capitalizeFirst(product.name!),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -159,60 +160,67 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-
                             Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                              child: Row(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                              child:  Row(
+                                children: [
+                                  Text(
+                                    "${product.ratings}",
+                                    style: TextStyle(
+                                        color: Appcolors.blackColor,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                  SizedBox(width: 1.w),
+                                  Icon(Icons.star,size: 14.h,color: Appcolors.blackColor,),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    "(${product.reviews?.length} reviews)",
+                                    style: TextStyle(
+                                      color: Colors.grey, // Different color for strikethrough
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400, // Match text color
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                              child:  Row(
                                 children: [
                                   Text(
                                     "Rs.",
-                                    style:  TextStyle(color: Appcolors.baseColorLight30,fontSize: 14.sp,fontWeight: FontWeight.w500),
+                                    style: TextStyle(
+                                        color: Appcolors.baseColorLight30,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500
+                                    ),
                                   ),
                                   Text(
-                                    "${product.price ?? 0}",
+                                    "${product.saleOffer?.price ?? 0}", // Use ?. instead of !.
                                     style: TextStyle(
-                                      color: Appcolors.baseColorLight30,
+                                        color: Appcolors.baseColorLight30,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Text(
+                                    "Rs.${product.price ?? 0}",
+                                    style: TextStyle(
+                                      color: Colors.grey, // Different color for strikethrough
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       decoration: TextDecoration.lineThrough,
-                                    ),
-                                  ),
-                                  SizedBox(width: 3.w,),
-                                  Text(
-                                    "${product.saleOffer?.price ?? 0}",
-                                    style: TextStyle(
-                                      color: Appcolors.baseColorLight30,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500
+                                      decorationColor: Colors.grey, // Match text color
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
+                            )
 
-                                    children: [
-                                      Text(
-                                        "${product.ratings ?? 0}",
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-
-                                      SizedBox(width: 3.w,),
-                                      Icon(Icons.star,color: Appcolors.baseColorLight30,size: 15.h,),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ],

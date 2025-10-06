@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import 'loadingState.dart';
 
@@ -29,7 +30,7 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
       loading: () => const ShimmerListTile(),
             data: (products) {
         if (products.isEmpty) {
-          return const Center(child: Text("No Products available."));
+          return SizedBox(height:100.h,child: const Center(child: Text("No Products available.")));
         }
         return Column(
           children: [

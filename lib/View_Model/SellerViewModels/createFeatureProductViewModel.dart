@@ -195,7 +195,7 @@ class CreateFeatureProductViewModel extends StateNotifier<createFeatureProductSt
           'expire_at':state.expirationDateTime?.toIso8601String(),
           'productId':productId
         };
-
+        print(data);
         state =state.copyWith(isLoading: true);
         await ref.read(onSaleProvider).addOnSaleProduct(data,this.id);
         resetState();
@@ -207,8 +207,8 @@ class CreateFeatureProductViewModel extends StateNotifier<createFeatureProductSt
         Navigator.pop(context);
       }
     } catch (e) {
-      Utils.flushBarErrorMessage("  Request Failed!", context);
-      print(e);
+    //  Utils.flushBarErrorMessage("  Request Failed!", context);
+      print("error during addonsale ${e}");
     }
   }
 

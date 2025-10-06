@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
+import '../../core/utils/notifyUtils.dart';
 import '../../models/ProductModel.dart';
 import '../shared/widgets/ImageWidgetInUpdateView.dart';
 import '../shared/widgets/SetDateTime.dart';
@@ -52,6 +53,8 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
               description.text = product.description!;
               stock.text = product.stock.toString();
               condition=ProductCondition.fromString(product.condition.toString());
+              ref.read(createfeatureProductViewModelProvider(widget.product.seller.toString()).notifier).setProduct(widget.product);
+
             }
           });
       ref
@@ -346,9 +349,19 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
                           ? null
                           : () async {
                         if (formkey.currentState!.validate()) {
-                          print(
-                            "Name: ${name.text}, Price: ${price.text}, Description: ${description.text}, Stock: ${stock.text}, dis: ${discount.text}",
-                          ); // Debugging line
+                          if (discount.text.trim().isNotEmpty) {
+                            final saleState = ref.read(createfeatureProductViewModelProvider(widget.product.seller.toString()));
+
+                            if (saleState.expirationDateTime == null) {
+                              Utils.flushBarErrorMessage("Please select expiration date and time for sale", context);
+                              return;
+                            }
+                            final currentProduct = ref.read(updateProductProvider(widget.product.id.toString())).value;
+                            if (currentProduct != null) {
+                              ref.read(createfeatureProductViewModelProvider(widget.product.seller.toString()).notifier)
+                                  .setProduct(currentProduct);
+                            }
+                          }
                           await ref
                               .read(updateProductProvider(widget.product.id.toString()).notifier).updateProduct(
                                     name: name.text,

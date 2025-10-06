@@ -50,7 +50,7 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
       ),
       data: (products) {
         if (products.isEmpty) {
-          return const Center(child: Text("No New Products available."));
+          return SizedBox(height:100.h,child: const Center(child: Text("No New Products available.")));
         }
         return SizedBox(
           height: 220.h,

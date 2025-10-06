@@ -47,7 +47,7 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
       loading: () => const ShimmerListTile(),
               data: (products) {
         if (products.isEmpty) {
-          return SizedBox(child: const Center(child: Text("No Featured Products available.")));
+          return SizedBox(height:100.h,child: const Center(child: Text("No Featured Products available.")));
         }
         return SizedBox(
           height: 220.h,

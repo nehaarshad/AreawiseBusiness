@@ -131,16 +131,6 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                                 ],
                               ),
                             ),
-
-                            if(product.onSale!)
-                              Row(
-                                children: [
-                                  Icon(Icons.discount_outlined,color: Appcolors.baseColor,size: 14.h,),
-                                  SizedBox(width: 4.w,),
-                                  Text("onSale",style: TextStyle(fontWeight: FontWeight.w500,fontSize:14.sp,color: Appcolors.baseColor),),
-                                ],
-                              ),
-                            // Product Info
                             Padding(
                               padding: EdgeInsets.only(top: 8.h, left: 4.w),
                               child: Text(
@@ -154,6 +144,32 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                               ),
                             ),
 
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                              child:  Row(
+                                children: [
+                                  Text(
+                                    "${product.ratings}",
+                                    style: TextStyle(
+                                        color: Appcolors.blackColor,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600
+                                    ),
+                                  ),
+                                  SizedBox(width: 1.w),
+                                  Icon(Icons.star,size: 14.h,color: Appcolors.blackColor,),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    "(${product.reviews?.length} reviews)",
+                                    style: TextStyle(
+                                      color: Colors.grey, // Different color for strikethrough
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400, // Match text color
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             product.onSale! ?
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 4.0.w),
@@ -168,7 +184,16 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                                     ),
                                   ),
                                   Text(
-                                    "${product.price ?? 0}",
+                                    "${product.saleOffer?.price ?? 0}", // Use ?. instead of !.
+                                    style: TextStyle(
+                                        color: Appcolors.baseColorLight30,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                  SizedBox(width: 1.w),
+                                  Text(
+                                    "Rs.${product.price ?? 0}",
                                     style: TextStyle(
                                       color: Colors.grey, // Different color for strikethrough
                                       fontSize: 12.sp,
@@ -177,14 +202,12 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                                       decorationColor: Colors.grey, // Match text color
                                     ),
                                   ),
-                                  SizedBox(width: 3.w), // Slightly more spacing
-
                                   Text(
-                                    "${product.saleOffer?.price ?? 0}", // Use ?. instead of !.
+                                    "(${product.saleOffer?.discount}% off)",
                                     style: TextStyle(
-                                        color: Appcolors.baseColorLight30,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500
+                                      color: Colors.grey, // Different color for strikethrough
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400, // Match text color
                                     ),
                                   ),
                                 ],
@@ -207,24 +230,6 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                                     "${product.price ?? 0}",
                                     style: TextStyle(
                                         color: Appcolors.baseColorLight30,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 10.0.w,),
-                              child:   Row(
-
-                                children: [
-                                  Icon(Icons.delivery_dining_sharp,color: Colors.grey,size: 15.h,),
-                                  SizedBox(width: 3.w,),
-                                  Text(
-                                    "${product.shop!.deliveryPrice ?? 0}",
-                                    style: TextStyle(
-                                        color: Colors.grey,
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w500
                                     ),
