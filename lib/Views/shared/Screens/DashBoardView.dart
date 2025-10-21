@@ -17,9 +17,9 @@ import '../../buyer_screens/ShopView.dart';
 import 'appHomeView.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
-  UserDetailModel user;
-  int id; //UserId
-  DashboardView({required this.id, required this.user});
+  final UserDetailModel user;
+  final int id; //UserId
+  const DashboardView({required this.id, required this.user});
 
   @override
   ConsumerState<DashboardView> createState() => _DashboardViewState();
@@ -103,7 +103,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
         automaticallyImplyLeading: false,
         actions: [
           StreamBuilder<bool>(
-            stream: Stream.periodic(Duration(seconds: 5))
+            stream: Stream.periodic(Duration(seconds: 3))
                 .map((_) => socketService.socket.connected),
             builder: (context, snapshot) {
               final isConnected = snapshot.data ?? false;

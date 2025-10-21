@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../core/utils/colors.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -12,6 +15,9 @@ class AppBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
+      unselectedItemColor: Colors.grey.shade400,
+      selectedItemColor: Appcolors.baseColor,
+      selectedFontSize: 12.h,
       currentIndex: selectedIndex,
       onTap: onItemTapped,
       items: const [
@@ -19,7 +25,7 @@ class AppBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: 'Explore'),
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.grid_view_rounded), label: 'Categories'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
       ],
     );
 

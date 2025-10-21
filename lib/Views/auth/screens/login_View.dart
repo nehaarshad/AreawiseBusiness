@@ -51,9 +51,9 @@ class _login_viewState extends ConsumerState<login_view> {
                   decoration: BoxDecoration(
                     color: Appcolors.whiteSmoke,
                     borderRadius: BorderRadius.circular(15.r),
-                    border: Border.all(  // Use Border.all instead of boxShadow for borders
+                    border: Border.all(
                       color: Appcolors.baseColor,
-                      width: 1.0,  // Don't forget to specify border width
+                      width: 1.0,
                     ),
                   ),
                   child: Padding(

@@ -9,8 +9,8 @@ import '../../../core/utils/notifyUtils.dart';
 import '../../../models/UserDetailModel.dart';
 
 class Changepasswordview extends ConsumerStatefulWidget {
-  String id;
-   Changepasswordview({required this.id});
+   final String id;
+   const Changepasswordview({required this.id});
 
   @override
   ConsumerState<Changepasswordview> createState() => _ChangepasswordviewState();

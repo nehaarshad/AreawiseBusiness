@@ -10,7 +10,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
-class networkapiservice extends baseapiservice {
+class networkapiservice implements baseapiservice {
   @override
   Future GetApiResponce(String url, Map<String, String> headers,) async {
     dynamic responseJson;
@@ -359,13 +359,13 @@ class networkapiservice extends baseapiservice {
         dynamic responseJson = jsonDecode(res.body);
         return responseJson;
       case 400: //invalid input ,type errors...
-        throw badrequestException(res.body.toString());
+        throw badrequestException("Invalid input or ");
       case 500:
-      case 401:
-        throw unauthorizeException(res.body.toString());
+      case 404:
+        throw unauthorizeException("No token found ");
       default:
         throw fetchdataException(
-          "Try later!"
+          "Something went wrong"
         );
     }
   }

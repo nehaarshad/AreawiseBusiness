@@ -13,7 +13,7 @@ class AppTextStyles {
   );
 
   static  TextStyle caption = TextStyle(
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.grey,
   );
 //chatView

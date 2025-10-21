@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/Views/shared/widgets/profileImageWidget.dart';
+import 'package:ecommercefrontend/core/utils/CapitalizesFirst.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -147,7 +148,7 @@ class DrawerListItems extends ConsumerWidget {
             child: Column(
               children: [
                 ProfileImageWidget(user: user, height: 70.h, width: 100.w),
-                Text(user.username!,style: TextStyle(
+                Text(capitalizeFirst(user.username!),style: TextStyle(
                   color: Appcolors.whiteSmoke,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w500

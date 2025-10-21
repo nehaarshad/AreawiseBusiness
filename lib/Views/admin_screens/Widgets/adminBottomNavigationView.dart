@@ -1,6 +1,8 @@
 //users(all,seller,buyer),products(all,categories),shops(all,categories),feedbacks,profile
 
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class adminBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -13,6 +15,9 @@ class adminBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
+      unselectedItemColor: Colors.grey.shade400,
+        selectedItemColor: Appcolors.baseColor,
+        selectedFontSize: 12.h,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: onItemTapped,
