@@ -202,14 +202,7 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
                                       decorationColor: Colors.grey, // Match text color
                                     ),
                                   ),
-                                  Text(
-                                    "(${product.saleOffer?.discount}% off)",
-                                    style: TextStyle(
-                                      color: Colors.grey, // Different color for strikethrough
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400, // Match text color
-                                    ),
-                                  ),
+
                                 ],
                               ),
                             )
