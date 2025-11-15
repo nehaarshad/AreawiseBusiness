@@ -30,6 +30,7 @@ import  http  from 'http';
 import { Server } from 'socket.io';
 import chatService from "./backend_code/services/chatService.js";
 import reviewsRouter from "./backend_code/Routes/reviewsRoutes.js";
+import reminderRouter from "./backend_code/Routes/orderReminderRoutes.js";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -150,6 +151,7 @@ app.use("/api",auth,feedbackRouter);
 app.use("/api",auth,accountRouter);
 app.use("/api", auth, cartRouter);
 app.use("/api", auth, orderRouter);
+app.use("/api", auth, reminderRouter);
 app.use("/api", auth, wishListRoutes);
 app.use("/api", auth, adsRouter);
 app.use("/api", auth, SellerOrderRouter);
@@ -202,7 +204,7 @@ modelsSyncs.modelsSync()
   });
 
 // Initialize scheduler
-scheduler();
+scheduler(io,userSockets);
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

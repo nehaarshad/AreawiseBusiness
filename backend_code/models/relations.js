@@ -17,6 +17,7 @@ import Message from "./msgModel.js";
 import review from "./reviewModel.js";
 import sale from "./salesModel.js";
 import SellerPaymentAccount from "./sellerAccountModel.js";
+import orderReminder from "./orderReminderModel.js";
 
 
 const relation = () => {
@@ -94,6 +95,9 @@ const relation = () => {
 
     order.hasMany(SellerOrder, { foreignKey:  {name:'orderId',allowNull: false }});
     SellerOrder.belongsTo(order, { foreignKey: 'orderId' });
+
+    SellerOrder.hasOne(orderReminder, { foreignKey:  { name: 'sellerOrderId', allowNull: false } });
+    orderReminder.belongsTo(SellerOrder, { foreignKey: 'sellerOrderId' });
 
     // A product can be associated with multiple seller orders
     Product.hasMany(SellerOrder, { foreignKey: {name: 'orderProductId', allowNull: false } });

@@ -6,6 +6,7 @@ import category from "../models/categoryModel.js";
 import subcategories from "../models/subCategoryModel.js";
 import reviews from "../models/reviewModel.js";
 import shop from "../models/shopmodel.js";
+import sale from "../models/salesModel.js";
 import sendNotificationToUser from "../utils/sendNotification.js";
 import { Op } from "sequelize";
 
@@ -87,6 +88,9 @@ const getAllFeaturedProducts=async(req,res)=>{
                 model:category,
             },
             {
+                model:sale
+            },
+            {
                 model:subcategories,
             },
             {
@@ -115,6 +119,9 @@ const getAllFeaturedProducts=async(req,res)=>{
             },
             {
                 model:shop,
+            },
+            {
+                model:sale
             },
             {
                 model:category,

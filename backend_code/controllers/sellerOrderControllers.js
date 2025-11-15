@@ -8,6 +8,7 @@ import User from "../models/userModel.js";
 import order from "../models/orderModel.js";
 import sendNotificationToUser from "../utils/sendNotification.js";
 import { or } from "sequelize";
+import orderReminder from "../models/orderReminderModel.js";
 
 const getSellerOrders = async (req, res) => { 
     try {
@@ -17,7 +18,8 @@ const getSellerOrders = async (req, res) => {
                 sellerId: id,
             },
              order: [['createdAt', 'DESC']], 
-            include: [{
+            include: [
+                {
                 model:order,
                 include:[
                     {
@@ -43,6 +45,9 @@ const getSellerOrders = async (req, res) => {
                 ]
             }
         ]
+            },
+            {
+                model: orderReminder,
             }
         ]
         });
