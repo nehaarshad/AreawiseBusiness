@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/getProductDetailsViewModel.dart';
+import '../../../core/services/deepLinkService.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/cartBadgeWidget.dart';
 import '../widgets/contactWithSellerButton.dart';
@@ -13,6 +14,7 @@ import '../widgets/imageSlider.dart';
 import '../widgets/loadingState.dart';
 import '../widgets/productReviews.dart';
 import '../widgets/relatedProducts.dart';
+import '../widgets/shareProductButton.dart';
 import '../widgets/shopProducts.dart';
 import '../widgets/wishListButton.dart';
 
@@ -28,6 +30,7 @@ class productDetailView extends ConsumerStatefulWidget {
 }
 
 class _productDetailViewState extends ConsumerState<productDetailView> {
+
 
   @override
   void initState() {
@@ -55,6 +58,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
            Row(
              children: [
                WishlistButton( color:Appcolors.blackColor,userId: widget.userid.toString(),productId:widget.productId),
+               ShareProductIconButton(product: widget.product!,),
                contactWithSellerButton(
                  userId: widget.userid.toString(),
                  productId: widget.productId.toString(),
@@ -119,7 +123,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                 Row(
                                   children: [
                                     Icon(Icons.phone,color: Colors.grey,size: 14.h,),
-                                    Text(' ${product.shop?.user?.contactnumber}',style: TextStyle(
+                                    Text('0${product.shop?.user?.contactnumber}',style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 15.sp
                                     ),),
@@ -153,7 +157,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   style: TextStyle(
                                     color: Colors.black87,
                                     fontSize: 15.sp,
-                                    wordSpacing: 5,
+                                    wordSpacing: 3,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
@@ -362,7 +366,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                                   style: TextStyle(
                                     color: Colors.black87,
                                     fontSize: 15.sp,
-                                    wordSpacing: 5,
+                                    wordSpacing: 3,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),

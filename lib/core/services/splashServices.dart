@@ -21,16 +21,16 @@ class splashservice {
     await Future.delayed(Duration(seconds: 3));
 
     if (value == null || value.token == null || value.token == '') {
-      Navigator.pushNamed(context, routesName.login);
+      Navigator.pushNamedAndRemoveUntil(context, routesName.login,(route)=>false);
     } else {
       if (value.role == 'Admin') {
-        Navigator.pushNamed(context, routesName.aHome, arguments: value);
+        Navigator.pushNamedAndRemoveUntil(context, routesName.aHome,(route)=>false, arguments: value);
       }
       // else if (value.role == 'seller') {
       //   Navigator.pushNamed(context, routesName.sHome,arguments: value);
       // }
       else {
-        Navigator.pushNamed(context, routesName.dashboard, arguments: value);
+        Navigator.pushNamedAndRemoveUntil(context, routesName.dashboard,(route)=>false, arguments: value);
       }
     }
   }

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../View_Model/auth/sessionmanagementViewModel.dart';
 import '../core/network/baseapiservice.dart';
 import '../core/network/networkapiservice.dart';
-import '../core/services/app_APIs.dart';
+import '../core/network/app_APIs.dart';
 
 final orderProvider = Provider<OrderRepositories>((ref) {
   return OrderRepositories(ref);

@@ -3,7 +3,7 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../View_Model/auth/sessionmanagementViewModel.dart';
-import '../core/services/app_APIs.dart';
+import '../core/network/app_APIs.dart';
 import '../models/orderModel.dart';
 import '../models/ordersRequestModel.dart';
 

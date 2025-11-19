@@ -113,7 +113,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
           Map<String, dynamic> data = {
             'username': _usernameController.text.trim().toString(),
             'email': _emailController.text.trim().toString(),
-            'contactnumber': int.parse(_contactNumberController.text.trim()),
+            'contactnumber': int.parse(_contactNumberController.text.trim().replaceAll(RegExp(r'\D'), '')),
             'password': _passwordController.text.toString().trim(),
             'role': _selectedRole!,
           };
@@ -233,7 +233,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                                 ),
                               ),
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.isEmpty ) {
                                   return "Please enter number";
                                 }
                                 return null;

@@ -65,6 +65,7 @@ class routesName {
   static const String search = "searchProductView";
   static const String searchShop = "searchShopView";
   static const String explore = "exploreProductsView";
+  static const String allFeatures = "allFeaturedProducts";
   static const String FAQ = "FAQview";
   static const String categoryView = "categoryView";
   static const String toSearchProduct = "toSearchProduct";

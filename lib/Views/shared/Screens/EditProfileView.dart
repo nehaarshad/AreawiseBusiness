@@ -180,7 +180,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
       final data = {
         'username': viewModel.username.text,
         'email': viewModel.email.text,
-        'contactnumber': int.parse(viewModel.contactnumber.text),
+        'contactnumber': int.parse(viewModel.contactnumber.text.trim().replaceAll(RegExp(r'\D'), '')),
         'role': viewModel.role,
         'sector': viewModel.sector.text,
         'city': viewModel.city.text,

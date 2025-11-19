@@ -3,12 +3,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/appexception.dart';
+import 'package:ecommercefrontend/core/utils/dialogueBox.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+
 
 class networkapiservice implements baseapiservice {
   @override
@@ -18,7 +22,7 @@ class networkapiservice implements baseapiservice {
     try {
       final response = await http
           .get(Uri.parse(url), headers: headers,)
-          .timeout(Duration(seconds: 10));
+          .timeout(Duration(seconds: 30));
       print(response.headers);
       print("subcategoryproducts ${response.body}");
       responseJson = httpResponse(response);
@@ -284,7 +288,7 @@ class networkapiservice implements baseapiservice {
         }
       }
       final streameresponse = await request.send().timeout(
-        Duration(seconds: 10),
+        Duration(seconds: 30),
       );
       final response = await http.Response.fromStream(streameresponse);
 
@@ -320,8 +324,8 @@ class networkapiservice implements baseapiservice {
       ).timeout(Duration(seconds: 30));
 
       responseJson = httpResponse(response);
-    } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+    } catch(e) {
+
     }
     return responseJson;
   }

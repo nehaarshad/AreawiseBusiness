@@ -173,7 +173,7 @@ class _AddUserViewState extends ConsumerState<addUser> {
           Map<String, dynamic> data = {
             'username': _usernameController.text.trim().toString(),
             'email': _emailController.text.trim().toString(),
-            'contactnumber': int.parse(_contactNumberController.text.trim()),
+            'contactnumber': int.parse(_contactNumberController.text.trim().replaceAll(RegExp(r'\D'), '')),
             'password': _passwordController.text.toString().trim(),
             'role': _selectedRole!,
             'sector':_sectoreController.text.trim().toString(),

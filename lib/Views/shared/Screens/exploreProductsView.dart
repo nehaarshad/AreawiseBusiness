@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SharedViewModels/categoryProductsViewModel.dart';
 import '../../../core/utils/colors.dart';
+import '../../../models/ProductModel.dart';
 import '../widgets/loadingState.dart';
 import '../widgets/productCard.dart';
 
@@ -13,7 +14,8 @@ class Exploreproductsview extends ConsumerStatefulWidget {
   final int userId;
   final String category;
   final String? condition;
-  const Exploreproductsview({super.key, required this.userId, required this.category,required this.condition});
+  final bool onsale;
+  const Exploreproductsview({super.key, required this.userId, required this.category,required this.condition,required this.onsale});
 
   @override
   ConsumerState<Exploreproductsview> createState() => _ExploreproductsviewState();
@@ -183,12 +185,16 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                           return const Center(child: Text("No Products available."));
                         }
 
-                        final filteredProducts = _selectedCondition != null
+                        List<ProductModel?> filteredProducts = _selectedCondition != null
                             ? products.where((product) => product?.condition == _selectedCondition).toList()
                             : products;
 
+                        if(widget.onsale){
+                          filteredProducts = filteredProducts.where((onSaleProducts)=>onSaleProducts?.onSale==widget.onsale).toList();
+                        }
+
                         if (filteredProducts.isEmpty) {
-                          return const Center(child: Text("No Products Found!"));
+                          return const Center(child: Text("No Products Available!"));
                         }
 
                         return GridView.builder(
@@ -216,10 +222,9 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
             ],
           ),
 
-          // Filter dropdown overlay - positioned on top of the Column
           if (_showFilterDropdown)
             Positioned(
-              top: 10.h, // Add some top margin
+              top: 10.h,
               right: 16.w,
               child: Container(
                 width: 200.w,

@@ -35,6 +35,7 @@ import '../../../Views/admin_screens/appSubcategories.dart';
 import '../../../Views/admin_screens/updateDeliveryOrderAttributes.dart';
 import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
 import '../../../Views/sellerscrens/sellerShopDetailView.dart';
+import '../../../Views/shared/Screens/allFeaturedProducts.dart';
 import '../../../Views/shared/Screens/chatsListView.dart';
 import '../../../Views/shared/Screens/forgetPasswordView.dart';
 import '../../../Views/admin_screens/searchShopView.dart';
@@ -393,8 +394,17 @@ class Routes {
         final id = arg['id'] as int;
         final category = arg['category'] as String;
         final condition = arg['condition'] as String?;
+        final onSale = arg['onsale'] as bool;
         return MaterialPageRoute(
-          builder: (BuildContext context) => Exploreproductsview(userId:id,category:category,condition:condition),
+          builder: (BuildContext context) => Exploreproductsview(userId:id,category:category,condition:condition,onsale: onSale,),
+        );
+
+      case (routesName.allFeatures):
+        final id = arg['id'] as int;
+        final category = arg['category'] as String;
+        final condition = arg['condition'] as String?;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => allFeaturedProductsView(userId:id,category:category,condition:condition,),
         );
 
       default:

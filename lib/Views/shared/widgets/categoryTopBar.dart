@@ -8,6 +8,7 @@ import '../../../View_Model/SharedViewModels/NewArrivalsViewModel.dart';
 import '../../../View_Model/SellerViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/getAllCategories.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
+import '../../../core/utils/routes/routes_names.dart';
 import 'loadingState.dart';
 
 
@@ -21,6 +22,18 @@ class CategoriesButton extends ConsumerWidget {
 
     void onCategoryChange(String category) async {
       try {
+
+        if(category=="On sale"){
+          final   parameters={
+            "id": int.tryParse(id),
+            "category": "All",
+            "condition":null,
+            "onsale":true,
+          };
+          print(parameters);
+          Navigator.pushNamed(context, routesName.explore,arguments: parameters);
+
+        }
         // Update the selectedCategory in the provider
         ref.read(selectedCategoryProvider.notifier).state = category;
 
@@ -45,73 +58,76 @@ print(categoriesAsync.value?.length);
     return SizedBox(
       height: 80,
       child: categoriesAsync.when(
-        data: (categories) {
-          print(categories);
-          if (categories.isEmpty) {
-            return const SizedBox.shrink();
-          }
-
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              print(category.name);
-              final categoryName = category.name ?? "All";
-              var ImageUrl="data:image/webp;base64,UklGRjwFAABXRUJQVlA4IDAFAADQIwCdASq+AL4APp1Io0olpKOhrBVY+LATiWduz44FXN5K/QeYezjgAOWC0B0Idj8pDgLpIJnnjT/Ov877BXRv/cz2OP1HNJSe3XmDnqDqeM320OR2MvqY+QGNtVEuKTaKYw0V9/3I4Xj+kV0SRuqCPZ3XJexpJvzn6WYsqEH0inuCVqPz9BwDMItkhzjxkvylhU3O4wEYmtxpzKu1BDYEDy39D02XxQAVmwK0ZIOjNu4319pM9JpGm/jBDOcRM+0NxDUXUvsj6iI6Ml606XaNNMGRZmAk3XJ8igTEg/rzG7SPaNQZnYllAv8Z1C7SvJ21TTyRPqalQTe2Ld5IcS9CsRCjzlkvclLXSBTZvhA/0Ftnc3EN+yNTGjjZFGr+qHbG99MTi2gAAP74pBnvnmi3d7+u5oBJ+0K64ffUGLMrKc1G9xIxDp+HIZvc6vAS2uW6B7s+7WlzGsovcx7Cviau3PaZds9eiouTa9pXbqFCnQKeTGpgZ0GyhVqlgOLS7wBdVctNBHU8OuH8wLceftadOeIdXQ1aY1yyFISnbNIHOQUR+Pnb8E2PF/lY1nLema9/Iu9bIzLW2janzsJ/4fz7DYs+V7WXfpvL5ZPECp4QoUbVIZYmq3l3dn7QOQNYQe6+rdT/gqCrMaNRM/L2TMtw99MJtyvng4AhuvF89PJk8oArbpSaUDeX7yW8KeJZxPK1zMi7HALBiDlNlwW1AipvM5wkpHG8yZWNcJWOHnQKGaIvzJzcwxt5I1M808rvRlmYUvwziODkPYHkcfeoUX9cNW74S634zVn/nbnn9vJ+9V5AtL/bk1Gcqx9gxNECN3TEZ38ihfpZvRWWsj3BJOcJDRJ59RqpqmjkaPu8TLqbmsqERMFNHrr78GDW1Qvx2rCTrvU18sLRXOO7pjCn3vzCoNmDyVQ1wssejpyNcZxipR5QSZ1nfUgupxqtvMxLlbAURVuAD0OyLQmzgYCDN0flWhf1+sp5bFzdSLtehVBN8Dwy4bzubUys7fCIpH7UzHek0uLq8txqF8nlgz6IHowFuLAr4BWkbKo1c1mBvmhcE5xhJot/udskhAdh4rDM0FvWgyRfCjKR9+bENbToLjUtO6vjC6Yj4jrzrtFQuIDMv7Kq8qADnbibWWUTBD8bNVZubBbM+QhFW/cQ+kZamS8zzyWAMN0kCqrL58WTVyhfGuGrbNKPPiq+HO2eoPpMLl7fcQwOJhWgUQR5IU3fYfcB8snmsGWESIhTbU8hrY7HEPSd8vzM/D5h6PhjWgM5KwioX7KN3qvGaKWg6VsWx5wdSFQ4x86dDrZA/5E+hs8QWwT/fx2c5C1PPkzs5hFCHQWmcUrGXxBnIM+gq3RNGbnJjPu6o9r9OzWxXYFPO/oGJkaJCiLtypwkTQ1c7sKVM6aHm/9OJlVTvBnGReDkvUQtJsFSzYBIxLC7+rDAgh+GL7U/5gQFAgCpedu1oPFDItTLttkqbujhnG/qPRTwBeR0BCKK7aS1GWzVYs4cI9IWD8SrpSwtyVOVIcm3iNYWHhS0zzfu+vSKUwWFbxKoLq0o6BMpq4aEi46jHz4Y91lAHlGEwbqF1HIyyTK+bJWWkjMmztOBQIB/faXDqKSkZjRaTEK1Z87ubE/HiTEfazRNCwv99AfK26azQUGEtIR9vWO8fgGPgsU3cgmPWLCf6wrAv7v2tGSrwLuS5wtn8xDjhTVh+g6p1macQpMvpDwKzkBaDWhh4nqUAL3cO0OTCzGcko281WmlscwDlAAgKWAAAA==";
-              if(category.image != null && category.image!.imageUrl!.isNotEmpty) {
-                 ImageUrl = category.image!.imageUrl!;
+            data: (categories) {
+              print(categories);
+              if (categories.isEmpty) {
+                return const SizedBox.shrink();
               }
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0.w),
-                child:  GestureDetector(
-                  onTap: (){ onCategoryChange(categoryName);},
-                  child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: ImageUrl,
-                        width: 50, // Set both width and height to same value
-                        height: 50,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          width: 100,
-                          height: 100,
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.person, color: Colors.grey),
-                        ),
-                        errorWidget: (context, url, error) => Container(
-                          width: 100,
-                          height: 100,
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.person, color: Colors.grey),
-                        ),
-                      ),
-                    ),
 
-                    SizedBox(height: 5.h,),
-                    Text(
-                      categoryName,
-                      style: TextStyle(
-                        fontSize: 10.h,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                                ),
-                ) ,
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  print(category.name);
+                  final categoryName = category.name=="All" ? "On sale" :category.name;
+                  var ImageUrl="https://tse3.mm.bing.net/th/id/OIP.e7m1BW3UcR94oDJxzMuLZQHaF6?pid=ImgDet&w=191&h=152&c=7&o=7&rm=3";
+                  if(category.name != "All" && category.image != null && category.image!.imageUrl!.isNotEmpty) {
+                    ImageUrl = category.image!.imageUrl!;
+                  }
+
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0.w),
+                    child:  GestureDetector(
+                      onTap: (){ onCategoryChange(categoryName ?? "All");},
+                      child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                          child: CachedNetworkImage(
+                            imageUrl: ImageUrl,
+                            width: 50, // Set both width and height to same value
+                            height: 50,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.category, color: Colors.grey),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.category, color: Colors.grey),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 5.h,),
+                        Text(
+                          categoryName!,
+                          style: TextStyle(
+                            fontSize: 10.h,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                                    ),
+                    ) ,
+                  );
+                },
               );
             },
-          );
-        },
-        loading: () => const ShimmerListTile(),
-        error: (err, stack) => Center(child: Text('Error: ${err.toString()}')),
+            loading: () => const ShimmerListTile(),
+            error: (err, stack) => Center(child: Text('Error: ${err.toString()}')),
 
-      ),
+          ),
+
     );
   }
 }

@@ -46,17 +46,22 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
             ),
           );
         }
-        return SizedBox(
-          height: 220.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Productcard(product: product!,userid: int.tryParse(widget.id) ?? 0,);
-            },
+        return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 2.w,
+              mainAxisSpacing: 18.h,
+              childAspectRatio: 0.75,
           ),
-        );
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return Productcard(product: product!,userid: int.tryParse(widget.id) ?? 0,);
+              },
+            );
 
       },
       error: (err, stack) => Center(child: Text('Error: $err')),

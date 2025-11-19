@@ -50,7 +50,7 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
             final filteredProducts = products.where((product) => product?.condition == "Used").toList();
 
             if(filteredProducts.isEmpty){
-              return Center(child: Text("No Products Found!"));
+              return SizedBox(height:50.h,child: Center(child: Text("No Products Available!")));
             }
             return SizedBox(
               height: 220.h,

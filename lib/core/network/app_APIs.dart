@@ -53,6 +53,10 @@ abstract class AppApis {//161.35.22.15
   static var deleteOnSaleEndPoints = "$baseurl/deleteOnSale/:id";
 
   //Category URLs
+  static var addCategoryEndPoints = "$baseurl/addcategory";
+  static var addSubcategoryEndPoints = "$baseurl/addsubcategory";
+  static var deleteCategoryEndPoints = "$baseurl/deletecategory/:id";
+  static var deleteSubcategoryEndPoints = "$baseurl/deletesubcategory/:id";
   static var getCategoriesEndPoints = "$baseurl/getCategories";
   static var getAllsubcategoriesEndPoints = "$baseurl/getallsubcategories";
   static var getSubcategoriesOfCategoryEndPoints = "$baseurl/getsubcategoriesofcategory/:categories";
@@ -80,10 +84,6 @@ abstract class AppApis {//161.35.22.15
   static var getNewArrivalProductsEndPoints = "$baseurl/getNewArrivalproducts/:Category";
   static var UpdateProductEndPoints = "$baseurl/updateproduct/:id";
   static var DeleteProductEndPoints = "$baseurl/deleteproduct/:id";
-  static var addCategoryEndPoints = "$baseurl/addcategory";
-  static var addSubcategoryEndPoints = "$baseurl/addsubcategory";
-  static var deleteCategoryEndPoints = "$baseurl/deletecategory/:id";
-  static var deleteSubcategoryEndPoints = "$baseurl/deletesubcategory/:id";
 
   //CART and ORDER URLS
   static var getUserCartEndPoints = "$baseurl/getCart/:id";
@@ -122,6 +122,8 @@ abstract class AppApis {//161.35.22.15
   static var getSellerOrderRequestsEndPoints = "$baseurl/seller/:id";
   static var getCustomersOrdersEndPoints = "$baseurl/customer/:id";
   static var updateSellerOrderRequestsStatusEndPoints = "$baseurl/:id";
+  static var setOrderReminderEndPoints = "$baseurl/setOrderReminder/:id";
+  static var deleteOrderReminderEndPoints = "$baseurl/deleteOrderReminder/:id";
 
   //chatApis
   static var getChatsAsSellerEndPoints = "$baseurl/getChatsAsSeller/:id";

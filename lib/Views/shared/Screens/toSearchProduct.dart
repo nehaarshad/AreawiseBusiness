@@ -55,7 +55,8 @@ class _TosearchproductState extends ConsumerState<Tosearchproduct> {
               final   parameters={
             "id": widget.userid,
             "category": "All",
-            "condition":category
+            "condition":category,
+                "onsale":false,
             };
               print(parameters);
                 Navigator.pushNamed(context, routesName.explore,arguments: parameters);
@@ -104,7 +105,8 @@ class _TosearchproductState extends ConsumerState<Tosearchproduct> {
                 final parameters={
                   "id": widget.userid,
                   "category": category.name,
-                   "condition":null
+                   "condition":null,
+                  "onsale":false
                 };
                 Navigator.pushNamed(context, routesName.explore,arguments: parameters);
                      

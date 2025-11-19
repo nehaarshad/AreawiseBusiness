@@ -28,74 +28,70 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
           //  mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ImageSlider(images: widget.shop.images ?? [], height: 350.h),
+              ImageSlider(images: widget.shop.images ?? [], height: 250.h),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.fromLTRB(10, 15, 20, 20),
-                child: Column(
+                child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.h),
+                    Text("${widget.shop.shopname}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: Colors.black,)),
+                    Text("${widget.shop.shopaddress} | ${widget.shop.sector} | ${widget.shop.city}",style: TextStyle(
+                      fontWeight: FontWeight.normal,fontSize: 14.sp, color: Colors.black87,),),
+                    SizedBox(height: 15.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(height: 10.h),
-                        Text("${widget.shop.shopname}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: Colors.black,)),
-                        Text("${widget.shop.shopaddress} | ${widget.shop.city}",style: TextStyle(
-                          fontWeight: FontWeight.normal,fontSize: 15.sp, color: Colors.black87,),),
-                        SizedBox(height: 15.h),
-                        Row(
+                        Text("", style: TextStyle( color: Colors.black,)),
+                        Column(
                           children: [
-                            Text("Seller Name: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                            Icon(Icons.person,color: Appcolors.baseColor,size: 20.h,),
                             Text(
                               "${widget.shop.user?.username}",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 color: Colors.black87,
                               ),
                             ),
                           ],
                         ),
-                        Row(
+                        Text("|", style: TextStyle( color: Colors.black,)),
+                        Column(
                           children: [
-                            Text("Contact Number: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                            Icon(Icons.phone,color: Appcolors.baseColor,size: 20.h,),
                             Text(
-                              "${widget.shop.user?.contactnumber}",
+                              "0${widget.shop.user?.contactnumber}",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 color: Colors.black87,
                               ),
                             ),
                           ],
                         ),
-                        Row(
-                              children: [
-                                Text("Category: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-                                Text(
-                                  "${widget.shop.category?.name}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15.sp,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ],
-                            ),
-                        Row(
+                        Text("|", style: TextStyle( color: Colors.black,)),
+                        Column(
                           children: [
-                            Text("Sector: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-                            Text(
-                              "${widget.shop.sector}",
+                            Icon(Icons.category,color: Appcolors.baseColor,size: 20.h,), Text(
+                              "${widget.shop.category?.name}",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 color: Colors.black87,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 20.h,),
-                        Divider()
+                        Text("", style: TextStyle( color: Colors.black,)),
                       ],
                     ),
+
+                    SizedBox(height: 20.h,),
+                    Divider()
+                  ],
+                ),
               ),
               Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 12.0.h),

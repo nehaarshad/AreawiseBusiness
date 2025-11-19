@@ -33,10 +33,12 @@ class signupviewmodel extends StateNotifier<bool> {
           await socketService.initialize(userId: user.id.toString());
           print(user);
           if (user.role == 'Admin') {
-            Navigator.pushNamed(context, routesName.aHome, arguments: user);
+            Navigator.pushNamedAndRemoveUntil(context, routesName.aHome,(route)=>false, arguments: user);
+
           }
           else {
-            Navigator.pushNamed(context, routesName.dashboard, arguments: user);
+            Navigator.pushNamedAndRemoveUntil(context, routesName.dashboard,(route)=>false, arguments: user);
+
           }
           await _notificationPermission.requestNotificationPermissions(context);
         }

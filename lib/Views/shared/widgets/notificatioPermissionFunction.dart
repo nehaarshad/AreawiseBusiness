@@ -25,7 +25,7 @@ class NotificationPermission {
         return AlertDialog(
           title: const Text('Stay Updated'),
           content: const Text(
-              'Allow notifications to receive upcoming and outgoing orders, shop status updates and other necessary updates done by admin on your products, shops etc.'),
+              'Allow notifications to receive upcoming and outgoing orders, shop status updates, reminders and other necessary updates done by admin on your products, shops etc.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),

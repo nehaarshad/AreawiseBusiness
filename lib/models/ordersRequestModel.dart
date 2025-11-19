@@ -1,4 +1,5 @@
 import 'orderModel.dart';
+import 'orderReminderModel.dart';
 
 class OrdersRequestModel {
   int? id;
@@ -11,6 +12,7 @@ class OrdersRequestModel {
   String? createdAt;
   String? updatedAt;
   orderModel? order;
+  OrderReminderModel? orderReminder;
 
   OrdersRequestModel(
       {this.id,
@@ -22,6 +24,7 @@ class OrdersRequestModel {
         this.status,
         this.createdAt,
         this.updatedAt,
+        this.orderReminder,
         this.order});
 
   OrdersRequestModel copyWith({
@@ -35,6 +38,7 @@ class OrdersRequestModel {
     String? createdAt,
     String? updatedAt,
     orderModel? order,
+    OrderReminderModel? orderReminder,
   }) {
     return OrdersRequestModel(
       id: id ?? this.id,
@@ -47,6 +51,7 @@ class OrdersRequestModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       order: order ?? this.order,
+      orderReminder: orderReminder ?? this.orderReminder,
     );
   }
 
@@ -61,6 +66,7 @@ class OrdersRequestModel {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     order = json['Order'] != null ? new orderModel.fromJson(json['Order']) : null;
+    orderReminder = json['orderReminder'] != null ? new OrderReminderModel.fromJson(json['orderReminder']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +82,9 @@ class OrdersRequestModel {
     data['updatedAt'] = this.updatedAt;
     if (this.order != null) {
       data['Order'] = this.order!.toJson();
+    }
+    if (this.orderReminder != null) {
+      data['OrderReminder'] = this.orderReminder!.toJson();
     }
     return data;
   }

@@ -54,7 +54,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
 
     BuyerViews = [
       ShopsView(id: widget.id),
-      Exploreproductsview(userId: widget.id,category: "All",condition: null,),//explore
+      Exploreproductsview(userId: widget.id,category: "All",condition: null,onsale: false,),//explore
       appHomeview(id: widget.id),
       CategoriesView(userid: widget.id),//categories
       Tosearchproduct(userid: widget.id),//SearchProductIcon

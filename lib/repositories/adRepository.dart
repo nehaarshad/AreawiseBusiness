@@ -5,7 +5,7 @@ import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../View_Model/auth/sessionmanagementViewModel.dart';
-import '../core/services/app_APIs.dart';
+import '../core/network/app_APIs.dart';
 import '../models/adsModel.dart';
 
 final adProvider = Provider<AdsRepositories>((ref) {

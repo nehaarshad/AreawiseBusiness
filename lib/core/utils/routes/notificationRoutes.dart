@@ -22,6 +22,9 @@ async {
   else if (message.contains('New product added to your shop')) {
     await Navigator.pushNamed(context, routesName.sProducts, arguments: userId);
   }
+  else if (message.contains('Reminder')) {
+    await Navigator.pushNamed(context, routesName.OrderRequests, arguments: userId);
+  }
   else if (message.contains('New comment added on your product')) {
    String productName = extractProductNameFromComment(message);
  print("Search product ${productName}");

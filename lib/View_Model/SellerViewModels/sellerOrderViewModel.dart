@@ -1,6 +1,9 @@
 import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
+import 'package:ecommercefrontend/repositories/orderReminderRepository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/utils/colors.dart';
 import '../../models/ordersRequestModel.dart';
 import '../../repositories/sellerOrdersRepository.dart';
 import '../buyerViewModels/ordersHistoryViewModel.dart';
@@ -48,5 +51,61 @@ class sellerOrderViewModel extends StateNotifier<AsyncValue<List<OrdersRequestMo
       print(e);
       state = AsyncValue.error(e, StackTrace.current);
     }
+  }
+
+  Future<void> setReminder(int orderId,int sellerId,BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now().add(Duration(hours: 1)),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null) {
+        final DateTime reminderDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        // Check if time is in the future
+        if (reminderDateTime.isBefore(DateTime.now())) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please select a future time'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
+
+        final data={
+          "orderId":orderId,
+          "reminderDateTime":reminderDateTime.toIso8601String()
+        };
+
+        await ref.read(reminderProvider).setReminder(data, sellerId.toString());
+       await getSellerOrdersRequests(sellerId.toString());
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Reminder set for Order #${orderId}'),
+            backgroundColor: Appcolors.baseColor,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> removeReminder(String orderId) async {
+    await ref.read(reminderProvider).deleteReminder( orderId);
+    getSellerOrdersRequests(id);
   }
 }

@@ -167,7 +167,7 @@ class _CartviewState extends ConsumerState<Cartview> {
                   Row(
                     children: [
                       Text(
-                        'unitPrice: ',
+                        'Unit Price: ',
                         style:  TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500
@@ -244,7 +244,7 @@ class _CartviewState extends ConsumerState<Cartview> {
                   Row(
                     children: [
                       Text(
-                        'onSale Price: ',
+                        'OnSale Price: ',
                         style:  TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500
@@ -262,7 +262,14 @@ class _CartviewState extends ConsumerState<Cartview> {
                   ),
                 Row(
                   children: [
-                  Icon(Icons.delivery_dining_sharp,color: Colors.grey,),
+                    Text(
+                      'Delivery Charges: ',
+                      style:  TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500
+
+                      ),
+                    ),
                     Text(
                       '${item.product?.shop?.deliveryPrice}',
                       style:  TextStyle(

@@ -24,8 +24,6 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCategory = ref.watch(selectedCategoryProvider);
-
     return SingleChildScrollView(
         child:  Column(
             children: [
@@ -33,6 +31,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
               SizedBox(height: 15.h),
               const getAdsView(),
               Divider(),
+
               SizedBox(height: 10.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -51,21 +50,39 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
               CategoriesButton(id: widget.id.toString(),),
               SizedBox(height: 10.h),
               // onSale
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
-                            child: Text(
-                              "Sale's Offer",
-                              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500,color: Appcolors.blackColor),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      onSaleProducts(userid: widget.id,),
-               SizedBox(height: 10.h),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Padding(
+              //       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+              //       child: Text(
+              //         "Sale Offer's",
+              //         style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
+              //       child: TextButton(
+              //         onPressed: (){
+              //           final   parameters={
+              //             "id": widget.id,
+              //             "category": "All",
+              //             "condition":null,
+              //             "onsale":true,
+              //           };
+              //           print(parameters);
+              //           Navigator.pushNamed(context, routesName.explore,arguments: parameters);
+              //
+              //
+              //         },
+              //         child: Text("View all",
+              //           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // onSaleProducts(userid: widget.id,),
+              //  SizedBox(height: 10.h),
               // Featured Products
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,6 +94,25 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                       style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
                     ),
                   ),
+                  Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
+                          child: TextButton(
+                            onPressed: (){
+                              final   parameters={
+                                "id": widget.id,
+                                "category": "All",
+                                "condition":null,
+                                "onsale":false,
+                              };
+                              print(parameters);
+                              Navigator.pushNamed(context, routesName.allFeatures,arguments: parameters);
+
+
+                            },
+                            child: Text("View all",
+                              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+                          ),
+                        ),
 
                 ],
               ),
@@ -92,6 +128,25 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                     child: Text(
                       "New Arrivals",
                       style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
+                    child: TextButton(
+                      onPressed: (){
+                        final   parameters={
+                          "id": widget.id,
+                          "category": "All",
+                          "condition":null,
+                          "onsale":false,
+                        };
+                        print(parameters);
+                        Navigator.pushNamed(context, routesName.explore,arguments: parameters);
+
+
+                      },
+                      child: Text("View all",
+                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
                     ),
                   ),
                 ],
@@ -116,7 +171,8 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                           final   parameters={
                             "id": widget.id,
                             "category": "All",
-                            "condition":"Used"
+                            "condition":"Used",
+                            "onsale":false,
                           };
                           print(parameters);
                           Navigator.pushNamed(context, routesName.explore,arguments: parameters);
@@ -132,7 +188,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
               usedItems(userid: widget.id),
               //All Products
              Row(
-               mainAxisAlignment: MainAxisAlignment.start,
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
                  Padding(
                         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
@@ -141,6 +197,25 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                           style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
                         ),
                       ),
+                 Padding(
+                   padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
+                   child: TextButton(
+                     onPressed: (){
+                       final   parameters={
+                         "id": widget.id,
+                         "category": "All",
+                         "condition":null,
+                         "onsale":false,
+                       };
+                       print(parameters);
+                       Navigator.pushNamed(context, routesName.explore,arguments: parameters);
+
+
+                     },
+                     child: Text("View all",
+                       style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+                   ),
+                 ),
                ],
              ),
               AllProducts(userid: widget.id),

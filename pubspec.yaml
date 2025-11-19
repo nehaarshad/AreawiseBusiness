@@ -51,6 +51,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   cached_network_image: ^3.4.1
   flutter_image_compress: ^2.4.0
+  share_plus: ^7.2.1
+  url_launcher: ^6.3.2
   shimmer: ^3.0.0
 
   path: any

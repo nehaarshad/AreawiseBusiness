@@ -15,7 +15,7 @@ class adminBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
-      unselectedItemColor: Colors.grey.shade400,
+      unselectedItemColor: Colors.black54,
         selectedItemColor: Appcolors.baseColor,
         selectedFontSize: 12.h,
         type: BottomNavigationBarType.fixed,
