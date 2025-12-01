@@ -13,13 +13,18 @@ import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
 const getallcategories = async (req, res) => {
     try {
         const categories = await category.findAll({
-            include: [{
+            include: [
+                {
                                 model:image,
                                 where:{imagetype:"category"},
                                 required:false //all products may not have image
-            }],
+            },
+            {
+                model: subcategories
+            }
+        ],
         });
-        console.log(`${categories.length} Categories found`);
+         console.log('First category:', JSON.stringify(categories[0], null, 2));
         res.json(categories);
     } catch (error) {
         console.log(error);

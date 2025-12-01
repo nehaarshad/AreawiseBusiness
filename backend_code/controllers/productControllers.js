@@ -165,9 +165,20 @@ const getallproducts = async (req, res) => {
                        attributes: ['imageUrl'] ,
                     required:false //all products may not have image
                 },
-                {
-                    model:shop,
+                            {
+                model:shop,
+                 include:[{
+                    model:User,
+                
                 },
+                {
+                    model:image,
+                },
+                {
+                model:category,
+            },
+            ]
+            },
                 {
                     model:category,
                 },
@@ -205,9 +216,20 @@ const getallproducts = async (req, res) => {
                             {
                               model:sale
                             },
-                            {
-                                model:shop,
-                            },
+                                        {
+                model:shop,
+                 include:[{
+                    model:User,
+                
+                },
+                {
+                    model:image,
+                },
+                {
+                model:category,
+            },
+            ]
+            },
                             {
                                 model:category,
                             },
@@ -342,8 +364,19 @@ console.log(dateThreshold);
                     required:false //all products may not have image
                 },
                 {
-                    model:shop,
+                model:shop,
+                 include:[{
+                    model:User,
+                
                 },
+                {
+                    model:image,
+                },
+                {
+                model:category,
+            },
+            ]
+            },
                 {
                     model:sale
                 },
@@ -381,8 +414,19 @@ console.log(dateThreshold);
                                 required:false //all products may not have image
                             },
                             {
-                                model:shop,
-                            },
+                model:shop,
+                 include:[{
+                    model:User,
+                
+                },
+                {
+                    model:image,
+                },
+                {
+                model:category,
+            },
+            ]
+            },
                             {
                     model:sale
                 },

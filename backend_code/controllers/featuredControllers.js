@@ -83,6 +83,17 @@ const getAllFeaturedProducts=async(req,res)=>{
             },
             {
                 model:shop,
+                 include:[{
+                    model:User,
+                
+                },
+                {
+                    model:image,
+                },
+                {
+                model:category,
+            },
+            ]
             },
             {
                 model:category,
@@ -119,6 +130,17 @@ const getAllFeaturedProducts=async(req,res)=>{
             },
             {
                 model:shop,
+                 include:[{
+                    model:User,
+                
+                },
+                {
+                    model:image,
+                },
+                {
+                model:category,
+            },
+            ]
             },
             {
                 model:sale

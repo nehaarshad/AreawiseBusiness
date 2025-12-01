@@ -155,14 +155,7 @@ const updateReview = async (req, res) => {
 
             // Delete old image files from filesystem
             for (const oldImage of oldImages) {
-                try {
-                    const oldPath = path.join(dirname, '..', 'uploads', path.basename(oldImage.imageUrl));
-                    if (fs.existsSync(oldPath)) {
-                        fs.unlinkSync(oldPath);
-                    }
-                } catch (deleteError) {
-                    console.error('Error deleting old image files:', deleteError);
-                }
+                 await  removeImageFromDirectory(oldImage.imageUrl);
             }
             // Delete old image records from database
             await image.destroy({

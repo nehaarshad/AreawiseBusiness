@@ -24,12 +24,18 @@ const getallusers=async(req,res)=>{
     try {
             const users=await User.findAll({
                  order: [['createdAt', 'DESC']], 
-                include:{
+                include:[{
                     model:image,
                     where: { imagetype: 'user'},
                     required:false //all users may not have image
                 },
+                {
+                    model:Address,
+                    as:"address"
+                }
+            ]
             });
+            console.log(JSON.stringify(users));
             res.json(users);
 
     } catch (error) {
