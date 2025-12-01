@@ -78,6 +78,14 @@ const Product = sequelize.define('products', {
             key: 'id'
         },
         allowNull: false
+    },
+    views:{
+        type:DataTypes.INTEGER,
+        defaultValue:0
+    },
+    onCartCounts:{
+        type:DataTypes.INTEGER,
+        defaultValue:0
     }
 },
 {

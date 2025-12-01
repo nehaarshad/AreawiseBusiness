@@ -19,6 +19,7 @@ const dirname = path.dirname(filename);
 import removeImageFromDirectory from "../utils/deleteImageFromDirectory.js";
 import featured from "../models/featuredModel.js";
 import review from "../models/reviewModel.js";
+import Viewers from "../models/productViewers.js";
 dotenv.config();
 
 
@@ -104,7 +105,9 @@ const addproduct = async (req, res) => {
 const findproductbyid = async (req, res) => {
     try {
         const {id}=req.params;
-        const products = await Product.findByPk(id,{
+        const {userId}=req.body;
+
+                const products = await Product.findByPk(id,{
             include:[
             {
                 model:image,
@@ -143,6 +146,19 @@ const findproductbyid = async (req, res) => {
             }
         ]
         });
+
+        const existingViewer = await Viewers.findOne({ where: { userId: parseInt(userId), ProductId: parseInt(id) } });
+
+        if (!existingViewer) {
+            await Viewers.create({
+                userId: parseInt(userId),
+                ProductId: parseInt(id)
+            });
+
+            products.views += 1;
+            await products.save();
+        }
+
         res.json(products);
     } catch (error) {
         console.log(error);

@@ -73,6 +73,8 @@ const addToCart=async(req,res)=>{
       // Update existing item
       existingItem.quantity += quantity;
       existingItem.price = productPrice * existingItem.quantity;
+      product.onCartCounts += existingItem.quantity;
+      await product.save();
       await existingItem.save();
       console.log('update cart item:', existingItem);
       return res.json(existingItem);
@@ -91,6 +93,9 @@ const addToCart=async(req,res)=>{
               shippingPrice,
               price
             });
+
+    product.onCartCounts += quantity;
+    await product.save();
     console.log('new cart item:', cartItem);        
     res.status(201).json(cartItem);
   } catch (error) {
@@ -149,7 +154,11 @@ const removeCartItem = async(req, res) => {
       if (!cartItem) {
         return res.status(404).json({ message: 'Cart item not found' });
       }
-
+      const product = await Product.findByPk(cartItem.productId);
+      if (product) {
+        product.onCartCounts -= cartItem.quantity;
+        await product.save();
+      }
       await cartItem.destroy();
       res.json({status:200, message: 'Item removed from cart' });
     } catch (error) {
@@ -184,6 +193,9 @@ const updateCartItem = async(req, res) => {
       }
 
       console.log("item",cartItem);
+
+     const oldQuantity = cartItem.quantity;
+      const quantityDifference = quantity - oldQuantity; //2-1=1 || 1-2=-1
       cartItem.quantity = quantity;
        let productPrice;
     console.log('Product is Onsale:', cartItem.product.onSale);
@@ -197,6 +209,11 @@ const updateCartItem = async(req, res) => {
     productPrice = productPrice + cartItem.product.shop.deliveryPrice;
       cartItem.price = productPrice * quantity;
       console.log('Updated cart item:', cartItem.quantity, cartItem.price);
+      const product = await Product.findByPk(cartItem.productId);
+      if (product) {
+        product.onCartCounts += quantityDifference; // += 1 || += -1
+        await product.save();
+      }
       await cartItem.save();
       res.json(cartItem);
     } catch (error) {
@@ -245,7 +262,7 @@ const deleteUserCart = async(req, res) => {
     if (!userCart) {
       return res.status(404).json({ message: 'Cart not found' });
     }
-
+    const cartItems = await items.findAll({ where: { cartId: id } });
     await userCart.destroy();
     res.json({status:200, message: 'User Cart Deleted!' });
   } catch (error) {
