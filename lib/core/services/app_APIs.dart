@@ -76,7 +76,7 @@ abstract class AppApis {//161.35.22.15
   static var setNewArrivalDaysEndPoints = "$baseurl/updateproductArrivalDays";
   static var AddProductEndPoints = "$baseurl/addproduct/:id";
   static var GetProductsEndPoints = "$baseurl/getallproducts/:Category";
-  static var GetProductByIDEndPoints = "$baseurl/getproducts/:id";
+  static var GetProductByIDEndPoints = "$baseurl/getproducts/:id/:userId";
   static var GetUserProductsEndPoints = "$baseurl/getuserproducts/:id";
   static var GetShopProductsEndPoints = "$baseurl/getshopproducts/:id";
   static var GetProductBySubcategoryEndPoints = "$baseurl/getProductBySubcategory/:subcategory";

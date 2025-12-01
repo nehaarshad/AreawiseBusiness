@@ -7,7 +7,11 @@ import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../View_Model/auth/sessionmanagementViewModel.dart';
-import '../core/network/app_APIs.dart';
+import '../core/localDataSource/productLocalSource.dart';
+import '../core/network/appexception.dart';
+import '../core/network/networkChecker.dart';
+import '../core/services/app_APIs.dart';
+import '../models/ProductModel.dart';
 
 final featureProvider = Provider<featureRepositories>((ref) {
   return featureRepositories(ref);
@@ -27,6 +31,19 @@ class featureRepositories {
     };
   }
 
+  ProductLocalDataSource get _localDataSource => ref.read(productLocalDataSourceProvider);
+
+  NetworkChecker get _networkChecker => ref.read(networkCheckerProvider);
+
+  Future<List<featureModel>> fetchAndCacheFeaturedProducts() async {
+
+    if(_localDataSource.hasFeaturedProductCachedData()) {
+      return _localDataSource.getFeaturedProductsByCategory('All');
+    }
+    return [];
+
+  }
+
   Future<featureModel> createProductFeatured(String id, Map<String, dynamic> request) async {
     try {
       final data = jsonEncode(request);
@@ -41,44 +58,103 @@ class featureRepositories {
   }
 
   Future<List<featureModel?>> getSellerFeaturedProducts(String id)async{
-    List<featureModel> orders;
-    try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getUserFeaturedProductsEndPoints.replaceFirst(':id', id),headers());
-      if (response is List) {
-        return response.map((order) => featureModel.fromJson(order as Map<String, dynamic>)).toList();
+    final isConnected = await _networkChecker.isConnected();
+    if (isConnected) {
+      List<featureModel> orders;
+      try {
+        dynamic response = await apiservice.GetApiResponce(
+            AppApis.getUserFeaturedProductsEndPoints.replaceFirst(':id', id),
+            headers());
+        if (response is List) {
+          return response.map((order) =>
+              featureModel.fromJson(order as Map<String, dynamic>)).toList();
+        }
+        orders = [featureModel.fromJson(response)];
+        return orders;
+      } catch (e) {
+        print(e);
+        if (_localDataSource.hasFeaturedProductCachedData()) {
+          int? sellerId = int.tryParse(id);
+          if(sellerId != null) {
+            return _localDataSource.getSellerFeaturesProducts(sellerId);
+          }
+        }
+        throw NoInternetException('No internet and no cached data available');
+
       }
-      orders = [featureModel.fromJson(response)];
-      return orders;
-    }catch(e){
-      rethrow;
+    }
+    else{
+      if (_localDataSource.hasFeaturedProductCachedData()) {
+        int? sellerId = int.tryParse(id);
+        if(sellerId != null) {
+          return _localDataSource.getSellerFeaturesProducts(sellerId);
+        }
+      }
+      throw NoInternetException('No internet and no cached data available');
     }
   }
 
   Future<List<featureModel?>> getAllFeaturedProducts(String category)async{
-    List<featureModel> orders;
-    try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getAllFeaturedProductsEndPoints.replaceFirst(':Category', category),headers());
-      if (response is List) {
-        return response.map((order) => featureModel.fromJson(order as Map<String, dynamic>),).toList();
+    final isConnected = await _networkChecker.isConnected();
+    if (isConnected) {
+      List<featureModel> orders;
+      try {
+        dynamic response = await apiservice.GetApiResponce(
+            AppApis.getAllFeaturedProductsEndPoints.replaceFirst(
+                ':Category', category), headers());
+        if (response is List) {
+          orders = response.map((order) =>
+              featureModel.fromJson(order as Map<String, dynamic>),).toList();
+        }
+        else {
+          orders = [featureModel.fromJson(response)];
+        }
+        if(category=="All"){
+          await _localDataSource.cacheFeaturedProducts(orders);
+        }
+        return orders;
+      } catch (e) {
+        print(e);
+        if(_localDataSource.hasFeaturedProductCachedData()){
+          return _localDataSource.getFeaturedProductsByCategory(category);
+        }
+        throw NoInternetException("No Internet Connection");
       }
-      orders = [featureModel.fromJson(response)];
-      return orders;
-    }catch(e){
-      rethrow;
+    }
+    else{
+      if(_localDataSource.hasFeaturedProductCachedData()){
+        return _localDataSource.getFeaturedProductsByCategory(category);
+      }
+      throw NoInternetException("No Internet Connection");
     }
   }
 
   Future<List<featureModel?>> getAllRequestedFeaturedProducts()async{
-    List<featureModel> orders;
-    try{
-      dynamic response=await apiservice.GetApiResponce(AppApis.getAllRequestedFeaturedProductsEndPoints,headers());
-      if (response is List) {
-        return response.map((order) => featureModel.fromJson(order as Map<String, dynamic>),).toList();
+    final isConnected = await _networkChecker.isConnected();
+    if (isConnected) {
+      List<featureModel> orders;
+      try {
+        dynamic response = await apiservice.GetApiResponce(
+            AppApis.getAllRequestedFeaturedProductsEndPoints, headers());
+        if (response is List) {
+          return response.map((order) =>
+              featureModel.fromJson(order as Map<String, dynamic>),).toList();
+        }
+        orders = [featureModel.fromJson(response)];
+        return orders;
+      } catch (e) {
+        print(e);
+        if (_localDataSource.hasFeaturedProductCachedData()) {
+          return _localDataSource.getRequestedFeaturedProducts();
+        }
+        throw NoInternetException('No internet and no cached data available');
       }
-      orders = [featureModel.fromJson(response)];
-      return orders;
-    }catch(e){
-      rethrow;
+    }
+    else {
+      if (_localDataSource.hasFeaturedProductCachedData()) {
+        return _localDataSource.getRequestedFeaturedProducts();
+      }
+      throw NoInternetException('No internet and no cached data available');
     }
   }
 

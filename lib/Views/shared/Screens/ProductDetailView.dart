@@ -1,12 +1,12 @@
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
+import 'package:ecommercefrontend/core/utils/dialogueBox.dart';
 import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/getProductDetailsViewModel.dart';
-import '../../../core/services/deepLinkService.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../widgets/cartBadgeWidget.dart';
 import '../widgets/contactWithSellerButton.dart';
@@ -42,7 +42,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
       ref.invalidate(ProductDetailsViewModelProvider(widget.productId.toString()));
       if (!mounted) return;
       await ref.read(ProductDetailsViewModelProvider(widget.productId.toString()).notifier)
-          .getProductDetails(widget.productId.toString());
+          .getProductDetails(widget.productId.toString(),widget.userid.toString());
     });
   }
   bool addToCart =false;
@@ -164,6 +164,19 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                               ],
                             ),
                           ),
+                          SizedBox(height: 8),
+
+                          // Views Count
+                          Row(
+                            children: [
+                              Icon(Icons.visibility, size: 16, color: Colors.grey),
+                              SizedBox(width: 4),
+                              Text(
+                                '${product.views} views',
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
                           SizedBox(height: 10.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,20 +236,63 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                           ),
                           SizedBox(height: 10.h),
                           Row(
-                            children: [
-                              Text("Sold: ",style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),),
-                              Text(
-                                "${product.sold}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.sp,
-                                  color: Colors.black87,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                  Row(
+                                    children: [
+                                      // Sold Count
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Sold:',
+                                            style: TextStyle(color: Appcolors.baseColor,fontSize: 15.sp,fontWeight: FontWeight.w500),
+                                          ),
+                                          Text(
+                                            '${product.sold}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15.sp,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // Available Count
+                                      Row(
+                                        children: [
+                                          SizedBox(width: 6),
+                                          Text(
+                                            '(${product.stock} available)',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15.sp,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                // On Cart Count (items in other users' carts)
+                                Row(
+                                  children: [
+                                    Icon(Icons.shopping_cart, size: 18, color: Appcolors.baseColor),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      '${product.onCartCounts} in carts',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15.sp,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Text(" (${product.stock} available)",style: TextStyle(color: Colors.red,fontSize: 15.sp,fontWeight: FontWeight.w500),),
+                              ],
+                            ),
 
-                            ],
-                          ),
+                          SizedBox(height: 8),
                           SizedBox(height: 10.h),
                           Row(
                             children: [
@@ -439,12 +495,17 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
             height: 50.h,
             child:   ElevatedButton.icon(
               onPressed: () async {
-                bool isAdded = await ref.read(cartViewModelProvider(widget.userid.toString()).notifier)
+                if(widget.product!.stock! == 0 || widget.product!.stock! <= widget.product!.onCartCounts!){
+                  DialogUtils.showErrorDialog(context, "Out of stock");
+                }
+                else{
+                  bool isAdded = await ref.read(cartViewModelProvider(
+                  widget.userid.toString()).notifier)
                     .addToCart(widget.userid.toString(), widget.productId!,Qty,context);
                 setState(() {
                   addToCart=isAdded;
                 });
-
+                     }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.baseColor,

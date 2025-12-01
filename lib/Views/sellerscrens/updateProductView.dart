@@ -39,7 +39,7 @@ class _updateProductViewState extends ConsumerState<updateProductView> {
  WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(updateProductProvider(widget.product.id.toString()).notifier)
-          .initValues(widget.product.id.toString())
+          .initValues(widget.product.id.toString(),widget.product.seller.toString())
           .then((_) {
             final product =
                 ref

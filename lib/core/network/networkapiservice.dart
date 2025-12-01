@@ -3,9 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/appexception.dart';
-import 'package:ecommercefrontend/core/utils/dialogueBox.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -22,13 +19,13 @@ class networkapiservice implements baseapiservice {
     try {
       final response = await http
           .get(Uri.parse(url), headers: headers,)
-          .timeout(Duration(seconds: 30));
+          .timeout(Duration(seconds: 10));
       print(response.headers);
       print("subcategoryproducts ${response.body}");
       responseJson = httpResponse(response);
 
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
     return responseJson;
   }
@@ -52,7 +49,7 @@ class networkapiservice implements baseapiservice {
 
       responseJson = httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
     return responseJson;
   }
@@ -75,7 +72,7 @@ class networkapiservice implements baseapiservice {
       print("res ${response.body}");
       responseJson = httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
     return responseJson;
   }
@@ -133,7 +130,7 @@ class networkapiservice implements baseapiservice {
 
       return httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
   }
 
@@ -191,7 +188,7 @@ class networkapiservice implements baseapiservice {
 
       return httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
   }
 
@@ -244,7 +241,7 @@ class networkapiservice implements baseapiservice {
 
       return httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
   }
   //update Using Multiport (Single File Handler)
@@ -294,7 +291,7 @@ class networkapiservice implements baseapiservice {
 
       return httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw fetchdataException("No Internet Connection");
     }
   }
 
@@ -308,7 +305,7 @@ class networkapiservice implements baseapiservice {
 
       responseJson = httpResponse(response);
     } on SocketException {
-      throw fetchdataException("No Internet Connnection");
+      throw NoInternetException("No Internet Connection");
     }
     return responseJson;
   }
@@ -363,13 +360,13 @@ class networkapiservice implements baseapiservice {
         dynamic responseJson = jsonDecode(res.body);
         return responseJson;
       case 400: //invalid input ,type errors...
-        throw badrequestException("Invalid input or ");
+        throw badrequestException("Invalid input ");
       case 500:
       case 404:
-        throw unauthorizeException("No token found ");
+        throw unauthorizeException("Unauthorized access");
       default:
-        throw fetchdataException(
-          "Something went wrong"
+        throw NoInternetException(
+          "No Internet Connection"
         );
     }
   }

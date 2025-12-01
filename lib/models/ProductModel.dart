@@ -22,6 +22,8 @@ class ProductModel {
   int? shopid;
   int? categoryId;
   int? subcategoryId;
+  int? views;
+  int? onCartCounts;
   String? createdAt;
   String? updatedAt;
   List<ProductImages>? images;
@@ -51,6 +53,8 @@ class ProductModel {
         this.updatedAt,
         this.images,
         this.shop,
+        this.views,
+        this.onCartCounts,
         this.category,
         this.subcategory,
         this.reviews});
@@ -64,6 +68,8 @@ class ProductModel {
     bool? onSale,
     String? description,
     int? stock,
+    int? onCartCounts,
+    int? views,
     int? sold,
     int? ratings,
     int? seller,
@@ -87,6 +93,8 @@ class ProductModel {
       description: description ?? this.description,
       condition: condition ?? this.condition,
       onSale: onSale ?? this.onSale,
+      views: views ?? this.views,
+      onCartCounts: onCartCounts ?? this.onCartCounts,
       stock: stock ?? this.stock,
       sold: sold ?? this.sold,
       saleOffer:sale?? this.saleOffer,
@@ -111,6 +119,8 @@ class ProductModel {
     subtitle = json['subtitle'];
     price = json['price'];
     onSale = json['onSale'];
+    views = json['views'];
+    onCartCounts = json['onCartCounts'];
     condition = json['condition'];
     description = json['description'];
     stock = json['stock'];

@@ -59,7 +59,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       selectedCategory = shop.category;
       state = AsyncValue.data(shop);
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      state = AsyncValue.error("No Internet Connection", StackTrace.empty);
       print('Error initializing Shop data: $e');
     }
   }

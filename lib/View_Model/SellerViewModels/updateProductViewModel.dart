@@ -42,14 +42,13 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
 
   UpdateProductViewModel(this.ref, this.id)
     : super(const AsyncValue.loading()) {
-    initValues(id);
     getCategories();
   }
 
   ProductModel? product=null;
-  Future<void> initValues(String id) async {
+  Future<void> initValues(String id,String userid) async {
     try {
-       product = await ref.read(productProvider).FindProduct(id);
+       product = await ref.read(productProvider).getProductByID(id,userid);
       final tempDir = await getTemporaryDirectory();
       images = await Future.wait(
         product?.images?.map((img) async {
@@ -67,7 +66,7 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       selectedSubCategory = product?.subcategory;
       state = AsyncValue.data(product);
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      state = AsyncValue.error("No Internet Connection",StackTrace.empty);
       print('Error initializing Shop data: $e');
     }
   }

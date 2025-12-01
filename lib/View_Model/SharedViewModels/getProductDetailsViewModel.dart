@@ -10,13 +10,13 @@ class ProductDetailsViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
   final Ref ref;
   String id;
   ProductDetailsViewModel(this.ref,this.id) : super(AsyncValue.loading()){
-    getProductDetails(id);
+
   }
 
-  Future<ProductModel?> getProductDetails(String id) async {
+  Future<ProductModel?> getProductDetails(String id,String userId) async {
     try {
       ProductModel? product = await ref.read(productProvider)
-          .getProductByID(id);
+          .getProductByID(id,userId);
       state = AsyncValue.data(product);
       return product;
     } catch (e) {

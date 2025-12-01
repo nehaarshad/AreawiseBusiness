@@ -24,6 +24,7 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
 
   @override
   Widget build(BuildContext context) {
+    String currentCategory;
     return SingleChildScrollView(
         child:  Column(
             children: [
@@ -97,10 +98,11 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                   Padding(
                           padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
                           child: TextButton(
-                            onPressed: (){
+                            onPressed: ()async{
+                             currentCategory= await ref.watch(selectedCategoryProvider) ;
                               final   parameters={
                                 "id": widget.id,
-                                "category": "All",
+                                "category": currentCategory,
                                 "condition":null,
                                 "onsale":false,
                               };
@@ -133,10 +135,12 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
                     child: TextButton(
-                      onPressed: (){
+                      onPressed: ()async{
+                        currentCategory= await ref.watch(selectedCategoryProvider) ;
+                        print("current category on click ${currentCategory}");
                         final   parameters={
                           "id": widget.id,
-                          "category": "All",
+                          "category": currentCategory,
                           "condition":null,
                           "onsale":false,
                         };
@@ -167,10 +171,12 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
                     child: TextButton(
-                      onPressed: (){
+                      onPressed: ()async{
+                        currentCategory= await ref.watch(selectedCategoryProvider) ;
+                        print("current category on click ${currentCategory}");
                           final   parameters={
                             "id": widget.id,
-                            "category": "All",
+                            "category": currentCategory,
                             "condition":"Used",
                             "onsale":false,
                           };
@@ -200,10 +206,13 @@ class _appHomeviewState extends ConsumerState<appHomeview> {
                  Padding(
                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
                    child: TextButton(
-                     onPressed: (){
+                     onPressed: ()async{
+                       currentCategory= await ref.watch(selectedCategoryProvider) ;
+
+                       print("current category on click ${currentCategory}");
                        final   parameters={
                          "id": widget.id,
-                         "category": "All",
+                         "category": currentCategory,
                          "condition":null,
                          "onsale":false,
                        };

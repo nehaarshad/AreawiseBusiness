@@ -8,7 +8,10 @@ import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../View_Model/auth/sessionmanagementViewModel.dart';
-import '../core/network/app_APIs.dart';
+import '../core/localDataSource/categoryLocalSource.dart';
+import '../core/network/appexception.dart';
+import '../core/network/networkChecker.dart';
+import '../core/services/app_APIs.dart';
 import '../models/SubCategoryModel.dart';
 
 final categoryProvider = Provider<CategoriesRepositories>((ref) {
@@ -21,49 +24,69 @@ class CategoriesRepositories {
 
   Map<String, String> headers() {
     final token = ref.read(sessionProvider)?.token;
-    print("incategory token $token");
     return {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
   }
+
   baseapiservice apiservice = networkapiservice();
 
-  Future<List<Category>> getCategories() async {
-    List<Category> categories = [];
-    try {
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.getCategoriesEndPoints, headers(),
-      );
-      if (response is List) {
-        return response
-            .map(
-              (category) => Category.fromJson(category as Map<String, dynamic>),
-            )
-            .toList();
+  categoryLocalDataSource get localDataSource => ref.read(categoryLocalDataSourceProvider);
+
+  NetworkChecker get networkChecker => ref.read(networkCheckerProvider);
+
+  Future<List<Category>> fetchAndCacheAllCategories() async {
+
+      if (localDataSource.hasCachedData()) {
+        return localDataSource.getAllCategories();
       }
-      categories = [Category.fromJson(response)];
-      return categories;
-    } catch (e) {
-      throw e;
+      return [];
+
+  }
+
+  Future<List<Category>> getCategories() async {
+    final isConnected = await networkChecker.isConnected();
+
+    if (isConnected) {
+        List<Category> categories = [];
+        try {
+          dynamic response = await apiservice.GetApiResponce(
+            AppApis.getCategoriesEndPoints, headers(),
+          );
+
+          List<Category> categories = (response as List)
+              .map((category) => Category.fromJson(category as Map<String, dynamic>))
+              .toList();
+
+          await localDataSource.cacheAllCategories(categories);
+          return categories;
+        } catch (e) {
+          print(e);
+            return localDataSource.getAllCategories();
+
+        }
+    }
+    else{
+      if(localDataSource.hasCachedData())
+        {
+          return localDataSource.getAllCategories();
+        }
+      throw NoInternetException("No internet and no cache data");
     }
   }
 
   Future<List<Subcategory>> getSubcategories() async {
-    List<Subcategory> categories = [];
+
     try {
 
       dynamic response = await apiservice.GetApiResponce(
         AppApis.getAllsubcategoriesEndPoints, headers(),
       );
-      if (response is List) {
-        return response
-            .map(
-              (category) => Subcategory.fromJson(category as Map<String, dynamic>),
-        )
-            .toList();
-      }
-      categories = [Subcategory.fromJson(response)];
+      List<Subcategory> categories= (response as List)
+          .map((category) => Subcategory.fromJson(category as Map<String, dynamic>))
+          .toList();
+
       return categories;
     } catch (e) {
       throw e;
@@ -71,27 +94,39 @@ class CategoriesRepositories {
   }
 
   Future<List<Subcategory>> FindSubCategories(String category) async {
-    List<Subcategory> Subcategorylist = [];
-    try {
+    final isConnected = await networkChecker.isConnected();
 
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.getSubcategoriesOfCategoryEndPoints.replaceFirst(
-          ':categories',
-          category,
-        ), headers(),
-      );
-      if (response is List) {
-        return response
-            .map(
-              (subcategories) =>
-                  Subcategory.fromJson(subcategories as Map<String, dynamic>),
-            )
+    if (isConnected) {
+      try {
+        dynamic response = await apiservice.GetApiResponce(
+          AppApis.getSubcategoriesOfCategoryEndPoints.replaceFirst(
+            ':categories',
+            category,
+          ),
+          headers(),
+        );
+        return (response as List)
+            .map((subcategories) => Subcategory.fromJson(subcategories as Map<String, dynamic>))
             .toList();
+
+      } catch (e) {
+        print('Error finding subcategories: $e');
+        if (localDataSource.hasCachedData()) {
+          final cachedSubcategories = localDataSource.getSubcategoriesOfCategories(category);
+          if (cachedSubcategories != null && cachedSubcategories.isNotEmpty) {
+            return cachedSubcategories;
+          }
+        }
+        throw NoInternetException("No internet and no data available");
       }
-      Subcategorylist = [Subcategory.fromJson(response)];
-      return Subcategorylist;
-    } catch (e) {
-      throw e;
+    } else {
+      if (localDataSource.hasCachedData()) {
+        final cachedSubcategories = localDataSource.getSubcategoriesOfCategories(category);
+        if (cachedSubcategories != null && cachedSubcategories.isNotEmpty) {
+          return cachedSubcategories;
+        }
+      }
+      throw NoInternetException("No internet and no data available");
     }
   }
 

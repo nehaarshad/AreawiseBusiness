@@ -1,6 +1,4 @@
-
 import 'package:ecommercefrontend/models/imageModel.dart';
-
 import 'ProductModel.dart';
 import 'UserDetailModel.dart';
 

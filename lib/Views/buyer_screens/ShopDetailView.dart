@@ -40,52 +40,57 @@ class _ShopDetailViewState extends ConsumerState<ShopDetailView> {
                     Text("${widget.shop.shopaddress} | ${widget.shop.sector} | ${widget.shop.city}",style: TextStyle(
                       fontWeight: FontWeight.normal,fontSize: 14.sp, color: Colors.black87,),),
                     SizedBox(height: 15.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("", style: TextStyle( color: Colors.black,)),
-                        Column(
-                          children: [
-                            Icon(Icons.person,color: Appcolors.baseColor,size: 20.h,),
-                            Text(
-                              "${widget.shop.user?.username}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14.sp,
-                                color: Colors.black87,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: Row(
+                        spacing: 23.w,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Icon(Icons.person, color: Appcolors.baseColor, size: 20.h),
+                              Text(
+                                "${widget.shop.user?.username}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.sp,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Text("|", style: TextStyle( color: Colors.black,)),
-                        Column(
-                          children: [
-                            Icon(Icons.phone,color: Appcolors.baseColor,size: 20.h,),
-                            Text(
-                              "0${widget.shop.user?.contactnumber}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14.sp,
-                                color: Colors.black87,
+                            ],
+                          ),
+                          Text("|", style: TextStyle(color: Colors.black)),
+                          Column(
+                            children: [
+                              Icon(Icons.phone, color: Appcolors.baseColor, size: 20.h),
+                              Text(
+                                "0${widget.shop.user?.contactnumber}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.sp,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Text("|", style: TextStyle( color: Colors.black,)),
-                        Column(
-                          children: [
-                            Icon(Icons.category,color: Appcolors.baseColor,size: 20.h,), Text(
-                              "${widget.shop.category?.name}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14.sp,
-                                color: Colors.black87,
+                            ],
+                          ),
+                          Text("|", style: TextStyle(color: Colors.black)),
+                          Column(
+                            children: [
+                              Icon(Icons.category, color: Appcolors.baseColor, size: 20.h),
+                              Text(
+                                "${widget.shop.category?.name}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.sp,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Text("", style: TextStyle( color: Colors.black,)),
-                      ],
+                            ],
+                          ),
+                          Text("", style: TextStyle(color: Colors.black)),
+                        ],
+                      ),
                     ),
 
                     SizedBox(height: 20.h,),

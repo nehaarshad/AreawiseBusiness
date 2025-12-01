@@ -5,7 +5,7 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 import '../View_Model/auth/sessionmanagementViewModel.dart';
-import '../core/network/app_APIs.dart';
+import '../core/services/app_APIs.dart';
 import '../models/deliveryOrderAttributes.dart';
 
 final attributesProvider = Provider<AttributeRepositories>((ref) {

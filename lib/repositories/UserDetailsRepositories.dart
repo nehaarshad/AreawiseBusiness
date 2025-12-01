@@ -5,7 +5,10 @@ import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
 import 'package:riverpod/riverpod.dart';
 import '../View_Model/auth/sessionmanagementViewModel.dart';
-import '../core/network/app_APIs.dart';
+import '../core/localDataSource/userLocalSource.dart';
+import '../core/network/appexception.dart';
+import '../core/network/networkChecker.dart';
+import '../core/services/app_APIs.dart';
 import '../models/UserDetailModel.dart';
 import '../models/notificationModel.dart';
 
@@ -25,23 +28,43 @@ class UserRepositories {
   }
   baseapiservice apiservice = networkapiservice();
 
-  Future<List<UserDetailModel>> getAllUsers() async {
-    try {
-      List<UserDetailModel> userlist = [];
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.getAllUserEndPoints,headers()
-      );
-      if (response is List) {
-        return response
-            .map(
-              (user) => UserDetailModel.fromJson(user as Map<String, dynamic>),
-            )
-            .toList();
+  UserLocalDataSource get localDataSource => ref.read(userLocalDataSourceProvider);
+
+  NetworkChecker get _networkChecker => ref.read(networkCheckerProvider);
+
+  Future<List<UserDetailModel>> fetchAndCacheAllUsers() async {
+    final isConnected = await _networkChecker.isConnected();
+
+      if (localDataSource.hasCachedData()) {
+        return localDataSource.getAllUsers();
       }
-      userlist = [UserDetailModel.fromJson(response)];
-      return userlist;
-    } catch (e) {
-      throw e;
+      return [];
+  }
+  Future<List<UserDetailModel>> getAllUsers() async {
+    final isConnected = await _networkChecker.isConnected();
+    if (isConnected) {
+      try {
+        dynamic response = await apiservice.GetApiResponce(
+            AppApis.getAllUserEndPoints, headers()
+        );
+        List<UserDetailModel> userlist = (response as List)
+            .map((user) => UserDetailModel.fromJson(user as Map<String, dynamic>))
+            .toList();
+        await localDataSource.cacheAllUsers(userlist);
+        return userlist;
+      } catch (e) {
+        print(e);
+        if(localDataSource.hasCachedData()){
+          return localDataSource.getAllUsers();
+        }
+        throw NoInternetException("No internet and no cache data");
+      }
+    }
+    else{
+      if(localDataSource.hasCachedData()){
+        return localDataSource.getAllUsers();
+      }
+      throw NoInternetException("No internet and no cache data");
     }
   }
 
@@ -57,35 +80,65 @@ class UserRepositories {
   }
 
   Future<List<UserDetailModel>> getuserbyname(String username) async {
-    try {
-      List<UserDetailModel> userlist = [];
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.SearchUserBynameEndPoints.replaceFirst(':username', username),headers()
-      );
-      if (response is List) {
-        return response
-            .map(
-              (user) => UserDetailModel.fromJson(user as Map<String, dynamic>),
-        )
-            .toList();
+    final isConnected = await _networkChecker.isConnected();
+    if (isConnected) {
+      try {
+        List<UserDetailModel> userlist = [];
+        dynamic response = await apiservice.GetApiResponce(
+            AppApis.SearchUserBynameEndPoints.replaceFirst(
+                ':username', username), headers()
+        );
+        if (response is List) {
+          return response
+              .map(
+                (user) =>
+                UserDetailModel.fromJson(user as Map<String, dynamic>),
+          )
+              .toList();
+        }
+        userlist = [UserDetailModel.fromJson(response)];
+        return userlist;
+      } catch (e) {
+        print(e);
+        if(localDataSource.hasCachedData()){
+          return localDataSource.getUserByName(username);
+        }
+        throw NoInternetException("No internet and no cache data");
       }
-      userlist = [UserDetailModel.fromJson(response)];
-      return userlist;
-    } catch (e) {
-      throw e;
+    }
+    else{
+      if(localDataSource.hasCachedData()){
+        return localDataSource.getUserByName(username);
+      }
+      throw NoInternetException("No internet and no cache data");
     }
   }
 
   Future<UserDetailModel> getuserbyid(String id) async {
-    try {
-      UserDetailModel user;
-      dynamic response = await apiservice.GetApiResponce(
-        AppApis.SearchUserByIdEndPoints.replaceFirst(':id', id),headers()
-      );
-      user = UserDetailModel.fromJson(response);
-      return user;
-    } catch (e) {
-      throw e;
+    int? userid= int.tryParse(id);
+    final isConnected = await _networkChecker.isConnected();
+    if (isConnected) {
+      try {
+        UserDetailModel user;
+        dynamic response = await apiservice.GetApiResponce(
+            AppApis.SearchUserByIdEndPoints.replaceFirst(':id', id), headers()
+        );
+        user = UserDetailModel.fromJson(response);
+        return user;
+      } catch (e) {
+        print(e);
+        if(localDataSource.hasCachedData()){
+          return localDataSource.getUserById(userid!);
+        }
+        throw NoInternetException("No internet and no cache data");
+      }
+    }
+    else{
+      if(localDataSource.hasCachedData()){
+        return localDataSource.getUserById(userid!);
+      }
+      throw NoInternetException("No internet and no cache data");
+
     }
   }
 

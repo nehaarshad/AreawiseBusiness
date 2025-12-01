@@ -1,20 +1,28 @@
 
+import 'package:ecommercefrontend/models/SubCategoryModel.dart';
+
 class Category {
   int? id;
   String? name;
   String? createdAt;
   String? updatedAt;
   catImage? image;
+  List<Subcategory>? subcategories;
 
-  Category({this.id, this.name, this.createdAt, this.updatedAt,this.image});
+  Category({this.id, this.name, this.createdAt, this.updatedAt,this.image,this.subcategories});
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    image =
-    json['Image'] != null ? new catImage.fromJson(json['Image']) : null;
+    image = json['Image'] != null ? new catImage.fromJson(json['Image']) : null;
+    if (json['subcategories'] != null) {
+      subcategories = <Subcategory>[];
+      json['subcategories'].forEach((v) {
+        subcategories!.add(new Subcategory.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {

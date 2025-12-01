@@ -1,17 +1,23 @@
 import 'dart:convert';
+import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/network/baseapiservice.dart';
 import 'package:ecommercefrontend/core/network/networkapiservice.dart';
-import 'package:ecommercefrontend/core/network/app_APIs.dart';
+import 'package:ecommercefrontend/core/services/app_APIs.dart';
+
+import '../core/localDataSource/userLocalSource.dart';
 
 final authprovider = Provider<AuthRepositories>((ref) {
-  return AuthRepositories();
+  return AuthRepositories(ref);
 });
 
 class AuthRepositories {
-  AuthRepositories();
+  Ref ref;
+  AuthRepositories(this.ref);
   baseapiservice apiservice = networkapiservice();
+
+  UserLocalDataSource get localDataSource => ref.read(userLocalDataSourceProvider);
 
   Future<dynamic> loginapi(dynamic data) async {
     try {
@@ -21,6 +27,8 @@ class AuthRepositories {
         data,
         {},
       );
+      UserDetailModel? user = UserDetailModel.fromJson(response);
+      await localDataSource.cacheUserById(user);
       if (kDebugMode) {
         print("Login Response: $response");
       }
@@ -44,6 +52,9 @@ class AuthRepositories {
         request,
         headers,
       );
+
+      UserDetailModel? user = UserDetailModel.fromJson(response);
+      await localDataSource.cacheUserById(user);
       return response;
     } catch (e) {
       throw e;
