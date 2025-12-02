@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/View_Model/buyerViewModels/cartViewModel.dart';
+import 'package:ecommercefrontend/core/utils/dialogueBox.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -227,11 +228,21 @@ class _CartviewState extends ConsumerState<Cartview> {
                           int newQuantity =
                               item.quantity! +
                                   1; // Increase quantity
+                          if(newQuantity > item.product!.stock!){
+                             newQuantity =item.quantity!;
+                            DialogUtils.showErrorDialog(context, "Only ${item.product!.stock!} stock available");
+                          }
                           if (kDebugMode) {
                             print("Increment to: $newQuantity");
                           }
-                          ref.read(cartViewModelProvider(widget.id.toString(),).notifier,)
-                              .updateCartItem(widget.id.toString(), item.id!.toString(), newQuantity,);
+                         else {
+                            ref.read(
+                              cartViewModelProvider(widget.id.toString(),)
+                                  .notifier,)
+                                .updateCartItem(
+                              widget.id.toString(), item.id!.toString(),
+                              newQuantity,);
+                          }
                         }
                             : null, // Disable if max stock is reached
                         icon: const Icon(Icons.add_circle_outline),

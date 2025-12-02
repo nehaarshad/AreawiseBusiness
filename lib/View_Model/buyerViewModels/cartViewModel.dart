@@ -2,8 +2,8 @@ import 'package:ecommercefrontend/models/cartModel.dart';
 import 'package:ecommercefrontend/repositories/cartRepositories.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/utils/dialogueBox.dart';
+import '../SharedViewModels/getProductDetailsViewModel.dart';
 
 final cartViewModelProvider =StateNotifierProvider.family<cartViewModel, AsyncValue<Cart?>, String>(
       (ref, id) {
@@ -67,6 +67,7 @@ class cartViewModel extends StateNotifier<AsyncValue<Cart?>> {
       };
       await ref.read(cartProvider).addToCart(id, data);
       await getUserCart(id);
+      await ref.read(ProductDetailsViewModelProvider(productId.toString()).notifier).getProductDetails(productId.toString(), id);
       await DialogUtils.showSuccessDialog(context, "Product added to cart successfully!");
       return true;
     } catch (e) {
