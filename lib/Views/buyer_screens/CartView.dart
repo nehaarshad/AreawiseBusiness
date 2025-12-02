@@ -232,10 +232,7 @@ class _CartviewState extends ConsumerState<Cartview> {
                              newQuantity =item.quantity!;
                             DialogUtils.showErrorDialog(context, "Only ${item.product!.stock!} stock available");
                           }
-                          if (kDebugMode) {
-                            print("Increment to: $newQuantity");
-                          }
-                         else {
+                           else {
                             ref.read(
                               cartViewModelProvider(widget.id.toString(),)
                                   .notifier,)

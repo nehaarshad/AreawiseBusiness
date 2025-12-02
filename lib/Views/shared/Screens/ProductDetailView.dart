@@ -495,7 +495,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
             height: 50.h,
             child:   ElevatedButton.icon(
               onPressed: () async {
-                if(widget.product!.stock! == 0 || widget.product!.stock! <= widget.product!.onCartCounts!){
+                if(widget.product!.stock! == 0 || widget.product!.stock! < widget.product!.onCartCounts!){
                   DialogUtils.showErrorDialog(context, "Out of stock");
                 }
                 else{
