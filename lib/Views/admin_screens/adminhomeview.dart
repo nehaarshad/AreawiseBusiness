@@ -7,6 +7,7 @@ import '../../View_Model/buyerViewModels/cartViewModel.dart';
 import '../../core/services/notificationService.dart';
 import '../../core/services/socketService.dart';
 import '../shared/Screens/appHomeView.dart';
+import '../shared/widgets/selectAreafloatingButton.dart';
 import 'FeaturedProductRequestView.dart';
 import 'UsersView.dart';
 import 'Widgets/adminBottomNavigationView.dart';
@@ -84,6 +85,9 @@ class _adminhomeviewState extends ConsumerState<adminhomeview> with WidgetsBindi
 
     return Scaffold(
       key: _scaffoldKey,
+      floatingActionButton: (index== 0 || index==1 || index==2)
+          ?
+      selectLocationFloatingButton() : null,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.menu,color: Appcolors.baseColor,),

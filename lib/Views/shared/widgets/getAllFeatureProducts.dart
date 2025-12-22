@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SellerViewModels/featuredProductViewModel.dart';
+import '../../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../../core/utils/colors.dart';
 import 'loadingState.dart';
 
@@ -43,11 +44,20 @@ class _ProductsViewState extends ConsumerState<AllFeaturedProducts> {
   @override
   Widget build(BuildContext context) {
     final productState = ref.watch(featureProductViewModelProvider(widget.userid.toString()));
+    final location = ref.watch(selectLocationViewModelProvider);
+
     return productState.when(
       loading: () => const ShimmerListTile(),
               data: (products) {
         if (products.isEmpty) {
           return SizedBox(height:100.h,child: const Center(child: Text("No Featured Products available.")));
+        }
+        if(location != null){
+          products = products.where((areaProducts)=>areaProducts?.product?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+        }
+
+        if (products.isEmpty) {
+          return const Center(child: Text("Oops! No products found in this location."));
         }
         return SizedBox(
           height: 220.h,

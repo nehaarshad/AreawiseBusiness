@@ -3,11 +3,13 @@ import 'package:ecommercefrontend/View_Model/adminViewModels/allProductsViewMode
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../View_Model/SharedViewModels/productViewModels.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../core/utils/colors.dart';
 import '../shared/widgets/loadingState.dart';
 import '../shared/widgets/searchBar.dart';
+import '../shared/widgets/selectAreafloatingButton.dart';
 
 class AllProductsview extends ConsumerStatefulWidget {
   final int id;
@@ -42,9 +44,10 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
   @override
   Widget build(BuildContext context) {
     final productState = ref.watch(ProductManagementViewModelProvider);
+    final location = ref.watch(selectLocationViewModelProvider);
 
     return Scaffold(
-
+      floatingActionButton: selectLocationFloatingButton(),
       body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -74,6 +77,13 @@ class _AllProductsviewState extends ConsumerState<AllProductsview> {
                               child: Text("No Products Available"),
                             ),
                           );
+                        }
+                        if(location != null){
+                          products = products.where((areaProducts)=>areaProducts?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+                        }
+
+                        if (products.isEmpty) {
+                          return const Center(child: Text("Oops! No products found in this location."));
                         }
                         return ListView.builder(
                           shrinkWrap: true,

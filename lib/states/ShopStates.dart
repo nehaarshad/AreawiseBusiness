@@ -10,6 +10,8 @@ class ShopState {
   final Category? selectedCategory;
   final bool isCustomCategory;
   final bool isLoading;
+  final String? selectedArea;
+  final bool isCustomArea;
 
   ShopState({
     this.shop = const AsyncValue.data(null),
@@ -18,6 +20,8 @@ class ShopState {
     this.selectedCategory,
     this.isCustomCategory = false,
     this.isLoading = false,
+    this.isCustomArea=false,
+    this.selectedArea,
   });
 
   ShopState copyWith({
@@ -28,6 +32,8 @@ class ShopState {
     bool? isCustomCategory,
     String? customCategoryName,
     bool? isLoading,
+    bool? isCustomArea,
+    String? selectedArea
   }) {
     return ShopState(
       shop: shop ?? this.shop,
@@ -36,6 +42,8 @@ class ShopState {
       selectedCategory: selectedCategory ?? this.selectedCategory,
       isCustomCategory: isCustomCategory ?? this.isCustomCategory,
       isLoading: isLoading ?? this.isLoading,
+      isCustomArea: isCustomArea ?? this.isCustomArea,
+      selectedArea: selectedArea ?? this.selectedArea
     );
   }
 }

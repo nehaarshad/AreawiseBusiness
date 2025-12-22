@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import 'loadingState.dart';
 
@@ -31,6 +32,7 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
     return Consumer(
       builder: (context, ref, child) {
         final productState = ref.watch(sharedProductViewModelProvider);
+        final location = ref.watch(selectLocationViewModelProvider);
 
         return productState.when(
           loading: () => const  ShimmerListTile(),
@@ -38,6 +40,13 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
           data: (products) {
             if (products.isEmpty) {
               return const Center(child: Text("No Products available."));
+            }
+            if(location != null){
+              products = products.where((areaProducts)=>areaProducts?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+            }
+
+            if (products.isEmpty) {
+              return const Center(child: Text("Oops! No products found in this location."));
             }
             return SizedBox(
               height: 220.h,

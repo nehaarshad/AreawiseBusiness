@@ -216,7 +216,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     borderRadius: BorderRadius.circular(8.0.r),
                   ),),
                   maxLines: 3,
-                  maxLength: 500,
+                  maxLength: 5000,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter a description";

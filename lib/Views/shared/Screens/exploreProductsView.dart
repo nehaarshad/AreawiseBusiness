@@ -1,14 +1,16 @@
+import 'package:ecommercefrontend/View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import 'package:ecommercefrontend/View_Model/adminViewModels/categoriesViewModel.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../View_Model/SharedViewModels/categoryProductsViewModel.dart';
 import '../../../core/utils/colors.dart';
 import '../../../models/ProductModel.dart';
 import '../widgets/loadingState.dart';
+import '../widgets/locationDropDown.dart';
 import '../widgets/productCard.dart';
+import '../widgets/selectAreafloatingButton.dart';
 
 class Exploreproductsview extends ConsumerStatefulWidget {
   final int userId;
@@ -162,6 +164,7 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
         ],
 
       ),
+      floatingActionButton: selectLocationFloatingButton(),
       body: Stack(
         children: [
           Column(
@@ -171,6 +174,7 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                 child: Consumer(
                   builder: (context, ref, child) {
                     final productState = ref.watch(CategoryProductViewModelProvider(_selectedCategory));
+                    final location = ref.watch(selectLocationViewModelProvider);
 
                     return productState.when(
                       loading: () => const Column(
@@ -193,8 +197,12 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                           filteredProducts = filteredProducts.where((onSaleProducts)=>onSaleProducts?.onSale==widget.onsale).toList();
                         }
 
+                        if(location != null){
+                          filteredProducts = filteredProducts.where((areaProducts)=>areaProducts?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+                        }
+
                         if (filteredProducts.isEmpty) {
-                          return const Center(child: Text("No Products Available!"));
+                          return const Center(child: Text("Oops! No products found in this location."));
                         }
 
                         return GridView.builder(

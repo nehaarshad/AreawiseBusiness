@@ -14,6 +14,7 @@ import '../widgets/cartBadgeWidget.dart';
 import '../widgets/drawerList.dart';
 import '../widgets/notificationBadge.dart';
 import '../../buyer_screens/ShopView.dart';
+import '../widgets/selectAreafloatingButton.dart';
 import 'appHomeView.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
@@ -95,11 +96,13 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
 
     return Scaffold(
       key: _scaffoldKey,
+        floatingActionButton: selectLocationFloatingButton(),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.menu,color: Appcolors.baseColor,),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
+
         automaticallyImplyLeading: false,
         actions: [
           StreamBuilder<bool>(

@@ -31,6 +31,8 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
   List<Category> categories = [];
   Category? selectedCategory;
   bool isCustomCategory = false;
+  String? selectedArea;
+  bool isCustomArea = false;
   String? customCategoryName;
 
   UpdateShopViewModel(this.ref, this.id) : super( AsyncValue.loading()) {
@@ -57,6 +59,7 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       );
 
       selectedCategory = shop.category;
+      selectedArea = shop.sector;
       state = AsyncValue.data(shop);
     } catch (e) {
       state = AsyncValue.error("No Internet Connection", StackTrace.empty);
@@ -175,6 +178,15 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     });
   }
 
+  void setArea(String? sector) {
+    selectedArea = sector;
+    state.whenData((shop) {
+      if (shop != null) {
+        state = AsyncValue.data(shop.copyWith(sector: sector));
+      }
+    });
+  }
+
   void toggleCustomCategory(bool value) {
     isCustomCategory = value;
     if (value) {
@@ -183,6 +195,14 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     }
   }
 
+  void toggleCustomArea(bool value) {
+    isCustomArea = value;
+    if (value) {
+      selectedArea = null;
+    }
+  }
+
+
   void setCustomCategoryName(String name) {
     customCategoryName = name;
   }
@@ -190,7 +210,6 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
   Future<void> updateShop({
     required String shopname,
     required String shopaddress,
-    required String sector,
     required String city,
     required String price,
     required String userid,
@@ -203,8 +222,15 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
       }
 
       final categoryName = isCustomCategory ? null : selectedCategory?.name;
+      final sector = isCustomArea ? null : selectedArea;
       if (categoryName == null ) {
         Utils.flushBarErrorMessage("Select Existed category ", context);
+        return;
+
+      }
+
+      if (sector == null ) {
+        Utils.flushBarErrorMessage("Shop area is not provided", context);
         return;
 
       }

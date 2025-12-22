@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/UpdateShopViewModel.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/widgets/selectLocationDropDown.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +22,6 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
   final formkey = GlobalKey<FormState>();
   late TextEditingController shopname = TextEditingController();
   late TextEditingController shopaddress = TextEditingController();
-  late TextEditingController sector = TextEditingController();
   late TextEditingController city = TextEditingController();
   late TextEditingController delivery = TextEditingController();
 
@@ -36,7 +36,6 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
             if (shop != null) {
               shopname.text = shop.shopname ?? '';
               shopaddress.text = shop.shopaddress ?? '';
-              sector.text = shop.sector ?? '';
               city.text = shop.city ?? '';
               delivery.text=shop.deliveryPrice.toString() ?? '';
             }
@@ -49,7 +48,6 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
   void dispose() {
     shopaddress.dispose();
     shopname.dispose();
-    sector.dispose();
     city.dispose();
     delivery.dispose();
     super.dispose();
@@ -190,19 +188,7 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                         return null;
                       },
                     ),
-                    TextFormField(
-                      controller: sector,
-                      decoration: InputDecoration(labelText: "Sector",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0.r),
-                        ),),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter Sector";
-                        }
-                        return null;
-                      },
-                    ),
+                    updateShopAreaDropDown(userid: widget.id.toString()),
                     TextFormField(
                       controller: city,
                       decoration: InputDecoration(labelText: "city",
@@ -221,10 +207,10 @@ class _updateShopViewState extends ConsumerState<updateShopView> {
                     InkWell(
                       onTap: state.isLoading ? null : () async {
                         if (formkey.currentState!.validate()) {
-                          print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text}, Sector: ${sector.text}, City: ${city.text}",); // Debugging line
+                          print("shopname: ${shopname.text}, shopaddress: ${shopaddress.text},  City: ${city.text}",); // Debugging line
 
                           await ref.read(updateShopProvider(widget.id.toString(),).notifier,)
-                              .updateShop(shopname: shopname.text,price:delivery.text, shopaddress: shopaddress.text, sector: sector.text, city: city.text,userid:shop!.userId.toString(), context: context,);
+                              .updateShop(shopname: shopname.text,price:delivery.text, shopaddress: shopaddress.text,  city: city.text,userid:shop!.userId.toString(), context: context,);
                         }
                       },
                       child: Container(

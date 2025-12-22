@@ -122,11 +122,22 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     state = state.copyWith(selectedCategory: category);
   }
 
+  void setLocation(String? area) {
+    state = state.copyWith(selectedArea: area);
+  }
+
   void toggleCustomCategory(bool value) {
     state = state.copyWith(
       isCustomCategory: value, //new category (true)
       selectedCategory: value ? null : state.selectedCategory, //null -> previously selected predefined category
       //null to initialize its value in other function
+    );
+  }
+
+  void toggleCustomArea(bool value) {
+    state = state.copyWith(
+      isCustomArea: value,
+      selectedArea: value ? null : state.selectedArea,
     );
   }
 
@@ -152,7 +163,6 @@ class AddShopViewModel extends StateNotifier<ShopState> {
   Future<bool> addShop({
     required String shopname,
     required String shopaddress,
-    required String sector,
     required String city,
     required String deliveryPrice,
     required int userId,
@@ -174,6 +184,16 @@ class AddShopViewModel extends StateNotifier<ShopState> {
               : state.selectedCategory?.name;
       if (categoryName == null ) {
         Utils.flushBarErrorMessage("Select Existed category ", context);
+        return false;
+
+      }
+
+      final sector =
+      state.isCustomArea
+          ? null
+          : state.selectedArea;
+      if (sector == null ) {
+        Utils.flushBarErrorMessage("No Location found ", context);
         return false;
 
       }

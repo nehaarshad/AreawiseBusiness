@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/widgets/selectLocationDropDown.dart';
 import 'package:ecommercefrontend/core/utils/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,11 +18,9 @@ class addShopView extends ConsumerStatefulWidget {
 }
 
 class _addShopViewState extends ConsumerState<addShopView> {
-  late final AddShopViewModel _viewModel;
   final formkey = GlobalKey<FormState>();
   final TextEditingController shopname = TextEditingController();
   final TextEditingController shopaddress = TextEditingController();
-  final TextEditingController sector = TextEditingController();
   final TextEditingController delivery = TextEditingController();
   final TextEditingController city = TextEditingController();
 
@@ -29,7 +28,6 @@ class _addShopViewState extends ConsumerState<addShopView> {
   @override
   void dispose() {
     shopname.dispose();
-    sector.dispose();
     shopaddress.dispose();
     city.dispose();
     delivery.dispose();
@@ -181,20 +179,7 @@ class _addShopViewState extends ConsumerState<addShopView> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  controller: sector,
-                  decoration: InputDecoration(
-                      labelText: "Sector",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0.r),
-                    ),),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter Sector";
-                    }
-                    return null;
-                  },
-                ),
+                setShopAreaDropDown(userid: widget.id.toString()),
                 TextFormField(
                   controller: city,
                   decoration: InputDecoration(
@@ -235,7 +220,6 @@ class _addShopViewState extends ConsumerState<addShopView> {
                           .addShop(
                           shopname: shopname.text.trim(),
                           shopaddress: shopaddress.text.trim(),
-                          sector: sector.text.trim(),
                           city: city.text.trim(),
                           deliveryPrice:delivery.text.trim(),
                           userId:widget.id,

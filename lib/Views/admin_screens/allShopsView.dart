@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
 import '../../core/utils/routes/routes_names.dart';
 import '../../models/shopModel.dart';
 import '../shared/widgets/loadingState.dart';
 import '../shared/widgets/searchShop.dart';
+import '../shared/widgets/selectAreafloatingButton.dart';
 
 class allShopsView extends ConsumerStatefulWidget {
   int id;//userId
@@ -30,6 +32,7 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+        floatingActionButton: selectLocationFloatingButton(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
          actions: [
@@ -40,6 +43,8 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
         children:[ Consumer(
             builder: (context,ref, child){
               final shopState = ref.watch(shopViewModelProvider);
+              final location = ref.watch(selectLocationViewModelProvider);
+
               return shopState.when(
 
                   loading: () => const Column(
@@ -54,6 +59,13 @@ class _AllShopsViewState extends ConsumerState<allShopsView> {
                     ShopList=shops;
                     if (shops.isEmpty) {
                       return const Center(child: Text("No Shops Available"));
+                    }
+                    if(location != null){
+                      shops = shops.where((shop)=>shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+                    }
+
+                    if (shops.isEmpty) {
+                      return const Center(child: Text("Oops! No Shop found in this location."));
                     }
                     return ListView.builder(
                       itemCount: shops.length,
