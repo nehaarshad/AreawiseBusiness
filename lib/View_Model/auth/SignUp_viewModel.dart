@@ -40,7 +40,9 @@ class signupviewmodel extends StateNotifier<bool> {
             Navigator.pushNamedAndRemoveUntil(context, routesName.dashboard,(route)=>false, arguments: user);
 
           }
+          await DialogUtils.showLocationDialog(context);
           await _notificationPermission.requestNotificationPermissions(context);
+
         }
         else{
           await DialogUtils.showErrorDialog(context,response.toString());

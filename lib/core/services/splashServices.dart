@@ -2,6 +2,7 @@ import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../View_Model/auth/sessionmanagementViewModel.dart';
+import '../utils/dialogueBox.dart';
 import '../utils/routes/routes_names.dart';
 import 'initCacheService.dart';
 
@@ -35,6 +36,7 @@ class splashservice {
       else {
         Navigator.pushNamedAndRemoveUntil(context, routesName.dashboard,(route)=>false, arguments: value);
       }
+      await DialogUtils.showLocationDialog(context);
     }
   }
 

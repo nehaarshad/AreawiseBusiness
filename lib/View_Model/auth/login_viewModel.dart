@@ -1,13 +1,9 @@
-import 'dart:developer' as developer;
-
 import 'package:ecommercefrontend/View_Model/auth/sessionmanagementViewModel.dart';
 import 'package:ecommercefrontend/models/UserDetailModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
-import 'package:ecommercefrontend/core/utils/notifyUtils.dart';
 import 'package:ecommercefrontend/repositories/auth_repositories.dart';
 import 'package:flutter/material.dart';
-
 import '../../Views/shared/widgets/notificatioPermissionFunction.dart';
 import '../../core/services/socketService.dart';
 import '../../core/utils/dialogueBox.dart';
@@ -38,7 +34,9 @@ class LoginViewModel extends StateNotifier<bool> {
         else {
           Navigator.pushNamedAndRemoveUntil(context, routesName.dashboard,(route)=>false, arguments: user);
         }
+        await DialogUtils.showLocationDialog(context);
         await _notificationPermission.requestNotificationPermissions(context);
+
       }
       else{
         await DialogUtils.showErrorDialog(context,response.toString());
