@@ -86,6 +86,15 @@ const addshop = async (req, res) => {
 
            if (req.io && req.userSockets) {
                await sendNotificationToUser(req.io, req.userSockets, sellerId, notificationMessage);
+                const admins = await User.findAll({where:{role:'Admin'}}); 
+           const adminNotificationMessage = `A new request to add "${newshop.shopname || 'Shop'}" Shop in the app. Please review and approve.`;
+
+           for(const admin of admins){
+              if (req.io && req.userSockets) {
+               await sendNotificationToUser(req.io, req.userSockets, admin.id, adminNotificationMessage); //adminId
+           }
+           }
+
            }
 
         res.status(201).json("Shop Added Successfully!");

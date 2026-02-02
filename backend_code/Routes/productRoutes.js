@@ -1,13 +1,16 @@
 import express from 'express';
 import productControllers from '../controllers/productControllers.js';
+import InitialproductControllers from '../controllers/bulkUploadController.js';
 import {upload} from '../MiddleWares/uploadimage.js';
 const { addproduct,getProductsOnSale,updateproductArrivalDays,getproductArrivalDays, findproductbyid,getallproducts,getuserproducts,getshopproducts,getProductBySubcategory,getNewArrivalproducts,getProductByName,updateproduct, deleteproduct } = productControllers;
+const { addinitproduct } = InitialproductControllers;
 const productRouter = express.Router();
 
 productRouter.post("/addproduct/:id",upload.array('image',8),addproduct);
 productRouter.get("/getallproducts/:Category",getallproducts);
 productRouter.get("/getProductsOnSale/:Category",getProductsOnSale);
-productRouter.get("/getproducts/:id",findproductbyid);
+productRouter.get("/getproducts/:id/:userId",findproductbyid);
+productRouter.post("/addinitproduct/:id",addinitproduct);
 productRouter.get("/getuserproducts/:id",getuserproducts);
 productRouter.get("/getshopproducts/:id",getshopproducts);
 productRouter.put("/updateproductArrivalDays",updateproductArrivalDays);

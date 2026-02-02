@@ -4,7 +4,7 @@ import Message from '../models/msgModel.js';
 import Notification from '../models/notifications.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
-
+import sendNotificationToUser from '../utils/sendNotification.js';
 const chatService = (io) => {
 
    const userSockets = new Map(); 
@@ -47,7 +47,7 @@ const chatService = (io) => {
       // Handle new messages  //on sent button
       socket.on('sendMessage', async (data) => {
         try {
-          const { chatId, senderId, msg } = data;
+          const { chatId, senderId, msg,receiverId } = data;
            
                await Chat.findByPk(chatId,{
                 include:{
@@ -73,6 +73,9 @@ const chatService = (io) => {
               model: User,
             }]
           });
+
+            await sendNotificationToUser(io, userSockets, receiverId, `New message in chat `); //receiverId
+                     
           
           // Emit to all participants in the chat
           io.to(`chat_${chatId}`).emit('receiveMessage', fullMessage);

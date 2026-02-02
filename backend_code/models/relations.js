@@ -18,6 +18,9 @@ import review from "./reviewModel.js";
 import sale from "./salesModel.js";
 import SellerPaymentAccount from "./sellerAccountModel.js";
 import orderReminder from "./orderReminderModel.js";
+import services from "./servicesModel.js";
+import ServiceProviders from "./serviceProvidersModel.js";
+import ServiceDetails from "./serviceDetailsModel.js";
 
 
 const relation = () => {
@@ -152,6 +155,15 @@ const relation = () => {
 
     Product.hasMany(review, { foreignKey: {name: 'productId', allowNull: false } });
     review.belongsTo(Product, { foreignKey: 'productId' });
+
+    services.hasMany(ServiceProviders, { foreignKey: { name: 'serviceId', allowNull: false } });
+    ServiceProviders.belongsTo(services, { foreignKey: 'serviceId' });
+
+    User.hasMany(ServiceProviders, { foreignKey: { name: 'providerID', allowNull: false } });
+    ServiceProviders.belongsTo(User, { foreignKey: 'providerID' });
+    
+    ServiceProviders.hasMany(ServiceDetails, { foreignKey: { name: 'providerId', allowNull: false } });
+    ServiceDetails.belongsTo(ServiceProviders, { foreignKey: 'providerId' });
 };
 
 

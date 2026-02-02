@@ -31,6 +31,8 @@ import { Server } from 'socket.io';
 import chatService from "./backend_code/services/chatService.js";
 import reviewsRouter from "./backend_code/Routes/reviewsRoutes.js";
 import reminderRouter from "./backend_code/Routes/orderReminderRoutes.js";
+import serviceRouter from "./backend_code/Routes/serviceRoutes.js";
+import serviceProviderRouter from "./backend_code/Routes/serviceProviderRoutes.js";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -142,12 +144,14 @@ app.get("/api/health", (req, res) => {
 // API Routes - Define BEFORE server starts listening
 app.use("/api", authroutes); // Auth routes (login/register) - no auth middleware
 app.use("/api", auth, userRouter);
-app.use("/api", auth, productRouter);
+app.use("/api", productRouter);
 app.use("/api", auth, shopRouter);
+app.use("/api", auth, serviceRouter);
 app.use("/api", auth, addressRouter);
 app.use("/api", auth, categoryRouter);
 app.use("/api",auth,transcriptRouter);
 app.use("/api",auth,feedbackRouter);
+app.use("/api", auth, serviceProviderRouter);
 app.use("/api",auth,accountRouter);
 app.use("/api", auth, cartRouter);
 app.use("/api", auth, orderRouter);

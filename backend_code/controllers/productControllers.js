@@ -104,8 +104,7 @@ const addproduct = async (req, res) => {
 
 const findproductbyid = async (req, res) => {
     try {
-        const {id}=req.params;
-        const {userId}=req.body;
+        const {id,userId}=req.params;
 
                 const products = await Product.findByPk(id,{
             include:[
