@@ -71,7 +71,7 @@ const addcategory = async (req, res) => {
         const { name } = req.body;
         
          console.log(req.file);
-        const newCategory = await category.create({ name });
+        const newCategory = await category.create({ name,status:"Active" });
        if (req.file) {
         try {
                             const originalPath = req.file.path;
@@ -92,6 +92,58 @@ const addcategory = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.json({ error: "Failed to add category" });
+    }
+};
+
+const updatecategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name , status} = req.body;
+        const updatedCategory = await category.findByPk(id);
+        if (updatedCategory) {
+            updatedCategory.name = name;
+            updatedCategory.status = status;
+            await updatedCategory.save();
+
+            if (req.file) {
+
+        try {
+
+            const oldImages = await image.findOne({
+                where: { imagetype:"category",CategoryId:id }
+            });
+
+            // Delete old image files from filesystem
+            if (oldImages) {
+               await removeImageFromDirectory(oldImages.imageUrl);
+            }
+             const images=await image.destroy({where:{imagetype:"category",CategoryId:id}})
+                    if(images>0){
+                        console.log(`${images} Images of this category is deleted`)
+                    }
+
+
+                            const originalPath = req.file.path;
+                            const optimizedFilename = 'optimized-' + req.file.filename;
+                            const optimizedPath = path.join(dirname, '..', 'uploads', optimizedFilename);
+                            
+                            // Optimize the image
+                            await optimizeImage(originalPath, optimizedPath);
+                             await image.create({ imagetype: 'category', CategoryId: id,  imageUrl: `${process.env.baseUrl}/backend_code/uploads/${optimizedFilename}`, });
+        
+                            
+                        } catch (imageError) {
+                            console.error('Error processing image:', req.file.filename, imageError);
+                        
+                        }
+                  }
+            res.json(updatedCategory);
+        } else {
+            res.json({ message: "Category not found" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ error: "Failed to update category" });
     }
 };
 
@@ -152,4 +204,4 @@ const deletesubcategory = async (req, res) => {
     }
 }
 
-export default {getallcategories,getallsubcategories,getsubcategoriesofcategory,addcategory,addsubcategory,deletecategory,deletesubcategory};
+export default {getallcategories,getallsubcategories,updatecategory,getsubcategoriesofcategory,addcategory,addsubcategory,deletecategory,deletesubcategory};

@@ -11,6 +11,10 @@ const category=sequelize.define('categories',{
     type:DataTypes.STRING,
      allowNull:false,
      unique:true
+   },
+   status:{
+    type:DataTypes.STRING,
+    defaultValue:"Requested"
    }
    
 },{

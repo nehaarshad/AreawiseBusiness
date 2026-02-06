@@ -1,11 +1,12 @@
 import express from 'express';
 import categoryControllers from '../controllers/categoryControllers.js';
 import {upload} from "../MiddleWares/uploadimage.js";
-const {getallcategories,getallsubcategories,getsubcategoriesofcategory,addcategory,addsubcategory,deletecategory,deletesubcategory}= categoryControllers;
+const {getallcategories,updatecategory,getallsubcategories,getsubcategoriesofcategory,addcategory,addsubcategory,deletecategory,deletesubcategory}= categoryControllers;
 const categoryRouter = express.Router();
 
 
 categoryRouter.get("/getCategories", getallcategories);
+categoryRouter.put("/updateCategory/:id",upload.single('image'), updatecategory);
 categoryRouter.get("/getallsubcategories", getallsubcategories);
 categoryRouter.get("/getsubcategoriesofcategory/:categories", getsubcategoriesofcategory);
 categoryRouter.post("/addcategory",upload.single('image'), addcategory);
