@@ -3,6 +3,7 @@ import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../../View_Model/SharedViewModels/productViewModels.dart';
 import 'loadingState.dart';
 
@@ -26,12 +27,28 @@ class _ProductsViewState extends ConsumerState<ProductsView> {
   @override
   Widget build(BuildContext context) {
     final productState = ref.watch(sharedProductViewModelProvider);
+    final location = ref.watch(selectLocationViewModelProvider);
+
     return productState.when(
       loading: () => const ShimmerListTile(),
             data: (products) {
         if (products.isEmpty) {
           return SizedBox(height:100.h,child: const Center(child: Text("No Products available.")));
         }
+        if (location != null) {
+          products = products.where((areaProducts) {
+            final normalizedArea = (areaProducts?.shop?.sector ?? "")
+                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                .toLowerCase();
+
+            final normalizedLocation = location
+                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                .toLowerCase();
+
+            return normalizedArea.contains(normalizedLocation);
+          }).toList();
+        }
+
         return Column(
           children: [
             Expanded(

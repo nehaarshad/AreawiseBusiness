@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../../View_Model/SharedViewModels/searchProductViewModel.dart';
 import '../widgets/loadingState.dart';
 import '../widgets/productCard.dart';
@@ -36,6 +37,7 @@ class _searchViewState extends ConsumerState<searchView> {
           child: Consumer(
             builder: (context, ref, child) {
               final productState = ref.watch(searchProductViewModelProvider);
+              final location = ref.watch(selectLocationViewModelProvider);
 
               return productState.when(
                 loading: () => const Column(
@@ -51,7 +53,21 @@ class _searchViewState extends ConsumerState<searchView> {
                 if (products.isEmpty) {
                     return const Center(child: Text("No Products available."));
                   }
-                  return SizedBox(
+                 if (location != null) {
+                   products = products.where((areaProducts) {
+                     final normalizedArea = (areaProducts?.shop?.sector ?? "")
+                         .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                         .toLowerCase();
+
+                     final normalizedLocation = location
+                         .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                         .toLowerCase();
+
+                     return normalizedArea.contains(normalizedLocation);
+                   }).toList();
+                 }
+
+                 return SizedBox(
                     height: 700.h,
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

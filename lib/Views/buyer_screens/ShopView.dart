@@ -54,9 +54,20 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                       }
 
 
-                      if(location != null){
-                        shops = shops.where((shop)=>shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+                      if (location != null) {
+                        shops = shops.where((shop) {
+                          final normalizedArea = (shop?.sector ?? "")
+                              .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                              .toLowerCase();
+
+                          final normalizedLocation = location
+                              .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                              .toLowerCase();
+
+                          return normalizedArea.contains(normalizedLocation);
+                        }).toList();
                       }
+
 
                       if (shops.isEmpty) {
                         return const Center(child: Text("Oops! No shop found in this location."));

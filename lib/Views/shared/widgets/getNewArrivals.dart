@@ -1,5 +1,4 @@
 import 'package:ecommercefrontend/Views/shared/widgets/productCard.dart';
-import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,9 +54,21 @@ class _ProductsViewState extends ConsumerState<NewArrivals> {
         if (products.isEmpty) {
           return SizedBox(height:100.h,child: const Center(child: Text("No New Products available.")));
         }
-        if(location != null){
-          products = products.where((areaProducts)=>areaProducts?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+        if (location != null) {
+          products = products.where((areaProducts) {
+            final normalizedArea = (areaProducts?.shop?.sector ?? "")
+                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                .toLowerCase();
+
+            final normalizedLocation = location
+                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                .toLowerCase();
+
+            return normalizedArea.contains(normalizedLocation);
+          }).toList();
         }
+
+
 
         if (products.isEmpty) {
           return const Center(child: Text("Oops! No products found in this location."));

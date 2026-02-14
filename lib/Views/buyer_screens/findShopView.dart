@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/routes/routes_names.dart';
+import '../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../View_Model/SharedViewModels/searchedShopViewMode.dart';
 import '../../View_Model/adminViewModels/ShopViewModel.dart';
 import '../shared/widgets/loadingState.dart';
@@ -44,6 +45,8 @@ class _findShopViewState extends ConsumerState<findShopView> {
         backgroundColor: Appcolors.whiteSmoke,
         body:Consumer(builder: (context, ref, child) {
           final shopState = ref.watch(searchShopViewModelProvider);
+          final location = ref.watch(selectLocationViewModelProvider);
+
           return shopState.when(
               loading: () => const Column(
                 children: [
@@ -55,6 +58,19 @@ class _findShopViewState extends ConsumerState<findShopView> {
               data: (shops) {
                 if (shops.isEmpty) {
                   return Center(child: Text("No shops available."));
+                }
+                if (location != null) {
+                  shops = shops.where((shop) {
+                    final normalizedArea = (shop?.sector ?? "")
+                        .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                        .toLowerCase();
+
+                    final normalizedLocation = location
+                        .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                        .toLowerCase();
+
+                    return normalizedArea.contains(normalizedLocation);
+                  }).toList();
                 }
                 return Column(
                   children: [

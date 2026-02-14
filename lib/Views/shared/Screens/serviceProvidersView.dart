@@ -26,12 +26,17 @@ class _ServiceprovidersviewState extends ConsumerState<Serviceprovidersview> {
 
     if (widget.service.providers != null && widget.service.providers!.isNotEmpty) {
       if (location != null && location.isNotEmpty) {
-        // Filter by location if location is selected
-        providers = widget.service.providers!
-            .where((p) => p.location == location)
-            .toList();
-      } else if(widget.isAdmin) {
-        providers = widget.service.providers!;
+        providers = widget.service.providers!.where((p) {
+          final normalizedArea = (p.location ?? "")
+              .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+              .toLowerCase();
+
+          final normalizedLocation = location
+              .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+              .toLowerCase();
+
+          return normalizedArea.contains(normalizedLocation);
+        }).toList();
       }
       else{
         providers = widget.service.providers!;

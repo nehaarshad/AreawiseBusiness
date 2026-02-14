@@ -68,7 +68,6 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
           scrollDirection: Axis.horizontal,
           child: Row(
                 children: [
-                  SizedBox(width: 8.w),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -238,7 +237,7 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                 child: Consumer(
                   builder: (context, ref, child) {
                     final productState = ref.watch(CategoryProductViewModelProvider(_selectedCategory));
-                    final location = ref.watch(selectLocationViewModelProvider);
+                    String? location = ref.watch(selectLocationViewModelProvider);
 
                     return productState.when(
                       loading: () => const Column(
@@ -261,9 +260,20 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                           filteredProducts = filteredProducts.where((onSaleProducts)=>onSaleProducts?.onSale==widget.onsale).toList();
                         }
 
-                        if(location != null){
-                          filteredProducts = filteredProducts.where((areaProducts)=>areaProducts?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+                        if (location != null) {
+                          filteredProducts = filteredProducts.where((areaProducts) {
+                            final normalizedArea = (areaProducts?.shop?.sector ?? "")
+                                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                                .toLowerCase();
+
+                            final normalizedLocation = location
+                                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                                .toLowerCase();
+
+                            return normalizedArea.contains(normalizedLocation);
+                          }).toList();
                         }
+
                         if (filteredProducts.isEmpty) {
                           return const Center(child: Text("Oops! No products found in this location."));
                         }

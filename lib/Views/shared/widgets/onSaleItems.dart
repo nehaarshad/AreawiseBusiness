@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../View_Model/SharedViewModels/getOnSaleProducts.dart';
+import '../../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../../core/utils/CapitalizesFirst.dart';
 import '../../../core/utils/colors.dart';
 import 'loadingState.dart';
@@ -44,6 +45,8 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
   @override
   Widget build(BuildContext context) {
     final productState =  ref.watch(onSaleViewModelProvider);
+    final location = ref.watch(selectLocationViewModelProvider);
+
     return productState.when(
 
       loading: () => const ShimmerListTile(),
@@ -52,6 +55,21 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
         if (products.isEmpty) {
           return SizedBox(height:100.h,child: const Center(child: Text("No sale on any Product.",style: TextStyle(color: Appcolors.whiteSmoke),)));
         }
+        if (location != null) {
+          products = products.where((areaProducts) {
+            final normalizedArea = (areaProducts?.shop?.sector ?? "")
+                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                .toLowerCase();
+
+            final normalizedLocation = location
+                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                .toLowerCase();
+
+            return normalizedArea.contains(normalizedLocation);
+          }).toList();
+        }
+
+
         return SizedBox(
           height: 200.h,
           child: ListView.builder(

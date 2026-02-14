@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../View_Model/SellerViewModels/featuredProductViewModel.dart';
 import '../../../View_Model/SharedViewModels/categoryProductsViewModel.dart';
+import '../../../View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import '../../../core/utils/colors.dart';
 import '../../../models/ProductModel.dart';
 import '../widgets/loadingState.dart';
@@ -122,6 +123,7 @@ class _ExploreproductsviewState extends ConsumerState<allFeaturedProductsView> {
                   builder: (context, ref, child) {
 
                     final productState = ref.watch(featureProductViewModelProvider(widget.userId.toString()));
+                    final location = ref.watch(selectLocationViewModelProvider);
 
                     return productState.when(
                       loading: () => const Column(
@@ -135,12 +137,25 @@ class _ExploreproductsviewState extends ConsumerState<allFeaturedProductsView> {
                         if (products.isEmpty) {
                           return const Center(child: Text("No Products Available."));
                         }
+                        List<featureModel?> filteredProducts = [];
 
-                        List<featureModel?> filteredProducts = _selectedCondition != null
+                        if (location != null) {
+                          filteredProducts = filteredProducts.where((areaProducts) {
+                            final normalizedArea = (areaProducts?.product?.shop?.sector ?? "")
+                                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                                .toLowerCase();
+
+                            final normalizedLocation = location
+                                .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                                .toLowerCase();
+
+                            return normalizedArea.contains(normalizedLocation);
+                          }).toList();
+                        }
+
+                        filteredProducts = _selectedCondition != null
                             ? products.where((product) => product!.product!.condition == _selectedCondition).toList()
                             : products;
-
-                        filteredProducts = products.where((product) => product!.product!.shop!.status == "Active").toList();
 
 
                         if (filteredProducts.isEmpty) {

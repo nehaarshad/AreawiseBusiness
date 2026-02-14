@@ -51,9 +51,20 @@ class _SubcategoriesproductviewState extends ConsumerState<Subcategoriesproductv
               if (activeProducts.isEmpty) {
                 return const Center(child: Text("Oops! No products available."));
               }
-              if(location != null){
-                activeProducts = activeProducts.where((product)=>product?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+              if (location != null) {
+                activeProducts = activeProducts.where((areaProducts) {
+                  final normalizedArea = (areaProducts?.shop?.sector ?? "")
+                      .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                      .toLowerCase();
+
+                  final normalizedLocation = location
+                      .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+                      .toLowerCase();
+
+                  return normalizedArea.contains(normalizedLocation);
+                }).toList();
               }
+
 
               if (activeProducts.isEmpty) {
                 return const Center(child: Text("Oops! No products found in this location."));
