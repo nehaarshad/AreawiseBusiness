@@ -56,7 +56,13 @@ class _usedProductsViewState extends ConsumerState<usedItems> {
             if (products.isEmpty) {
               return const Center(child: Text("Oops! No products found in this location."));
             }
+            products = products.where((areaProducts)=>areaProducts?.shop?.status=="Active").toList();
+
+            if (products.isEmpty) {
+              return const Center(child: Text("Oops! No products available"));
+            }
             final filteredProducts = products.where((product) => product?.condition == "Used").toList();
+
 
             if(filteredProducts.isEmpty){
               return SizedBox(height:50.h,child: Center(child: Text("No Products Available!")));

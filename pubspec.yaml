@@ -57,6 +57,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   connectivity_plus: ^7.0.0
+  file_picker: ^10.3.8
 
   path: any
 dev_dependencies:

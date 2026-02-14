@@ -85,9 +85,6 @@ class _adminhomeviewState extends ConsumerState<adminhomeview> with WidgetsBindi
 
     return Scaffold(
       key: _scaffoldKey,
-      floatingActionButton: (index== 0 || index==1 || index==2)
-          ?
-      selectLocationFloatingButton() : null,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.menu,color: Appcolors.baseColor,),

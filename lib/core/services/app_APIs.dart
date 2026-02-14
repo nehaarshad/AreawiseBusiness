@@ -18,6 +18,22 @@ abstract class AppApis {//161.35.22.15
   static var deleteSellerPayementAccountEndPoints = "$baseurl/deleteAccount/:id";
   static var confirmSellersPayementEndPoints = "$baseurl/confirmSellersPayement";
 
+  //Services Urls
+  static var addServiceEndPoints = "$baseurl/addservice";
+  static var getallservicesEndPoints = "$baseurl/getallservices";
+  static var updateServiceEndPoints = "$baseurl/updateservice/:id";
+  static var getServiceByIdEndPoints = "$baseurl/getServiceById/:id";
+  static var updateServiceStatusEndPoints = "$baseurl/updateServiceStatus/:id";
+  static var deleteServicebyidEndPoints = "$baseurl/deleteServicebyid/:id";
+
+
+  //ServicesProvider Urls
+  static var addServiceProviderEndPoints = "$baseurl/addServiceProvider/:id";
+  static var getAllProvidersOfServicesEndPoints = "$baseurl/getAllProvidersOfServices/:id";
+  static var getAllUserProvidersEndPoints = "$baseurl/getAllUserProviders/:id";
+  static var updateServiceProviderEndPoints = "$baseurl/updateServiceProvider/:id";
+  static var deleteServiceProviderbyidEndPoints = "$baseurl/deleteServiceProviderbyid/:id";
+
   //USER PROFILE URLS
   static var getAllUserEndPoints = "$baseurl/getallusers";
   static var SearchUsersByRoleEndPoints = "$baseurl/getallusersbyrole/:role";
@@ -56,6 +72,7 @@ abstract class AppApis {//161.35.22.15
   static var addCategoryEndPoints = "$baseurl/addcategory";
   static var addSubcategoryEndPoints = "$baseurl/addsubcategory";
   static var deleteCategoryEndPoints = "$baseurl/deletecategory/:id";
+  static var updateCategoryEndPoints = "$baseurl/updateCategory/:id";
   static var deleteSubcategoryEndPoints = "$baseurl/deletesubcategory/:id";
   static var getCategoriesEndPoints = "$baseurl/getCategories";
   static var getAllsubcategoriesEndPoints = "$baseurl/getallsubcategories";
@@ -75,6 +92,7 @@ abstract class AppApis {//161.35.22.15
   static var getUserOnSaleProductsEndPoints = "$baseurl/getUserSaleProducts/:id";
   static var setNewArrivalDaysEndPoints = "$baseurl/updateproductArrivalDays";
   static var AddProductEndPoints = "$baseurl/addproduct/:id";
+//  static var uploadProductExcelSheetEndPoints = "https://n8n.intelaqtglobal.com/webhook/bdbcef66-06f1-4004-a423-4e1e0a1e086c/upload_product/:shopid";
   static var GetProductsEndPoints = "$baseurl/getallproducts/:Category";
   static var GetProductByIDEndPoints = "$baseurl/getproducts/:id/:userId";
   static var GetUserProductsEndPoints = "$baseurl/getuserproducts/:id";

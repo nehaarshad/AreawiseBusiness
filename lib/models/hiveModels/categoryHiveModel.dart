@@ -17,9 +17,14 @@ class CategoryHiveModel extends HiveObject {
   @HiveField(3)
   List<SubcategoryHiveModel>? subcategories;
 
+  @HiveField(4)
+  String? status;
+
+
   CategoryHiveModel({
     this.id,
     this.name,
+    this.status,
     this.image,
     this.subcategories
   });

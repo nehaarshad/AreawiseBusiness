@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/services/notificationService.dart';
 import '../../models/UserDetailModel.dart';
+import '../SharedViewModels/locationSelectionViewModel.dart';
 
 final sessionProvider = StateNotifierProvider<sessionViewModel, UserDetailModel?>((
   ref,
@@ -28,6 +29,13 @@ class sessionViewModel extends StateNotifier<UserDetailModel?> {
     state = user;
   }
 
+  Future<String?> getLocation()async{
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final String? location = sp.getString('location');
+    ref.read(selectLocationViewModelProvider.notifier).setLocation(location);
+
+    return location;
+  }
   Future<UserDetailModel?> getuser() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     if (!sp.containsKey('token')) {

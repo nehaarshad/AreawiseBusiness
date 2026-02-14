@@ -12,13 +12,15 @@ import '../widgets/messageItems.dart';
 
 class ChatView extends ConsumerStatefulWidget {
   final String chatId;
-  final String userId;
+  final String userId; //senderId
+  final String receiverId;
   final ProductModel? product;
 
   const ChatView({
     Key? key,
     required this.chatId,
     required this.userId,
+    required this.receiverId,
     this.product,
   }) : super(key: key);
 
@@ -187,7 +189,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                       if (_messageController.text.trim().isNotEmpty) {
                         ref
                             .read(chatMessagesProvider(widget.chatId).notifier)
-                            .sendMessage(widget.userId, _messageController.text.trim());
+                            .sendMessage(widget.userId,widget.receiverId, _messageController.text.trim());
                         _messageController.clear();
                       }
                     },

@@ -119,12 +119,14 @@ class SocketService {
     required int chatId,
     required int senderId,
     required String message,
+    required int receiverId
   }) {
     print('📤 Sending message to chat: $chatId');
     socket.emit('sendMessage', {
       'chatId': chatId,
       'senderId': senderId,
       'msg': message,
+      'receiverId':receiverId
     });
   }
 

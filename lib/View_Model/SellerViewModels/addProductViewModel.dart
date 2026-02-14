@@ -89,15 +89,24 @@ class AddProductViewModel extends StateNotifier<ProductState> {
 
   Future<void> pickImages(BuildContext context) async {
     try {
-      state = state.copyWith(isLoading: true); // Show loading while processing
-      final List<XFile> pickedFiles = await pickImage.pickMultiImage();
+      state = state.copyWith(isLoading: true);
+
+      // Show option dialog for camera or gallery
+      final source = await DialogUtils.showImageSourceDialog(context);
+      if (source == null) {
+        state = state.copyWith(isLoading: false);
+        return;
+      }
+
+      final List<XFile> pickedFiles = await getImagesFromSource(source);
+
       if (pickedFiles.isNotEmpty && state.images.length + pickedFiles.length <= 8) {
         final List<File> compressedImages = [];
 
         // Compress each selected image
         for (final xFile in pickedFiles) {
           final originalFile = File(xFile.path);
-          final compressedFile = await compressImage(originalFile,context);
+          final compressedFile = await compressImage(originalFile, context);
 
           if (compressedFile != null) {
             compressedImages.add(compressedFile);
@@ -107,9 +116,29 @@ class AddProductViewModel extends StateNotifier<ProductState> {
 
         final newImages = [...state.images, ...compressedImages];
         state = state.copyWith(images: newImages, isLoading: false);
+      } else {
+        state = state.copyWith(isLoading: false);
       }
     } catch (e) {
+      state = state.copyWith(isLoading: false);
       print('Error picking images: $e');
+
+      // Optional: Show error message to user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick images: $e')),
+      );
+    }
+  }
+
+
+  Future<List<XFile>> getImagesFromSource(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      // Take a single picture from camera
+      final XFile? image = await pickImage.pickImage(source: source);
+      return image != null ? [image] : [];
+    } else {
+      // Pick multiple from gallery
+      return await pickImage.pickMultiImage();
     }
   }
 
@@ -157,9 +186,12 @@ class AddProductViewModel extends StateNotifier<ProductState> {
   }
 
   void setShop(ShopModel? shop) {
+    print("selected shop${shop?.shopname}");
     state = state.copyWith(
       selectedShop: shop,
     );
+    print("state set");
+    print(state.selectedShop?.shopname);
   }
 
   void setSubcategory(Subcategory? subcategory) {
@@ -170,7 +202,6 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     state = state.copyWith(
       isCustomCategory: value,
       selectedCategory: value ? null : state.selectedCategory,
-      customCategoryName: value ? null : state.customCategoryName,
     );
   }
 
@@ -184,16 +215,16 @@ class AddProductViewModel extends StateNotifier<ProductState> {
   void toggleCustomSubcategory(bool value) {
     state = state.copyWith(
       isCustomSubcategory: value,
-      selectedSubcategory: value ? null : state.selectedSubcategory,
-      customSubcategoryName: value ? null : state.customSubcategoryName,
     );
   }
 
   void setCustomCategoryName(String? name) {
+    print(name);
     state = state.copyWith(customCategoryName: name);
   }
 
   void setCustomSubcategoryName(String? name) {
+    print(name);
     state = state.copyWith(customSubcategoryName: name);
   }
 
@@ -204,6 +235,7 @@ class AddProductViewModel extends StateNotifier<ProductState> {
     required String description,
     required String stock,
     required String user,
+    required String shopId,
     String? discount,
     required String condition,
     required BuildContext context,
@@ -227,17 +259,19 @@ class AddProductViewModel extends StateNotifier<ProductState> {
       }
       //fetch shopId
 
-      final shopId = state.isCustomShop ? null : state.selectedShop?.id.toString();
-       if(shopId == null){
-         Utils.flushBarErrorMessage("Select your Active Shop", context);
-         return false;
+        if(shopId == ""){
+          shopId = (state.isCustomShop ? state.customCategoryName : state.selectedShop?.id.toString())!;
+          if(shopId== null){
+            Utils.flushBarErrorMessage("Select your Shop", context);
+            return false;
+          }
        }
       // Validate category and subcategory
-      final categoryName = state.isCustomCategory ? null : state.selectedCategory?.name;
-      final subcategoryName = state.isCustomSubcategory ? null : state.selectedSubcategory?.name;
+      final categoryName = state.isCustomCategory ? state.customCategoryName : state.selectedCategory?.name;
+      final subcategoryName = state.isCustomSubcategory ? state.customSubcategoryName : state.selectedSubcategory?.name;
 
       if (categoryName == null || subcategoryName == null) {
-         Utils.flushBarErrorMessage("Select existed category or subcategory", context);
+         Utils.flushBarErrorMessage("Select category or subcategory", context);
           return false;
 
       }

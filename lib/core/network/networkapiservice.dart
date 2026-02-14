@@ -134,6 +134,48 @@ class networkapiservice implements baseapiservice {
     }
   }
 
+  Future PostApiWithExcelFile(
+      String url,File? files,
+      ) async
+  {
+    try {
+      final request = new http.MultipartRequest('POST', Uri.parse(url),);
+
+      print("inMultiport headers ${request.headers}");
+      //upload files of images
+      if (files != null ) {
+          try {
+
+            final stream = http.ByteStream(files.openRead());
+            final length = await files.length();
+
+            final multipartFile = http.MultipartFile(
+              'data0', // Field name matching backend
+              stream,
+              length,
+            );
+
+            request.files.add(multipartFile);
+          } catch (e) {
+            print('Error processing file : $e');
+
+          }
+        }
+
+
+      print("Uploading ${request.files.length} files");
+      final streameresponse = await request.send().timeout(
+        Duration(seconds: 30),
+      );
+      final response = await http.Response.fromStream(streameresponse);
+
+      return httpResponse(response);
+    } on SocketException {
+      throw fetchdataException("No Internet Connection");
+    }
+  }
+
+
   //update Using Multiport (Multiple File Handler)
   Future UpdateApiWithMultiport(
     String url,

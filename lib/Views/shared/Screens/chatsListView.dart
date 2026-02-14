@@ -207,6 +207,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
               builder: (context) => ChatView(
                   chatId: chat.id!.toString(),
                   userId: widget.userId,
+                  receiverId: chat.product!.seller.toString(),
                   product: chat.product
               ),
             ),

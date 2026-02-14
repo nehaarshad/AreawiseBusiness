@@ -9,13 +9,15 @@ import '../Screens/chatView.dart';
 import '../../../core/utils/colors.dart';
 
 class contactWithSellerButton extends ConsumerWidget {
-  final String userId;
+  final String userId; //sender
+  final String receiverId;
   final String productId;
   final ProductModel? product;
 
   const contactWithSellerButton({
     Key? key,
     required this.userId,
+    required this.receiverId,
     required this.productId,
     this.product,
   }) : super(key: key);
@@ -48,7 +50,7 @@ class contactWithSellerButton extends ConsumerWidget {
             builder: (context) => ChatView(
                 chatId: createdChat.id.toString(),
                 userId: userId,
-                product: product
+                product: product, receiverId: receiverId,
             ),
           ),
         );
@@ -78,6 +80,7 @@ class contactWithSellerButton extends ConsumerWidget {
               builder: (context) => ChatView(
                   chatId: foundChat!.id.toString(),
                   userId: userId,
+                  receiverId: receiverId,
                   product: product
               ),
             ),

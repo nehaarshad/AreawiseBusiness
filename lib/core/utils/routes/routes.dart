@@ -1,6 +1,8 @@
 import 'package:ecommercefrontend/Views/admin_screens/ManageSearchProducts.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addCategory.dart';
+import 'package:ecommercefrontend/Views/admin_screens/addService.dart';
 import 'package:ecommercefrontend/Views/admin_screens/addUserView.dart';
+import 'package:ecommercefrontend/Views/admin_screens/editCategory.dart';
 import 'package:ecommercefrontend/Views/admin_screens/feedBackView.dart';
 import 'package:ecommercefrontend/Views/admin_screens/searchUserView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/CartView.dart';
@@ -8,12 +10,18 @@ import 'package:ecommercefrontend/Views/buyer_screens/WishListView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/findShopView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/makeOnlinePaymentView.dart';
 import 'package:ecommercefrontend/Views/buyer_screens/orderPlaceMessageView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/selectShopView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/serviceProvidersView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/AccountsView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/OrdersView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/SellerProductsView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/addAccountView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/addProviderOfServiceView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/addToSaleView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/onSaleProducts.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/selectOperationView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/updateSeriveProviderDetails.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/userServicesView.dart';
 import 'package:ecommercefrontend/Views/sellerscrens/viewReceipt.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/AccountView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/FAQview.dart';
@@ -23,18 +31,24 @@ import 'package:ecommercefrontend/Views/shared/Screens/exploreProductsView.dart'
 import 'package:ecommercefrontend/Views/shared/Screens/historyView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/notificationView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/searchProductView.dart';
+import 'package:ecommercefrontend/Views/sellerscrens/selectServiceView.dart';
+import 'package:ecommercefrontend/Views/shared/Screens/serviceDetailsView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/subcategoriesProductView.dart';
 import 'package:ecommercefrontend/Views/shared/Screens/toSearchProduct.dart';
 import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
+import 'package:ecommercefrontend/models/serviceProviderModel.dart';
 import 'package:flutter/material.dart';
 import '../../../Views/admin_screens/FeaturedProductRequestView.dart';
 import '../../../Views/admin_screens/FeaturedProducts.dart';
 import '../../../Views/admin_screens/appCategories.dart';
+import '../../../Views/admin_screens/appServices.dart';
 import '../../../Views/admin_screens/appSubcategories.dart';
 import '../../../Views/admin_screens/updateDeliveryOrderAttributes.dart';
+import '../../../Views/admin_screens/updateService.dart';
 import '../../../Views/sellerscrens/getSellerFeatureProducts.dart';
 import '../../../Views/sellerscrens/sellerShopDetailView.dart';
+import '../../../Views/sellerscrens/uploadProductViaExcelSheetView.dart';
 import '../../../Views/shared/Screens/allFeaturedProducts.dart';
 import '../../../Views/shared/Screens/chatsListView.dart';
 import '../../../Views/shared/Screens/forgetPasswordView.dart';
@@ -63,6 +77,7 @@ import '../../../Views/admin_screens/getSellerAds.dart';
 import '../../../models/ProductModel.dart';
 import '../../../models/UserDetailModel.dart';
 import '../../../models/ordersRequestModel.dart';
+import '../../../models/servicesModel.dart';
 import '../../../models/shopModel.dart';
 
 class Routes {
@@ -137,14 +152,33 @@ class Routes {
         final user = arg as int;
         return MaterialPageRoute(builder: (BuildContext context) => SellerShopsView(id: user),);
 
+      case (routesName.sServices):
+        final user = arg as int;
+        return MaterialPageRoute(builder: (BuildContext context) => SellerServicesview(id: user),);
+
+      case (routesName.serviceDetailsView):
+        final service = arg as ServiceProviders;
+        return MaterialPageRoute(builder: (BuildContext context) => ServiceDetailView(provider: service),);
+
+      case (routesName.serviceProviders):
+        final service = arg['Services'] as Services;
+        bool isAdmin = arg['isAdmin'] as bool;
+        return MaterialPageRoute(builder: (BuildContext context) => Serviceprovidersview(service: service,isAdmin: isAdmin,),);
+
+      case (routesName.updateServiceProvider):
+        final id = arg as ServiceProviders;
+        return MaterialPageRoute(builder: (BuildContext context) => updateProviderOfServiceView(service: id),);
+
+
       case (routesName.sAddShop):
         final user = arg as int;
         return MaterialPageRoute(builder: (BuildContext context) => addShopView(id: user));
 
       case (routesName.sAddProduct):
-        final userId = arg as String;
+        String userid = arg['userId'] as String;
+        String shopid = arg['shopId'] as String;
         return MaterialPageRoute(
-          builder: (BuildContext context) => addProductView(userId: userId),
+          builder: (BuildContext context) => addProductView(userId: userid,shopId: shopid,),
         );
 
       case (routesName.sEditProduct):
@@ -172,6 +206,10 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => OnlinePaymentReciptView(orderId: orderId,sellerId: sellerId),
         );
+
+      case (routesName.uploadExcelSheet):
+        String userid= arg as String;
+        return MaterialPageRoute(builder: (BuildContext context) => UploadExcelSheetView(userid: userid,),);
 
       case (routesName.productdetail):
         final id = arg['id'] as int;
@@ -211,15 +249,37 @@ class Routes {
           builder: (BuildContext context) => AllCategories(),
         );
 
+      case (routesName.services):
+        final role = arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => AllServices(isAdmin: role,),
+        );
+
+      case (routesName.editCategory):
+        final category = arg as Category;
+        return MaterialPageRoute(builder: (BuildContext context) => editCategory(category: category),);
+
+
       case (routesName.addCategory):
         return MaterialPageRoute(
           builder: (BuildContext context) => addCategory(),
+        );
+
+      case (routesName.addServices):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addService(),
         );
 
       case (routesName.subcategories):
         Category category=arg as Category;
         return MaterialPageRoute(
           builder: (BuildContext context) => SubcategoriesView(category: category,),
+        );
+
+      case (routesName.selectOption):
+        String id=arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => Selectoperationview(userid: id,),
         );
 
       case (routesName.search):
@@ -258,6 +318,13 @@ class Routes {
           builder: (BuildContext context) => makeOnlinePaymentView(orderId: orderId,sellerId:sellerId,shop: shop,),
         );
 
+      case (routesName.addServiceProvider):
+        final serviceId = arg['serviceId'] as String;
+        final sellerId=arg['sellerId'] as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => addProviderOfServiceView(serviceId: serviceId,userId:sellerId),
+        );
+
       case (routesName.history):
         String id=arg as String;
         return MaterialPageRoute(
@@ -268,6 +335,24 @@ class Routes {
         int id=arg as int;
         return MaterialPageRoute(
           builder: (BuildContext context) => SellerAccountsView(userid: id,),
+        );
+
+      case (routesName.updateService):
+        String id=arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => updateService(id: id,),
+        );
+
+      case (routesName.selectService):
+        String id=arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => selectService(id: id,),
+        );
+
+      case (routesName.selectShop):
+        String id=arg as String;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => selectShop(id: id,),
         );
 
       case (routesName.addAccount):

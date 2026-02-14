@@ -6,11 +6,16 @@ import 'package:ecommercefrontend/models/hiveModels/featureHiveModel.dart';
 import 'package:ecommercefrontend/models/hiveModels/orderHiveModel.dart';
 import 'package:ecommercefrontend/models/hiveModels/orderReminderHiveModel.dart';
 import 'package:ecommercefrontend/models/hiveModels/orderRequestHiveModel.dart';
+import 'package:ecommercefrontend/models/hiveModels/providerDetailsHiveModel.dart';
+import 'package:ecommercefrontend/models/hiveModels/serviceProvidersHiveModel.dart';
+import 'package:ecommercefrontend/models/hiveModels/servicesHiveModel.dart';
 import 'package:ecommercefrontend/models/hiveModels/shopHiveModel.dart';
 import 'package:ecommercefrontend/models/hiveModels/userHiveModel.dart';
 import 'package:ecommercefrontend/repositories/ShopRepositories.dart';
 import 'package:ecommercefrontend/repositories/UserDetailsRepositories.dart';
 import 'package:ecommercefrontend/repositories/featuredRepositories.dart';
+import 'package:ecommercefrontend/repositories/serviceProvidersRepository.dart';
+import 'package:ecommercefrontend/repositories/serviceRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -28,6 +33,7 @@ import '../localDataSource/advertisementLocalSource.dart';
 import '../localDataSource/categoryLocalSource.dart';
 import '../localDataSource/ordersLocalDataStorage.dart';
 import '../localDataSource/productLocalSource.dart';
+import '../localDataSource/servicesLocalDataSource.dart';
 
 final cacheserviceProvider = Provider((ref) {
   return cacheInitializationService(ref);
@@ -65,16 +71,20 @@ class cacheInitializationService {
     Hive.registerAdapter(OrderRequestHiveModelAdapter()); // id -> 9
     Hive.registerAdapter(featureProductHiveModelAdapter()); // id -> 12
     Hive.registerAdapter(CartItemHiveModelAdapter()); // id -> 5
-    Hive.registerAdapter(CartHiveModelAdapter());
+    Hive.registerAdapter(CartHiveModelAdapter()); //id -> 4
+    Hive.registerAdapter(ServiceProviderHiveModelAdapter()); //id ->16
+    Hive.registerAdapter(ServicesHiveModelAdapter()); //id -> 13
+    Hive.registerAdapter(ProviderDetailsHiveModelAdapter()); //id -> 17
   }
 
   Future<void> initializeBoxes() async{
     await ref.read(adsLocalDataSourceProvider).init();
     await ref.read(categoryLocalDataSourceProvider).init();
-    await ref.read(productLocalDataSourceProvider).init();
     await ref.read(shopLocalDataSourceProvider).init();
     await ref.read(userLocalDataSourceProvider).init();
     await ref.read(ordersLocalDataSourceProvider).init();
+    await ref.read(serviceLocalDataSourceProvider).init();
+    await ref.read(productLocalDataSourceProvider).init();
   }
 
   Future<void> cacheLocalData() async{
@@ -96,8 +106,8 @@ class cacheInitializationService {
     /// for orderHistory
      await ref.read(sellerOrderProvider).fetchAndCacheSellerOrders();
 
-    /// for chat's
-    // await ref.read(adProvider).fetchCacheAllAdvertisements();
+    /// for services
+     await ref.read(serviceProvider).fetchAndCacheAllServices();
 
     ///for products
     await ref.read(productProvider).fetchAndCacheAllProducts();

@@ -35,6 +35,7 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
       loading: () => const  ShimmerListTile(),
 
       data: (products) {
+        products = products.where((p)=>p?.shop?.status == "Active").toList();
         if (products.isEmpty) {
           return Center(
             child: Padding(
@@ -46,6 +47,8 @@ class _ProductsViewState extends ConsumerState<shopProducts> {
             ),
           );
         }
+
+
         return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

@@ -67,7 +67,7 @@ class _CategoriesListState extends ConsumerState<CategoriesList> {
         physics: AlwaysScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final category = categories[index];
-          if (category == null || category.name =="All") return SizedBox.shrink();
+          if (category == null || category.name =="All" || category.status == "Requested") return SizedBox.shrink();
           print(category.image?.imageUrl);
           return InkWell(
             onTap: () => widget.onCategorySelected(category),

@@ -45,6 +45,17 @@ class AdminDrawerListItems extends ConsumerWidget {
             },
           ),
           drawerItems(
+            icon: Icons.miscellaneous_services_sharp,
+            title: 'Services',
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routesName.services,
+                arguments: "Admin"
+              );
+            },
+          ),
+          drawerItems(
             icon: Icons.favorite_border_outlined,
             title: 'Favorite Products',
             onTap: () {
@@ -118,10 +129,6 @@ class AdminDrawerListItems extends ConsumerWidget {
         child: SingleChildScrollView(
           child: GestureDetector(
             onTap: (){
-              final parameters={
-                'id':user.id,
-                'role':user.role
-              };
               Navigator.pushNamed(
                 context,
                 routesName.profile,

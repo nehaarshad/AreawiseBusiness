@@ -60,7 +60,7 @@ class _onSaleProductsViewState extends ConsumerState<onSaleProducts> {
             itemBuilder: (context, index) {
               final product = products[index];
               print("onSale Product ${product?.id}");
-              if (product == null || product.id == null) {
+              if (product == null || product.id == null || product.shop?.status != "Active") {
                 return const SizedBox();
               }
               if ( product.saleOffer?.discount == null || product.saleOffer?.discount ==0) {

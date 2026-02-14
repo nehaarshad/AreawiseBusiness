@@ -1,5 +1,6 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addProductViewModel.dart';
 import 'package:ecommercefrontend/View_Model/SellerViewModels/updateProductViewModel.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,20 +58,28 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
     });
     if (addnewCategory) {
       ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(true);
+      ref.read(addProductProvider(widget.shopid).notifier).setCustomCategoryName(ProductCategory.text.trim());
+
     } else {
       ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
     }
   }
 
   void _onCategorySelected(Category category) {
+    if(addnewCategory){
+      ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(true);
+      ref.read(addProductProvider(widget.shopid).notifier).setCustomCategoryName(ProductCategory.text.trim());
+    }
+    else{
+      ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
+      ref.read(addProductProvider(widget.shopid).notifier).setCategory(category);
+    }
     setState(() {
       ProductCategory.text = category.name!;
-      showDropdown = false;  // Hide dropdown after selection
+      showDropdown = false;
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
     });
-    ref.read(addProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
-    ref.read(addProductProvider(widget.shopid).notifier).setCategory(category);
+
     focus.unfocus();
   }
 
@@ -107,7 +116,6 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           },
           onTap: () {
             setState(() {
-              // Only show dropdown if there are categories to show
               showDropdown = SelectCategories.isNotEmpty;
             });
           },
@@ -150,8 +158,8 @@ class _CategorySelectorState extends ConsumerState<ProductCategoryDropdown> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No Category exist!',
-              style: TextStyle(color: Colors.red),
+                'New Category',
+              style: TextStyle(color: Appcolors.baseColor),
             ),
           ),
       ],
@@ -211,42 +219,34 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
     });
     if (addnewSubCategory) {
       ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(true);
-      } else {
+      ref.read(addProductProvider(widget.userId).notifier).setCustomSubcategoryName(subcategoryController.text.trim());
+    } else {
       ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(false);
 
     }
   }
 
   void SubcategorySelection(Subcategory subcategory) {
+    if(addnewSubCategory){
+      ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(true);
+      ref.read(updateProductProvider(widget.userId).notifier).setCustomSubcategoryName(subcategoryController.text.trim());
+    }
+    else{
+      ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(false);
+      ref.read(addProductProvider(widget.userId).notifier).setSubcategory(subcategory);
+    }
     setState(() {
       subcategoryController.text = subcategory.name!;
       showSubcategoryDropdown = false;
       addnewSubCategory=false;
-      recommendedSubcategories = [];
     });
-    ref.read(addProductProvider(widget.userId).notifier).toggleCustomSubcategory(false);
-    ref.read(addProductProvider(widget.userId).notifier).setSubcategory(subcategory);
+
     subcategoryFocus.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final state = ref.watch(addProductProvider(widget.userId));
-
-    // If no category is selected, show disabled field
-    if (state.selectedCategory == null) {
-      return TextField(
-        enabled: false,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0.r),
-          ),
-          labelText: 'Subcategory',
-          hintText: 'Select a category first',
-        ),
-      );
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +267,6 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
                 setState(() {
                   subcategoryController.clear();
                   showSubcategoryDropdown = false;
-                  recommendedSubcategories = [];
                 });
                 ref.read(addProductProvider(widget.userId).notifier).setSubcategory(null);
               },
@@ -322,8 +321,8 @@ class _SubcategoryDropdownState extends ConsumerState<ProductSubcategoryDropdown
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No SubCategory exist',
-              style: TextStyle(color: Colors.red),
+              'New SubCategory',
+              style: TextStyle(color:Appcolors.baseColor),
             ),
           ),
         ],
@@ -389,6 +388,8 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
     });
     if (addnewCategory) {
       ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(true);
+      ref.read(updateProductProvider(widget.shopid).notifier).setCustomCategoryName(ProductCategory.text.trim());
+
     }
     else {
       ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
@@ -396,14 +397,21 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
   }
 
   void _onCategorySelected(Category category) {
+    if (addnewCategory) {
+      ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(true);
+      ref.read(updateProductProvider(widget.shopid).notifier).setCustomCategoryName(ProductCategory.text.trim());
+    }
+    else {
+      ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
+      ref.read(updateProductProvider(widget.shopid).notifier).setCategory(category);
+    }
     setState(() {
       ProductCategory.text = category.name!;
       showDropdown = false;  // Hide dropdown after selection
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
+
     });
-    ref.read(updateProductProvider(widget.shopid).notifier).toggleCustomCategory(false);
-    ref.read(updateProductProvider(widget.shopid).notifier).setCategory(category);
+
     focus.unfocus();
   }
 
@@ -428,7 +436,6 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
                 setState(() {
                   ProductCategory.clear();
                   showDropdown = false;
-                  SelectCategories = [];
                 });
                 ref.read(updateProductProvider(widget.shopid).notifier).setCategory(null);
               },
@@ -483,8 +490,8 @@ class _updateCategorySelectorState extends ConsumerState<updateProductCategoryDr
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No Category exist',
-              style: TextStyle(color: Colors.red),
+              'New Category ',
+              style: TextStyle(color: Appcolors.baseColor),
             ),
           ),
       ],
@@ -556,14 +563,19 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
   }
 
   void SubcategorySelection(Subcategory subcategory) {
+    if (addnewSubCategory) {
+      ref.read(updateProductProvider(widget.shopId).notifier).toggleCustomSubcategory(true);
+      ref.read(updateProductProvider(widget.shopId).notifier).setCustomSubcategoryName(subcategoryController.text.trim());
+    }
+    else {
+      ref.read(updateProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
+      ref.read(updateProductProvider(widget.shopId).notifier).setSubcategory(subcategory);
+    }
     setState(() {
       subcategoryController.text = subcategory.name!;
       showSubcategoryDropdown = false;
       addnewSubCategory = false;
-      recommendedSubcategories = [];
     });
-    ref.read(updateProductProvider(widget.shopId).notifier).toggleCustomSubcategory(false);
-    ref.read(updateProductProvider(widget.shopId).notifier).setSubcategory(subcategory);
     subcategoryFocus.unfocus();
   }
 
@@ -637,8 +649,8 @@ class _updateSubcategoryDropdownState extends ConsumerState<updateProductSubcate
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No SubCategory exist',
-              style: TextStyle(color: Colors.red),
+              'New SubCategory',
+              style: TextStyle(color: Appcolors.baseColor),
             ),
           ),
         ],

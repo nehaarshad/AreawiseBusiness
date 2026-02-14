@@ -38,42 +38,42 @@ class DrawerListItems extends ConsumerWidget {
           //     );
           //   },
           // ),
-          drawerItems(
-            icon: Icons.chat_outlined,
-            title: 'Inbox',
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                routesName.chatList,
-                arguments: id.toString(),
-              );
-            },
-          ),
-          drawerItems(
-            icon: Icons.store_mall_directory_outlined,
-            title: "My Shop",
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                routesName.sShop,
-                arguments: id,
-              );
-            },
-          ),
-          drawerItems(
-            icon: Icons.shopping_bag_outlined,
-            title: "My Product",
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                routesName.sProducts,
-                arguments: id,
-              );
-            },
-          ),
+          // drawerItems(
+          //   icon: Icons.chat_outlined,
+          //   title: 'Inbox',
+          //   onTap: () {
+          //     Navigator.pushNamed(
+          //       context,
+          //       routesName.chatList,
+          //       arguments: id.toString(),
+          //     );
+          //   },
+          // ),
+          // drawerItems(
+          //   icon: Icons.store_mall_directory_outlined,
+          //   title: "My Shop",
+          //   onTap: () {
+          //     Navigator.pushNamed(
+          //       context,
+          //       routesName.sShop,
+          //       arguments: id,
+          //     );
+          //   },
+          // ),
+          // drawerItems(
+          //   icon: Icons.shopping_bag_outlined,
+          //   title: "My Product",
+          //   onTap: () {
+          //     Navigator.pushNamed(
+          //       context,
+          //       routesName.sProducts,
+          //       arguments: id,
+          //     );
+          //   },
+          // ),
           drawerItems(
             icon: Icons.history_outlined,
-            title: 'My Orders',
+            title: 'Orders History',
             onTap: () {
               Navigator.pushNamed(
                   context,

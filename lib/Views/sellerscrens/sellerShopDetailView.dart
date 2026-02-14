@@ -114,17 +114,18 @@ class _ShopDetailViewState extends ConsumerState<SellerShopDetailView> {
         margin: EdgeInsets.symmetric(horizontal: 22.w),
         child: ElevatedButton.icon(
           onPressed: () async {
-            
-            if(widget.shop.status=='Active') {
+            final params={
+              "userId": widget.shop.userId.toString(),
+              "shopId":widget.shop.id.toString(),
+
+            };
               Navigator.pushNamed(
                 context,
                 routesName.sAddProduct,
-                arguments: widget.shop.userId.toString(),
+                arguments: params,
               );
-            }
-            else{
-              await DialogUtils.showErrorDialog(context, "Shop is not Active. Please wait for admin approval before adding products.");
-                 }
+
+
           },
           icon: Icon(Icons.add, size: 18.h,color: Appcolors.whiteSmoke,),
           label: Text("Add Product"),

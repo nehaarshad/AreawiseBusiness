@@ -18,9 +18,13 @@ class splashservice {
     return ref.read(sessionProvider.notifier).getuser();
   }
 
+  Future<String?> getUserLocation() async {
+    return ref.read(sessionProvider.notifier).getLocation();
+  }
+
   void checkAuth(BuildContext context, WidgetRef ref) async {
     UserDetailModel? value = await getUserData();
-
+    String? location  = await getUserLocation();
     await Future.delayed(Duration(seconds: 3));
     await  initializeCache();// Initialize cache
 
@@ -36,7 +40,9 @@ class splashservice {
       else {
         Navigator.pushNamedAndRemoveUntil(context, routesName.dashboard,(route)=>false, arguments: value);
       }
-      await DialogUtils.showLocationDialog(context);
+     if (location == null || location == '') {
+       await DialogUtils.showLocationDialog(context);
+     }
     }
   }
 

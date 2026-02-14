@@ -1,3 +1,4 @@
+import 'package:ecommercefrontend/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,15 +39,23 @@ class _SubcategoriesproductviewState extends ConsumerState<Subcategoriesproductv
               ],
             ),
             data: (products) {
-              if (products.isEmpty) {
-                return const Center(child: Text("No Products available."));
-              }
 
+              print(products.map((s)=>s!.shop?.shopname).toList());
+              List<ProductModel?> activeProducts = products
+                  .where((product) =>
+              product != null &&
+                  product.shop?.status == "Active")
+                  .toList();
+              print(activeProducts.map((p)=>p!.shop!.status!));
+
+              if (activeProducts.isEmpty) {
+                return const Center(child: Text("Oops! No products available."));
+              }
               if(location != null){
-                products = products.where((product)=>product?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
+                activeProducts = activeProducts.where((product)=>product?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
               }
 
-              if (products.isEmpty) {
+              if (activeProducts.isEmpty) {
                 return const Center(child: Text("Oops! No products found in this location."));
               }
 
@@ -57,11 +66,11 @@ class _SubcategoriesproductviewState extends ConsumerState<Subcategoriesproductv
                   mainAxisSpacing: 15.h,
                   childAspectRatio: 0.70,
                 ),
-                itemCount: products.length,
+                itemCount: activeProducts.length,
                 physics: const ScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final product = activeProducts[index];
                   if (product?.name == null)  return const Center(child: Text("No Products available."));
 
                   return Productcard(product: product!,userid: widget.userid);

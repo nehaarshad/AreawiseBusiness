@@ -138,7 +138,6 @@ class userInfo extends StatelessWidget {
       children: [
         infoWidget(heading: "Username", value: user.username!),
         infoWidget(heading: "Email", value: user.email!),
-        infoWidget(heading: "Role", value: user.role!),
         infoWidget(
           heading: "Contact",
           value: user.contactnumber?.toString() ?? 'No number',

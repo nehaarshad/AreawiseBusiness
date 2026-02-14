@@ -9,6 +9,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../core/utils/colors.dart';
 import '../../core/utils/dialogueBox.dart';
 import '../../core/utils/notifyUtils.dart';
 import '../../core/utils/routes/routes_names.dart';
@@ -51,9 +52,26 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     }
   }
 
+  Future<List<XFile>> getImagesFromSource(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      // Take a single picture from camera
+      final XFile? image = await pickImage.pickImage(source: source);
+      return image != null ? [image] : [];
+    } else {
+      // Pick multiple from gallery
+      return await pickImage.pickMultiImage();
+    }
+  }
+
   Future<void> pickImages(BuildContext context) async {
     try {
-      final List<XFile> pickedFiles = await pickImage.pickMultiImage();
+      final source = await DialogUtils.showImageSourceDialog(context);
+      if (source == null) {
+        state = state.copyWith(isLoading: false);
+        return;
+      }
+
+      final List<XFile> pickedFiles = await getImagesFromSource(source);
 
       // Check if adding these images would exceed the limit
       if (pickedFiles.isNotEmpty) {
@@ -122,6 +140,11 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     state = state.copyWith(selectedCategory: category);
   }
 
+  void setCustomCategoryName(String? name) {
+    print(name);
+    state = state.copyWith(customCategoryName: name);
+  }
+
   void setLocation(String? area) {
     state = state.copyWith(selectedArea: area);
   }
@@ -130,7 +153,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
     state = state.copyWith(
       isCustomCategory: value, //new category (true)
       selectedCategory: value ? null : state.selectedCategory, //null -> previously selected predefined category
-      //null to initialize its value in other function
+      customCategoryName: value ? null : state.customCategoryName
     );
   }
 
@@ -180,10 +203,12 @@ class AddShopViewModel extends StateNotifier<ShopState> {
 
       final categoryName =
           state.isCustomCategory
-              ? null
+              ? state.customCategoryName
               : state.selectedCategory?.name;
+
+      print(categoryName);
       if (categoryName == null ) {
-        Utils.flushBarErrorMessage("Select Existed category ", context);
+        Utils.flushBarErrorMessage("Select category ", context);
         return false;
 
       }
@@ -214,7 +239,7 @@ class AddShopViewModel extends StateNotifier<ShopState> {
       final response = await ref.read(shopProvider).addShop(data, shopId, state.images.whereType<File>().toList());
 print(response);
 if(response.toString()!="A payment account is required to receive online transactions. Please add one to continue."){
-     await DialogUtils.showSuccessDialog(context,response.toString());
+     await showSuccessDialog(context,response.toString(),userId.toString());
 
 }
 else{
@@ -239,3 +264,79 @@ else{
     }
   }
 }
+
+ Future<void> showSuccessDialog(BuildContext context, String message,String userid) async {
+return showDialog<void>(
+context: context,
+barrierDismissible: true,
+builder: (BuildContext context) {
+return AlertDialog(
+shape: RoundedRectangleBorder(
+borderRadius: BorderRadius.circular(16),
+),
+contentPadding: const EdgeInsets.all(20),
+content: Column(
+mainAxisSize: MainAxisSize.min,
+children: [
+Container(
+padding: const EdgeInsets.all(16),
+decoration: BoxDecoration(
+color: Colors.green.shade50,
+shape: BoxShape.circle,
+),
+child: Icon(
+Icons.check_circle,
+color: Appcolors.baseColor,
+size: 48,
+),
+),
+const SizedBox(height: 16),
+Text(
+'Success',
+style: TextStyle(
+fontSize: 20,
+fontWeight: FontWeight.bold,
+color: Appcolors.baseColor,
+),
+),
+const SizedBox(height: 8),
+Text(
+message,
+textAlign: TextAlign.center,
+style: const TextStyle(
+fontSize: 16,
+color: Colors.black87,
+),
+),
+const SizedBox(height: 20),
+SizedBox(
+width: double.infinity,
+child: ElevatedButton(
+onPressed: () {
+  Navigator.pop(context);
+  final params={
+    "userId": userid,
+    "shopId":"",
+
+  };
+  Navigator.pushReplacementNamed(context, routesName.sAddProduct, arguments: params);
+
+},
+style: ElevatedButton.styleFrom(
+backgroundColor: Appcolors.baseColor,
+foregroundColor: Colors.white,
+shape: RoundedRectangleBorder(
+borderRadius: BorderRadius.circular(8),
+),
+padding: const EdgeInsets.symmetric(vertical: 12),
+),
+child: const Text('Add shop products'),
+),
+),
+],
+),
+);
+},
+);
+}
+

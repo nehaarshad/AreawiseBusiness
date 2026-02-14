@@ -1,6 +1,7 @@
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../Views/shared/widgets/locationDropDown.dart';
 
@@ -233,11 +234,35 @@ class DialogUtils {
     );
   }
 
+  static Future<ImageSource?> showImageSourceDialog(BuildContext context) async {
+    return await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.camera_alt,color: Appcolors.baseColorLight30,),
+              title: Text(" Camera"),
+              onTap: () => Navigator.of(context).pop(ImageSource.camera),
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_library,color: Appcolors.baseColorLight30,),
+              title: Text(" Gallery"),
+              onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   static Future<bool?> showLocationDialog(BuildContext context) async {
 
     return showDialog<bool>(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.r),
@@ -261,12 +286,7 @@ class DialogUtils {
                       color: Appcolors.baseColor,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.close, size: 24.sp),
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                  ),
+                  Icon(Icons.location_on, size: 24.sp,color: Appcolors.baseColor,),
                 ],
               ),
               SizedBox(height: 16.h),

@@ -16,6 +16,7 @@ class ProductState {
   final Subcategory? selectedSubcategory;
   final bool isCustomCategory;
   final bool isCustomShop;
+  final String? uploadedFile;
   final bool isCustomSubcategory;
   final String? customCategoryName;
   final String? customSubcategoryName;
@@ -34,6 +35,7 @@ class ProductState {
     this.isCustomShop = false,
     this.isCustomSubcategory = false,
     this.customCategoryName,
+    this.uploadedFile,
     this.customSubcategoryName,
     this.isLoading = false,
   });
@@ -51,11 +53,13 @@ class ProductState {
     bool? isCustomShop,
     bool? isCustomSubcategory,
     String? customCategoryName,
+    String? uploadedFile,
     String? customSubcategoryName,
     bool? isLoading,
   }) {
     return ProductState(
       product: product ?? this.product,
+      uploadedFile:uploadedFile ?? this.uploadedFile,
       images: images ?? this.images,
       categories: categories ?? this.categories,
       shops: shops ??this.shops,

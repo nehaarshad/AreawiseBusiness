@@ -332,7 +332,8 @@ class _OrderListScreenState extends ConsumerState<OrdersView> {
                                           ),
                                         ),
                                         contactWithSellerButton(
-                                          userId: orderRequest.customerId.toString(),
+                                          userId: orderRequest.sellerId.toString(),
+                                          receiverId: orderRequest.customerId.toString(),
                                           productId: product!.id.toString(),
                                           product: product,
                                         ),

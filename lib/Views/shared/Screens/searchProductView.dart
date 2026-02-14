@@ -45,7 +45,10 @@ class _searchViewState extends ConsumerState<searchView> {
                     ShimmerListTile(),
                   ],
                 ),               data: (products) {
-                  if (products.isEmpty) {
+
+                 products = products.where((Products)=>Products?.shop?.status == "Active").toList();
+
+                if (products.isEmpty) {
                     return const Center(child: Text("No Products available."));
                   }
                   return SizedBox(

@@ -24,6 +24,7 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       floatingActionButton: selectLocationFloatingButton(),
       body: Column(
       
@@ -60,6 +61,8 @@ class _ShopsViewState extends ConsumerState<ShopsView> {
                       if (shops.isEmpty) {
                         return const Center(child: Text("Oops! No shop found in this location."));
                       }
+                      shops = shops.where((shop)=>shop?.status=="Active").toList();
+
                       return Column(
                         children: [
                       Expanded(

@@ -79,8 +79,13 @@ class _locationCategoryDropDownState extends ConsumerState<locationDropDown> {
         showDropdown = false;
       } else {
         areas = _allAreas
-            .where((area) => area.toLowerCase().contains(input))
-            .toList();
+            .where((area) {
+          final normalizedArea = area.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+              .toLowerCase();
+          final normalizedInput = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+              .toLowerCase();
+          return normalizedArea.contains(normalizedInput);
+        }).toList();
         showDropdown = true;
       }
     });

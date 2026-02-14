@@ -141,6 +141,18 @@ class CategoriesRepositories {
     }
   }
 
+  Future<Category> updateCategory(String id,String name,String status, File? image,)async{
+    try {
+      final data = {'name': name, 'status': status};
+
+      dynamic response = await apiservice.SingleFileUpdateApiWithMultiport(AppApis.updateCategoryEndPoints.replaceFirst(':id', id), data,image, headers(),);
+      print(response);
+      return Category.fromJson(response);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<Category> addSubcategory(String name,int id)async{
     try {
       final data = jsonEncode({

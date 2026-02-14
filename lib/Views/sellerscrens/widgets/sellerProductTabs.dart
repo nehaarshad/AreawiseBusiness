@@ -31,11 +31,8 @@ Widget SellerProductTabs(int userId,BuildContext context){
         SizedBox(width: 8.w),
         InkWell(
           onTap:()async{
-            Navigator.pushNamed(
-              context,
-              routesName.sAddProduct,
-              arguments: userId.toString(),
-            );
+            Navigator.pushNamed(context, routesName.selectShop, arguments: userId.toString());
+
           },
           child: Container(
             height: 25.h,

@@ -1,5 +1,6 @@
 import 'package:ecommercefrontend/View_Model/SharedViewModels/locationSelectionViewModel.dart';
 import 'package:ecommercefrontend/View_Model/adminViewModels/categoriesViewModel.dart';
+import 'package:ecommercefrontend/core/utils/routes/routes_names.dart';
 import 'package:ecommercefrontend/models/categoryModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import '../../../View_Model/SharedViewModels/categoryProductsViewModel.dart';
 import '../../../core/utils/colors.dart';
 import '../../../models/ProductModel.dart';
 import '../widgets/loadingState.dart';
+import '../widgets/locationBanner.dart';
 import '../widgets/locationDropDown.dart';
 import '../widgets/productCard.dart';
 import '../widgets/selectAreafloatingButton.dart';
@@ -62,53 +64,21 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-              children: [
-                SizedBox(width: 8.w),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedCondition = null;
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: _selectedCondition == null
-                          ? Appcolors.baseColor
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(20.r),
-                      border: Border.all(
-                        color: Appcolors.baseColor,
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Text(
-                      "All",
-                      style: TextStyle(
-                        color: _selectedCondition == null
-                            ? Colors.white
-                            : Appcolors.baseColor,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                // Condition buttons
-                ...conditions.map((condition) => Padding(
-                  padding: EdgeInsets.only(right: 8.w),
-                  child: GestureDetector(
+        title: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+                children: [
+                  SizedBox(width: 8.w),
+                  GestureDetector(
                     onTap: () {
                       setState(() {
-                        _selectedCondition = condition;
+                        _selectedCondition = null;
                       });
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                       decoration: BoxDecoration(
-                        color: _selectedCondition == condition
+                        color: _selectedCondition == null
                             ? Appcolors.baseColor
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(20.r),
@@ -118,9 +88,9 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                         ),
                       ),
                       child: Text(
-                        condition,
+                        "All",
                         style: TextStyle(
-                          color: _selectedCondition == condition
+                          color: _selectedCondition == null
                               ? Colors.white
                               : Appcolors.baseColor,
                           fontSize: 12.sp,
@@ -129,47 +99,141 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                       ),
                     ),
                   ),
-                )).toList(),
-              ],
-            ),
-        actions: [
-          Row(
-            children: [
-              TextButton(
-                child: Row(
-                  children: [
-                    Text(
-                      "Sort",
-                      style: TextStyle(
-                        color: Appcolors.baseColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.sp,
+                  SizedBox(width: 8.w),
+                  // Condition buttons
+                  ...conditions.map((condition) => Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedCondition = condition;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        decoration: BoxDecoration(
+                          color: _selectedCondition == condition
+                              ? Appcolors.baseColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(20.r),
+                          border: Border.all(
+                            color: Appcolors.baseColor,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Text(
+                          condition,
+                          style: TextStyle(
+                            color: _selectedCondition == condition
+                                ? Colors.white
+                                : Appcolors.baseColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
-                    Icon(
-                      Icons.filter_alt_rounded,
-                      size: 18.h,
-                      color: Appcolors.baseColor,
-                    )
-                  ],
-                ),
-                onPressed: () {
-                  setState(() {
-                    _showFilterDropdown = !_showFilterDropdown;
-                  });
-                },
+                  )).toList(),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: GestureDetector(
+                      onTap: () {
+
+                        Navigator.pushNamed(context, routesName.services,arguments: "Buyer");
+
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(20.r),
+                          border: Border.all(
+                            color: Appcolors.baseColor,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Text(
+                          "Services",
+                          style: TextStyle(
+                            color: Appcolors.baseColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: GestureDetector(
+                      onTap: () {
+
+                        Navigator.pushNamed(context, routesName.ashop,arguments: widget.userId);
+
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(20.r),
+                          border: Border.all(
+                            color: Appcolors.baseColor,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Text(
+                          "Shop",
+                          style: TextStyle(
+                            color: Appcolors.baseColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ],
               ),
-            ],
-          )
-        ],
+        ),
 
       ),
-      floatingActionButton: selectLocationFloatingButton(),
       body: Stack(
         children: [
           Column(
             children: [
-              SizedBox(height: 10.h,),
+              SizedBox(height: 8.h,),
+              Locationbanner(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    child: Row(
+                      children: [
+                        Text(
+                          "Filter",
+                          style: TextStyle(
+                            color: Appcolors.baseColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        Icon(
+                          Icons.filter_alt_outlined,
+                          size: 18.h,
+                          color: Appcolors.baseColor,
+                        )
+                      ],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _showFilterDropdown = !_showFilterDropdown;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h,),
               Expanded(
                 child: Consumer(
                   builder: (context, ref, child) {
@@ -200,9 +264,13 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                         if(location != null){
                           filteredProducts = filteredProducts.where((areaProducts)=>areaProducts?.shop?.sector?.toLowerCase()==location.toLowerCase()).toList();
                         }
-
                         if (filteredProducts.isEmpty) {
                           return const Center(child: Text("Oops! No products found in this location."));
+                        }
+                        filteredProducts = filteredProducts.where((areaProducts)=>areaProducts?.shop?.status == "Active").toList();
+
+                        if (filteredProducts.isEmpty) {
+                          return const Center(child: Text("Oops! No products available"));
                         }
 
                         return GridView.builder(
@@ -217,9 +285,12 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                           padding: EdgeInsets.symmetric(horizontal: 4.w),
                           itemBuilder: (context, index) {
                             final product = filteredProducts[index];
-                            if (product == null) return const SizedBox.shrink();
-                            return Productcard(product: product,userid: widget.userId);
-                          },
+                            if (product == null && product?.shop?.status != "Active"){
+                        return const SizedBox.shrink();
+                        }
+                              return Productcard(product: product!,userid: widget.userId);
+                            }
+
                         );
                       },
                       error: (err, stack) => Center(child: Text('Error: ${err.toString()}')),
@@ -288,7 +359,7 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
           itemCount: _categories.length,
           itemBuilder: (context, index) {
             final category = _categories[index];
-            return ListTile(
+            return category.status != "Requested" ? ListTile(
               title: Text(category.name ?? "Unnamed Category"),
               trailing: _selectedCategory == category.name
                   ? const Icon(Icons.check, color: Appcolors.baseColorLight30)
@@ -299,7 +370,7 @@ class _ExploreproductsviewState extends ConsumerState<Exploreproductsview> {
                   _showFilterDropdown = false;
                 });
               },
-            );
+            ) : null;
           },
         ),
       ),

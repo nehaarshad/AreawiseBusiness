@@ -44,7 +44,7 @@ class _RelatedProductsState extends ConsumerState<RelatedProducts> {
       data: (products) {
         // Filter products to show only ones in the same category
         final relatedProducts = products.where((product) =>
-        product?.category?.name == widget.category).toList();
+        product?.category?.name == widget.category && product?.shop?.status == "Active").toList();
 
         if (relatedProducts.isEmpty) {
           return Center(

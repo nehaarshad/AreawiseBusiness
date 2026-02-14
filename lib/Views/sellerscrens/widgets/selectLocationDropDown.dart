@@ -24,7 +24,7 @@ class setShopAreaDropDown extends ConsumerStatefulWidget {
 class _setShopAreaDropDown extends ConsumerState<setShopAreaDropDown> {
   final TextEditingController shopArea = TextEditingController();
   final FocusNode focus = FocusNode();
-  List<String> allAreas = [
+  List<String> displayAreas = [
     "PWD",
     "DHA Phase I", 'DHA Phase II', 'DHA Phase III', 'DHA PHASE IV', 'DHA Phase V', 'DHA Valley',
     "Bahria Phase 1", "Bahria Phase 2", "Bahria Phase 3", "Bahria Phase 4",
@@ -47,6 +47,7 @@ class _setShopAreaDropDown extends ConsumerState<setShopAreaDropDown> {
     'F-5', 'F-6', 'F-7', 'F-8', 'F-9', 'F-10', 'F-11', 'F-12', 'F-13', 'F-14', 'F-15', 'F-16', 'F-17',
     'AGOCHS, Phase-I', 'AGOCHS, Phase-II'
   ];
+  List<String> allAreas =[];
   bool addnewArea = false;
   bool showDropdown = false;
 
@@ -71,13 +72,20 @@ class _setShopAreaDropDown extends ConsumerState<setShopAreaDropDown> {
 
   void RecommendedArea() {
     final input = shopArea.text.trim().toLowerCase();
-    addnewArea = false;
-    showDropdown = true;
+    allAreas=displayAreas;
+     addnewArea = false;
+        showDropdown = true;
+
+
 
 
     setState(() {
-      allAreas = allAreas
-          .where((area) => area!.toLowerCase().contains(input))
+      allAreas = displayAreas
+          .where((area) {
+          final normalizedArea = area.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toLowerCase();
+        final normalizedInput = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toLowerCase();
+        return normalizedArea.contains(normalizedInput);
+      })
           .toList();
       addnewArea = allAreas.isEmpty;
       showDropdown = true;
@@ -95,7 +103,6 @@ class _setShopAreaDropDown extends ConsumerState<setShopAreaDropDown> {
       shopArea.text = area;
       showDropdown = false;
       addnewArea = false;
-      allAreas = [];  // Clear the suggestions
     });
     ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
     ref.read(addShopProvider(widget.userid).notifier).setLocation(area);
@@ -135,7 +142,6 @@ class _setShopAreaDropDown extends ConsumerState<setShopAreaDropDown> {
           },
           onTap: () {
             setState(() {
-              // Only show dropdown if there are categories to show
               showDropdown = allAreas.isNotEmpty;
             });
           },
@@ -185,7 +191,7 @@ class _setShopAreaDropDown extends ConsumerState<setShopAreaDropDown> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No location found!',
+              'Area out of range',
               style: TextStyle(color: Colors.red),
             ),
           ),
@@ -271,8 +277,14 @@ class _updateShopAreaDropDown extends ConsumerState<updateShopAreaDropDown> {
     }
 
     setState(() {
-      allAreas = allAreas.where((category) => category != null && category.toLowerCase().contains(input))
-          .toList() ;
+      allAreas = allAreas
+          .where((area) {
+        // Remove special characters from both the area and input for comparison
+        final normalizedArea = area!.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toLowerCase();
+        final normalizedInput = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toLowerCase();
+        return normalizedArea.contains(normalizedInput);
+      })
+          .toList();
       addnewArea = allAreas.isEmpty;
       showDropdown = true;
     });
@@ -375,7 +387,7 @@ class _updateShopAreaDropDown extends ConsumerState<updateShopAreaDropDown> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'Not available',
+              'Area out of range',
               style: TextStyle(color: Colors.red),
             ),
 

@@ -3,12 +3,15 @@ import 'package:ecommercefrontend/Views/shared/Screens/exploreProductsView.dart'
 import 'package:ecommercefrontend/Views/shared/Screens/toSearchProduct.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../View_Model/buyerViewModels/cartViewModel.dart';
 import '../../../core/services/notificationService.dart';
 import '../../../core/services/socketService.dart';
 import '../../../core/utils/routes/routes_names.dart';
 import '../../../models/UserDetailModel.dart';
+import '../../sellerscrens/SellerShopView.dart';
+import '../../sellerscrens/selectOperationView.dart';
 import '../widgets/bottomNavBar.dart';
 import '../widgets/cartBadgeWidget.dart';
 import '../widgets/drawerList.dart';
@@ -16,6 +19,7 @@ import '../widgets/notificationBadge.dart';
 import '../../buyer_screens/ShopView.dart';
 import '../widgets/selectAreafloatingButton.dart';
 import 'appHomeView.dart';
+import 'chatsListView.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
   final UserDetailModel user;
@@ -30,7 +34,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int index = 2;
+  int index = 0;
   bool isSeller = false;
 
   void toggglebutton(bool value) {
@@ -54,11 +58,11 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
     super.initState();
 
     BuyerViews = [
-      ShopsView(id: widget.id),
-      Exploreproductsview(userId: widget.id,category: "All",condition: null,onsale: false,),//explore
       appHomeview(id: widget.id),
+      Exploreproductsview(userId: widget.id,category: "All",condition: null,onsale: false,),//
+      Selectoperationview(userid: widget.id.toString(),),
       CategoriesView(userid: widget.id),//categories
-      Tosearchproduct(userid: widget.id),//SearchProductIcon
+      ChatsListView(userId: widget.id.toString()),
     ];
     WidgetsBinding.instance.addObserver(this);
     _initializeServices();
@@ -94,64 +98,95 @@ class _DashboardViewState extends ConsumerState<DashboardView> with WidgetsBindi
   Widget build(BuildContext context) {
     final socketService = ref.watch(socketServiceProvider);
 
-    return Scaffold(
-      key: _scaffoldKey,
-        floatingActionButton: selectLocationFloatingButton(),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu,color: Appcolors.baseColor,),
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-        ),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
 
-        automaticallyImplyLeading: false,
-        actions: [
-          StreamBuilder<bool>(
-            stream: Stream.periodic(Duration(seconds: 3))
-                .map((_) => socketService.socket.connected),
-            builder: (context, snapshot) {
-              final isConnected = snapshot.data ?? false;
-              return Container(
-                margin: EdgeInsets.only(right: 16),
-                child: Icon(
-                  isConnected ? null : Icons.wifi_off,
-                  color: isConnected ? null : Appcolors.baseColor,
-                ),
-              );
+          if (index != 0) {
+            setState(() {
+              index = 0; // Go back to home tab
+            });
+          }
+          else{
+            SystemNavigator.pop();
+          }
+        }
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+          floatingActionButton: FloatingActionButton(
+            onPressed: (){
+              setState(() {
+                onTap(2);
+
+              });
             },
-          ),
-          NotificationBadgeWidget(
-            notificationStream: socketService.notificationStream,
-            child: IconButton(
-              icon: Icon(Icons.notifications_none_outlined,color: Appcolors.baseColor,),
-              onPressed: (){
-                Navigator.pushNamed(context, routesName.notification,arguments: widget.id.toString());
-              },
+            shape: CircleBorder(),
+            backgroundColor: Appcolors.baseColor,
+            child: Icon(
+              Icons.add,
+              color: Appcolors.whiteSmoke,
             ),
           ),
-          CartBadgeWidget(
-            userId: widget.id,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  routesName.cart,
-                  arguments: widget.id,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.menu,color: Appcolors.baseColor,),
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          ),
+
+          automaticallyImplyLeading: false,
+          actions: [
+            StreamBuilder<bool>(
+              stream: Stream.periodic(Duration(seconds: 3))
+                  .map((_) => socketService.socket.connected),
+              builder: (context, snapshot) {
+                final isConnected = snapshot.data ?? false;
+                return Container(
+                  margin: EdgeInsets.only(right: 16),
+                  child: Icon(
+                    isConnected ? null : Icons.wifi_off,
+                    color: isConnected ? null : Appcolors.baseColor,
+                  ),
                 );
               },
-              icon: Icon(
-                Icons.shopping_cart_outlined,
-                color: Appcolors.baseColor,
+            ),
+            NotificationBadgeWidget(
+              notificationStream: socketService.notificationStream,
+              child: IconButton(
+                icon: Icon(Icons.notifications_none_outlined,color: Appcolors.baseColor,),
+                onPressed: (){
+                  Navigator.pushNamed(context, routesName.notification,arguments: widget.id.toString());
+                },
               ),
             ),
-          ),
+            CartBadgeWidget(
+              userId: widget.id,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    routesName.cart,
+                    arguments: widget.id,
+                  );
+                },
+                icon: Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Appcolors.baseColor,
+                ),
+              ),
+            ),
 
-          const SizedBox(width: 8),
+            const SizedBox(width: 8),
 
-        ],
+          ],
+        ),
+        drawer: DrawerListItems(user: widget.user,id: widget.id,),
+        body: isSeller ? SellerViews[index] : BuyerViews[index],
+        bottomNavigationBar: AppBottomNavigationBar(selectedIndex: index,onItemTapped: onTap,)
       ),
-      drawer: DrawerListItems(user: widget.user,id: widget.id,),
-      body: isSeller ? SellerViews[index] : BuyerViews[index],
-      bottomNavigationBar: AppBottomNavigationBar(selectedIndex: index,onItemTapped: onTap,) );
+    );
   }
 
 

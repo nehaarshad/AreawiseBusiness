@@ -72,6 +72,19 @@ class ProductRepositories {
       }
     }
 
+  // Future<ProductModel> addProductViaFile(String id, File? file,) async
+  // {
+  //   try {
+  //     dynamic response = await apiservice.PostApiWithExcelFile(
+  //         AppApis.uploadProductExcelSheetEndPoints.replaceFirst(':shopid', id), file,);
+  //     return ProductModel.fromJson(response);
+  //   } catch (e) {
+  //     print("Error:${e}");
+  //     throw e;
+  //   }
+  // }
+
+
   Future<List<ProductModel>> getProduct(String category) async {
     final isConnected = await _networkChecker.isConnected();
     if (isConnected) {

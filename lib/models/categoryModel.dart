@@ -5,16 +5,18 @@ class Category {
   int? id;
   String? name;
   String? createdAt;
+  String? status;
   String? updatedAt;
   catImage? image;
   List<Subcategory>? subcategories;
 
-  Category({this.id, this.name, this.createdAt, this.updatedAt,this.image,this.subcategories});
+  Category({this.id,this.status, this.name, this.createdAt, this.updatedAt,this.image,this.subcategories});
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     createdAt = json['createdAt'];
+    status = json['status'];
     updatedAt = json['updatedAt'];
     image = json['Image'] != null ? new catImage.fromJson(json['Image']) : null;
     if (json['subcategories'] != null) {

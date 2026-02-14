@@ -140,6 +140,9 @@ class _ExploreproductsviewState extends ConsumerState<allFeaturedProductsView> {
                             ? products.where((product) => product!.product!.condition == _selectedCondition).toList()
                             : products;
 
+                        filteredProducts = products.where((product) => product!.product!.shop!.status == "Active").toList();
+
+
                         if (filteredProducts.isEmpty) {
                           return const Center(child: Text("No Products Available!"));
                         }

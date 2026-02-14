@@ -12,13 +12,17 @@ class routesName {
   static const String requestfeature = "FeaturedProductRequestView";
   static const String afeature = "Featuredproductrequestview";
   static const String aproduct = "ProductView";
+  static const String updateService = "updateService";
   static const String auser = "UsersView";
   static const String updateAttributes="updateDeliveryOrderAttributes";
   static const String addUser = "addUserView";
   static const String categories = "appCategories";
+  static const String services = "appServices";
   static const String subcategories = "appSubcategories";
   static const String searchUser = "searchUserView";
   static const String addCategory = "addCategory";
+  static const String editCategory = "editCategory";
+  static const String addServices = "addService";
   static const String manageProduct = "ManageSearchProducts";
   static const String feedbacks = "feedbackView";
 
@@ -29,6 +33,7 @@ class routesName {
   static const String deliveryAddress = "deliveryAddress";
   static const String confirmOrder = "orderPlaceMessageView";
   static const String findShop = "findShopView";
+  static const String serviceProviders = "serviceProvidersView";
   static const String makePayment = "makeOnlinePaymentView";
 
   //Seller Screens Routes Names
@@ -37,10 +42,16 @@ class routesName {
   static const String onSale = "onSaleProducts";
   static const String sShop = "SellerShopView";
   static const String sProducts = "SellerProductsView";
+  static const String sServices = "userServicesView";
   static const String OrderRequests = "OrdersView";
   static const String SellerShopDetailView = "SellerShopDetailView";
   static const String sAddProduct = "addProductView";
   static const String sAddShop = "addShopView";
+  static const String selectService = "selectServiceView";
+  static const String selectShop = "selectShopView";
+  static const String addServiceProvider = "addProviderOfServiceView";
+  static const String updateServiceProvider = "updateProviderOfServiceView";
+  static const String selectOption = "selectOperationView";
   static const String sEditProduct = "updateProductView";
   static const String sEditShop = "UpdateShopView";
   static const String orderDetails = "orderDetailView";
@@ -49,6 +60,7 @@ class routesName {
   static const String createAds = "createAds";
   static const String sellerAccounts = "AccountsView";
   static const String addAccount = "addAccountView";
+  static const String uploadExcelSheet = "uploadProductViaExcelSheetView";
 
   //Common\Shared Screens Routes Names
   static const String splash = "splashScreen";
@@ -62,6 +74,7 @@ class routesName {
   static const String chatList = "chatsListView";
   static const String chatView = "chatView";
   static const String history = "historyView";
+  static const String serviceDetailsView = "serviceDetailsView";
   static const String search = "searchProductView";
   static const String searchShop = "searchShopView";
   static const String explore = "exploreProductsView";

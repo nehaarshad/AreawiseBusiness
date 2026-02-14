@@ -11,6 +11,7 @@ class CategoryMapper{
     return CategoryHiveModel(
         id: category.id,
         name: category.name,
+        status: category.status,
         image: category.image !=null ? ImageHiveModel(imageUrl: category.image!.imageUrl!) : null,
         subcategories: category.subcategories !=null ? category.subcategories?.map((sub)=>SubcategoryHiveModel(id: sub.id,name: sub.name)).toList() : null
     );
@@ -22,6 +23,7 @@ class CategoryMapper{
     return Category(
       id: category.id,
        name: category.name,
+      status: category.status,
       image: category.image !=null ? catImage(imageUrl: category.image!.imageUrl) : null,
       subcategories: category.subcategories !=null ? category.subcategories?.map((sub)=>Subcategory(id: sub.id,name: sub.name)).toList() : null
     );

@@ -45,7 +45,7 @@ class ChatMessagesViewModel extends StateNotifier<AsyncValue<List<Message>>> {
     }
   }
 
-  void sendMessage(String senderId, String text) {
+  void sendMessage(String senderId,String receiverId, String text) {
 
     if (state.hasValue) {
       state = AsyncValue.data(state.value!);
@@ -54,13 +54,15 @@ class ChatMessagesViewModel extends StateNotifier<AsyncValue<List<Message>>> {
     // Parse the IDs safely with null checks
     final chatIdInt = int.tryParse(chatId);
     final senderIdInt = int.tryParse(senderId);
+    final receiverIdInt = int.tryParse(receiverId);
 
-    if (chatIdInt != null && senderIdInt != null) {
+    if (chatIdInt != null && senderIdInt != null && receiverId !=null) {
       // Send via repository
       repository.sendMessage(
         chatId: chatIdInt,
         senderId: senderIdInt,
         message: text,
+        receiverId:receiverIdInt!,
       );
     } else {
       // Handle error - invalid IDs

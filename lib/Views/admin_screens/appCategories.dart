@@ -86,10 +86,7 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
          final category = categories[index];
          if (category == null || category.name =="All") return SizedBox.shrink();
          print(category.image?.imageUrl);
-         return InkWell(
-           onTap: () {},
-
-           child: Padding(
+         return Padding(
              padding: const EdgeInsets.all(8.0),
              child: Column(
                children: [
@@ -114,22 +111,27 @@ class _AllCategoriesState extends ConsumerState<AllCategories> {
                    )
                        : const Icon(Icons.image_not_supported),
                    title: Text("${category.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18.sp),),
+                   subtitle: Text("${category.status}",style: TextStyle(color: category.status == 'Active'?Appcolors.baseColor:Colors.deepOrange,fontWeight: FontWeight.w600),) ,
+
                    trailing: Row(
                      mainAxisSize: MainAxisSize.min,
                      children: [
                        IconButton(
                          onPressed: (){
+                           Navigator.pushNamed(context, routesName.editCategory,arguments: category);
+                         },
+                         icon: Icon(Icons.edit, size: 20.h,color: Appcolors.baseColor,),),
+                       IconButton(
+                         onPressed: (){
                            DeleteDialogBox(category);
                          },
                          icon: Icon(Icons.delete, size: 20.h,color: Colors.red,),),
-                       Icon(Icons.arrow_forward_ios_sharp, size: 12.h,color: Colors.grey,),
                      ],
                    ),
                  ),
                ],
              ),
-           ),
-         );
+           );
 
        },
      );

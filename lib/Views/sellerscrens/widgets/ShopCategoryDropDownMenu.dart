@@ -1,4 +1,5 @@
 import 'package:ecommercefrontend/View_Model/SellerViewModels/addShopViewModel.dart';
+import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,20 +68,25 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
 
     if (addnewCategory) {
       ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(true);
+      ref.read(addShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text.trim());
     } else {
       ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
     }
   }
 
   void _onCategorySelected(Category category) {
+    if (addnewCategory) {
+      ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(true);
+      ref.read(addShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text.trim());
+    } else {
+      ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+      ref.read(addShopProvider(widget.userid).notifier).setCategory(category);
+    }
     setState(() {
       shopcategory.text = category.name!;
       showDropdown = false;
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
     });
-    ref.read(addShopProvider(widget.userid).notifier).toggleCustomCategory(false);
-    ref.read(addShopProvider(widget.userid).notifier).setCategory(category);
     focus.unfocus();
   }
 
@@ -105,13 +111,16 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
                 setState(() {
                   shopcategory.clear();
                   showDropdown = false;
+                  addnewCategory = false;
                   SelectCategories = [];
                 });
+                ref.read(addShopProvider(widget.userid).notifier).setCustomCategoryName(null);
                 ref.read(addShopProvider(widget.userid).notifier).setCategory(null);
               },
             ): null,
           ),
           onChanged: (value) {
+            ref.read(addShopProvider(widget.userid).notifier).setCustomCategoryName(null);
             ref.read(addShopProvider(widget.userid).notifier).setCategory(null); // Reset category while typing
             RecommendedCategories();
           },
@@ -167,8 +176,8 @@ class _CategorySelectorState extends ConsumerState<ShopcategoryDropdown> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No Category exist!',
-              style: TextStyle(color: Colors.red),
+              'New Category ',
+              style: TextStyle(color: Appcolors.baseColor),
             ),
           ),
       ],
@@ -225,7 +234,7 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
     final categories = viewModel.categories;
     if (input.isEmpty) {
       setState(() {
-        SelectCategories = [];
+
         addnewCategory = false;
         showDropdown = false;
       });
@@ -242,22 +251,29 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
 
     if (addnewCategory) {
       ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(true);
-      ref.read(updateShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text);
+      ref.read(updateShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text.trim());
     }
     else {
       ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+
     }
   }
 
   void _onCategorySelected(Category category) {
+    if (addnewCategory) {
+      ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(true);
+      ref.read(updateShopProvider(widget.userid).notifier).setCustomCategoryName(shopcategory.text);
+    }
+    else {
+      ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(false);
+      ref.read(updateShopProvider(widget.userid).notifier).setCategory(category);
+    }
     setState(() {
       shopcategory.text = category.name!;
       showDropdown = false;
       addnewCategory = false;
-      SelectCategories = [];  // Clear the suggestions
     });
-    ref.read(updateShopProvider(widget.userid).notifier).toggleCustomCategory(false);
-    ref.read(updateShopProvider(widget.userid).notifier).setCategory(category);
+
     focus.unfocus();
   }
 
@@ -282,7 +298,6 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
                 setState(() {
                   shopcategory.clear();
                   showDropdown = false;
-                  SelectCategories = [];
                 });
                 ref.read(updateShopProvider(widget.userid).notifier).setCategory(null);
               },
@@ -338,8 +353,8 @@ class _UpdateCategorySelectorState extends ConsumerState<UpdateShopcategoryDropd
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'No Category exist',
-              style: TextStyle(color: Colors.red),
+              'New Category ',
+              style: TextStyle(color: Appcolors.baseColor),
             ),
 
           ),

@@ -61,6 +61,7 @@ class _productDetailViewState extends ConsumerState<productDetailView> {
                ShareProductIconButton(product: widget.product!,),
                contactWithSellerButton(
                  userId: widget.userid.toString(),
+                 receiverId: widget.product!.seller!.toString(),
                  productId: widget.productId.toString(),
                  product: widget.product,
                ),

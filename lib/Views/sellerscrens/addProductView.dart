@@ -5,13 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../View_Model/SellerViewModels/createFeatureProductViewModel.dart';
+import '../../core/utils/routes/routes_names.dart';
 import '../shared/widgets/SetDateTime.dart';
 import 'widgets/ProductCateASubCategoryDropdownMenu.dart';
 import 'widgets/shopsDropDown.dart';
 
 class addProductView extends ConsumerStatefulWidget {
   String userId;
-  addProductView({required this.userId});
+  String shopId;
+  addProductView({required this.userId,required this.shopId});
 
   @override
   ConsumerState<addProductView> createState() => _addProductViewState();
@@ -59,6 +61,27 @@ class _addProductViewState extends ConsumerState<addProductView> {
       appBar: AppBar(
           automaticallyImplyLeading:false,
         backgroundColor: Appcolors.whiteSmoke,
+        // actions: [
+        //   Row(
+        //     children: [
+        //       TextButton(onPressed: (){
+        //         Navigator.pushNamed(context, routesName.uploadExcelSheet,arguments: widget.userId);
+        //       }, child: Padding(
+        //         padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+        //         child: Row(
+        //           children: [
+        //             Icon(Icons.upload,color: Appcolors.baseColor,),
+        //             Text("Import Excel",style: TextStyle(
+        //               decoration: TextDecoration.underline,
+        //               decorationColor: Appcolors.baseColor,
+        //               decorationStyle: TextDecorationStyle.solid,),),
+        //           ],
+        //         ),
+        //       ))
+        //
+        //     ],
+        //   ),
+        // ],
       ),
       backgroundColor: Appcolors.whiteSmoke,
 
@@ -142,29 +165,31 @@ class _addProductViewState extends ConsumerState<addProductView> {
                       },
                     ),
                   ),
-                  InkWell(
-                    onTap:(){
-                      ref.read(addProductProvider(userid).notifier).pickImages(context);
-                    },
-                    child: Container(
-                      height: 30.h,
-                      margin: EdgeInsets.symmetric(horizontal: 25.w),
-                      width: 130.w,
-                      decoration: BoxDecoration(
-                        color: Appcolors.whiteSmoke,
-                        borderRadius: BorderRadius.circular(25.r),
-                        border: Border.all(  // Use Border.all instead of boxShadow for borders
-                          color: Appcolors.baseColor,
-                          width: 1.0,  // Don't forget to specify border width
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Upload Images",
-                          style: TextStyle(
+                  Center(
+                    child: InkWell(
+                      onTap:(){
+                        ref.read(addProductProvider(userid).notifier).pickImages(context);
+                      },
+                      child: Container(
+                        height: 30.h,
+                        margin: EdgeInsets.symmetric(horizontal: 25.w),
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                          color: Appcolors.whiteSmoke,
+                          borderRadius: BorderRadius.circular(25.r),
+                          border: Border.all(  // Use Border.all instead of boxShadow for borders
                             color: Appcolors.baseColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp,
+                            width: 1.0,  // Don't forget to specify border width
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            " Upload Images",
+                            style: TextStyle(
+                              color: Appcolors.baseColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                            ),
                           ),
                         ),
                       ),
@@ -184,6 +209,8 @@ class _addProductViewState extends ConsumerState<addProductView> {
                     return null;
                   },
                 ),
+                widget.shopId == ""  ? ActiveUserShopDropdown(userid:userid) : SizedBox.shrink(),
+
                 TextFormField(
                   controller: price,
                   decoration: InputDecoration(labelText: "Price",border: OutlineInputBorder(
@@ -267,8 +294,7 @@ class _addProductViewState extends ConsumerState<addProductView> {
                 ),
                 ProductCategoryDropdown(shopid: userid),
                 ProductSubcategoryDropdown(userId:userid),
-                ActiveUserShopDropdown(userid:userid),
-                SizedBox(height: 10.h),
+                       SizedBox(height: 10.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -338,9 +364,16 @@ class _addProductViewState extends ConsumerState<addProductView> {
                   onTap:state.isLoading ? null : () async {
                     if (formkey.currentState!.validate()) {
                       condition==ProductCondition.New ?'New':"Used";
+                      String shopid = widget.shopId;
+                      if(shopid == "")
+                        {
+                          shopid= "";
+                        }
+
                     bool response=  await ref.read(addProductProvider(userid).notifier,)
                           .addProduct(
                         name: name.text,
+                        shopId: widget.shopId ,
                         price: price.text,
                         subtitle:subtitle.text,
                         description: description.text,

@@ -75,9 +75,27 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
     }
   }
 
+  Future<List<XFile>> getImagesFromSource(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      // Take a single picture from camera
+      final XFile? image = await pickImage.pickImage(source: source);
+      return image != null ? [image] : [];
+    } else {
+      // Pick multiple from gallery
+      return await pickImage.pickMultiImage();
+    }
+  }
+
   Future<void> pickImages(BuildContext context) async {
     try {
-      final List<XFile> pickedFiles = await pickImage.pickMultiImage();
+
+      final source = await DialogUtils.showImageSourceDialog(context);
+      if (source == null) {
+
+        return;
+      }
+
+      final List<XFile> pickedFiles = await getImagesFromSource(source);
 
       // Check if total images would exceed 8
       if (pickedFiles.isNotEmpty && images.length + pickedFiles.length > 1) {
@@ -221,10 +239,10 @@ class UpdateShopViewModel extends StateNotifier<AsyncValue<ShopModel?>> {
         return ;
       }
 
-      final categoryName = isCustomCategory ? null : selectedCategory?.name;
+      final categoryName = isCustomCategory ? customCategoryName : selectedCategory?.name;
       final sector = isCustomArea ? null : selectedArea;
-      if (categoryName == null ) {
-        Utils.flushBarErrorMessage("Select Existed category ", context);
+      if (categoryName == null || categoryName.trim().isEmpty ) {
+        Utils.flushBarErrorMessage("Select category ", context);
         return;
 
       }

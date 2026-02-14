@@ -31,7 +31,7 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
   FocusNode confirmPassword = FocusNode();
   FocusNode contactNumber = FocusNode();
 
-  String? _selectedRole;
+  // String? _selectedRole;
 
   // Dispose method
   @override
@@ -49,41 +49,41 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
     confirmPassword.dispose();
     contactNumber.dispose();
   }
-
-  Widget buildRoleDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DropdownButtonFormField<String>(
-          value: _selectedRole,
-          isExpanded: true,
-          decoration: InputDecoration(
-            hintText: "Select Role",
-            prefixIcon: Icon(Icons.person_outline),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0.r),
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Please select a role";
-            }
-            return null;
-          },
-          onChanged: (value) {
-            setState(() {
-              _selectedRole = value;
-            });
-          },
-          items: const [
-            DropdownMenuItem(value: "Buyer", child: Text("Buyer")),
-            DropdownMenuItem(value: "Seller", child: Text("Seller")),
-            DropdownMenuItem(value: "Both", child: Text("Both")),
-          ],
-        ),
-      ],
-    );
-  }
+  //
+  // Widget buildRoleDropdown() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       DropdownButtonFormField<String>(
+  //         value: _selectedRole,
+  //         isExpanded: true,
+  //         decoration: InputDecoration(
+  //           hintText: "Select Role",
+  //           prefixIcon: Icon(Icons.person_outline),
+  //           border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(8.0.r),
+  //           ),
+  //         ),
+  //         validator: (value) {
+  //           if (value == null || value.isEmpty) {
+  //             return "Please select a role";
+  //           }
+  //           return null;
+  //         },
+  //         onChanged: (value) {
+  //           setState(() {
+  //             _selectedRole = value;
+  //           });
+  //         },
+  //         items: const [
+  //           DropdownMenuItem(value: "Buyer", child: Text("Buyer")),
+  //           DropdownMenuItem(value: "Seller", child: Text("Seller")),
+  //           DropdownMenuItem(value: "Both", child: Text("Both")),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,19 +103,19 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
             context,
           );
         }
-        else if (_selectedRole == null) {
-          Utils.flushBarErrorMessage(
-            "Please select a role",
-            context,
-          );
-        }
+        // else if (_selectedRole == null) {
+        //   Utils.flushBarErrorMessage(
+        //     "Please select a role",
+        //     context,
+        //   );
+        // }
         else {
           Map<String, dynamic> data = {
             'username': _usernameController.text.trim().toString(),
             'email': _emailController.text.trim().toString(),
             'contactnumber': int.parse(_contactNumberController.text.trim().replaceAll(RegExp(r'\D'), '')),
             'password': _passwordController.text.toString().trim(),
-            'role': _selectedRole!,
+            'role': "Both",
           };
           if(kDebugMode){
 
@@ -315,7 +315,6 @@ class _signUp_ViewState extends ConsumerState<signUp_View> {
                                 );
                               },
                             ),
-                            buildRoleDropdown(),
                             SizedBox(height: 15.h),
                             // SignUp button
                             Consumer(

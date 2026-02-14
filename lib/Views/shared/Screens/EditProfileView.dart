@@ -122,7 +122,7 @@ class _EditProfileScreenState extends ConsumerState<editProfile> {
           keyboardType: TextInputType.phone,
         ),
 
-        buildRoleDropdown(model,model.currentRole),
+       model.currentRole == "Admin" ? buildRoleDropdown(model,model.currentRole) : SizedBox.shrink(),
 
         TextFormField(
           controller: model.sector,

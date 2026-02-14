@@ -40,12 +40,14 @@ class ChatRepository {
     required int chatId,
     required int senderId,
     required String message,
+    required int receiverId
   })
   {
     socketService.sendMessage(
       chatId: chatId,
       senderId: senderId,
       message: message,
+        receiverId: receiverId
     );
   }
 

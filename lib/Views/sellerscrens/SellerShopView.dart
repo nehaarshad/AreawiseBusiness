@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommercefrontend/core/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +25,44 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Appcolors.whiteSmoke,
-
+        actions: [
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 12.0.w),
+            child: InkWell(
+              onTap:()async{
+                Navigator.pushNamed(
+                  context,
+                  routesName.sAddShop,
+                  arguments: widget.id,
+                );
+              },
+              child: Container(
+                height: 25.h,
+                width: 130.w,
+                decoration: BoxDecoration(
+                  color: Appcolors.whiteSmoke,
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(  // Use Border.all instead of boxShadow for borders
+                    color: Appcolors.baseColor,
+                    width: 1.0,  // Don't forget to specify border width
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Add new shop",
+                    style: TextStyle(
+                      color: Appcolors.baseColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+]
       ),
-      backgroundColor: Appcolors.whiteSmoke,
+
       body: shopState.when(
           loading: () => const Column(
             children: [
@@ -59,6 +94,25 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
                     );
                   },
                   child: ListTile(
+                    leading: Container(
+                      width: 60.w,
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: (shop?.images != null &&
+                          shop!.images!.isNotEmpty &&
+                          shop.images!.first.imageUrl != null)
+                          ? CachedNetworkImage(
+                        imageUrl:  shop.images!.first.imageUrl!,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, error, stackTrace) {
+                          return const Icon(Icons.error);
+                        },
+                      )
+                          :  Icon(Icons.image_not_supported, size: 40.h),
+                    ),
                     title: Text(shop?.shopname ?? 'No Name'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,33 +160,6 @@ class _ShopsViewState extends ConsumerState<SellerShopsView> {
           );
         },
         error: (error, stackTrace) => Center(child: Text('Error: ${error.toString()}'))),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-        child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                routesName.sAddShop,
-                arguments: widget.id,//send userId
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Appcolors.baseColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40.0),
-              ),
-            ),
-            child:  Text(
-              "Add Shop",
-              style: TextStyle(
-                color: Appcolors.whiteSmoke,
-                fontWeight: FontWeight.bold,
-                fontSize: 15.sp,
-              ),
-            ),
-          ),
-
-      ),
     );
   }
 }

@@ -48,6 +48,11 @@ class _ProductsViewState extends ConsumerState<AllProducts> {
             if (products.isEmpty) {
               return const Center(child: Text("Oops! No products found in this location."));
             }
+            products = products.where((areaProducts)=>areaProducts?.shop?.status=="Active").toList();
+
+            if (products.isEmpty) {
+              return const Center(child: Text("Oops! No products available"));
+            }
             return SizedBox(
               height: 220.h,
               child: ListView.builder(

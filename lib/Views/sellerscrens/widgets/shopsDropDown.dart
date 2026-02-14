@@ -71,7 +71,6 @@ class _ActiveUserShopState extends ConsumerState<ActiveUserShopDropdown> {
       shops.text = shop.shopname!;
       showDropdown = false;
       shopExist = false;
-      ActiveShopList = [];  // Clear the suggestions
     });
     ref.read(addProductProvider(widget.userid).notifier).toggleCustomShop(false);
     ref.read(addProductProvider(widget.userid).notifier).setShop(shop);
@@ -141,9 +140,6 @@ class _ActiveUserShopState extends ConsumerState<ActiveUserShopDropdown> {
                   itemCount: ActiveShopList.length,
                   itemBuilder: (context, index) {
                     final shop = ActiveShopList[index];
-                    if(shop.status != "Active"){
-                      return SizedBox.shrink();
-                    }
                     return ListTile(
                       title: Text(shop.shopname!),
                       onTap: () => _onShopSelected(shop),

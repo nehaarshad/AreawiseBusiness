@@ -92,7 +92,12 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
 
   Future<void> pickImages(BuildContext context) async {
     try {
-      final List<XFile> pickedFiles = await pickImage.pickMultiImage();
+      final source = await DialogUtils.showImageSourceDialog(context);
+      if (source == null) {
+        return;
+      }
+
+      final List<XFile> pickedFiles = await getImagesFromSource(source);
 
       // Check if total images would exceed 8
       if (pickedFiles.isNotEmpty && images.length + pickedFiles.length > 8) {
@@ -139,6 +144,16 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
     } catch (e) {
       print('Error picking images: $e');
       Utils.flushBarErrorMessage("Error selecting images", context);
+    }
+  }
+  Future<List<XFile>> getImagesFromSource(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      // Take a single picture from camera
+      final XFile? image = await pickImage.pickImage(source: source);
+      return image != null ? [image] : [];
+    } else {
+      // Pick multiple from gallery
+      return await pickImage.pickMultiImage();
     }
   }
 
@@ -243,11 +258,11 @@ class UpdateProductViewModel extends StateNotifier<AsyncValue<ProductModel?>> {
       }
 
 
-      final categoryName = isCustomCategory ? null : selectedCategory?.name;
-      final subcategoryName = isCustomSubCategory ? null : selectedSubCategory?.name;
+      final categoryName = isCustomCategory ? customCategoryName : selectedCategory?.name;
+      final subcategoryName = isCustomSubCategory ? customSubCategoryName : selectedSubCategory?.name;
 
       if (categoryName == null || subcategoryName == null) {
-        Utils.flushBarErrorMessage("Select Existed category or Subcategory", context);
+        Utils.flushBarErrorMessage("Select category or Subcategory", context);
         return;
 
       }
